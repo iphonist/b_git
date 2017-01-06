@@ -1,0 +1,2548 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		011245F52791A3C5EA4AC28726823CCB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		0A7AA40A22E014DE5BF7764ABD38D7E0 /* Pods-ETalk-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CC195DBF75F1B4DB3079162A2E683038 /* Pods-ETalk-dummy.m */; };
+		0C554CFC59A4284E9829448BA359A594 /* SocketLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29A3BB339105AF5BC77EB85BD3CB18E6 /* SocketLogger.swift */; };
+		0FC409508F11AD60493C9B3DC80A51A0 /* SocketPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117F685036DDF69767FA0894A36AFD79 /* SocketPacket.swift */; };
+		16642B91359DAB0123DD2C3EB0399C2A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		174F78C0E595E9EC145239DACADC5048 /* Pods-Hicare-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 45E9E201099250B54721953F43489A4F /* Pods-Hicare-dummy.m */; };
+		1E87A0C274FEBF343D4DFE96CFE4970E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		2625F91F2844074899223D8147E408E3 /* Pods-GreenTalkCustomer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C425EE56C6787EA4421004BD15E6D49 /* Pods-GreenTalkCustomer-dummy.m */; };
+		28975F3473776BC34CB3B0936779E62F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		39F6CF3AFCD50F1445B9B1B1AC852A9A /* SocketEngineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1670BB5EB79304C745E1AE522C2461EE /* SocketEngineSpec.swift */; };
+		3AAB924B2C554E998B9832768E42844C /* SocketIOClientOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC6DB44BEB912798F945A7288622BC11 /* SocketIOClientOption.swift */; };
+		3AC4C63409F11944DF9C06D5958737F5 /* SocketEngineWebsocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5603ECF44D6231ED2C54E8BC2F385A37 /* SocketEngineWebsocket.swift */; };
+		5466FC00528C57EFCDA501B8F6A8728C /* Pods-Batong-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 132CE7E26A7A13C77CC3EFD522B468D9 /* Pods-Batong-dummy.m */; };
+		5A352A6FCC8AB1D698E8A1B9A87EA2F4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		5CC712B1ED41337D1829482B0CA30D98 /* SocketEnginePollable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E330F9F321E4350813202BD51BC3F67A /* SocketEnginePollable.swift */; };
+		5CDBEB43A8C3A2C8D0AA87E9DC7FD64E /* SocketEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043D782257DB50BC7B57630A5BD577C6 /* SocketEventHandler.swift */; };
+		6B585166C7D3A1E3FA776F4CD7ADBBDC /* SocketIOClientConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9693A3F4FEDC4DE12781103EE82CB97D /* SocketIOClientConfiguration.swift */; };
+		6D6473734438187832E65ABBCCBD5D1C /* SocketIOClientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320E64E91F0F5C8DABC045FC2BF66DF1 /* SocketIOClientSpec.swift */; };
+		704431FE5B300B993069F178A329E7F7 /* SocketParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE9ACCB4FBAE731DCA98FD8DB00CF2B /* SocketParsable.swift */; };
+		727940C57D58EF14C908D65E813ACF2B /* SocketStringReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670BE73CF5968D8D6D6C8AAC526F90E2 /* SocketStringReader.swift */; };
+		75CA39567E85AE88585B1846333268A0 /* Pods-BearTalk-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 45AF1CFF66CD7CCF6774A911A96E64A6 /* Pods-BearTalk-dummy.m */; };
+		7AF713AC71824189233BCD7F291D844E /* SocketAnyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9571AF94B7FB655E7868AEF99404CB /* SocketAnyEvent.swift */; };
+		82B3F469B0B7969E596862598761E6B6 /* SocketAckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F244CCBBA45069AA8A524715B8E5966 /* SocketAckManager.swift */; };
+		8311902591D47C48D22FEAD0BEDDFDEE /* SocketAckEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B59BDFD692606D25A027C43E6C89A5C /* SocketAckEmitter.swift */; };
+		85F0BEDE06238C6B48DC855744ACC6E5 /* SocketIOClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EAE89FD26A461FD18EFD671BC2A669 /* SocketIOClient.swift */; };
+		8FB3CE9C09BCACCCC83184CCC0F96C9E /* Pods-SbTalk-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FA970D353E6A3445944E74A2AB965D /* Pods-SbTalk-dummy.m */; };
+		927CFF04DED4D59C1CBA6DCE293DA665 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		9B0000C3686BC622E31912B1768C0C30 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		9D84AE59AAD6C204ED013A85C00155BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		A2AAB13E9214560AD3ACD413729023D4 /* Pods-GreenTalk-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B99D80D47B0CD273CEB2A13205866BD0 /* Pods-GreenTalk-dummy.m */; };
+		A8B39ACEBABC637864BBAD1B7A80CA3D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		AB1FDE6DC959A7F048CBD60780FBA230 /* Pods-LempMobile-dev-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = FAFEE07888BBF939B638C11152BBB5D1 /* Pods-LempMobile-dev-dummy.m */; };
+		B00D60FD8DF7387A02063C6B9146712B /* Pods-MQM-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9DDD84B301EFD2D482A22C7C008636 /* Pods-MQM-dummy.m */; };
+		B1A378DD7F680DAADE9EE838593901FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		B6C0678F3ACFB75DE0A268EF4D663C6B /* Socket.IO-Client-Swift-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 87905EC17B5665096942646DB7542569 /* Socket.IO-Client-Swift-dummy.m */; };
+		B8550B5AACD051E1030FAB575CB863CA /* Pods-BearTalkDev-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 39FBFE0C384E643CE5F8610DBEBABB3A /* Pods-BearTalkDev-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BB802A9BCA988F9791DA2A958A2D4595 /* SocketIOClientStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F306E01D91D86C36440F2FAD6F23C988 /* SocketIOClientStatus.swift */; };
+		BCB582BB8490E5B398E8462BED9D7F60 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		BE2C263820012587D8BA2264E7D8F729 /* SocketEngineClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D342D3CD8230E8928AFA54BF2F79D0 /* SocketEngineClient.swift */; };
+		BE754D2D704D9A1FF26BD640986E7387 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		BEF1F96A9307F2B102602CCF0D54DFBE /* Pods-LempMobile-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B5A42240DCE9A2B91FE3B19307E6A63 /* Pods-LempMobile-dummy.m */; };
+		CA2C90B76599A457A0C45393D2EA035D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+		CA3253CD0945AD59C94B1A3BC29D2CF3 /* SocketExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F83D48B450D21095FBEC2185F938BE67 /* SocketExtensions.swift */; };
+		D4145DE3A1AA1836ABE9A0EE7F33E8EC /* SSLSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BB3B147D524EF800F2194B91709F1 /* SSLSecurity.swift */; };
+		D491253D511260CC7B081B49F5564F2D /* Pods-LempMobile-nowon-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052BE9793B93CBF4F177D03BBDC2AC1 /* Pods-LempMobile-nowon-dummy.m */; };
+		D5F6D56B4A1A9326BE0265A9F846BF5C /* SocketEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F0F03BBE73D643AD0486ADFE0A8AC5 /* SocketEngine.swift */; };
+		D6C2F2C0F7BD9612F20106243E5757FE /* SocketEnginePacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525F0BEBFC24363C1C12BFED1C52E09A /* SocketEnginePacketType.swift */; };
+		D7CFCFD8AE3DEDB1CC6566DBE5FAC1EF /* Pods-IVTalk-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EE0FB7E95840CF25706FB91DB90E11FF /* Pods-IVTalk-dummy.m */; };
+		D909468150317FA30FB2EFF4371B92AC /* Socket.IO-Client-Swift-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F57EC4469168DB9A573C09EAF2AEF49 /* Socket.IO-Client-Swift-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DDC133AF4B7CAA168617612D687A91B2 /* SocketClientManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1526DC8C1273F235789BF159D7714F /* SocketClientManager.swift */; };
+		EE4986A57AFB3592BCEA8AB48AF48741 /* SocketTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD80A7ADAB722173423A36E7463C4AFB /* SocketTypes.swift */; };
+		EF7CA5AE0D920F6F14A935AB82A458F3 /* Pods-BearTalkDev-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F4239E0D8BB486C0D490536C0187F2 /* Pods-BearTalkDev-dummy.m */; };
+		EFE45EF68F921AE79E3E60B4CAD7D4AE /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36F6652863175FDE16D90EF0BEF19B7 /* WebSocket.swift */; };
+		F0D97FF2C204E8C79C663E8B1098DDFA /* Pods-LempMobile-dev-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 56C0E42F1FB71A3F0EF090F426FEA883 /* Pods-LempMobile-dev-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F60B8F7E13E090FC0FE94A87B519A234 /* Pods-BearTalk-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CF34DFCF83359389D46E2F2A0FAE28A /* Pods-BearTalk-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F636B94667D0F56020CC5724877F17B4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		32E496CF9A6513CF56A7EFFB01634F2F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A8B0E06F7E8ECF47D63326612D06AF4B;
+			remoteInfo = "Socket.IO-Client-Swift";
+		};
+		A042BBD629787221BAB742502DC381C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A8B0E06F7E8ECF47D63326612D06AF4B;
+			remoteInfo = "Socket.IO-Client-Swift";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		01499699CA51F9A7A3D69EEEDC217944 /* libPods-GreenTalk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-GreenTalk.a"; path = "libPods-GreenTalk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		01ACA033F6E50F03BDAA080E5A62E00D /* Pods-LempMobile-nowon-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LempMobile-nowon-resources.sh"; sourceTree = "<group>"; };
+		043D782257DB50BC7B57630A5BD577C6 /* SocketEventHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketEventHandler.swift; path = Source/SocketEventHandler.swift; sourceTree = "<group>"; };
+		047D4B7B1B216F0DE986412F0D1B4670 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		05341ADE6BB03E56AE2C5A59F5F7A707 /* Pods-Hicare.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Hicare.distribution.xcconfig"; sourceTree = "<group>"; };
+		05DBB17FF8CF55558157B15A284B4014 /* Pods-LempMobile-dev.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-LempMobile-dev.modulemap"; sourceTree = "<group>"; };
+		05DD98DF656FDC7D8E64CD40CC3F4047 /* Socket.IO-Client-Swift.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Socket.IO-Client-Swift.modulemap"; sourceTree = "<group>"; };
+		079843C55F5A19EA45FA0AB9B7E55B2E /* Pods-ETalk-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-ETalk-acknowledgements.markdown"; sourceTree = "<group>"; };
+		09FA970D353E6A3445944E74A2AB965D /* Pods-SbTalk-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-SbTalk-dummy.m"; sourceTree = "<group>"; };
+		0C6B88CC929DD4CA369580F14FB89439 /* Pods-GreenTalk-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-GreenTalk-acknowledgements.plist"; sourceTree = "<group>"; };
+		0CAC9C36FFE91A0F9072812355D2C355 /* Pods-GreenTalkCustomer-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-GreenTalkCustomer-frameworks.sh"; sourceTree = "<group>"; };
+		0D1F6E4B0EB1793F1A99D0F6784C183F /* libPods-ETalk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-ETalk.a"; path = "libPods-ETalk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D28EEFF20C4ACF97D3BCD4F006B9501 /* Pods-GreenTalk.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-GreenTalk.distribution.xcconfig"; sourceTree = "<group>"; };
+		0DD7603D2DDB275DEEF88FC9AFBD78C5 /* SocketIO.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SocketIO.framework; path = "Socket.IO-Client-Swift.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0F244CCBBA45069AA8A524715B8E5966 /* SocketAckManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketAckManager.swift; path = Source/SocketAckManager.swift; sourceTree = "<group>"; };
+		0F891E8CDE265124750D940777EB6EED /* Pods-LempMobile-dev-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-LempMobile-dev-acknowledgements.plist"; sourceTree = "<group>"; };
+		117F685036DDF69767FA0894A36AFD79 /* SocketPacket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketPacket.swift; path = Source/SocketPacket.swift; sourceTree = "<group>"; };
+		132CE7E26A7A13C77CC3EFD522B468D9 /* Pods-Batong-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Batong-dummy.m"; sourceTree = "<group>"; };
+		152FBBF386F407E7873F6D683EF8A55D /* Pods-SbTalk-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SbTalk-frameworks.sh"; sourceTree = "<group>"; };
+		1670BB5EB79304C745E1AE522C2461EE /* SocketEngineSpec.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketEngineSpec.swift; path = Source/SocketEngineSpec.swift; sourceTree = "<group>"; };
+		1EEA2C2243FD8C6DF42A6C2BCC2C0C37 /* Pods-GreenTalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-GreenTalk.release.xcconfig"; sourceTree = "<group>"; };
+		2682DE2A0B3DAEC59D397572CB5643AA /* Pods-MQM.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MQM.distribution.xcconfig"; sourceTree = "<group>"; };
+		27C6E6A55A63744CE8D1CC3DB3094A98 /* Pods-BearTalk.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BearTalk.distribution.xcconfig"; sourceTree = "<group>"; };
+		281C1F38AB78C1B65CA5EB76C0B632A3 /* Pods-MQM-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MQM-resources.sh"; sourceTree = "<group>"; };
+		29A3BB339105AF5BC77EB85BD3CB18E6 /* SocketLogger.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketLogger.swift; path = Source/SocketLogger.swift; sourceTree = "<group>"; };
+		2B1526DC8C1273F235789BF159D7714F /* SocketClientManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketClientManager.swift; path = Source/SocketClientManager.swift; sourceTree = "<group>"; };
+		2C425EE56C6787EA4421004BD15E6D49 /* Pods-GreenTalkCustomer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-GreenTalkCustomer-dummy.m"; sourceTree = "<group>"; };
+		31F0F03BBE73D643AD0486ADFE0A8AC5 /* SocketEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketEngine.swift; path = Source/SocketEngine.swift; sourceTree = "<group>"; };
+		320E64E91F0F5C8DABC045FC2BF66DF1 /* SocketIOClientSpec.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketIOClientSpec.swift; path = Source/SocketIOClientSpec.swift; sourceTree = "<group>"; };
+		3823C2C70A096FA2CC0DB9DF7773975C /* Pods-BearTalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BearTalk.debug.xcconfig"; sourceTree = "<group>"; };
+		3873E72C27302DEE19D9001576FDE335 /* Pods-BearTalk-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BearTalk-acknowledgements.plist"; sourceTree = "<group>"; };
+		38EAE89FD26A461FD18EFD671BC2A669 /* SocketIOClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketIOClient.swift; path = Source/SocketIOClient.swift; sourceTree = "<group>"; };
+		396B97A4A9F97B666816E232C1FA291E /* Pods-GreenTalkCustomer-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-GreenTalkCustomer-acknowledgements.markdown"; sourceTree = "<group>"; };
+		39FBFE0C384E643CE5F8610DBEBABB3A /* Pods-BearTalkDev-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BearTalkDev-umbrella.h"; sourceTree = "<group>"; };
+		3C3E068AA24579DEEC9B8894D08F3DCB /* Pods-ETalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ETalk.release.xcconfig"; sourceTree = "<group>"; };
+		3F57EC4469168DB9A573C09EAF2AEF49 /* Socket.IO-Client-Swift-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Socket.IO-Client-Swift-umbrella.h"; sourceTree = "<group>"; };
+		3FE02F1272C291E47545AD1F3B102ACE /* libPods-Batong.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-Batong.a"; path = "libPods-Batong.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		438CA8560A733EFD91032CCA369475A1 /* Pods-Batong.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Batong.debug.xcconfig"; sourceTree = "<group>"; };
+		45AF1CFF66CD7CCF6774A911A96E64A6 /* Pods-BearTalk-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BearTalk-dummy.m"; sourceTree = "<group>"; };
+		45E9E201099250B54721953F43489A4F /* Pods-Hicare-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Hicare-dummy.m"; sourceTree = "<group>"; };
+		47D200E2FA885722EA6B071C95ED58A1 /* Pods-LempMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LempMobile.debug.xcconfig"; sourceTree = "<group>"; };
+		4A2B74F6532714BAC471498EF6E50784 /* Pods-SbTalk-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-SbTalk-acknowledgements.markdown"; sourceTree = "<group>"; };
+		4B336A1692D4E84CF2E0175A36F55CCD /* Pods-MQM.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MQM.debug.xcconfig"; sourceTree = "<group>"; };
+		4CF34DFCF83359389D46E2F2A0FAE28A /* Pods-BearTalk-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BearTalk-umbrella.h"; sourceTree = "<group>"; };
+		4E852147BB8CA11C60363B97C1193E41 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4FF41C4891293580A3DBC3323C0177A9 /* Pods-IVTalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-IVTalk.release.xcconfig"; sourceTree = "<group>"; };
+		4FFC8BCA99CDD4CA0D448D803368C3AD /* Pods_BearTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_BearTalk.framework; path = "Pods-BearTalk.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5052BE9793B93CBF4F177D03BBDC2AC1 /* Pods-LempMobile-nowon-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-LempMobile-nowon-dummy.m"; sourceTree = "<group>"; };
+		51D342D3CD8230E8928AFA54BF2F79D0 /* SocketEngineClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketEngineClient.swift; path = Source/SocketEngineClient.swift; sourceTree = "<group>"; };
+		525F0BEBFC24363C1C12BFED1C52E09A /* SocketEnginePacketType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketEnginePacketType.swift; path = Source/SocketEnginePacketType.swift; sourceTree = "<group>"; };
+		549CD5526CA6CFB1D65DEB7E651F7E42 /* Pods-BearTalkDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BearTalkDev.release.xcconfig"; sourceTree = "<group>"; };
+		5515DE1047CF8D5C9E0C95A026B41683 /* Pods-IVTalk.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-IVTalk.distribution.xcconfig"; sourceTree = "<group>"; };
+		558BB81E84B0A683A53BB4D5808F5BFA /* Pods-LempMobile-dev-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LempMobile-dev-resources.sh"; sourceTree = "<group>"; };
+		5603ECF44D6231ED2C54E8BC2F385A37 /* SocketEngineWebsocket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketEngineWebsocket.swift; path = Source/SocketEngineWebsocket.swift; sourceTree = "<group>"; };
+		56C0E42F1FB71A3F0EF090F426FEA883 /* Pods-LempMobile-dev-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-LempMobile-dev-umbrella.h"; sourceTree = "<group>"; };
+		582324E21E6CB9105B587CF9699C8417 /* Pods-Batong-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Batong-acknowledgements.plist"; sourceTree = "<group>"; };
+		58E83B6EAC388DDA7F5AE557B6E70597 /* Pods-GreenTalk-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-GreenTalk-resources.sh"; sourceTree = "<group>"; };
+		5A751CCF327E67A00A7E6EE55BBE085C /* Pods-GreenTalkCustomer.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-GreenTalkCustomer.distribution.xcconfig"; sourceTree = "<group>"; };
+		5B5A42240DCE9A2B91FE3B19307E6A63 /* Pods-LempMobile-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-LempMobile-dummy.m"; sourceTree = "<group>"; };
+		5E439B7281E62AF4CCCC0797F54CA82E /* Pods-Hicare-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Hicare-frameworks.sh"; sourceTree = "<group>"; };
+		61C7B3D84C85159F6E8369C67B1807B7 /* Pods-LempMobile-nowon.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LempMobile-nowon.distribution.xcconfig"; sourceTree = "<group>"; };
+		645AEBA673756EB5F6C1B23E43A4A922 /* Pods-SbTalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SbTalk.debug.xcconfig"; sourceTree = "<group>"; };
+		6568DE3E2CCDE905EF76528E32749EC9 /* libPods-IVTalk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-IVTalk.a"; path = "libPods-IVTalk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		659650446F2D7495B68D91A449AEDB29 /* Pods-BearTalkDev.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-BearTalkDev.modulemap"; sourceTree = "<group>"; };
+		666BC255C920C0527A100379C4540A58 /* Pods-Batong-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Batong-acknowledgements.markdown"; sourceTree = "<group>"; };
+		670BE73CF5968D8D6D6C8AAC526F90E2 /* SocketStringReader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketStringReader.swift; path = Source/SocketStringReader.swift; sourceTree = "<group>"; };
+		67CAFB8E0F26721B3B8A30FFA70322FE /* Pods-BearTalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BearTalk.release.xcconfig"; sourceTree = "<group>"; };
+		6AE9ACCB4FBAE731DCA98FD8DB00CF2B /* SocketParsable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketParsable.swift; path = Source/SocketParsable.swift; sourceTree = "<group>"; };
+		6C294A9A7D7218A01848C640E5156AB3 /* Pods-GreenTalkCustomer-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-GreenTalkCustomer-acknowledgements.plist"; sourceTree = "<group>"; };
+		6C4EF4F46934C0F36A6B3A94A0037F03 /* Pods-LempMobile-dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LempMobile-dev.release.xcconfig"; sourceTree = "<group>"; };
+		6C9DDD84B301EFD2D482A22C7C008636 /* Pods-MQM-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-MQM-dummy.m"; sourceTree = "<group>"; };
+		6CE5951E13CD8D1ABB1B68971F69E6CE /* Pods-GreenTalkCustomer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-GreenTalkCustomer.release.xcconfig"; sourceTree = "<group>"; };
+		6D9571AF94B7FB655E7868AEF99404CB /* SocketAnyEvent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketAnyEvent.swift; path = Source/SocketAnyEvent.swift; sourceTree = "<group>"; };
+		6E95BCD9196D52673CD2AC840C6EBF66 /* Pods-LempMobile-nowon-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-LempMobile-nowon-acknowledgements.markdown"; sourceTree = "<group>"; };
+		6FD32A780CA040ABB2C76B1F964FA092 /* Pods-IVTalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-IVTalk.debug.xcconfig"; sourceTree = "<group>"; };
+		7209A53484514CCCA1F0F0695AD14BE3 /* Pods-MQM.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MQM.release.xcconfig"; sourceTree = "<group>"; };
+		75F5A4ADBE1C8B1230D7AAC7273F915B /* Pods_LempMobile_dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_LempMobile_dev.framework; path = "Pods-LempMobile-dev.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		76AB1D0D3138591AB04C8BEDA183EA3D /* Pods-LempMobile-dev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LempMobile-dev.distribution.xcconfig"; sourceTree = "<group>"; };
+		788552D0730E26E0BFA9308942C9066F /* Pods-ETalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ETalk.debug.xcconfig"; sourceTree = "<group>"; };
+		798F6F6C16BC5DCCF154CAA9061D5EC3 /* Pods-LempMobile-dev-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LempMobile-dev-frameworks.sh"; sourceTree = "<group>"; };
+		7C04B61C91B64910C543C9550FBBBCA3 /* Pods-BearTalkDev-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BearTalkDev-frameworks.sh"; sourceTree = "<group>"; };
+		7D38DD875767AB689EBF96AF194742C1 /* Pods-Hicare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Hicare.debug.xcconfig"; sourceTree = "<group>"; };
+		7DE39D7E963B7E17A2749F29CBA77890 /* Pods_BearTalkDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_BearTalkDev.framework; path = "Pods-BearTalkDev.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F30805BE03A912095B9AB7F0C2629BA /* Pods-BearTalkDev-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BearTalkDev-resources.sh"; sourceTree = "<group>"; };
+		84A6B14DBA1F35997FB8B47B2A78EE49 /* Pods-GreenTalkCustomer-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-GreenTalkCustomer-resources.sh"; sourceTree = "<group>"; };
+		85ED39C80409C54FA86796E194905F1E /* Pods-LempMobile-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-LempMobile-acknowledgements.markdown"; sourceTree = "<group>"; };
+		85F3078063A53629E8CD55A521EEF5B3 /* Pods-ETalk-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-ETalk-acknowledgements.plist"; sourceTree = "<group>"; };
+		87376E50E02D4C3E467850F23D9BFE91 /* Pods-ETalk-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ETalk-frameworks.sh"; sourceTree = "<group>"; };
+		8739D1928E90C690762BA555818F6C91 /* Pods-MQM-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-MQM-acknowledgements.markdown"; sourceTree = "<group>"; };
+		87905EC17B5665096942646DB7542569 /* Socket.IO-Client-Swift-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Socket.IO-Client-Swift-dummy.m"; sourceTree = "<group>"; };
+		8BDF8F416A1057AA527860D62E8706D3 /* Pods-LempMobile-nowon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LempMobile-nowon.release.xcconfig"; sourceTree = "<group>"; };
+		924B4EB6D8B447BC34C7D7D9414B0806 /* Pods-Batong-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Batong-frameworks.sh"; sourceTree = "<group>"; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		96469C01C0B161D254E17968655945CB /* Pods-SbTalk-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-SbTalk-acknowledgements.plist"; sourceTree = "<group>"; };
+		9693A3F4FEDC4DE12781103EE82CB97D /* SocketIOClientConfiguration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketIOClientConfiguration.swift; path = Source/SocketIOClientConfiguration.swift; sourceTree = "<group>"; };
+		987C883B31245DB1202225EBB1DD0C7C /* Pods-LempMobile-dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LempMobile-dev.debug.xcconfig"; sourceTree = "<group>"; };
+		991C01F27C443831BB78096D5FA0792B /* Pods-BearTalkDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BearTalkDev.distribution.xcconfig"; sourceTree = "<group>"; };
+		996BB3B147D524EF800F2194B91709F1 /* SSLSecurity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SSLSecurity.swift; path = Source/SSLSecurity.swift; sourceTree = "<group>"; };
+		9AEA3A036CFD0FCFCFA4C17B0E8A8610 /* libPods-LempMobile-nowon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-LempMobile-nowon.a"; path = "libPods-LempMobile-nowon.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B59BDFD692606D25A027C43E6C89A5C /* SocketAckEmitter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketAckEmitter.swift; path = Source/SocketAckEmitter.swift; sourceTree = "<group>"; };
+		9C34C89AB8BC05EA0376A60618D611B9 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9F56798E5F2CCE94843176605BFC07B6 /* Pods-BearTalk-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BearTalk-frameworks.sh"; sourceTree = "<group>"; };
+		9F9012D1CF800972BED941165B70893F /* Socket.IO-Client-Swift.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Socket.IO-Client-Swift.xcconfig"; sourceTree = "<group>"; };
+		A0637415BC319C3D8FF30D9B799B93AD /* Pods-GreenTalkCustomer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-GreenTalkCustomer.debug.xcconfig"; sourceTree = "<group>"; };
+		A2B534A97A412E7B4A8646881743537B /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A5083C7CAAF5BCE30BAA422CB0C9D798 /* Pods-BearTalkDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BearTalkDev.debug.xcconfig"; sourceTree = "<group>"; };
+		A55C6EAE09EA2160851B8CB165423E04 /* Pods-ETalk-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-ETalk-resources.sh"; sourceTree = "<group>"; };
+		AA6719737D0C43ECDE0ABEFE32C03A98 /* Pods-LempMobile-dev-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-LempMobile-dev-acknowledgements.markdown"; sourceTree = "<group>"; };
+		AC6DB44BEB912798F945A7288622BC11 /* SocketIOClientOption.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketIOClientOption.swift; path = Source/SocketIOClientOption.swift; sourceTree = "<group>"; };
+		AD528D226872B8FA161991CB6ED62BCC /* Pods-Batong-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Batong-resources.sh"; sourceTree = "<group>"; };
+		AD9239B784D00747035778EB91698C4B /* Pods-LempMobile-nowon-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-LempMobile-nowon-acknowledgements.plist"; sourceTree = "<group>"; };
+		ADA1F68B394FE59A105F405630F03B43 /* Pods-GreenTalk-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-GreenTalk-frameworks.sh"; sourceTree = "<group>"; };
+		AED116B31CAD1B4100576A7135C101F1 /* Pods-Hicare-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Hicare-resources.sh"; sourceTree = "<group>"; };
+		AFBE06D12565B15343511231E854A6BF /* Pods-Batong.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Batong.release.xcconfig"; sourceTree = "<group>"; };
+		B133BD09A6C99298DE528733A58AD2DB /* Pods-IVTalk-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-IVTalk-acknowledgements.plist"; sourceTree = "<group>"; };
+		B4F4239E0D8BB486C0D490536C0187F2 /* Pods-BearTalkDev-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BearTalkDev-dummy.m"; sourceTree = "<group>"; };
+		B52872DF1DC4F4E3B7108EF62BE2197E /* Pods-LempMobile-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LempMobile-frameworks.sh"; sourceTree = "<group>"; };
+		B6A02DF81579FC41D091235142F0185D /* Pods-SbTalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SbTalk.release.xcconfig"; sourceTree = "<group>"; };
+		B78CFB8E2433615A89E29FD27411729D /* Pods-LempMobile-nowon-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LempMobile-nowon-frameworks.sh"; sourceTree = "<group>"; };
+		B8B22A8A9A084ED1CDE0D2AE7998DBD3 /* Pods-IVTalk-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-IVTalk-frameworks.sh"; sourceTree = "<group>"; };
+		B99D80D47B0CD273CEB2A13205866BD0 /* Pods-GreenTalk-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-GreenTalk-dummy.m"; sourceTree = "<group>"; };
+		BC6A37ACF90E6EBFA64474593D9FCB3B /* Pods-BearTalkDev-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BearTalkDev-acknowledgements.markdown"; sourceTree = "<group>"; };
+		BE20BAFBA830C893277C522F7439C1FE /* Pods-GreenTalk-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-GreenTalk-acknowledgements.markdown"; sourceTree = "<group>"; };
+		C0EAC992984E44E61E2B1050C0A32C47 /* libPods-SbTalk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-SbTalk.a"; path = "libPods-SbTalk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C87E783B55F35B77F69069E3DA592C88 /* Pods-MQM-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-MQM-frameworks.sh"; sourceTree = "<group>"; };
+		C9CBDE54711958666DA18457DA5AED5A /* Pods-LempMobile-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-LempMobile-resources.sh"; sourceTree = "<group>"; };
+		CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		CC195DBF75F1B4DB3079162A2E683038 /* Pods-ETalk-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-ETalk-dummy.m"; sourceTree = "<group>"; };
+		CCA00D8C7E0C102205DC7011E17AC12E /* libPods-MQM.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-MQM.a"; path = "libPods-MQM.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDD5940B7BC258895CAAABF43D3EEC0B /* Pods-LempMobile-nowon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LempMobile-nowon.debug.xcconfig"; sourceTree = "<group>"; };
+		D0A30BE4FA88DEC111F48A756876CC41 /* Pods-Hicare-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Hicare-acknowledgements.plist"; sourceTree = "<group>"; };
+		D14045474A31AE69376A9C5D7E415447 /* libPods-Hicare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-Hicare.a"; path = "libPods-Hicare.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D693CAECAD84A1E0E43AAE49571262F6 /* Pods-Hicare-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Hicare-acknowledgements.markdown"; sourceTree = "<group>"; };
+		D78B24A748933F1DFC1F9C74CDA30B18 /* Pods-Hicare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Hicare.release.xcconfig"; sourceTree = "<group>"; };
+		D894F38A618E6CECAFD2EAF570AF795D /* libPods-GreenTalkCustomer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-GreenTalkCustomer.a"; path = "libPods-GreenTalkCustomer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8B0677D5D1D75F6927161B40686E075 /* Pods-MQM-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-MQM-acknowledgements.plist"; sourceTree = "<group>"; };
+		DB2C70F58D5E549C29BA149B6D48F48C /* Pods-LempMobile-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-LempMobile-acknowledgements.plist"; sourceTree = "<group>"; };
+		DD30246D720DD8C2EA65A7E8D5791AFC /* Pods-Batong.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Batong.distribution.xcconfig"; sourceTree = "<group>"; };
+		DE27CF831030F9F529E07D758E7681B3 /* Pods-LempMobile.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LempMobile.distribution.xcconfig"; sourceTree = "<group>"; };
+		DE90AD0778613454DF6B67FAFBED2304 /* Pods-SbTalk-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-SbTalk-resources.sh"; sourceTree = "<group>"; };
+		DECC7E8D9C74B22B2B42AE0E2C1D34D2 /* Pods-BearTalk-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BearTalk-acknowledgements.markdown"; sourceTree = "<group>"; };
+		E1D49F281AD27001E9768B81EBF429B0 /* Pods-IVTalk-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-IVTalk-acknowledgements.markdown"; sourceTree = "<group>"; };
+		E330F9F321E4350813202BD51BC3F67A /* SocketEnginePollable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketEnginePollable.swift; path = Source/SocketEnginePollable.swift; sourceTree = "<group>"; };
+		E3B83E52172093F75B0EF4F378F416DF /* Pods-GreenTalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-GreenTalk.debug.xcconfig"; sourceTree = "<group>"; };
+		E4FBDEC64EF35E3FD247B6A8D93CEC7D /* libPods-LempMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-LempMobile.a"; path = "libPods-LempMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9372019B5066BA9C5C4FA5BE65C2605 /* Pods-BearTalk.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-BearTalk.modulemap"; sourceTree = "<group>"; };
+		EAB0E3C49C6B1333339DD64D4161ACAF /* Pods-SbTalk.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SbTalk.distribution.xcconfig"; sourceTree = "<group>"; };
+		EE0FB7E95840CF25706FB91DB90E11FF /* Pods-IVTalk-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-IVTalk-dummy.m"; sourceTree = "<group>"; };
+		F306E01D91D86C36440F2FAD6F23C988 /* SocketIOClientStatus.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketIOClientStatus.swift; path = Source/SocketIOClientStatus.swift; sourceTree = "<group>"; };
+		F36F6652863175FDE16D90EF0BEF19B7 /* WebSocket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WebSocket.swift; path = Source/WebSocket.swift; sourceTree = "<group>"; };
+		F57959BBDDA9210163F0CBFB7527AE25 /* Socket.IO-Client-Swift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Socket.IO-Client-Swift-prefix.pch"; sourceTree = "<group>"; };
+		F5974315EA5B7F47808B5821E2DEE0FA /* Pods-BearTalkDev-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BearTalkDev-acknowledgements.plist"; sourceTree = "<group>"; };
+		F83D48B450D21095FBEC2185F938BE67 /* SocketExtensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketExtensions.swift; path = Source/SocketExtensions.swift; sourceTree = "<group>"; };
+		F86DDA8FF92ACD62BA94A0E414887BF8 /* Pods-IVTalk-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-IVTalk-resources.sh"; sourceTree = "<group>"; };
+		FAFEE07888BBF939B638C11152BBB5D1 /* Pods-LempMobile-dev-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-LempMobile-dev-dummy.m"; sourceTree = "<group>"; };
+		FBB4DC2E904B8FB190B3504EBC19901E /* Pods-ETalk.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-ETalk.distribution.xcconfig"; sourceTree = "<group>"; };
+		FC790B3E6124FDC53B6F504F4D7968F2 /* Pods-LempMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LempMobile.release.xcconfig"; sourceTree = "<group>"; };
+		FD80A7ADAB722173423A36E7463C4AFB /* SocketTypes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SocketTypes.swift; path = Source/SocketTypes.swift; sourceTree = "<group>"; };
+		FDCEBD598987F5134B86192023722525 /* Pods-BearTalk-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BearTalk-resources.sh"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		00B56B14BD5318B3A8533F7233CBACC3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A8B39ACEBABC637864BBAD1B7A80CA3D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7191CE5CED436413404CDB1E097DE1F5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE754D2D704D9A1FF26BD640986E7387 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7270BF82820E5ECF00A97BE4BA52AAEC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F636B94667D0F56020CC5724877F17B4 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7ABC188748950B222C7D53EF2AC59289 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5A352A6FCC8AB1D698E8A1B9A87EA2F4 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D73F711B940A4ABB02DB741F21CB10D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				927CFF04DED4D59C1CBA6DCE293DA665 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9276BFEB55D2B38A2C2ECD29BCFB5CD9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E87A0C274FEBF343D4DFE96CFE4970E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96FC139B5681F50C897477ACE00E4BB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1A378DD7F680DAADE9EE838593901FF /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9823A00BEDEB2A3F04F85FFD667CFFED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D84AE59AAD6C204ED013A85C00155BE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9F3D5BF3A7F4DAF3B30529CAD6BBF243 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				16642B91359DAB0123DD2C3EB0399C2A /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BF57787C5E41C18D589C91BA88A7766D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BCB582BB8490E5B398E8462BED9D7F60 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE5B3C325D05E0BB47B0F7F424CA12A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B0000C3686BC622E31912B1768C0C30 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D7CD6D608E18BD0AA719B321021EA25A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				011245F52791A3C5EA4AC28726823CCB /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E22DD74F3A14FB2B63E2772E70663A0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28975F3473776BC34CB3B0936779E62F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EEF3D33C4FA0DFC3CA524D49EAA2B4B1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA2C90B76599A457A0C45393D2EA035D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		04E4B6B1F8F19BD4F8BB7C1B5C7F26CE /* Pods-IVTalk */ = {
+			isa = PBXGroup;
+			children = (
+				E1D49F281AD27001E9768B81EBF429B0 /* Pods-IVTalk-acknowledgements.markdown */,
+				B133BD09A6C99298DE528733A58AD2DB /* Pods-IVTalk-acknowledgements.plist */,
+				EE0FB7E95840CF25706FB91DB90E11FF /* Pods-IVTalk-dummy.m */,
+				B8B22A8A9A084ED1CDE0D2AE7998DBD3 /* Pods-IVTalk-frameworks.sh */,
+				F86DDA8FF92ACD62BA94A0E414887BF8 /* Pods-IVTalk-resources.sh */,
+				6FD32A780CA040ABB2C76B1F964FA092 /* Pods-IVTalk.debug.xcconfig */,
+				5515DE1047CF8D5C9E0C95A026B41683 /* Pods-IVTalk.distribution.xcconfig */,
+				4FF41C4891293580A3DBC3323C0177A9 /* Pods-IVTalk.release.xcconfig */,
+			);
+			name = "Pods-IVTalk";
+			path = "Target Support Files/Pods-IVTalk";
+			sourceTree = "<group>";
+		};
+		06FCB82AA93FF76BA547AB1D3AB0ADFF /* Socket.IO-Client-Swift */ = {
+			isa = PBXGroup;
+			children = (
+				9B59BDFD692606D25A027C43E6C89A5C /* SocketAckEmitter.swift */,
+				0F244CCBBA45069AA8A524715B8E5966 /* SocketAckManager.swift */,
+				6D9571AF94B7FB655E7868AEF99404CB /* SocketAnyEvent.swift */,
+				2B1526DC8C1273F235789BF159D7714F /* SocketClientManager.swift */,
+				31F0F03BBE73D643AD0486ADFE0A8AC5 /* SocketEngine.swift */,
+				51D342D3CD8230E8928AFA54BF2F79D0 /* SocketEngineClient.swift */,
+				525F0BEBFC24363C1C12BFED1C52E09A /* SocketEnginePacketType.swift */,
+				E330F9F321E4350813202BD51BC3F67A /* SocketEnginePollable.swift */,
+				1670BB5EB79304C745E1AE522C2461EE /* SocketEngineSpec.swift */,
+				5603ECF44D6231ED2C54E8BC2F385A37 /* SocketEngineWebsocket.swift */,
+				043D782257DB50BC7B57630A5BD577C6 /* SocketEventHandler.swift */,
+				F83D48B450D21095FBEC2185F938BE67 /* SocketExtensions.swift */,
+				38EAE89FD26A461FD18EFD671BC2A669 /* SocketIOClient.swift */,
+				9693A3F4FEDC4DE12781103EE82CB97D /* SocketIOClientConfiguration.swift */,
+				AC6DB44BEB912798F945A7288622BC11 /* SocketIOClientOption.swift */,
+				320E64E91F0F5C8DABC045FC2BF66DF1 /* SocketIOClientSpec.swift */,
+				F306E01D91D86C36440F2FAD6F23C988 /* SocketIOClientStatus.swift */,
+				29A3BB339105AF5BC77EB85BD3CB18E6 /* SocketLogger.swift */,
+				117F685036DDF69767FA0894A36AFD79 /* SocketPacket.swift */,
+				6AE9ACCB4FBAE731DCA98FD8DB00CF2B /* SocketParsable.swift */,
+				670BE73CF5968D8D6D6C8AAC526F90E2 /* SocketStringReader.swift */,
+				FD80A7ADAB722173423A36E7463C4AFB /* SocketTypes.swift */,
+				996BB3B147D524EF800F2194B91709F1 /* SSLSecurity.swift */,
+				F36F6652863175FDE16D90EF0BEF19B7 /* WebSocket.swift */,
+				C964BA47013163C7F484F1A789B76193 /* Support Files */,
+			);
+			name = "Socket.IO-Client-Swift";
+			path = "Socket.IO-Client-Swift";
+			sourceTree = "<group>";
+		};
+		149F8264D3E06420EBA69857E4F79D4B /* Pods-BearTalkDev */ = {
+			isa = PBXGroup;
+			children = (
+				A2B534A97A412E7B4A8646881743537B /* Info.plist */,
+				659650446F2D7495B68D91A449AEDB29 /* Pods-BearTalkDev.modulemap */,
+				BC6A37ACF90E6EBFA64474593D9FCB3B /* Pods-BearTalkDev-acknowledgements.markdown */,
+				F5974315EA5B7F47808B5821E2DEE0FA /* Pods-BearTalkDev-acknowledgements.plist */,
+				B4F4239E0D8BB486C0D490536C0187F2 /* Pods-BearTalkDev-dummy.m */,
+				7C04B61C91B64910C543C9550FBBBCA3 /* Pods-BearTalkDev-frameworks.sh */,
+				7F30805BE03A912095B9AB7F0C2629BA /* Pods-BearTalkDev-resources.sh */,
+				39FBFE0C384E643CE5F8610DBEBABB3A /* Pods-BearTalkDev-umbrella.h */,
+				A5083C7CAAF5BCE30BAA422CB0C9D798 /* Pods-BearTalkDev.debug.xcconfig */,
+				991C01F27C443831BB78096D5FA0792B /* Pods-BearTalkDev.distribution.xcconfig */,
+				549CD5526CA6CFB1D65DEB7E651F7E42 /* Pods-BearTalkDev.release.xcconfig */,
+			);
+			name = "Pods-BearTalkDev";
+			path = "Target Support Files/Pods-BearTalkDev";
+			sourceTree = "<group>";
+		};
+		18A8199FB9FC6651E8FAEA855ABAAAF6 /* Pods-GreenTalkCustomer */ = {
+			isa = PBXGroup;
+			children = (
+				396B97A4A9F97B666816E232C1FA291E /* Pods-GreenTalkCustomer-acknowledgements.markdown */,
+				6C294A9A7D7218A01848C640E5156AB3 /* Pods-GreenTalkCustomer-acknowledgements.plist */,
+				2C425EE56C6787EA4421004BD15E6D49 /* Pods-GreenTalkCustomer-dummy.m */,
+				0CAC9C36FFE91A0F9072812355D2C355 /* Pods-GreenTalkCustomer-frameworks.sh */,
+				84A6B14DBA1F35997FB8B47B2A78EE49 /* Pods-GreenTalkCustomer-resources.sh */,
+				A0637415BC319C3D8FF30D9B799B93AD /* Pods-GreenTalkCustomer.debug.xcconfig */,
+				5A751CCF327E67A00A7E6EE55BBE085C /* Pods-GreenTalkCustomer.distribution.xcconfig */,
+				6CE5951E13CD8D1ABB1B68971F69E6CE /* Pods-GreenTalkCustomer.release.xcconfig */,
+			);
+			name = "Pods-GreenTalkCustomer";
+			path = "Target Support Files/Pods-GreenTalkCustomer";
+			sourceTree = "<group>";
+		};
+		1E2D238E88DE7D0C82F308A1800870D3 /* Pods-Batong */ = {
+			isa = PBXGroup;
+			children = (
+				666BC255C920C0527A100379C4540A58 /* Pods-Batong-acknowledgements.markdown */,
+				582324E21E6CB9105B587CF9699C8417 /* Pods-Batong-acknowledgements.plist */,
+				132CE7E26A7A13C77CC3EFD522B468D9 /* Pods-Batong-dummy.m */,
+				924B4EB6D8B447BC34C7D7D9414B0806 /* Pods-Batong-frameworks.sh */,
+				AD528D226872B8FA161991CB6ED62BCC /* Pods-Batong-resources.sh */,
+				438CA8560A733EFD91032CCA369475A1 /* Pods-Batong.debug.xcconfig */,
+				DD30246D720DD8C2EA65A7E8D5791AFC /* Pods-Batong.distribution.xcconfig */,
+				AFBE06D12565B15343511231E854A6BF /* Pods-Batong.release.xcconfig */,
+			);
+			name = "Pods-Batong";
+			path = "Target Support Files/Pods-Batong";
+			sourceTree = "<group>";
+		};
+		28EFFFD3220E3C882689551068A4ED9F /* Pods-GreenTalk */ = {
+			isa = PBXGroup;
+			children = (
+				BE20BAFBA830C893277C522F7439C1FE /* Pods-GreenTalk-acknowledgements.markdown */,
+				0C6B88CC929DD4CA369580F14FB89439 /* Pods-GreenTalk-acknowledgements.plist */,
+				B99D80D47B0CD273CEB2A13205866BD0 /* Pods-GreenTalk-dummy.m */,
+				ADA1F68B394FE59A105F405630F03B43 /* Pods-GreenTalk-frameworks.sh */,
+				58E83B6EAC388DDA7F5AE557B6E70597 /* Pods-GreenTalk-resources.sh */,
+				E3B83E52172093F75B0EF4F378F416DF /* Pods-GreenTalk.debug.xcconfig */,
+				0D28EEFF20C4ACF97D3BCD4F006B9501 /* Pods-GreenTalk.distribution.xcconfig */,
+				1EEA2C2243FD8C6DF42A6C2BCC2C0C37 /* Pods-GreenTalk.release.xcconfig */,
+			);
+			name = "Pods-GreenTalk";
+			path = "Target Support Files/Pods-GreenTalk";
+			sourceTree = "<group>";
+		};
+		52447C9FB6C4B4738FCDB5AB4969FF62 /* Pods-ETalk */ = {
+			isa = PBXGroup;
+			children = (
+				079843C55F5A19EA45FA0AB9B7E55B2E /* Pods-ETalk-acknowledgements.markdown */,
+				85F3078063A53629E8CD55A521EEF5B3 /* Pods-ETalk-acknowledgements.plist */,
+				CC195DBF75F1B4DB3079162A2E683038 /* Pods-ETalk-dummy.m */,
+				87376E50E02D4C3E467850F23D9BFE91 /* Pods-ETalk-frameworks.sh */,
+				A55C6EAE09EA2160851B8CB165423E04 /* Pods-ETalk-resources.sh */,
+				788552D0730E26E0BFA9308942C9066F /* Pods-ETalk.debug.xcconfig */,
+				FBB4DC2E904B8FB190B3504EBC19901E /* Pods-ETalk.distribution.xcconfig */,
+				3C3E068AA24579DEEC9B8894D08F3DCB /* Pods-ETalk.release.xcconfig */,
+			);
+			name = "Pods-ETalk";
+			path = "Target Support Files/Pods-ETalk";
+			sourceTree = "<group>";
+		};
+		68C39233E54F2CA12C54040566BB4727 /* Pods-Hicare */ = {
+			isa = PBXGroup;
+			children = (
+				D693CAECAD84A1E0E43AAE49571262F6 /* Pods-Hicare-acknowledgements.markdown */,
+				D0A30BE4FA88DEC111F48A756876CC41 /* Pods-Hicare-acknowledgements.plist */,
+				45E9E201099250B54721953F43489A4F /* Pods-Hicare-dummy.m */,
+				5E439B7281E62AF4CCCC0797F54CA82E /* Pods-Hicare-frameworks.sh */,
+				AED116B31CAD1B4100576A7135C101F1 /* Pods-Hicare-resources.sh */,
+				7D38DD875767AB689EBF96AF194742C1 /* Pods-Hicare.debug.xcconfig */,
+				05341ADE6BB03E56AE2C5A59F5F7A707 /* Pods-Hicare.distribution.xcconfig */,
+				D78B24A748933F1DFC1F9C74CDA30B18 /* Pods-Hicare.release.xcconfig */,
+			);
+			name = "Pods-Hicare";
+			path = "Target Support Files/Pods-Hicare";
+			sourceTree = "<group>";
+		};
+		6B1ECCB2064FD110FAA62BBF2B4B6BF6 /* Pods-BearTalk */ = {
+			isa = PBXGroup;
+			children = (
+				9C34C89AB8BC05EA0376A60618D611B9 /* Info.plist */,
+				E9372019B5066BA9C5C4FA5BE65C2605 /* Pods-BearTalk.modulemap */,
+				DECC7E8D9C74B22B2B42AE0E2C1D34D2 /* Pods-BearTalk-acknowledgements.markdown */,
+				3873E72C27302DEE19D9001576FDE335 /* Pods-BearTalk-acknowledgements.plist */,
+				45AF1CFF66CD7CCF6774A911A96E64A6 /* Pods-BearTalk-dummy.m */,
+				9F56798E5F2CCE94843176605BFC07B6 /* Pods-BearTalk-frameworks.sh */,
+				FDCEBD598987F5134B86192023722525 /* Pods-BearTalk-resources.sh */,
+				4CF34DFCF83359389D46E2F2A0FAE28A /* Pods-BearTalk-umbrella.h */,
+				3823C2C70A096FA2CC0DB9DF7773975C /* Pods-BearTalk.debug.xcconfig */,
+				27C6E6A55A63744CE8D1CC3DB3094A98 /* Pods-BearTalk.distribution.xcconfig */,
+				67CAFB8E0F26721B3B8A30FFA70322FE /* Pods-BearTalk.release.xcconfig */,
+			);
+			name = "Pods-BearTalk";
+			path = "Target Support Files/Pods-BearTalk";
+			sourceTree = "<group>";
+		};
+		7531C8F8DE19F1AA3C8A7AC97A91DC29 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				CBB3DE36805AF21409EC968A9691732F /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		7DB346D0F39D3F0E887471402A8071AB = {
+			isa = PBXGroup;
+			children = (
+				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
+				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
+				87AC66C613B2A233B3C94B7B15C485E3 /* Pods */,
+				ADA8239F730F939157D71387D5574438 /* Products */,
+				9E06585C40C9C8F8C54D80CECDF1B5B9 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		87AC66C613B2A233B3C94B7B15C485E3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				06FCB82AA93FF76BA547AB1D3AB0ADFF /* Socket.IO-Client-Swift */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		9250B1FFBD273FC0826F4E601C0B6140 /* Pods-MQM */ = {
+			isa = PBXGroup;
+			children = (
+				8739D1928E90C690762BA555818F6C91 /* Pods-MQM-acknowledgements.markdown */,
+				D8B0677D5D1D75F6927161B40686E075 /* Pods-MQM-acknowledgements.plist */,
+				6C9DDD84B301EFD2D482A22C7C008636 /* Pods-MQM-dummy.m */,
+				C87E783B55F35B77F69069E3DA592C88 /* Pods-MQM-frameworks.sh */,
+				281C1F38AB78C1B65CA5EB76C0B632A3 /* Pods-MQM-resources.sh */,
+				4B336A1692D4E84CF2E0175A36F55CCD /* Pods-MQM.debug.xcconfig */,
+				2682DE2A0B3DAEC59D397572CB5643AA /* Pods-MQM.distribution.xcconfig */,
+				7209A53484514CCCA1F0F0695AD14BE3 /* Pods-MQM.release.xcconfig */,
+			);
+			name = "Pods-MQM";
+			path = "Target Support Files/Pods-MQM";
+			sourceTree = "<group>";
+		};
+		95B1E519F42A12107E69D981D4199135 /* Pods-LempMobile-dev */ = {
+			isa = PBXGroup;
+			children = (
+				047D4B7B1B216F0DE986412F0D1B4670 /* Info.plist */,
+				05DBB17FF8CF55558157B15A284B4014 /* Pods-LempMobile-dev.modulemap */,
+				AA6719737D0C43ECDE0ABEFE32C03A98 /* Pods-LempMobile-dev-acknowledgements.markdown */,
+				0F891E8CDE265124750D940777EB6EED /* Pods-LempMobile-dev-acknowledgements.plist */,
+				FAFEE07888BBF939B638C11152BBB5D1 /* Pods-LempMobile-dev-dummy.m */,
+				798F6F6C16BC5DCCF154CAA9061D5EC3 /* Pods-LempMobile-dev-frameworks.sh */,
+				558BB81E84B0A683A53BB4D5808F5BFA /* Pods-LempMobile-dev-resources.sh */,
+				56C0E42F1FB71A3F0EF090F426FEA883 /* Pods-LempMobile-dev-umbrella.h */,
+				987C883B31245DB1202225EBB1DD0C7C /* Pods-LempMobile-dev.debug.xcconfig */,
+				76AB1D0D3138591AB04C8BEDA183EA3D /* Pods-LempMobile-dev.distribution.xcconfig */,
+				6C4EF4F46934C0F36A6B3A94A0037F03 /* Pods-LempMobile-dev.release.xcconfig */,
+			);
+			name = "Pods-LempMobile-dev";
+			path = "Target Support Files/Pods-LempMobile-dev";
+			sourceTree = "<group>";
+		};
+		9E06585C40C9C8F8C54D80CECDF1B5B9 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				1E2D238E88DE7D0C82F308A1800870D3 /* Pods-Batong */,
+				6B1ECCB2064FD110FAA62BBF2B4B6BF6 /* Pods-BearTalk */,
+				149F8264D3E06420EBA69857E4F79D4B /* Pods-BearTalkDev */,
+				52447C9FB6C4B4738FCDB5AB4969FF62 /* Pods-ETalk */,
+				28EFFFD3220E3C882689551068A4ED9F /* Pods-GreenTalk */,
+				18A8199FB9FC6651E8FAEA855ABAAAF6 /* Pods-GreenTalkCustomer */,
+				68C39233E54F2CA12C54040566BB4727 /* Pods-Hicare */,
+				04E4B6B1F8F19BD4F8BB7C1B5C7F26CE /* Pods-IVTalk */,
+				FB4F8E5C7B749F5E56BC3B563A3FDB5F /* Pods-LempMobile */,
+				95B1E519F42A12107E69D981D4199135 /* Pods-LempMobile-dev */,
+				A9D2140C43E75E39679F44A28D1AC6FD /* Pods-LempMobile-nowon */,
+				9250B1FFBD273FC0826F4E601C0B6140 /* Pods-MQM */,
+				C9F6EC383C98C46854F28EEB90A8A302 /* Pods-SbTalk */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		A9D2140C43E75E39679F44A28D1AC6FD /* Pods-LempMobile-nowon */ = {
+			isa = PBXGroup;
+			children = (
+				6E95BCD9196D52673CD2AC840C6EBF66 /* Pods-LempMobile-nowon-acknowledgements.markdown */,
+				AD9239B784D00747035778EB91698C4B /* Pods-LempMobile-nowon-acknowledgements.plist */,
+				5052BE9793B93CBF4F177D03BBDC2AC1 /* Pods-LempMobile-nowon-dummy.m */,
+				B78CFB8E2433615A89E29FD27411729D /* Pods-LempMobile-nowon-frameworks.sh */,
+				01ACA033F6E50F03BDAA080E5A62E00D /* Pods-LempMobile-nowon-resources.sh */,
+				CDD5940B7BC258895CAAABF43D3EEC0B /* Pods-LempMobile-nowon.debug.xcconfig */,
+				61C7B3D84C85159F6E8369C67B1807B7 /* Pods-LempMobile-nowon.distribution.xcconfig */,
+				8BDF8F416A1057AA527860D62E8706D3 /* Pods-LempMobile-nowon.release.xcconfig */,
+			);
+			name = "Pods-LempMobile-nowon";
+			path = "Target Support Files/Pods-LempMobile-nowon";
+			sourceTree = "<group>";
+		};
+		ADA8239F730F939157D71387D5574438 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3FE02F1272C291E47545AD1F3B102ACE /* libPods-Batong.a */,
+				0D1F6E4B0EB1793F1A99D0F6784C183F /* libPods-ETalk.a */,
+				01499699CA51F9A7A3D69EEEDC217944 /* libPods-GreenTalk.a */,
+				D894F38A618E6CECAFD2EAF570AF795D /* libPods-GreenTalkCustomer.a */,
+				D14045474A31AE69376A9C5D7E415447 /* libPods-Hicare.a */,
+				6568DE3E2CCDE905EF76528E32749EC9 /* libPods-IVTalk.a */,
+				E4FBDEC64EF35E3FD247B6A8D93CEC7D /* libPods-LempMobile.a */,
+				9AEA3A036CFD0FCFCFA4C17B0E8A8610 /* libPods-LempMobile-nowon.a */,
+				CCA00D8C7E0C102205DC7011E17AC12E /* libPods-MQM.a */,
+				C0EAC992984E44E61E2B1050C0A32C47 /* libPods-SbTalk.a */,
+				4FFC8BCA99CDD4CA0D448D803368C3AD /* Pods_BearTalk.framework */,
+				7DE39D7E963B7E17A2749F29CBA77890 /* Pods_BearTalkDev.framework */,
+				75F5A4ADBE1C8B1230D7AAC7273F915B /* Pods_LempMobile_dev.framework */,
+				0DD7603D2DDB275DEEF88FC9AFBD78C5 /* SocketIO.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7531C8F8DE19F1AA3C8A7AC97A91DC29 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C964BA47013163C7F484F1A789B76193 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				4E852147BB8CA11C60363B97C1193E41 /* Info.plist */,
+				05DD98DF656FDC7D8E64CD40CC3F4047 /* Socket.IO-Client-Swift.modulemap */,
+				9F9012D1CF800972BED941165B70893F /* Socket.IO-Client-Swift.xcconfig */,
+				87905EC17B5665096942646DB7542569 /* Socket.IO-Client-Swift-dummy.m */,
+				F57959BBDDA9210163F0CBFB7527AE25 /* Socket.IO-Client-Swift-prefix.pch */,
+				3F57EC4469168DB9A573C09EAF2AEF49 /* Socket.IO-Client-Swift-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Socket.IO-Client-Swift";
+			sourceTree = "<group>";
+		};
+		C9F6EC383C98C46854F28EEB90A8A302 /* Pods-SbTalk */ = {
+			isa = PBXGroup;
+			children = (
+				4A2B74F6532714BAC471498EF6E50784 /* Pods-SbTalk-acknowledgements.markdown */,
+				96469C01C0B161D254E17968655945CB /* Pods-SbTalk-acknowledgements.plist */,
+				09FA970D353E6A3445944E74A2AB965D /* Pods-SbTalk-dummy.m */,
+				152FBBF386F407E7873F6D683EF8A55D /* Pods-SbTalk-frameworks.sh */,
+				DE90AD0778613454DF6B67FAFBED2304 /* Pods-SbTalk-resources.sh */,
+				645AEBA673756EB5F6C1B23E43A4A922 /* Pods-SbTalk.debug.xcconfig */,
+				EAB0E3C49C6B1333339DD64D4161ACAF /* Pods-SbTalk.distribution.xcconfig */,
+				B6A02DF81579FC41D091235142F0185D /* Pods-SbTalk.release.xcconfig */,
+			);
+			name = "Pods-SbTalk";
+			path = "Target Support Files/Pods-SbTalk";
+			sourceTree = "<group>";
+		};
+		FB4F8E5C7B749F5E56BC3B563A3FDB5F /* Pods-LempMobile */ = {
+			isa = PBXGroup;
+			children = (
+				85ED39C80409C54FA86796E194905F1E /* Pods-LempMobile-acknowledgements.markdown */,
+				DB2C70F58D5E549C29BA149B6D48F48C /* Pods-LempMobile-acknowledgements.plist */,
+				5B5A42240DCE9A2B91FE3B19307E6A63 /* Pods-LempMobile-dummy.m */,
+				B52872DF1DC4F4E3B7108EF62BE2197E /* Pods-LempMobile-frameworks.sh */,
+				C9CBDE54711958666DA18457DA5AED5A /* Pods-LempMobile-resources.sh */,
+				47D200E2FA885722EA6B071C95ED58A1 /* Pods-LempMobile.debug.xcconfig */,
+				DE27CF831030F9F529E07D758E7681B3 /* Pods-LempMobile.distribution.xcconfig */,
+				FC790B3E6124FDC53B6F504F4D7968F2 /* Pods-LempMobile.release.xcconfig */,
+			);
+			name = "Pods-LempMobile";
+			path = "Target Support Files/Pods-LempMobile";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		74CA4BE84BFD3A6FC9F88B12885AD421 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D909468150317FA30FB2EFF4371B92AC /* Socket.IO-Client-Swift-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7DE6C2AAAFE58F4EDE42B045D0B0AAD0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F0D97FF2C204E8C79C663E8B1098DDFA /* Pods-LempMobile-dev-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		98F6B13D0AC8074CB441A3A2B72C3DCE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F60B8F7E13E090FC0FE94A87B519A234 /* Pods-BearTalk-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ADA082F7C2303E6358D5738AA42E63D9 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B8550B5AACD051E1030FAB575CB863CA /* Pods-BearTalkDev-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		005D3AA6054720E72C25B17D1D6F4FCD /* Pods-IVTalk */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B79F0922BE96B08365B766080F29E85E /* Build configuration list for PBXNativeTarget "Pods-IVTalk" */;
+			buildPhases = (
+				6332A932490D22049F66D7FF0CE70069 /* Sources */,
+				00B56B14BD5318B3A8533F7233CBACC3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-IVTalk";
+			productName = "Pods-IVTalk";
+			productReference = 6568DE3E2CCDE905EF76528E32749EC9 /* libPods-IVTalk.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		07008688C9D57878973F6709663AC929 /* Pods-Hicare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F1BB6D9F49FEC41B784F1A895BE819BE /* Build configuration list for PBXNativeTarget "Pods-Hicare" */;
+			buildPhases = (
+				77B526D484C963ACB1C3E105F5D18F6D /* Sources */,
+				EEF3D33C4FA0DFC3CA524D49EAA2B4B1 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-Hicare";
+			productName = "Pods-Hicare";
+			productReference = D14045474A31AE69376A9C5D7E415447 /* libPods-Hicare.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		208CF2E86D62040CFDE479EDFF106DEC /* Pods-Batong */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DFD99DF38C51FA67224BCA45CCAB91C2 /* Build configuration list for PBXNativeTarget "Pods-Batong" */;
+			buildPhases = (
+				10D4AEBC894CB14FFD9557174A4F3FF7 /* Sources */,
+				7270BF82820E5ECF00A97BE4BA52AAEC /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-Batong";
+			productName = "Pods-Batong";
+			productReference = 3FE02F1272C291E47545AD1F3B102ACE /* libPods-Batong.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		4F3F6EC51D35BF645C6D9D0452A50F21 /* Pods-SbTalk */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B9CC13AC497B6145CCFAE06D54D1B9EE /* Build configuration list for PBXNativeTarget "Pods-SbTalk" */;
+			buildPhases = (
+				1258289A1FE1FEDBDDBD2AC49D4F0068 /* Sources */,
+				9823A00BEDEB2A3F04F85FFD667CFFED /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-SbTalk";
+			productName = "Pods-SbTalk";
+			productReference = C0EAC992984E44E61E2B1050C0A32C47 /* libPods-SbTalk.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		635F355309126BABFD12AFCCCEFB1C25 /* Pods-ETalk */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 08451EF572466E0ADEB2981D09EE2BF1 /* Build configuration list for PBXNativeTarget "Pods-ETalk" */;
+			buildPhases = (
+				8E6B237AF147D714D336AB16ECE8D9FB /* Sources */,
+				CE5B3C325D05E0BB47B0F7F424CA12A3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-ETalk";
+			productName = "Pods-ETalk";
+			productReference = 0D1F6E4B0EB1793F1A99D0F6784C183F /* libPods-ETalk.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		7166E372B1115B92BFC2465747468C52 /* Pods-LempMobile-nowon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27A2044AA45C2862A5167A92CAB9ED43 /* Build configuration list for PBXNativeTarget "Pods-LempMobile-nowon" */;
+			buildPhases = (
+				E8393756F85F2E1ED67DE4C6575F171B /* Sources */,
+				8D73F711B940A4ABB02DB741F21CB10D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-LempMobile-nowon";
+			productName = "Pods-LempMobile-nowon";
+			productReference = 9AEA3A036CFD0FCFCFA4C17B0E8A8610 /* libPods-LempMobile-nowon.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		85825A3039CA74472FF38E49D9391FE3 /* Pods-BearTalkDev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 188240BEE3F512303EED313C7B88B53E /* Build configuration list for PBXNativeTarget "Pods-BearTalkDev" */;
+			buildPhases = (
+				0322F9014B68EB8CFEBED1C1B2D01128 /* Sources */,
+				7191CE5CED436413404CDB1E097DE1F5 /* Frameworks */,
+				ADA082F7C2303E6358D5738AA42E63D9 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				15E4D53C12F691070A1BFF4C722F607A /* PBXTargetDependency */,
+			);
+			name = "Pods-BearTalkDev";
+			productName = "Pods-BearTalkDev";
+			productReference = 7DE39D7E963B7E17A2749F29CBA77890 /* Pods_BearTalkDev.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		891B5580EA734A96CC82716DCCC3DD6B /* Pods-LempMobile */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E0770DD6A6CB806B86D1C497EA3CEFBA /* Build configuration list for PBXNativeTarget "Pods-LempMobile" */;
+			buildPhases = (
+				11BE73488E7051D78BB4B42FD4B2EE6B /* Sources */,
+				96FC139B5681F50C897477ACE00E4BB9 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-LempMobile";
+			productName = "Pods-LempMobile";
+			productReference = E4FBDEC64EF35E3FD247B6A8D93CEC7D /* libPods-LempMobile.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		9B81951B9664C5A71810D7CE1C188070 /* Pods-LempMobile-dev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A54CA1D93323C58146A39C5FB040E9EA /* Build configuration list for PBXNativeTarget "Pods-LempMobile-dev" */;
+			buildPhases = (
+				8DE0DCEEF343299DC13A965AAE4CBB84 /* Sources */,
+				BF57787C5E41C18D589C91BA88A7766D /* Frameworks */,
+				7DE6C2AAAFE58F4EDE42B045D0B0AAD0 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-LempMobile-dev";
+			productName = "Pods-LempMobile-dev";
+			productReference = 75F5A4ADBE1C8B1230D7AAC7273F915B /* Pods_LempMobile_dev.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		9E0CAD4482FA327C610145A874533A2F /* Pods-BearTalk */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C53023C3651A267957538CDE166ADA26 /* Build configuration list for PBXNativeTarget "Pods-BearTalk" */;
+			buildPhases = (
+				AEA66A9B73E3FB2F14F04B418376DB95 /* Sources */,
+				9276BFEB55D2B38A2C2ECD29BCFB5CD9 /* Frameworks */,
+				98F6B13D0AC8074CB441A3A2B72C3DCE /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				49DBC286C56FB907AE4E00633DF095E4 /* PBXTargetDependency */,
+			);
+			name = "Pods-BearTalk";
+			productName = "Pods-BearTalk";
+			productReference = 4FFC8BCA99CDD4CA0D448D803368C3AD /* Pods_BearTalk.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		9F8D8B8101A2869F5B52A4E259B7EFF4 /* Pods-GreenTalk */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6754066B654CF77E56F03CD299336F3B /* Build configuration list for PBXNativeTarget "Pods-GreenTalk" */;
+			buildPhases = (
+				6F91BC44E581FC898F91BB8B0BDF5BE2 /* Sources */,
+				7ABC188748950B222C7D53EF2AC59289 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-GreenTalk";
+			productName = "Pods-GreenTalk";
+			productReference = 01499699CA51F9A7A3D69EEEDC217944 /* libPods-GreenTalk.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		A8B0E06F7E8ECF47D63326612D06AF4B /* Socket.IO-Client-Swift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EF81EEC5F46084C0583D160BC1443A71 /* Build configuration list for PBXNativeTarget "Socket.IO-Client-Swift" */;
+			buildPhases = (
+				04687481149F14D19A9A7106DAE1E4E9 /* Sources */,
+				D7CD6D608E18BD0AA719B321021EA25A /* Frameworks */,
+				74CA4BE84BFD3A6FC9F88B12885AD421 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Socket.IO-Client-Swift";
+			productName = "Socket.IO-Client-Swift";
+			productReference = 0DD7603D2DDB275DEEF88FC9AFBD78C5 /* SocketIO.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BE95E3C1A702E6392668B0411EAB423B /* Pods-GreenTalkCustomer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 23B01831A43E3A612A92A93B36255B99 /* Build configuration list for PBXNativeTarget "Pods-GreenTalkCustomer" */;
+			buildPhases = (
+				CCBC1727C85A3F0DBE88501F1DD5A455 /* Sources */,
+				9F3D5BF3A7F4DAF3B30529CAD6BBF243 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-GreenTalkCustomer";
+			productName = "Pods-GreenTalkCustomer";
+			productReference = D894F38A618E6CECAFD2EAF570AF795D /* libPods-GreenTalkCustomer.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		E6E6429F04A94F21DD26D0EB7970CDE1 /* Pods-MQM */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCA0C314B8CE6A165EDEB5BBDAF8DD31 /* Build configuration list for PBXNativeTarget "Pods-MQM" */;
+			buildPhases = (
+				2D8EF051185DE2CD579893828EFF0CE6 /* Sources */,
+				E22DD74F3A14FB2B63E2772E70663A0F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-MQM";
+			productName = "Pods-MQM";
+			productReference = CCA00D8C7E0C102205DC7011E17AC12E /* libPods-MQM.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0700;
+			};
+			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
+			productRefGroup = ADA8239F730F939157D71387D5574438 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				208CF2E86D62040CFDE479EDFF106DEC /* Pods-Batong */,
+				9E0CAD4482FA327C610145A874533A2F /* Pods-BearTalk */,
+				85825A3039CA74472FF38E49D9391FE3 /* Pods-BearTalkDev */,
+				635F355309126BABFD12AFCCCEFB1C25 /* Pods-ETalk */,
+				9F8D8B8101A2869F5B52A4E259B7EFF4 /* Pods-GreenTalk */,
+				BE95E3C1A702E6392668B0411EAB423B /* Pods-GreenTalkCustomer */,
+				07008688C9D57878973F6709663AC929 /* Pods-Hicare */,
+				005D3AA6054720E72C25B17D1D6F4FCD /* Pods-IVTalk */,
+				891B5580EA734A96CC82716DCCC3DD6B /* Pods-LempMobile */,
+				9B81951B9664C5A71810D7CE1C188070 /* Pods-LempMobile-dev */,
+				7166E372B1115B92BFC2465747468C52 /* Pods-LempMobile-nowon */,
+				E6E6429F04A94F21DD26D0EB7970CDE1 /* Pods-MQM */,
+				4F3F6EC51D35BF645C6D9D0452A50F21 /* Pods-SbTalk */,
+				A8B0E06F7E8ECF47D63326612D06AF4B /* Socket.IO-Client-Swift */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0322F9014B68EB8CFEBED1C1B2D01128 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF7CA5AE0D920F6F14A935AB82A458F3 /* Pods-BearTalkDev-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04687481149F14D19A9A7106DAE1E4E9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6C0678F3ACFB75DE0A268EF4D663C6B /* Socket.IO-Client-Swift-dummy.m in Sources */,
+				8311902591D47C48D22FEAD0BEDDFDEE /* SocketAckEmitter.swift in Sources */,
+				82B3F469B0B7969E596862598761E6B6 /* SocketAckManager.swift in Sources */,
+				7AF713AC71824189233BCD7F291D844E /* SocketAnyEvent.swift in Sources */,
+				DDC133AF4B7CAA168617612D687A91B2 /* SocketClientManager.swift in Sources */,
+				D5F6D56B4A1A9326BE0265A9F846BF5C /* SocketEngine.swift in Sources */,
+				BE2C263820012587D8BA2264E7D8F729 /* SocketEngineClient.swift in Sources */,
+				D6C2F2C0F7BD9612F20106243E5757FE /* SocketEnginePacketType.swift in Sources */,
+				5CC712B1ED41337D1829482B0CA30D98 /* SocketEnginePollable.swift in Sources */,
+				39F6CF3AFCD50F1445B9B1B1AC852A9A /* SocketEngineSpec.swift in Sources */,
+				3AC4C63409F11944DF9C06D5958737F5 /* SocketEngineWebsocket.swift in Sources */,
+				5CDBEB43A8C3A2C8D0AA87E9DC7FD64E /* SocketEventHandler.swift in Sources */,
+				CA3253CD0945AD59C94B1A3BC29D2CF3 /* SocketExtensions.swift in Sources */,
+				85F0BEDE06238C6B48DC855744ACC6E5 /* SocketIOClient.swift in Sources */,
+				6B585166C7D3A1E3FA776F4CD7ADBBDC /* SocketIOClientConfiguration.swift in Sources */,
+				3AAB924B2C554E998B9832768E42844C /* SocketIOClientOption.swift in Sources */,
+				6D6473734438187832E65ABBCCBD5D1C /* SocketIOClientSpec.swift in Sources */,
+				BB802A9BCA988F9791DA2A958A2D4595 /* SocketIOClientStatus.swift in Sources */,
+				0C554CFC59A4284E9829448BA359A594 /* SocketLogger.swift in Sources */,
+				0FC409508F11AD60493C9B3DC80A51A0 /* SocketPacket.swift in Sources */,
+				704431FE5B300B993069F178A329E7F7 /* SocketParsable.swift in Sources */,
+				727940C57D58EF14C908D65E813ACF2B /* SocketStringReader.swift in Sources */,
+				EE4986A57AFB3592BCEA8AB48AF48741 /* SocketTypes.swift in Sources */,
+				D4145DE3A1AA1836ABE9A0EE7F33E8EC /* SSLSecurity.swift in Sources */,
+				EFE45EF68F921AE79E3E60B4CAD7D4AE /* WebSocket.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		10D4AEBC894CB14FFD9557174A4F3FF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5466FC00528C57EFCDA501B8F6A8728C /* Pods-Batong-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		11BE73488E7051D78BB4B42FD4B2EE6B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEF1F96A9307F2B102602CCF0D54DFBE /* Pods-LempMobile-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1258289A1FE1FEDBDDBD2AC49D4F0068 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FB3CE9C09BCACCCC83184CCC0F96C9E /* Pods-SbTalk-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2D8EF051185DE2CD579893828EFF0CE6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B00D60FD8DF7387A02063C6B9146712B /* Pods-MQM-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6332A932490D22049F66D7FF0CE70069 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7CFCFD8AE3DEDB1CC6566DBE5FAC1EF /* Pods-IVTalk-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F91BC44E581FC898F91BB8B0BDF5BE2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A2AAB13E9214560AD3ACD413729023D4 /* Pods-GreenTalk-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		77B526D484C963ACB1C3E105F5D18F6D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				174F78C0E595E9EC145239DACADC5048 /* Pods-Hicare-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DE0DCEEF343299DC13A965AAE4CBB84 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB1FDE6DC959A7F048CBD60780FBA230 /* Pods-LempMobile-dev-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8E6B237AF147D714D336AB16ECE8D9FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A7AA40A22E014DE5BF7764ABD38D7E0 /* Pods-ETalk-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AEA66A9B73E3FB2F14F04B418376DB95 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				75CA39567E85AE88585B1846333268A0 /* Pods-BearTalk-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCBC1727C85A3F0DBE88501F1DD5A455 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2625F91F2844074899223D8147E408E3 /* Pods-GreenTalkCustomer-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E8393756F85F2E1ED67DE4C6575F171B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D491253D511260CC7B081B49F5564F2D /* Pods-LempMobile-nowon-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		15E4D53C12F691070A1BFF4C722F607A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Socket.IO-Client-Swift";
+			target = A8B0E06F7E8ECF47D63326612D06AF4B /* Socket.IO-Client-Swift */;
+			targetProxy = A042BBD629787221BAB742502DC381C7 /* PBXContainerItemProxy */;
+		};
+		49DBC286C56FB907AE4E00633DF095E4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Socket.IO-Client-Swift";
+			target = A8B0E06F7E8ECF47D63326612D06AF4B /* Socket.IO-Client-Swift */;
+			targetProxy = 32E496CF9A6513CF56A7EFFB01634F2F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		02CDD287C7789199377C3FD9AAE981DD /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 05341ADE6BB03E56AE2C5A59F5F7A707 /* Pods-Hicare.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		05C8D432B6EB85C1FE6594D1C1CB1408 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6A02DF81579FC41D091235142F0185D /* Pods-SbTalk.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		06D811F3FACBB29C52475E8AB45F69B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 788552D0730E26E0BFA9308942C9066F /* Pods-ETalk.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		0819A8A7037ADCC76C8892705CB8D581 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D38DD875767AB689EBF96AF194742C1 /* Pods-Hicare.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		10C77366251ED317E95240A444388C59 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 645AEBA673756EB5F6C1B23E43A4A922 /* Pods-SbTalk.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		166BB1CB67B5FD942DE337E4D8EF7A28 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DE27CF831030F9F529E07D758E7681B3 /* Pods-LempMobile.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		1FD255EA8B6F81A69CA63E9EA09402F2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5083C7CAAF5BCE30BAA422CB0C9D798 /* Pods-BearTalkDev.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-BearTalkDev/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BearTalkDev/Pods-BearTalkDev.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_BearTalkDev;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		204EEC1E90FFB73A67C3CBC4098B3748 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5515DE1047CF8D5C9E0C95A026B41683 /* Pods-IVTalk.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		27CC3251D78333F037A5FBD104DB3298 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AFBE06D12565B15343511231E854A6BF /* Pods-Batong.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		300C652BD2F7DB50E8A9D14B89A29417 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C3E068AA24579DEEC9B8894D08F3DCB /* Pods-ETalk.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		35FF2A01D749E580CBF9A373938728B4 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F9012D1CF800972BED941165B70893F /* Socket.IO-Client-Swift.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Socket.IO-Client-Swift/Socket.IO-Client-Swift-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Socket.IO-Client-Swift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Socket.IO-Client-Swift/Socket.IO-Client-Swift.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = SocketIO;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Distribution;
+		};
+		3A7664E2747B6E6F7CC2069CBC242D82 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CDD5940B7BC258895CAAABF43D3EEC0B /* Pods-LempMobile-nowon.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		43BE28AFCB9B65AA21F474DACAA056AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A0637415BC319C3D8FF30D9B799B93AD /* Pods-GreenTalkCustomer.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		446590B7DA3993E0A8A2861B291F8B7B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3823C2C70A096FA2CC0DB9DF7773975C /* Pods-BearTalk.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-BearTalk/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BearTalk/Pods-BearTalk.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_BearTalk;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		68DDFB5A606DDF94F2DEDA209D978FBE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6FD32A780CA040ABB2C76B1F964FA092 /* Pods-IVTalk.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		6E38A79FBABF1777BB3289E8631E2B22 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E3B83E52172093F75B0EF4F378F416DF /* Pods-GreenTalk.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		769DB0E33B8893E1D1235BF322279DBD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F9012D1CF800972BED941165B70893F /* Socket.IO-Client-Swift.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Socket.IO-Client-Swift/Socket.IO-Client-Swift-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Socket.IO-Client-Swift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Socket.IO-Client-Swift/Socket.IO-Client-Swift.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = SocketIO;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		77C72B8B493FF2A0CE1E9E503243FA96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6C4EF4F46934C0F36A6B3A94A0037F03 /* Pods-LempMobile-dev.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-LempMobile-dev/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-LempMobile-dev/Pods-LempMobile-dev.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_LempMobile_dev;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		790A788975AA337B65DB02DE9861E00D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F9012D1CF800972BED941165B70893F /* Socket.IO-Client-Swift.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Socket.IO-Client-Swift/Socket.IO-Client-Swift-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Socket.IO-Client-Swift/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Socket.IO-Client-Swift/Socket.IO-Client-Swift.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = SocketIO;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		79B0C2E66EFA9917ED6EDDB8FC6A7684 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7C21573EEB52A60EF261A680D46258F9 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD30246D720DD8C2EA65A7E8D5791AFC /* Pods-Batong.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		7E89A49CB21A01EC2D938434C6F8D603 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D78B24A748933F1DFC1F9C74CDA30B18 /* Pods-Hicare.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		80F390C181CCF7B89409AC92B6D88BB3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6CE5951E13CD8D1ABB1B68971F69E6CE /* Pods-GreenTalkCustomer.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		88A2184F19EBF5E9163AD42A87FA9F03 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DISTRIBUTION=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Distribution;
+		};
+		897F80806B46D81D69113682F7544DE5 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 991C01F27C443831BB78096D5FA0792B /* Pods-BearTalkDev.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-BearTalkDev/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BearTalkDev/Pods-BearTalkDev.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_BearTalkDev;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Distribution;
+		};
+		8CF09F933E2FC90122C08D47A242A018 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4B336A1692D4E84CF2E0175A36F55CCD /* Pods-MQM.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		8D327D2FA822AB358FB6024F124D17BF /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 76AB1D0D3138591AB04C8BEDA183EA3D /* Pods-LempMobile-dev.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-LempMobile-dev/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-LempMobile-dev/Pods-LempMobile-dev.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_LempMobile_dev;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Distribution;
+		};
+		8E07BD2000193873B6D401A70FC40A5F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47D200E2FA885722EA6B071C95ED58A1 /* Pods-LempMobile.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		8E48A6E7159E39D0317583DC8CBA3BBF /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EAB0E3C49C6B1333339DD64D4161ACAF /* Pods-SbTalk.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		90BBB33E74E893D2DCC0C39676DD3C16 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D28EEFF20C4ACF97D3BCD4F006B9501 /* Pods-GreenTalk.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		934A4596E3D7125746E4E2908FF5DF70 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 987C883B31245DB1202225EBB1DD0C7C /* Pods-LempMobile-dev.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-LempMobile-dev/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-LempMobile-dev/Pods-LempMobile-dev.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_LempMobile_dev;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		9C065102CDE53F648082822EB6FFF4A0 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FBB4DC2E904B8FB190B3504EBC19901E /* Pods-ETalk.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		AB5B3743DCF292D1030A488AEDE7C95E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 549CD5526CA6CFB1D65DEB7E651F7E42 /* Pods-BearTalkDev.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-BearTalkDev/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BearTalkDev/Pods-BearTalkDev.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_BearTalkDev;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		AC7137FE5008BBC99F4E7E6C247FDA6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 67CAFB8E0F26721B3B8A30FFA70322FE /* Pods-BearTalk.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-BearTalk/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BearTalk/Pods-BearTalk.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_BearTalk;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B0A75CCC9F77D8E0F326BF12B88468EC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BDF8F416A1057AA527860D62E8706D3 /* Pods-LempMobile-nowon.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		B986F2320F008B06E359C9A6DF7B2B51 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4FF41C4891293580A3DBC3323C0177A9 /* Pods-IVTalk.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		BBE896E4342382721156286E7905D089 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 438CA8560A733EFD91032CCA369475A1 /* Pods-Batong.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		C05F5C4763B5A61B8D3C0BF12EB872E0 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5A751CCF327E67A00A7E6EE55BBE085C /* Pods-GreenTalkCustomer.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		C18DF78B71A6C7F43DB97C9DAEDCAF33 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 61C7B3D84C85159F6E8369C67B1807B7 /* Pods-LempMobile-nowon.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+		C8FA3396021B54A8E4D9A32DFFA5B949 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FC790B3E6124FDC53B6F504F4D7968F2 /* Pods-LempMobile.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		CF7953F66E785E8876EB4D370D777D50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		E471AFC5390DC6AB8BBB299DB95DD788 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27C6E6A55A63744CE8D1CC3DB3094A98 /* Pods-BearTalk.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-BearTalk/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-BearTalk/Pods-BearTalk.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = Pods_BearTalk;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Distribution;
+		};
+		E6EEE84CD88EE96148C334294F206227 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1EEA2C2243FD8C6DF42A6C2BCC2C0C37 /* Pods-GreenTalk.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		E7D9912BE2D9D3C06074D35D8DFA0D7E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7209A53484514CCCA1F0F0695AD14BE3 /* Pods-MQM.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		FCCD42885EC421C3DD1D2BBF5544D417 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2682DE2A0B3DAEC59D397572CB5643AA /* Pods-MQM.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		08451EF572466E0ADEB2981D09EE2BF1 /* Build configuration list for PBXNativeTarget "Pods-ETalk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06D811F3FACBB29C52475E8AB45F69B4 /* Debug */,
+				9C065102CDE53F648082822EB6FFF4A0 /* Distribution */,
+				300C652BD2F7DB50E8A9D14B89A29417 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		188240BEE3F512303EED313C7B88B53E /* Build configuration list for PBXNativeTarget "Pods-BearTalkDev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1FD255EA8B6F81A69CA63E9EA09402F2 /* Debug */,
+				897F80806B46D81D69113682F7544DE5 /* Distribution */,
+				AB5B3743DCF292D1030A488AEDE7C95E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		23B01831A43E3A612A92A93B36255B99 /* Build configuration list for PBXNativeTarget "Pods-GreenTalkCustomer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43BE28AFCB9B65AA21F474DACAA056AE /* Debug */,
+				C05F5C4763B5A61B8D3C0BF12EB872E0 /* Distribution */,
+				80F390C181CCF7B89409AC92B6D88BB3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		27A2044AA45C2862A5167A92CAB9ED43 /* Build configuration list for PBXNativeTarget "Pods-LempMobile-nowon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A7664E2747B6E6F7CC2069CBC242D82 /* Debug */,
+				C18DF78B71A6C7F43DB97C9DAEDCAF33 /* Distribution */,
+				B0A75CCC9F77D8E0F326BF12B88468EC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF7953F66E785E8876EB4D370D777D50 /* Debug */,
+				88A2184F19EBF5E9163AD42A87FA9F03 /* Distribution */,
+				79B0C2E66EFA9917ED6EDDB8FC6A7684 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6754066B654CF77E56F03CD299336F3B /* Build configuration list for PBXNativeTarget "Pods-GreenTalk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E38A79FBABF1777BB3289E8631E2B22 /* Debug */,
+				90BBB33E74E893D2DCC0C39676DD3C16 /* Distribution */,
+				E6EEE84CD88EE96148C334294F206227 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A54CA1D93323C58146A39C5FB040E9EA /* Build configuration list for PBXNativeTarget "Pods-LempMobile-dev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				934A4596E3D7125746E4E2908FF5DF70 /* Debug */,
+				8D327D2FA822AB358FB6024F124D17BF /* Distribution */,
+				77C72B8B493FF2A0CE1E9E503243FA96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B79F0922BE96B08365B766080F29E85E /* Build configuration list for PBXNativeTarget "Pods-IVTalk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				68DDFB5A606DDF94F2DEDA209D978FBE /* Debug */,
+				204EEC1E90FFB73A67C3CBC4098B3748 /* Distribution */,
+				B986F2320F008B06E359C9A6DF7B2B51 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B9CC13AC497B6145CCFAE06D54D1B9EE /* Build configuration list for PBXNativeTarget "Pods-SbTalk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				10C77366251ED317E95240A444388C59 /* Debug */,
+				8E48A6E7159E39D0317583DC8CBA3BBF /* Distribution */,
+				05C8D432B6EB85C1FE6594D1C1CB1408 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C53023C3651A267957538CDE166ADA26 /* Build configuration list for PBXNativeTarget "Pods-BearTalk" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				446590B7DA3993E0A8A2861B291F8B7B /* Debug */,
+				E471AFC5390DC6AB8BBB299DB95DD788 /* Distribution */,
+				AC7137FE5008BBC99F4E7E6C247FDA6F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCA0C314B8CE6A165EDEB5BBDAF8DD31 /* Build configuration list for PBXNativeTarget "Pods-MQM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CF09F933E2FC90122C08D47A242A018 /* Debug */,
+				FCCD42885EC421C3DD1D2BBF5544D417 /* Distribution */,
+				E7D9912BE2D9D3C06074D35D8DFA0D7E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DFD99DF38C51FA67224BCA45CCAB91C2 /* Build configuration list for PBXNativeTarget "Pods-Batong" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBE896E4342382721156286E7905D089 /* Debug */,
+				7C21573EEB52A60EF261A680D46258F9 /* Distribution */,
+				27CC3251D78333F037A5FBD104DB3298 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E0770DD6A6CB806B86D1C497EA3CEFBA /* Build configuration list for PBXNativeTarget "Pods-LempMobile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8E07BD2000193873B6D401A70FC40A5F /* Debug */,
+				166BB1CB67B5FD942DE337E4D8EF7A28 /* Distribution */,
+				C8FA3396021B54A8E4D9A32DFFA5B949 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EF81EEC5F46084C0583D160BC1443A71 /* Build configuration list for PBXNativeTarget "Socket.IO-Client-Swift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				769DB0E33B8893E1D1235BF322279DBD /* Debug */,
+				35FF2A01D749E580CBF9A373938728B4 /* Distribution */,
+				790A788975AA337B65DB02DE9861E00D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F1BB6D9F49FEC41B784F1A895BE819BE /* Build configuration list for PBXNativeTarget "Pods-Hicare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0819A8A7037ADCC76C8892705CB8D581 /* Debug */,
+				02CDD287C7789199377C3FD9AAE981DD /* Distribution */,
+				7E89A49CB21A01EC2D938434C6F8D603 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+}

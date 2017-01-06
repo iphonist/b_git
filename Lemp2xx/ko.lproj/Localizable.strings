@@ -1,0 +1,180 @@
+/* 
+  Localizable.strings
+  Lemp2xx
+
+  Created by Hyemin Kim on 2016. 5. 2..
+  Copyright © 2016년 BENCHBEE Co., Ltd. All rights reserved.
+*/
+
+// NSLocalizedString(@"chat", @"chat")
+
+"chat" = "채팅";
+"social_chat" = "소셜채팅";
+"setup" = "설정";
+"edit" = "편집";
+"cancel" = "취소";
+"delete" = "삭제";
+"ok" = "확인";
+"yes" = "예";
+"no" = "아니요";
+"contacts" = "주소록";
+"member" = "멤버";
+
+"mqm_title" = "일부인";
+"start_mqm_test" = "검사시작";
+"mqm_test_title" = "일부인검사";
+"community_chat" = "커뮤니티 전체 채팅";
+"search_chatroom" = "채팅방 검색";
+"select_chat_member" = "채팅 대상 선택";
+"there_is_no_selected_room" = "선택된 채팅방이 없습니다!";
+"there_is_no_selected_member" = "선택된 대상이 없습니다!";
+"lets_start_to_chat" = "동료들과 채팅을 해보세요.";
+"search_chatroom_customername" = "채팅방 검색 (고객명 검색)";
+"mqm_test_explain" = "‘검사시작’ 버튼 선택 시,\nStep별 스캔 화면으로 이동합니다.\n안내에 따라 진행해주세요.\n감사합니다.";
+"mqm_test_explain_opt" = "검사 대상\n풀무원 제품 전체이며, 동일라인에서 생산되더라도\n날인기를 따로 운영할 경우 개별로 검사\n\n검사 주기 (샘플링)\n생산 시작 시, 생산 중단 후 재가동 전, 추가 생산 시";
+"mqm_test_target" = "검사 대상";
+"mqm_test_period" = "검사 주기 (샘플링)";
+"mqm_testing" = "검사 중";
+"mqm_testmode_explain" = "일부인 검사는 2가지 모드로 제공합니다.\n\n1. 기본모드\n- 일반적인 일부인 검사로 날인된 제조일자,\n유통기한을 인식하여 검사할 때 사용\n2. 제조일검사모드\n- 유통기한을 날인하지 않고 제조일자만\n날인하는 경우 사용\n- 검사 가능 품목 : 나물, 얼음, 수출품 일부\n\n초기 설정은 '기본 모드'로 제공되나,\n사용자 설정을 통해 알맞은 모드를 선택하여\n검사해주세요.\n\n감사합니다.";
+"close" = "닫기";
+"mqm_select_mode" = "모드 설정";
+"mqm_reject_makdedate" = "제조일자 불일치";
+"mqm_reject_result" = "제조일자와 유통기한 연산시 불일치";
+"delete_chat_alert" = "삭제된 채팅 내용은 다시 볼 수 없습니다.\n채팅 내용을 삭제하시겠습니까?\n(단, 읽지 않은 메시지가 있는 채팅방은 삭제되지 않습니다.)";
+"delete_note_alert" = "삭제된 쪽지는 다시 볼 수 없습니다.\n쪽지를 삭제하시겠습니까?";
+"delete_call_alert" = "삭제된 통화 목록은 다시 볼 수 없습니다.\n통화 목록을 삭제하시겠습니까?";
+"changeview_not_done_alert" = "화면 내용이 바뀌어 작업을 완료할 수 없습니다. 다시 시도해 주세요!";
+
+"none_chatmember" = "대화상대없음";
+"unknown_user" = "알 수 없는 사용자";
+"social_chat_2line" = "소셜\n채팅";
+"community_2line" = "커뮤\n니티";
+"customer_chat_2line" = "고객\n채팅";
+
+"myinfo" = "내 정보";
+"notice" = "공지사항";
+"my_coupon" = "내 쿠폰";
+"my_gpoint" = "내 G포인트";
+"you_are_not_registered_gpoint" = "고객님께서는 G포인트 멤버십에\n가입되어 있지 않습니다.";
+"you_do_not_have_coupon" = "사용 가능한 쿠폰이 없습니다.";
+"coupon_stored" = "쿠폰함";
+"coupon_unit" = "장";
+"gpoint_unit" = "점";
+"available_coupon" = "사용 가능 쿠폰";
+"available_gpoint" = "보유 G포인트";
+"will_delete_gpoint" = "익월 소멸 예정";
+"pulmuone_sentence" = "풀무원 건강생활, 그린톡";
+"new_question" = "새질문";
+"question" = "질문";
+"new_request" = "새요청";
+"new_delivery_request" = "새 배송요청";
+
+"coupon_register" = "가입";
+"coupon_birth" = "생일";
+"coupon_new" = "신규";
+"coupon_secret" = "시크릿";
+"coupon_vip" = "VIP";
+"coupon_rogen" = "로젠빈수";
+"coupon_event" = "이벤트";
+"coupon_number" = "쿠폰번호";
+"coupon_expiration" = "유효기간";
+"gpoint_explain" = "* G포인트 1점 = 현금 1원\n  (구매금액의 건기식 3%, 스킨케어 5% 적립)\n* 사용하지 않은 G포인트는 적립월로 부터 2년 경과시 소멸\n* G포인트 적립은 구매하신 월말 이후 익월에 반영되어 적립됩니다.";
+"please_check_pulmuone_link" = "자세한 내용은 풀무원 건강생활 그린체 홈페이지\n(http://www.pulmuoneha.com)에서 확인해주세요.";
+
+"pulmuone_ki_test" = "쿠퍼만 지수 테스트";
+"pulmuone_ki_test_detail" = "[쿠퍼만 갱년기 지수 테스트]";
+"pulmuone_ki_test_explain" = "나의 갱년기 지수는 얼마?";
+"do_pulmuone_ki_test" = "쿠퍼만 지수 테스트 하기";
+"pulmuone_ki_calculate" = "지수 계산하기";
+"pulmuone_ki_calculate_sep1" = "지수";
+"pulmuone_ki_calculate_sep2" = "계산하기";
+"pulmuone_ki" = "쿠퍼만 지수";
+"do_test" = "테스트 하기";
+"ki_none" = "없음";
+"ki_little" = "약간";
+"ki_normal" = "보통";
+"ki_danger" = "심함";
+
+"ki_hotflush" = "안면홍조 (얼굴 화끈거림)";
+"ki_sweat" = "발한 (등 뒤로 땀이 흐름)";
+"ki_insomnia" = "불면증";
+"ki_anger" = "신경질";
+"ki_depressed" = "우울증";
+"ki_dizzy" = "어지럼증";
+"ki_tired" = "피로감";
+"ki_muscle" = "관절통, 근육통";
+"ki_headache" = "두통";
+"ki_pitpat" = "가슴 두근거림";
+"ki_vagina" = "질 건조, 분비물 감소";
+
+
+"setup_each_social_alert" = "소셜별 알림 설정";
+"setup_newpost_alert" = "전체 새글 알림";
+"setup_newreply_alert" = "전체 댓글 알림";
+"off_the_alarm" = "알림을 껐습니다.";
+"on_the_alarm" = "알림을 켰습니다.";
+"newpost_alert" = "새글 알림";
+"newreply_alert" = "댓글 알림";
+
+"kakaotalk" = "카카오톡";
+"not_install_kakaotalk" = "카카오톡이 설치되어 있지 않습니다.";
+
+"before_unit" = "전";
+"int_unit" = "째";
+"after_unit" = "후";
+"minute_unit" = "분";
+"hour_unit_time" = "시";
+"hour_unit" = "시간";
+"day_unit" = "일";
+"just_before" = "방금";
+"start" = "시작";
+"just_after" = "곧";
+"later" = "나중에";
+"longtime" = "오래";
+"far_future" = "먼미래";
+"longtime_ing" = "오랫동안";
+
+"agreement" = "이용약관";
+"companyinfo" = "회사소개";
+"greentalk_agreement_companyinfo" = "이용약관 및 회사소개";
+"greentalk_use_agreement" = "그린톡 이용약관";
+"greentalk_personalinfo_agreement" = "개인정보 수집 및 이용 동의서";
+"greentalk_marketing_agreement" = "마케팅 활용 동의서";
+"greentalk_personalinfo_usage" = "그린톡 개인정보취급방침";
+"greentalk_companyname" = "상호: 풀무원건강생활(주)";
+"greentalk_ceoname" = "대표: 여익현";
+"greentalk_address" = "주소: 서울특별시 강남구 수서동 724 로즈데일빌딩 2층";
+"greentalk_homepage" = "홈페이지: www.pulmuoneha.com";
+"greentalk_companynumber" = "사업자등록번호: 301-81-98406";
+"opensource_title" = "오픈소스 라이선스";
+"reminder_setup" = "미리 알림 설정";
+
+"read_member" = "읽은사람";
+"favorite_member" = "즐겨찾기 멤버 ";
+"selected_member" = "선택된 멤버";
+"view_member" = "멤버 보기";
+"control_member" = "멤버 관리";
+"view_customer" = "고객 보기";
+"cannot_get_customerinfo" = "고객의 정보를 가져오지 못하였습니다. 고객과의 원활한 대화를 위해 앱을 종료 후 재시작 해주세요.";
+"all_coupon_customer" = "전체 쿠폰 고객";
+"birth_customer" = "생일 축하 쿠폰 고객";
+"register_customer" = "가입 감사 쿠폰 고객";
+"new_customer" = "신규 이벤트 고객";
+"secret_customer" = "시크릿 이벤트 고객";
+"vip_customer" = "VIP 쿠폰 고객";
+"event_customer" = "이벤트 쿠폰 고객";
+"rogen_customer" = "로젠빈수 VIP 쿠폰 고객";
+"coupon_customer" = "쿠폰 고객";
+"mandate" = "위임";
+"leader" = "리더";
+"hold" = "대기";
+"roommaster" = "방장";
+"mandate_received_number_2line" = "착신\n전환";
+"chat_list" = "채팅방 목록";
+"you_have_to_select_at_least_one" = "하나를 선택하셔야 합니다.";
+"there_is_no_chat" = "채팅 목록이 없습니다.";
+"there_is_no_member" = "멤버가 없습니다.";
+
+"not_installed" = "미설치";
+"contact_something" = "연락";
+"logout" = "로그아웃";

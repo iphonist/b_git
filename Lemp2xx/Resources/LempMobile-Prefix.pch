@@ -1,0 +1,212 @@
+//
+//  LempMobile-Prefix.pch
+//  Lemp2xx
+//
+//  Created by HyeongJun Park on 2013. 12. 12..
+//  Copyright (c) 2013년 BENCHBEE. All rights reserved.
+//
+#import <Availability.h>
+
+#define IS_IOS_8 ([[[UIDevice currentDevice] systemVersion] integerValue] >= 8 ? YES : NO)
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __cplusplus
+#import <opencv2/opencv.hpp>
+#endif
+
+#ifndef TARGET_OS_IOS
+#define TARGET_OS_IOS TARGET_OS_IPHONE
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <SystemConfiguration/SystemConfiguration.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+#import "AppDelegate.h"
+//#import "AFHTTPClient.h"
+#import "AFHTTPRequestOperationManager.h"
+//#import "AFJSONRequestOperation.h"
+//#import "AFImageRequestOperation.h"
+//#import "AFHTTPRequestOperationLogger.h"
+#import "JSONKit.h"
+#import "CustomUIKit.h"
+#import "MBProgressHUD.h"
+#import "SVProgressHUD.h"
+//#import "Countly.h"
+#import "ResourceLoader.h"
+#import "UIImageView+WebCache.h"
+#import "SDImageCache.h"
+#import "QBImagePickerController.h"
+#import "SQLiteDBManager.h"
+#import "SharedFunctions.h"
+#import "HTTPExceptionHandler.h"
+#import "CBNavigationController.h"
+//#import <Crashlytics/Crashlytics.h>
+#import "OLGhostAlertView.h"
+#import "CustomTableViewCell.h"
+
+#if defined(GreenTalk) || defined(GreenTalkCustomer)
+
+   #define kChatTabNotSocial 0
+   #define kChatTabSocial 1
+
+   #ifdef Batong
+
+   #define kTabIndexSocial 0
+   #define kTabIndexContentSocial 1
+   #define kTabIndexContact 2
+   #define kTabIndexMessage 3
+   #define kTabIndexMe 4
+
+   #define kSubTabIndexChat 0
+   #define kSubTabIndexHome 10
+   #define kSubTabIndexRequest 10
+   #define kSubTabIndexQnA 10
+   #define kSubTabIndexSchedule 10
+   #define kSubTabIndexSetup 10
+   #define kSubTabIndexNote 10
+   #define kSubTabIndexCall 10
+
+   #else
+
+   #define kTabIndexSocial 0
+   #define kTabIndexContact 1
+   #define kTabIndexMessage 2
+   #define kTabIndexMe 3
+
+   #define kSubTabIndexHome 0
+   #define kSubTabIndexRequest 1
+   #define kSubTabIndexQnA 2
+   #define kSubTabIndexChat 3
+   #define kSubTabIndexSchedule 4
+   #define kSubTabIndexSetup 5
+   #define kSubTabIndexNote 6
+   #define kSubTabIndexCall 10
+
+   #endif
+
+#elif Hicare
+   #define kTabIndexMe 3
+   #define kTabIndexContact 0
+   #define kTabIndexMessage 1
+   #define kTabIndexSetup 2
+   #define kTabIndexSocial 4
+      #define kSubTabIndexChat 0
+      #define kSubTabIndexNote 0
+      #define kSubTabIndexCall 0
+
+#elif BearTalk
+
+   #define kTabIndexSocial 0
+   #define kTabIndexContentSocial 1
+   #define kTabIndexContact 2
+   #define kTabIndexMessage 3
+   #define kTabIndexMe 4
+
+   #define kSubTabIndexChat 0
+   #define kSubTabIndexCall 1
+   #define kSubTabIndexNote 2
+
+#else
+   #define kTabIndexMe 0
+   #define kTabIndexContact 1
+   #define kTabIndexMessage 2
+   #define kTabIndexSocial 3
+   #define kSubTabIndexChat 0
+      #define kSubTabIndexNote 1
+      #define kSubTabIndexCall 2
+
+
+
+#endif
+
+///////////// SSL 인증 오류 bypass //////////////
+#define _AFNETWORKING_ALLOW_INVALID_SSL_CERTIFICATES_ 1
+#define IS_HEIGHT568 (([[UIScreen mainScreen] bounds].size.height-568)?NO:YES)
+#define IS_NULL(ptr) (ptr == nil || [ptr isKindOfClass:[NSNull class]])
+#define RGBA(r, g, b, a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+#define RGB(r, g, b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
+#define GreenTalkColor [UIColor colorWithRed:127.0/255.0 green:169.0/255.0 blue:33.0/255.0 alpha:1]
+#define BearTalkColor [UIColor colorWithRed:255/255.0 green:112/255.0 blue:58/255.0 alpha:1]
+#define SharedAppDelegate ((AppDelegate*)[[UIApplication sharedApplication] delegate])
+#define oscode @"1"
+#define VIEWY 64
+
+#ifdef DEBUG
+	#define NSLog(s, ...) NSLog(@"<%@(%d):%s> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__])
+#elif defined(LempMobileDev) || defined(BearTalkDev)
+	#define NSLog(s, ...) //NSLog(@"<%@(%d):%s> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__])
+#else // #####
+    #define NSLog(s, ...) NSLog(@"<%@(%d):%s> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__])
+#endif
+
+////////////// Build Target별 설정 //////////////
+#ifdef LempMobileDev
+	#define applicationName @"lemp"
+	#define updateLink @"itms-apps://itunes.apple.com/kr/app/id674513922"
+	#define dbAppKey @"5ytbnyzov43tn6i"
+   #define dbAppSecret @"k4evsaju74bchl7"
+#elif Hicare
+   #define applicationName @"hicare"
+   #define updateLink @"" // ###############
+   #define dbAppKey @""// ###############
+   #define dbAppSecret @""// ###############
+#elif IVTalk
+   #define applicationName @"invtalk"
+   #define updateLink @"itms-apps://itunes.apple.com/kr/app/id1125846169"
+   #define dbAppKey @"pwbr28n67tmid8g"
+   #define dbAppSecret @"a0wujp1n3yov608"
+#elif LempMobile
+	#define applicationName @"lemp"
+	#define updateLink @"itms-apps://itunes.apple.com/kr/app/id674513922"
+	#define dbAppKey @"dyq0mbj7r93ikf3"
+	#define dbAppSecret @"hoocb236i470q5m"
+#elif LempMobileNowon
+	#define applicationName @"nowon"
+	#define updateLink @"itms-apps://itunes.apple.com/kr/app/id688152905"
+	#define dbAppKey @"elaqg8m22o05klw"
+	#define dbAppSecret @"6eow0r0fq3pxsbc"
+#elif ETalk
+   #define applicationName @"beartalk_etalk"
+   #define updateLink @"itms-apps://itunes.apple.com/kr/app/id1042548073"
+   #define dbAppKey @"uzmx486s2v1ntm3"
+   #define dbAppSecret @"ylol8su9qaka7hy"
+#elif BearTalkDev
+   #define applicationName @"beartalk_dev2" // beartalk_dev2
+   #define updateLink @"itms-apps://itunes.apple.com/kr/app/id863778039"
+   #define dbAppKey @"i7incl4c5kjqhe4"
+   #define dbAppSecret @"k7m999dzuo7k114"
+#elif BearTalk
+   #define applicationName @"beartalk" 
+   #define updateLink @"itms-apps://itunes.apple.com/kr/app/id863778039"
+   #define dbAppKey @"i7incl4c5kjqhe4"
+   #define dbAppSecret @"k7m999dzuo7k114"
+#elif SbTalk
+   #define applicationName @"sbtalk"
+   #define updateLink @"itms-apps://itunes.apple.com/kr/app/id903232139"
+   #define dbAppKey @"c50znbxsahh23yc"
+   #define dbAppSecret @"8d6e8rnopyxgtun"
+#elif MQM
+   #define dbAppKey @"brupmn1geoarhei"
+   #define dbAppSecret @"twzxc63p0l9zz7e"
+   #define applicationName @"mqm"
+   #define updateLink @"https://mqm.pulmuone.com/ota/"
+#elif Batong
+   #define applicationName @"ecmd"
+   #define updateLink @"https://batong.ecmd.co.kr/ota/"
+#elif GreenTalk
+   #define applicationName @"greentalk"
+   #define updateLink @"itms-apps://itunes.apple.com/kr/app/id1024351135"
+#elif GreenTalkCustomer
+   #define applicationName @"greentalkcustomer"
+   #define updateLink @"itms-apps://itunes.apple.com/kr/app/id1024351116"
+
+//   #define dbAppKey @""
+//   #define dbAppSecret @""
+#endif
+//////////////////////////////////////////////////////
+
+#endif

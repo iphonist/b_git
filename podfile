@@ -1,0 +1,106 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'Batong' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for Batong
+
+end
+
+target 'BearTalk' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for BearTalk
+pod 'Socket.IO-Client-Swift', '~> 8.1.2'
+end
+
+target 'BearTalkDev' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for BearTalkDev
+pod 'Socket.IO-Client-Swift', '~> 8.1.2'
+end
+
+target 'ETalk' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for ETalk
+
+end
+
+target 'GreenTalk' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for GreenTalk
+
+end
+
+target 'GreenTalkCustomer' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for GreenTalkCustomer
+
+end
+
+target 'Hicare' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for Hicare
+
+end
+
+target 'IVTalk' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for IVTalk
+
+end
+
+target 'LempMobile' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for LempMobile
+
+end
+
+target 'LempMobile-dev' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for LempMobile-dev
+
+end
+
+target 'LempMobile-nowon' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for LempMobile-nowon
+
+end
+
+target 'MQM' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for MQM
+
+end
+
+target 'SbTalk' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+
+  # Pods for SbTalk
+
+end
