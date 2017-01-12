@@ -2829,7 +2829,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                      }
 
                                      
-#ifdef BearTalk
+//#ifdef BearTalk
                                      NSLog(@"dataUTI %@ info %@",dataUTI,info);
                                      NSString *filename = ((NSURL *)info[@"PHImageFileURLKey"]).absoluteString;
                                      UIImage *image;
@@ -2863,14 +2863,14 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                          
                                          [picker presentViewController:nc animated:YES completion:nil];
                                      
-#else
-                                     
-                                     UIImage *image = [UIImage imageWithData:imageData];
-                                   
-                                     
-                                     PhotoViewController *photoViewCon = [[PhotoViewController alloc] initWithImage:image parentPicker:picker parentViewCon:self] ;
-                                   [picker presentViewController:photoViewCon animated:YES completion:nil];
-#endif
+//#else
+//                                     
+//                                     UIImage *image = [UIImage imageWithData:imageData];
+//                                   
+//                                     
+//                                     PhotoViewController *photoViewCon = [[PhotoViewController alloc] initWithImage:image parentPicker:picker parentViewCon:self] ;
+//                                   [picker presentViewController:photoViewCon animated:YES completion:nil];
+//#endif
                                  }];
 //    }
     
@@ -5870,7 +5870,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         [inImageView setContentMode:UIViewContentModeScaleAspectFill];//AspectFill];//AspectFit];//ToFill];
                         [inImageView setClipsToBounds:YES];
                         NSURL *imgURL;
-#ifdef BearTalk
+//#ifdef BearTalk
                         
                         imgURL = [ResourceLoader resourceURLfromJSONString:imageString num:i thumbnail:NO];
                         NSData *imageData = [NSData dataWithContentsOfURL:imgURL];
@@ -5878,20 +5878,20 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         UIImage *image = [UIImage imageWithData:imageData];
                         [modifyImageArray addObject:@{@"data" : imageData, @"image" : image}];
                                inImageView.image = [UIImage sd_animatedGIFWithData:imageData];
-#else
-                        imgURL = [ResourceLoader resourceURLfromJSONString:imageString num:i thumbnail:YES];
-                        [inImageView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b)  {
-                            
-                        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl){
-                            NSLog(@"fail %@",[error localizedDescription]);
-
-                            NSData *imageData = UIImagePNGRepresentation(image);
-                            [modifyImageArray addObject:@{@"data" : imageData, @"image" : image}];
-
-                            [HTTPExceptionHandler handlingByError:error];
-                            
-                        }];
-#endif
+//#else
+//                        imgURL = [ResourceLoader resourceURLfromJSONString:imageString num:i thumbnail:YES];
+//                        [inImageView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b)  {
+//                            
+//                        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl){
+//                            NSLog(@"fail %@",[error localizedDescription]);
+//
+//                            NSData *imageData = UIImagePNGRepresentation(image);
+//                            [modifyImageArray addObject:@{@"data" : imageData, @"image" : image}];
+//
+//                            [HTTPExceptionHandler handlingByError:error];
+//                            
+//                        }];
+//#endif
                         [contentImageView addSubview:inImageView];
                         inImageView.userInteractionEnabled = YES;
                         
@@ -6714,6 +6714,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         
                         NSArray *fileInfo = [text componentsSeparatedByString:@"."];
                         NSString *fileExt = fileInfo[[fileInfo count]-1];
+                        fileExt = [fileExt lowercaseString];
                         if([fileExt hasPrefix:@"doc"]){
                             coverImage.image = [UIImage imageNamed:@"fileic_doc.png"];
                         }
@@ -7494,12 +7495,12 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 NSLog(@"imageString %@",imageString);
                 
                 NSArray *imageArray;
-                #ifdef BearTalk
+//#ifdef BearTalk
                 imageArray = [imageString objectFromJSONString][@"filename"];
-#else
-                
-                imageArray = [imageString objectFromJSONString][@"thumbnail"];
-#endif
+//#else
+//                
+//                imageArray = [imageString objectFromJSONString][@"thumbnail"];
+//#endif
                 CGFloat imageHeight = 0.0f;
                 for(int i = 0; i < [imageArray count]; i++){// imageScale * [sizeDic[@"height"]floatValue]);
                     NSDictionary *sizeDic;
@@ -7518,7 +7519,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     [inImageView setContentMode:UIViewContentModeScaleAspectFill];//AspectFill];//AspectFit];//ToFill];
                     [inImageView setClipsToBounds:YES];
                     NSURL *imgURL;
-#ifdef BearTalk
+//#ifdef BearTalk
                     
                     imgURL = [ResourceLoader resourceURLfromJSONString:imageString num:i thumbnail:NO];
                     NSData *imageData = [NSData dataWithContentsOfURL:imgURL];
@@ -7526,24 +7527,24 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     [modifyImageArray addObject:@{@"data" : imageData, @"image" : image}];
                     inImageView.image = [UIImage sd_animatedGIFWithData:imageData];
                     NSLog(@"imgURL %@ imageData length %d",imgURL,[imageData length]);
-#else
-                    imgURL = [ResourceLoader resourceURLfromJSONString:imageString num:i thumbnail:YES];
-
-                    [inImageView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b)  {
-                        
-                    }completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl){
-                        NSLog(@"fail %@",[error localizedDescription]);
-                        
-
-                        
-                        NSData *imageData = UIImagePNGRepresentation(image);
-                        [modifyImageArray addObject:@{@"data" : imageData, @"image" : image}];
-
-                        
-                        [HTTPExceptionHandler handlingByError:error];
-                        
-                    }];
-                   #endif
+//#else
+//                    imgURL = [ResourceLoader resourceURLfromJSONString:imageString num:i thumbnail:YES];
+//
+//                    [inImageView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b)  {
+//                        
+//                    }completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl){
+//                        NSLog(@"fail %@",[error localizedDescription]);
+//                        
+//
+//                        
+//                        NSData *imageData = UIImagePNGRepresentation(image);
+//                        [modifyImageArray addObject:@{@"data" : imageData, @"image" : image}];
+//
+//                        
+//                        [HTTPExceptionHandler handlingByError:error];
+//                        
+//                    }];
+//#endif
                     [contentImageView addSubview:inImageView];
                     inImageView.userInteractionEnabled = YES;
                     
@@ -7851,21 +7852,21 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         NSURL *imgURL = [ResourceLoader resourceURLfromJSONString:replyPhotoUrl num:0 thumbnail:YES];
                         
                         
-#ifdef BearTalk
+//#ifdef BearTalk
                         
                         imgURL = [ResourceLoader resourceURLfromJSONString:replyPhotoUrl num:0 thumbnail:NO];
                         NSData *imageData = [NSData dataWithContentsOfURL:imgURL];
                         NSLog(@"imgURL %@ imageData length %d",imgURL,[imageData length]);
                         replyPhotoView.image = [UIImage sd_animatedGIFWithData:imageData];
-#else
-                        [replyPhotoView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b) {
-                            
-                        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl){
-                            NSLog(@"fail %@",[error localizedDescription]);
-                            [HTTPExceptionHandler handlingByError:error];
-                            
-                        }];
-#endif
+//#else
+//                        [replyPhotoView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b) {
+//                            
+//                        } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl){
+//                            NSLog(@"fail %@",[error localizedDescription]);
+//                            [HTTPExceptionHandler handlingByError:error];
+//                            
+//                        }];
+//#endif
                         
                         NSDictionary *sizeDic = [replyPhotoUrl objectFromJSONString][@"thumbnailinfo"];
                         
@@ -8582,21 +8583,21 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         NSURL *imgURL = [ResourceLoader resourceURLfromJSONString:replyPhotoUrl num:0 thumbnail:YES];
                         
                         
-#ifdef BearTalk
+//#ifdef BearTalk
                         
                         imgURL = [ResourceLoader resourceURLfromJSONString:replyPhotoUrl num:0 thumbnail:NO];
                         NSData *imageData = [NSData dataWithContentsOfURL:imgURL];
                         NSLog(@"imgURL %@ imageData length %d",imgURL,[imageData length]);
                         replyPhotoView.image = [UIImage sd_animatedGIFWithData:imageData];
-#else
-                        [replyPhotoView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b) {
-                            
-                        }completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl) {
-                            NSLog(@"fail %@",[error localizedDescription]);
-                            [HTTPExceptionHandler handlingByError:error];
-                            
-                        }];
-#endif
+//#else
+//                        [replyPhotoView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b) {
+//                            
+//                        }completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl) {
+//                            NSLog(@"fail %@",[error localizedDescription]);
+//                            [HTTPExceptionHandler handlingByError:error];
+//                            
+//                        }];
+//#endif
                         NSDictionary *sizeDic = [replyPhotoUrl objectFromJSONString][@"thumbnailinfo"];
                         
                         CGFloat imageScale = 0.0f;
