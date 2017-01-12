@@ -86,7 +86,7 @@
             
         }
         else if(viewTag == kModifyChatName){
-            self.title = @"그룹채팅 이름 설정";
+            self.title = @"채팅 이름 설정";
         }
         else if(viewTag == kModifyGroup || viewTag == kModifyGroupName || viewTag == kModifyGroupExp || viewTag == kModifyGroupImage || viewTag == kModifyGroupAll){
             NSLog(@"4");
@@ -1965,7 +1965,7 @@ else
             self.title = @"새로운 그룹 채팅";
         }
         else if(viewTag == kModifyChatName){
-            self.title = @"그룹채팅 이름 설정";
+            self.title = @"채팅 이름 설정";
         }
         else if(viewTag == kModifyGroup){
             NSLog(@"4");
