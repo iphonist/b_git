@@ -1895,7 +1895,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
             [view addAction:actionButton];
             
             
-            
+#ifdef BearTalk
             actionButton = [UIAlertAction
                             actionWithTitle:@"채팅 이름 설정"
                             style:UIAlertActionStyleDefault
@@ -1919,7 +1919,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
             [view addAction:actionButton];
             
             
-            
+#endif
             actionButton = [UIAlertAction
                             actionWithTitle:@"채팅방 나가기"
                             style:UIAlertActionStyleDefault
@@ -1983,9 +1983,15 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
 //        [actionSheet release];
     }
     else if(self.roomType == 1) {
+#ifdef BearTalk
+        
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
                                     destructiveButtonTitle:nil otherButtonTitles:alarmText,@"채팅 대상 추가", @"채팅 대상 정보", @"채팅 이름 설정", @"채팅방 나가기", nil];
         
+#else
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+                                    destructiveButtonTitle:nil otherButtonTitles:alarmText,@"채팅 대상 추가", @"채팅 대상 정보", @"채팅방 나가기", nil];
+#endif
         [actionSheet showInView:SharedAppDelegate.window];
         actionSheet.tag = kManToManSelect;
 //        [actionSheet release];
@@ -4835,7 +4841,8 @@ try {
 	} else {
 		NSLog(@"IMAGE UPSIZE NOT ALLOWED");
 		NSData* saveImage = UIImageJPEGRepresentation(sourceImage, 0.7); 
-		[saveImage writeToFile:savePath atomically:YES];
+        [saveImage writeToFile:savePath atomically:YES];
+        NSLog(@"writeToFile %@",savePath);
 		//		NSLog(@"imageSaved at : %@",savePath);
 		
 		return saveImage; 
@@ -4891,7 +4898,8 @@ try {
 	
 	
 	NSData* saveImage = UIImageJPEGRepresentation(newImage, 0.7); 
-	[saveImage writeToFile:savePath atomically:YES];
+    [saveImage writeToFile:savePath atomically:YES];
+    NSLog(@"writeToFile %@",savePath);
 	//	NSLog(@"imageSaved at : %@",savePath);
 	
 	CGContextRelease(bitmap);
@@ -5395,6 +5403,7 @@ try {
 //                                     image = [UIImage imageWithData:imageData];
 //                                     
                                      NSLog(@"imageData length %d",(int)[imageData length]);
+#ifdef BearTalk
                                      image = [UIImage sd_animatedGIFWithData:imageData];
                                      NSLog(@"image %@",image);
                                      NSLog(@"imagesize %@",NSStringFromCGSize(image.size));
@@ -5411,6 +5420,15 @@ try {
                                      NSLog(@"aimagedata length %d",[imageData length]);
                                      }
                                      [infoArray addObject:@{@"image" : image, @"filename" : filename, @"data" : imageData}];
+#else
+                                         image = [UIImage imageWithData:imageData];
+                                     if(image.size.width > 640 || image.size.height > 960) {
+                                         image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(640, 960) interpolationQuality:kCGInterpolationHigh];
+                                     }
+                                     imageData = [[NSData alloc] initWithData:[SharedAppDelegate.root imageWithImage:image scaledToSizeWithSameAspectRatio:CGSizeMake(640, 960)]];
+                                     NSLog(@"aimagedata length %d",[imageData length]);
+                                     [infoArray addObject:@{@"image" : image}];//, @"filename" : filename, @"data" : imageData}];
+#endif
                                      
                                      if([assets count] == [infoArray count]){
                                          
@@ -5504,7 +5522,12 @@ try {
 	}
     NSLog(@"sendImages %@",sendImages);
 	UIImage *image = [sendImages lastObject][@"image"];
+#ifdef BearTalk
     [self sendPhoto:image name:[sendImages lastObject][@"filename"] data:[sendImages lastObject][@"data"]];
+#else
+    
+    [self sendPhoto:image];
+#endif
 	[sendImages removeObject:[sendImages lastObject]];
 	
 }
@@ -5595,6 +5618,62 @@ try {
 }
 
 
+- (void)sendPhoto:(UIImage*)image
+{
+    /****************************************************************
+     작업자 : 박형준
+     작업일자 : 2012/06/04
+     작업내용 : 사진 전송 및 채팅방에 보일 썸네일 이미지 생성
+     param	- image(UIImage*) : 전송할 이미지 데이터
+     연관화면 : 채팅
+     ****************************************************************/
+    
+    NSString *timeStamp = [[NSString alloc]initWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
+    NSLog(@"sendPhoto TimeStamp(FileName) %@",timeStamp);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = paths[0];
+    
+    NSString *photoName = [NSString stringWithFormat:@"%@.jpg",timeStamp];
+    NSString *thumbName = [[photoName substringToIndex:[photoName length]-4] stringByAppendingString:@"_thum.jpg"];
+    NSString *thumbFilePath = [documentDirectory stringByAppendingPathComponent:thumbName];
+    NSString *fullPathToFile = [documentDirectory stringByAppendingPathComponent:photoName];
+    
+    if(image.size.width > 640 || image.size.height > 960) {
+        image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(640, 960) interpolationQuality:kCGInterpolationHigh];
+    }
+    
+    NSData *imageData = [self imageWithImage:image scaledToSizeWithSameAspectRatio:CGSizeMake(640, 960) toPath:fullPathToFile];
+    
+    NSLog(@"============== SELECTED PHOTO FILESIZE : %d",[[self fileOneSize:fullPathToFile] intValue]);
+    int maxFileSize = 2097152;
+    if([[self fileOneSize:fullPathToFile] intValue] > maxFileSize) {
+        [CustomUIKit popupSimpleAlertViewOK:nil msg:@"2MB 이하의 파일만 전송 가능합니다!" con:self];
+        //		[timeStamp release];
+        return;
+    }
+    
+    CGSize imageSize = [UIImage imageWithData:imageData].size;
+    CGFloat imageScale;
+    if (imageSize.width > imageSize.height) {
+        imageScale = 320/imageSize.width;
+        imageSize.width = 320;
+        imageSize.height = imageSize.height*imageScale;
+    } else if (imageSize.width < imageSize.height) {
+        imageScale = 320/imageSize.height;
+        imageSize.width = imageSize.width*imageScale;
+        imageSize.height = 320;
+    } else {
+        imageSize.width = 320;
+        imageSize.height = 320;
+    }
+    
+    [self imageWithImage:[UIImage imageWithData:imageData] scaledToSizeWithSameAspectRatio:CGSizeMake(imageSize.width, imageSize.height) toPath:thumbFilePath];
+    
+    [self addSendFile:2 withFileName:photoName data:imageData rk:self.roomKey index:timeStamp];
+    //    [timeStamp release];
+    //	[self sendFile:2 sendData:imageData Rk:self.roomKey filename:photoName];
+}
+
 
 - (void)sendPhoto:(UIImage*)image name:(NSString *)filename data:(NSData *)data
 {
@@ -5608,7 +5687,7 @@ try {
   
     
 	NSString *timeStamp = [[NSString alloc]initWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
-	NSLog(@"sendPhoto TimeStamp(FileName) %@",timeStamp);
+	NSLog(@"sendPhoto %@ TimeStamp(FileName) %@",image,filename);
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentDirectory = paths[0];
 	
@@ -5623,8 +5702,10 @@ try {
         photoName = [NSString stringWithFormat:@"%@.jpg",timeStamp];
          thumbName = [[photoName substringToIndex:[photoName length]-4] stringByAppendingString:@"_thum.jpg"];
     }
+    
 	NSString *thumbFilePath = [documentDirectory stringByAppendingPathComponent:thumbName];
-	NSString *fullPathToFile = [documentDirectory stringByAppendingPathComponent:photoName];
+    NSString *fullPathToFile = [documentDirectory stringByAppendingPathComponent:photoName];
+    NSLog(@"photoname %@",photoName);
     if([[photoName lowercaseString] hasSuffix:@"gif"]){
         imageData = data;
     }
@@ -5637,15 +5718,7 @@ try {
         
         
         NSLog(@"============== SELECTED PHOTO FILESIZE : %d",[[self fileOneSize:fullPathToFile] intValue]);
-#ifdef BearTalk
-#else
-        int maxFileSize = 2097152;
-        if([[self fileOneSize:fullPathToFile] intValue] > maxFileSize) {
-            [CustomUIKit popupSimpleAlertViewOK:nil msg:@"2MB 이하의 파일만 전송 가능합니다." con:self];
-            //		[timeStamp release];
-            return;
-        }
-#endif
+
         CGSize imageSize = [UIImage imageWithData:imageData].size;
         CGFloat imageScale;
         if (imageSize.width > imageSize.height) {
@@ -5888,6 +5961,8 @@ try {
                 
                 [SharedAppDelegate.root settingYours:urId view:self.view];
                 break;
+#ifdef BearTalk
+                
             case 3:{
                 
                 NewGroupViewController *newController = [[NewGroupViewController alloc]initWithArray:nil name:nameLabel.text sub:@"" from:kModifyChat rk:self.roomKey number:@"" master:@""];
@@ -5903,6 +5978,15 @@ try {
                                 [CustomUIKit popupAlertViewOK:@"나가기" msg:msg delegate:self tag:kManToManSelect sel:@selector(confirmManToManSelect)  with:nil csel:nil with:nil];
             }
                 break;
+#else
+                
+            case 3:
+            {
+                NSString *msg = @"채팅방에서 나가시겠습니까?\n채팅내용이 삭제되고 채팅목록에서도 삭제됩니다.";
+                [CustomUIKit popupAlertViewOK:@"나가기" msg:msg delegate:self tag:kManToManSelect sel:@selector(confirmManToManSelect)  with:nil csel:nil with:nil];
+            }
+                break;
+#endif
 			default:
 				break;
 				
@@ -7689,8 +7773,8 @@ if([message length]<1)
 	if(type == 10)
     {
         timeLabel.hidden = YES;
-#ifdef BearTalk
         downloadButton.hidden = YES;
+#ifdef BearTalk
         CGSize infoSize = [SharedFunctions textViewSizeForString:text font:[UIFont systemFontOfSize:11] width:self.view.frame.size.width - 10 realZeroInsets:YES];
 #else
         
@@ -7736,9 +7820,8 @@ if([message length]<1)
     {
         timeLabel.hidden = NO;
         messageLabel.text = text;
-#ifdef BearTalk
         downloadButton.hidden = YES;
-#endif
+
         
         
 #pragma mark - 받은 채팅(텍스트)
@@ -7940,9 +8023,7 @@ if([message length]<1)
 	}
     else if(type == 6) // emoticon
     {
-#ifdef BearTalk
         downloadButton.hidden = YES;
-#endif
         timeLabel.hidden = NO;
         
         if(direction == 1) // 받은 것. 왼쪽.
@@ -8049,7 +8130,7 @@ if([message length]<1)
 
                     NSData *dataObj = UIImagePNGRepresentation(newImage);
                     [dataObj writeToFile:cachefilePath atomically:YES];
-                    NSLog(@"cachefilePath %@",cachefilePath);
+                    NSLog(@"writeToFile %@",cachefilePath);
                     
                     
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -8219,7 +8300,7 @@ if([message length]<1)
                     
                     NSData *dataObj = UIImagePNGRepresentation(newImage);
                     [dataObj writeToFile:cachefilePath atomically:YES];
-                    NSLog(@"cachefilePath %@",cachefilePath);
+                    NSLog(@"writeToFile %@",cachefilePath);
                     
                     
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -8385,8 +8466,9 @@ if([message length]<1)
             {
                 
 #ifdef BearTalk
+                NSLog(@"##################################################################");
                 NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-                NSString *filePath;
+//                NSString *filePath;
                 NSLog(@"text %@",text);
                 NSString *fileExt = @"";
                 NSLog(@"text %@",text);
@@ -8395,6 +8477,12 @@ if([message length]<1)
                 NSDictionary *fileDic = (NSDictionary *)[defaultManager valueForKey:text];
                 NSLog(@"fileDic %@",fileDic);
                 if(fileDic != nil){
+                    NSString *name = fileDic[@"FILE_NAME"];
+                    
+                    if([[name pathExtension]length]>0){
+                        fileExt = [name pathExtension];
+                    }
+                    else{
                     if([fileDic[@"FILE_INFO"]count]>0)
                     fileExt = fileDic[@"FILE_INFO"][0][@"type"];
                     else{
@@ -8402,6 +8490,7 @@ if([message length]<1)
                         NSArray *fileNameArray = [fileDic[@"FILE_TYPE"] componentsSeparatedByString:@"/"];
                         if([fileNameArray count]>1)
                             fileExt = fileNameArray[[fileNameArray count]-1];
+                    }
                     }
                 }
                 else{
@@ -8579,6 +8668,7 @@ if([message length]<1)
                     NSLog(@"resulttttt %@",operation.responseString);
                     NSLog(@"result %@",[operation.responseString objectFromJSONString]);
                     [operation.responseData writeToFile:fileName atomically:YES];
+                    NSLog(@"writeToFile %@",fileName);
                       NSLog(@"fileName2 %@",fileName);
                     [thumbLoading stopAnimating];
                     [tableView reloadData];
@@ -8705,8 +8795,11 @@ if([message length]<1)
                 NSString *filePath = [documentsPath stringByAppendingPathComponent:FileName];
                 BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
                 UIActivityIndicatorView *thumbLoading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-                
+                NSLog(@"fileNma e%@",FileName);
+                NSLog(@"filePath e%@",filePath);
+                NSLog(@"fileExists e%@",fileExists?@"YES":@"NO");
                 if(fileExists && [[self fileOneSize:filePath] integerValue] > 0) {
+                    downloadButton.hidden = YES;
                     
                     UIImage *image = [SharedAppDelegate.root roundCornersOfImage:[UIImage imageWithContentsOfFile:filePath] scale:0];
                     CGSize imageSize = CGSizeMake(image.size.width*0.7, image.size.height*0.7);
@@ -8748,6 +8841,7 @@ if([message length]<1)
                     
                     
                 } else {
+                    downloadButton.hidden = NO;
                     
                     
                     UIImage *image = [UIImage imageNamed:@"chrt_you_photo.png"];
@@ -8798,6 +8892,7 @@ if([message length]<1)
                     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                         
                         [operation.responseData writeToFile:filePath atomically:YES];
+                        NSLog(@"writeToFile %@",filePath);
                         [thumbLoading stopAnimating];
                         //                            [thumbLoading release];
                         
@@ -8831,16 +8926,13 @@ if([message length]<1)
                 
 				if(type == 3) // audio
 				{
-#ifdef BearTalk
-                    [mediaImage performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"img_chat_voice.png"] waitUntilDone:NO];
-                    
                     NSString *documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
                     NSString *fileName = text;
-
+                    
                     NSString *filePath = [documentsPath stringByAppendingPathComponent:fileName];
                     NSLog(@"filePath %@",filePath);
-
-                    NSDictionary *dic = nil;
+                    
+                    //                    NSDictionary *dic = nil;
                     
                     if([[NSFileManager defaultManager] fileExistsAtPath:filePath] && [[self fileOneSize:filePath] integerValue] > 0) {
                         downloadButton.hidden = YES;
@@ -8848,7 +8940,10 @@ if([message length]<1)
                         downloadButton.hidden = NO;
                     }
                     
+#ifdef BearTalk
+                    [mediaImage performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"img_chat_voice.png"] waitUntilDone:NO];
                     
+                 
 #else
                     [mediaImage performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"imageview_chat_voice.png"] waitUntilDone:NO];
 #endif
@@ -8860,6 +8955,7 @@ if([message length]<1)
 				}
 				else if(type == 4) // location
 				{
+                    downloadButton.hidden = YES;
                     NSDictionary *dic = [text objectFromJSONString];
                     NSString *location = [NSString stringWithFormat:@"%@,%@",dic[@"latitude"],dic[@"longitude"]];
                     [mediaButton setTitle:location forState:UIControlStateDisabled];
@@ -8874,13 +8970,9 @@ if([message length]<1)
                 else if(type == 5)// video
                 {
                     
-#ifdef BearTalk
-                    [mediaImage performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"img_chat_video.png"] waitUntilDone:NO];
-          
-                    
                     NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
                     NSString* fileName = text;
-                   
+                    
                     
                     NSLog(@"fileName %@",fileName);
                     NSString *filePath = [documentsPath stringByAppendingPathComponent:fileName];
@@ -8891,18 +8983,22 @@ if([message length]<1)
                           [[self fileOneSize:filePath] intValue]);
                     
                     
-                        if(![filePath hasSuffix:@"mp4"]){
-                            filePath = [NSString stringWithFormat:@"%@.mp4",filePath];
-                        }
+                    if(![filePath hasSuffix:@"mp4"]){
+                        filePath = [NSString stringWithFormat:@"%@.mp4",filePath];
+                    }
                     
                     
                     if([[NSFileManager defaultManager] fileExistsAtPath:filePath] && [[self fileOneSize:filePath] integerValue] > 0) {
                         downloadButton.hidden = YES;
                         
-                        } else {
-                             downloadButton.hidden = NO;
-                        }
+                    } else {
+                        downloadButton.hidden = NO;
+                    }
                     
+
+                    
+#ifdef BearTalk
+                    [mediaImage performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"img_chat_video.png"] waitUntilDone:NO];
 
                             
                             
@@ -8945,6 +9041,7 @@ if([message length]<1)
                 }
                 NSLog(@"atext %@ fileExt %@ name %@",text,fileExt,name);
                 
+                fileExt = [fileExt lowercaseString];
 //                NSData *fileData = nil;
                 NSString *cachefilePath;
                 NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
@@ -9018,6 +9115,7 @@ if([message length]<1)
                                 fileExt = fileNameArray[[fileNameArray count]-1];
                             }
                             
+                            fileExt = [fileExt lowercaseString];
                             
                             
                             
@@ -9136,7 +9234,7 @@ if([message length]<1)
                     [mediaButton setTitle:[text objectFromJSONString][@"number"] forState:UIControlStateSelected];
                    
                     
-                    
+                    downloadButton.hidden = YES;
                     
                     
 #ifdef BearTalk
@@ -9199,17 +9297,8 @@ if([message length]<1)
             
             NSLog(@"read intValue %d",[read intValue]);
             NSLog(@"downloadbutton %@",NSStringFromCGRect(downloadButton.frame));
-#ifdef BearTalk
-#else
-            if([read intValue] == 0)
-                downloadButton.hidden = YES;
-            else{
-                if(type == 4 || type == 8 || type == 1)
-                    downloadButton.hidden = YES;
-                else
-                downloadButton.hidden = NO;
-            }
-#endif
+
+            
             
             
 		
@@ -9223,9 +9312,9 @@ if([message length]<1)
         }
 		else // 보낸 것. 오른쪽.
         {
-#ifdef BearTalk
+            
             downloadButton.hidden = YES;
-#endif
+
             
 #pragma mark - 보낸 채팅(미디어)
             yourName.text = @"";
@@ -9323,6 +9412,12 @@ if([message length]<1)
                 NSDictionary *fileDic = (NSDictionary *)[defaultManager valueForKey:text];
                 NSLog(@"fileDic12 %@",fileDic);
                 if(fileDic != nil){
+                    NSString *name = fileDic[@"FILE_NAME"];
+                    
+                    if([[name pathExtension]length]>0){
+                        fileExt = [name pathExtension];
+                    }
+                    else{
                     if([fileDic[@"FILE_INFO"]count]>0)
                         fileExt = fileDic[@"FILE_INFO"][0][@"type"];
                     else{
@@ -9330,6 +9425,7 @@ if([message length]<1)
                         NSArray *fileNameArray = [fileDic[@"FILE_TYPE"] componentsSeparatedByString:@"/"];
                         if([fileNameArray count]>1)
                             fileExt = fileNameArray[[fileNameArray count]-1];
+                    }
                     }
                 }
                 else{
@@ -9499,6 +9595,7 @@ if([message length]<1)
                     NSLog(@"resulttttt %@",operation.responseString);
                     NSLog(@"result %@",[operation.responseString objectFromJSONString]);
                     [operation.responseData writeToFile:fileName atomically:YES];
+                    NSLog(@"writeToFile %@",fileName);
                       NSLog(@"fileName13 %@",fileName);
                     [thumbLoading stopAnimating];
                     [tableView reloadData];
@@ -9803,6 +9900,7 @@ if([message length]<1)
                                     fileExt = fileNameArray[[fileNameArray count]-1];
                                 }
                                 
+                                fileExt = [fileExt lowercaseString];
                                 [mediaButton setTitle:fileExt forState:UIControlStateSelected];
                                 [mediaButton setTitle:dic[@"FILE_NAME"] forState:UIControlStateHighlighted];
                                 
@@ -10301,8 +10399,8 @@ if([message length]<1)
                     imageHeight = [[UIImage imageWithContentsOfFile:filePath] size].height;
                     imageWidth = [[UIImage imageWithContentsOfFile:filePath] size].width;
 #else
-                     imageHeight = [[UIImage imageWithContentsOfFile:filePath] size].height*0.7;
-                    imageWidth = [[UIImage imageWithContentsOfFile:filePath] size].width*0.7;
+                imageHeight = [[UIImage imageWithContentsOfFile:filePath] size].height;
+                imageWidth = [[UIImage imageWithContentsOfFile:filePath] size].width;
 #endif
 //                }
                 NSLog(@"fileName4 %@",filePath);
@@ -11128,6 +11226,7 @@ if([message length]<1)
         else{
             
             [fileData writeToFile:cachefilePath atomically:YES];
+            NSLog(@"writeToFile %@",cachefilePath);
         }
         
         
@@ -11137,59 +11236,98 @@ if([message length]<1)
         [self viewHWPFile:name formattype:formattype text:text];
     }
     else if([fileExt hasSuffix:@"mp4"] || [fileExt hasSuffix:@"mov"] || [fileExt hasSuffix:@"m4v"] || [fileExt hasSuffix:@"mp3"]){
-        [SharedAppDelegate.root setAudioRoute:YES];
+//        [SharedAppDelegate.root setAudioRoute:YES];
+//        
+//        NSData *fileData;
+//        
+//        if([[NSFileManager defaultManager] fileExistsAtPath:cachefilePath]) {
+//            fileData = [NSData dataWithContentsOfFile:cachefilePath];
+//        }
+//        else{
+//            fileData = [NSData dataWithContentsOfURL:fileURL];
+//        }
+//        NSLog(@"fileData length.....%d",(int)[fileData length]);
+//        
+//        
+//        if([fileData length]<1){
+//            
+//            [CustomUIKit popupSimpleAlertViewOK:nil msg:@"재생 가능한 파일을 찾을 수 없습니다." con:self];
+//        }
+//        else{
+//            
+//            if([[NSFileManager defaultManager] fileExistsAtPath:cachefilePath]) {
+//            }
+//            else{
+//                
+//                [fileData writeToFile:cachefilePath atomically:YES];
+//            }
+//            fileURL = [NSURL fileURLWithPath:cachefilePath];
+//            NSLog(@"fileURL %@",fileURL);
+//            NSLog(@"cachefilePath %@",cachefilePath);
+//            
+//        MPMoviePlayerViewController *mp = [[MPMoviePlayerViewController alloc] initWithContentURL:fileURL] ;
+//        if(mp)
+//        {
+//            NSLog(@"fileData length.....%d",(int)[fileData length]);
+//          
+//                
+//            [mp.moviePlayer setControlStyle:MPMovieControlStyleFullscreen];
+//            [mp.moviePlayer setScalingMode:MPMovieScalingModeAspectFit];
+//            [[mp view] setBackgroundColor:[UIColor blackColor]];
+//            
+//            [[NSNotificationCenter defaultCenter] addObserver:self
+//                                                     selector:@selector(MPMovieFinished:)
+//                                                         name:MPMoviePlayerPlaybackDidFinishNotification
+//                                                       object:mp.moviePlayer];
+//            [self presentMoviePlayerViewControllerAnimated:mp];
+//            [mp.moviePlayer setShouldAutoplay:YES];
+//        
+//            
+//            
+//            //		[playButton setEnabled:YES];
+//        } else {
+//            [CustomUIKit popupSimpleAlertViewOK:nil msg:@"재생 가능한 파일을 찾을 수 없습니다." con:self];
+//        }
+//    }
         
-        NSData *fileData;
         
-        if([[NSFileManager defaultManager] fileExistsAtPath:cachefilePath]) {
-            fileData = [NSData dataWithContentsOfFile:cachefilePath];
-        }
-        else{
-            fileData = [NSData dataWithContentsOfURL:fileURL];
-        }
-        NSLog(@"fileData length.....%d",(int)[fileData length]);
+        NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+        NSString* fileName = @"";
+        UIImage* image = nil;
+            fileName = [sender titleForState:UIControlStateSelected];
+            image = nil;
+        
+        NSLog(@"fileName %@",fileName);
+//        NSString *filePath = [documentsPath stringByAppendingPathComponent:fileName];
+        NSLog(@"documents %@ fileName %@",documentsPath,cachefilePath);
         
         
-        if([fileData length]<1){
-            
-            [CustomUIKit popupSimpleAlertViewOK:nil msg:@"재생 가능한 파일을 찾을 수 없습니다." con:self];
-        }
-        else{
-            
-            if([[NSFileManager defaultManager] fileExistsAtPath:cachefilePath]) {
-            }
-            else{
-                
-                [fileData writeToFile:cachefilePath atomically:YES];
-            }
-            fileURL = [NSURL fileURLWithPath:cachefilePath];
-            NSLog(@"fileURL %@",fileURL);
-            NSLog(@"cachefilePath %@",cachefilePath);
-            
-        MPMoviePlayerViewController *mp = [[MPMoviePlayerViewController alloc] initWithContentURL:fileURL] ;
-        if(mp)
-        {
-            NSLog(@"fileData length.....%d",(int)[fileData length]);
-          
-                
-            [mp.moviePlayer setControlStyle:MPMovieControlStyleFullscreen];
-            [mp.moviePlayer setScalingMode:MPMovieScalingModeAspectFit];
-            [[mp view] setBackgroundColor:[UIColor blackColor]];
-            
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(MPMovieFinished:)
-                                                         name:MPMoviePlayerPlaybackDidFinishNotification
-                                                       object:mp.moviePlayer];
-            [self presentMoviePlayerViewControllerAnimated:mp];
-            [mp.moviePlayer setShouldAutoplay:YES];
         
+        NSLog(@"file exist %@ size %d",
+              [[NSFileManager defaultManager] fileExistsAtPath:cachefilePath]?@"YES":@"NO",
+              [[self fileOneSize:cachefilePath] intValue]);
+      
+        
+        
+        if([[NSFileManager defaultManager] fileExistsAtPath:cachefilePath] && [[self fileOneSize:cachefilePath] integerValue] > 0) {
             
+            NSLog(@"after downloading");// 다운 받은 후
             
-            //		[playButton setEnabled:YES];
+            [self playMedia:5 withPath:cachefilePath];
         } else {
-            [CustomUIKit popupSimpleAlertViewOK:nil msg:@"재생 가능한 파일을 찾을 수 없습니다." con:self];
+            NSLog(@"before downloading");// 다운 받기 전 - 포토뷰 들어가서 업뎃해줘야.
+            
+            
+//            NSString *imgUrl = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/file/%@",fileName];
+            PhotoViewController *photoViewCon = [[PhotoViewController alloc] initWithFileName:fileName image:image type:5 parentViewCon:self roomkey:self.roomKey server:fileUrlString];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(![self.navigationController.topViewController isKindOfClass:[photoViewCon class]]){
+                    //            photoViewCon.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:photoViewCon animated:YES];
+                }
+            });
+            
         }
-    }
     
     }
     
@@ -11268,7 +11406,8 @@ else{
                
                 
                     [webController loadURL:fileUrlString];
-                    [fileData writeToFile:cachefilePath atomically:YES];
+                [fileData writeToFile:cachefilePath atomically:YES];
+                NSLog(@"writeToFile %@",cachefilePath);
                 
             }
         }
@@ -11628,7 +11767,8 @@ else{
                 
                 NSLog(@"download Finish FileName / Path : %@ ..... %@", FileName, filePath);
                 
-                [operation.responseData writeToFile:filePath atomically:YES];
+        [operation.responseData writeToFile:filePath atomically:YES];
+        NSLog(@"writeToFile %@",filePath);
 #ifdef BearTalk
         
 #else
