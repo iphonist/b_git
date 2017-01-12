@@ -1100,7 +1100,7 @@
         //            dic = myList[indexPath.row-1];
         
         //        if(indexPath.row != 1)
-        [self enterContentsGroup:dic];
+        [self enterContentsGroup:dic con:self];
         
     }
 #endif
@@ -1108,7 +1108,7 @@
 }
 
 #define kCS119 14
-- (void)enterContentsGroup:(NSDictionary *)dic{
+- (void)enterContentsGroup:(NSDictionary *)dic con:(UIViewController *)con{
     
     NSLog(@"dic %@",dic);
     
@@ -1224,8 +1224,8 @@
     
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(![self.navigationController.topViewController isKindOfClass:[SharedAppDelegate.root.home class]])
-        [self.navigationController pushViewController:SharedAppDelegate.root.home animated:YES];
+        if(![con.navigationController.topViewController isKindOfClass:[SharedAppDelegate.root.home class]])
+        [con.navigationController pushViewController:SharedAppDelegate.root.home animated:YES];
     });
     [SharedAppDelegate.root.home settingGroupDic:dic];
     

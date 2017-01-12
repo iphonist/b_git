@@ -783,10 +783,17 @@ const char paramNumber;
     NSMutableArray *inviteArray = [NSMutableArray array];
     NSMutableArray *elseArray = [NSMutableArray array];
     NSMutableArray *contentsArray = [NSMutableArray array];
+    NSMutableArray *batongArray = [NSMutableArray array];
     
     if(group != nil){
         for(NSDictionary *dic in group){
+#ifdef Batong
+            if([dic[@"groupnumber"]isEqualToString:@"10301"]){
+                [batongArray addObject:dic];
+            }
+            else{
             
+#endif
             NSString *attribute2 = dic[@"groupattribute2"];
             if([attribute2 length]<1)
                 attribute2 = @"00";
@@ -819,12 +826,20 @@ const char paramNumber;
                 NSLog(@"myList[i] %@",dic);
                 [contentsArray addObject:dic];
             }
+#ifdef Batong
+                
+            }
+            
+#endif
         }
-        
+
     }
     
     [SharedAppDelegate.root.ecmdmain setGroupList:contentsArray];
     [myList addObjectsFromArray:inviteArray];
+#ifdef Batong
+    [myList addObjectsFromArray:batongArray];
+#endif
     [myList addObjectsFromArray:elseArray];
     
     NSLog(@"myLIst %@",myList);
@@ -1764,10 +1779,16 @@ const char paramNumber;
         }
         else{
             //                if([[di
-            
+#ifdef Batong
+            if([myList[indexPath.row][@"groupnumber"]isEqualToString:@"10301"]){
+                [SharedAppDelegate.root.ecmdmain enterContentsGroup:dic con:self];
+            }
+            else{
+#endif
             [SharedAppDelegate.root settingJoinGroup:myList[indexPath.row] add:NO];
-            
-            
+#ifdef Batong
+            }
+#endif
         }
     }
     else if(indexPath.row == [myList count]){

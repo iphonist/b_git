@@ -33,5 +33,5 @@
 - (void)setGroupList:(NSMutableArray *)list;
 - (void)setNewNoticeBadge:(int)count;
 - (void)refreshSetupButton;
-
+- (void)enterContentsGroup:(NSDictionary *)dic con:(UIViewController *)con;
 @end
