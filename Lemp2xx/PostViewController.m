@@ -3551,7 +3551,8 @@ const char paramNumber;
 	
 	NSString *filePath = [attachFilePaths objectAtIndex:button.tag];
 	NSString *fileExtension = [filePath pathExtension];
-	
+    
+    fileExtension = [fileExtension lowercaseString];
 	if ([fileExtension isEqualToString:@"jpeg"] || [fileExtension isEqualToString:@"jpg"] || [fileExtension isEqualToString:@"png"] || [fileExtension isEqualToString:@"gif"] || [fileExtension isEqualToString:@"bmp"]) {
 		
 		PhotoViewController *photoView = [[PhotoViewController alloc] initWithPath:filePath type:12];
@@ -3853,7 +3854,8 @@ const char paramNumber;
 			
 			UIImageView *iconImage = [[UIImageView alloc] initWithFrame:CGRectMake(8, 9, 41, 44)];
 			NSString *fileExtension = [metaData.filename pathExtension];
-			
+            
+            fileExtension = [fileExtension lowercaseString];
 			if ([fileExtension isEqualToString:@"pdf"]) {
 				iconImage.image = [UIImage imageNamed:@"fileic_pdf.png"];
 			} else if([fileExtension isEqualToString:@"hwp"]) {

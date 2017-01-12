@@ -67,7 +67,7 @@
 //        [SharedAppDelegate.root returnTitle:self.title viewcon:self noti:NO alarm:NO];
 
 #ifdef BearTalk
-        if([parent isKindOfClass:[ChatViewC class]]){
+        if([parentVC isKindOfClass:[ChatViewC class]]){
             viewTag = kDownloadWithUrlBearTalkChat;
         }
         else{
@@ -512,7 +512,11 @@
     NSDictionary *fileDic = (NSDictionary *)[[NSUserDefaults standardUserDefaults] valueForKey:myList[index][@"message"]];
     NSLog(@"fileDic %@",fileDic);
     if(fileDic != nil){
-        
+        NSString *name = fileDic[@"FILE_NAME"];
+        if([[name pathExtension]length]>0){
+            fileExt = [name pathExtension];
+        }
+        else{
             if([fileDic[@"FILE_INFO"]count]>0)
                 fileExt = fileDic[@"FILE_INFO"][0][@"type"];
             else{
@@ -521,7 +525,10 @@
                 if([fileNameArray count]>1)
                     fileExt = fileNameArray[[fileNameArray count]-1];
             }
+            
+        }
     }
+    fileExt = [fileExt lowercaseString];
     
     imgUrl = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/file/%@",myList[index][@"message"]];
     NSLog(@"imgUrl %@",imgUrl);
@@ -563,7 +570,7 @@
         //        [self.navigationItem.rightBarButtonItem setEnabled:YES];
         UIImage *img;
         NSData *data = [[NSFileManager defaultManager] contentsAtPath:cachefilePath];
-        if([[fileExt lowercaseString]hasSuffix:@"gif"]){
+        if([fileExt hasSuffix:@"gif"]){
             img = [UIImage sd_animatedGIFWithData:data];
         }
         else{
@@ -633,14 +640,25 @@
                 
                 
                 NSString *fileExt;
-                if([dic[@"FILE_INFO"]count]>0)
-                    fileExt = dic[@"FILE_INFO"][0][@"type"];
-                else{
-                    
-                    NSArray *fileNameArray = [dic[@"FILE_TYPE"] componentsSeparatedByString:@"/"];
-                    if([fileNameArray count]>1)
-                        fileExt = fileNameArray[[fileNameArray count]-1];
-                }
+                    NSString *name = dic[@"FILE_NAME"];
+                    if([[name pathExtension]length]>0){
+                        fileExt = [name pathExtension];
+                    }
+                    else{
+                        if([dic[@"FILE_INFO"]count]>0)
+                            fileExt = dic[@"FILE_INFO"][0][@"type"];
+                        else{
+                            
+                            NSArray *fileNameArray = [dic[@"FILE_TYPE"] componentsSeparatedByString:@"/"];
+                            if([fileNameArray count]>1)
+                                fileExt = fileNameArray[[fileNameArray count]-1];
+                        }
+                        
+                    }
+                
+                fileExt = [fileExt lowercaseString];
+
+                
                 
                 NSLog(@"fileExt %@",fileExt);
                 
@@ -665,8 +683,9 @@
                 willSaveImage = operation.responseData;
                 [self.navigationItem.rightBarButtonItem setEnabled:YES];
                 
+#ifdef BearTalk
                     [SharedAppDelegate.root.chatView lastReadMsg:myList[index][@"msgindex"]];
-                
+#endif 
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 
@@ -690,8 +709,134 @@
 }
 
 
+- (void)downloadImageWithChat:(int)index{
+    
+    MRScrollView *view = imageViewArray[index];
+    NSLog(@"inscrollview %@",NSStringFromCGRect(view.frame));
+    if(downloadProgress){
+        [downloadProgress removeFromSuperview];
+        //        [downloadProgress release];
+        downloadProgress = nil;
+    }
+    
+    NSString *imgUrl;
+    NSString *cachefilePath;
+    NSDictionary *contentDic;
+    
+    
+    NSDictionary *msgDic = myList[index];
+    NSLog(@"msgDic %@",msgDic);
+    
+    NSString *fileName;
+    if ([msgDic[@"direction"] isEqualToString:@"2"]) {
+        fileName = msgDic[@"message"];
+    } else {
+        fileName = [msgDic[@"msgindex"] stringByAppendingPathExtension:@"jpg"];
+    }
+    
+    NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    cachefilePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",fileName]];
+    
+    NSLog(@"cachefilePath %@",cachefilePath);
+    
+    
+    
+    downloadProgress = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    [downloadProgress setFrame:CGRectMake(30, 340, 260, 10)];
+    [view addSubview:downloadProgress];
+    //    UIImageView *imageView = [[UIImageView alloc]init];//WithFrame:
+    [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    
+    
+    if(kakaoUrlString){
+        //        [kakaoUrlString release];
+        kakaoUrlString = nil;
+    }
+    kakaoUrlString = [[NSString alloc]initWithFormat:@"%@",imgUrl];
+    
+    
+    
+    //            UIImage *img = dic[@"image"];
+    //            [inScrollView displayImage:img];
+    if([[NSFileManager defaultManager] fileExistsAtPath:cachefilePath]) {
+        NSLog(@"already exist");
+        if(downloadProgress){
+            [downloadProgress removeFromSuperview];
+            //            [downloadProgress release];
+            downloadProgress = nil;
+        }
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+        //        NSLog(@"fileexist %@",cachefilePath);
+        //
+        //        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+        UIImage *img = [UIImage imageWithContentsOfFile:cachefilePath];
+        [view displayImage:img];
+        NSData *data = [[NSFileManager defaultManager] contentsAtPath:cachefilePath];
+        willSaveImage = data;
+        //        NSLog(@"image %@",img);
+        return;
+    }
+    
+    //
+    
+    
+    
+    
+    contentDic = [msgDic[@"message"]objectFromJSONString];
+    NSLog(@"contentDic %@",contentDic);
+    imgUrl = [NSString stringWithFormat:@"https://%@%@%@",contentDic[@"server"],contentDic[@"dir"],contentDic[@"filename"][0]];
+    NSLog(@"imgUrl %@",imgUrl);
+    
+  
+    
+    NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:imgUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
+    AFHTTPRequestOperation *operation =   [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead)
+     {
+         NSLog(@"progress %f",(float)totalBytesRead / totalBytesExpectedToRead);
+         [downloadProgress setProgress:(float)totalBytesRead / totalBytesExpectedToRead];
+         
+     }];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
+        
+        
+        NSLog(@"cachefilepath %@",cachefilePath);
+        [operation.responseData writeToFile:cachefilePath atomically:YES];
+        
+        if(downloadProgress){
+            [downloadProgress removeFromSuperview];
+            //            [downloadProgress release];
+            downloadProgress = nil;
+        }
+        //         [downloadProgress release];
+        
+        UIImage *img = [UIImage sd_animatedGIFWithData:operation.responseData];//[UIImage imageWithData:operation.responseData];
+        //        [imageArray addObject:@{@"image" : img, @"index" : [NSString stringWithFormat:@"%d",index]}];
+        //        imageView.image = img;
+        [view displayImage:img];
+        willSaveImage = operation.responseData;
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+        
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"failed %@",error);
+        [HTTPExceptionHandler handlingByError:error];
+        
+    }];
+    [operation start];
+
+}
 - (void)downloadImageWithUrl:(int)index{
     
+    
+    if([parentVC isKindOfClass:[ChatViewC class]]){
+        [self downloadImageWithChat:(int)index];
+        return;
+    }
     
     MRScrollView *view = imageViewArray[index];
     NSLog(@"inscrollview %@",NSStringFromCGRect(view.frame));
@@ -700,17 +845,27 @@
 //        [downloadProgress release];
         downloadProgress = nil;
     }
+    
     NSString *imgUrl;
     NSString *cachefilePath;
+    NSDictionary *contentDic;
     
-    NSDictionary *contentDic = [myList[index][@"content"]objectFromJSONString];
-    NSLog(@"contentDic %@",contentDic);
+    
+    NSDictionary *msgDic = myList[index];
+    NSLog(@"msgDic %@",msgDic);
+
+        contentDic = [msgDic[@"content"]objectFromJSONString];
+        NSLog(@"contentDic %@",contentDic);
         NSDictionary *aDic = [contentDic[@"image"]objectFromJSONString];
         imgUrl = [NSString stringWithFormat:@"https://%@%@%@",aDic[@"server"],aDic[@"dir"],aDic[@"filename"][0]];
         NSLog(@"imgUrl %@",imgUrl);
-        cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/%@",NSHomeDirectory(),aDic[@"filename"][0]];
- 
+//        cachefilePath = [NSString stringWithFormat:@"%@/Documents/%@",NSHomeDirectory(),aDic[@"filename"][0]];
+    
+    NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    cachefilePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",aDic[@"filename"][0]]];
         
+    
+    
 
     downloadProgress = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
     [downloadProgress setFrame:CGRectMake(30, 340, 260, 10)];
@@ -815,7 +970,9 @@
     NSString *imgUrl = [NSString stringWithFormat:@"https://%@%@%@",myDic[@"server"],myDic[@"dir"],myDic[@"filename"][index]];
     NSLog(@"imgUrl %@",imgUrl);
     
-    NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/%@",NSHomeDirectory(),myDic[@"filename"][index]];
+    NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+     NSString *cachefilePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",myDic[@"filename"][index]]];
+//    NSString *cachefilePath = [NSString stringWithFormat:@"%@/Documents/%@",NSHomeDirectory(),myDic[@"filename"][index]];
 
 //            UIImage *img = dic[@"image"];
 //            [inScrollView displayImage:img];
@@ -858,7 +1015,9 @@
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
 //        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         
-        NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/%@",NSHomeDirectory(),myDic[@"filename"][index]];
+        NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+        NSString *cachefilePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",myDic[@"filename"][index]]];
+//        NSString *cachefilePath = [NSString stringWithFormat:@"%@/Documents/%@",NSHomeDirectory(),myDic[@"filename"][index]];
         NSLog(@"cachefilepath %@",cachefilePath);
         [operation.responseData writeToFile:cachefilePath atomically:YES];
 
@@ -891,95 +1050,7 @@
 
 
 
-- (void)downloadActivityImage:(int)index{
-    
-    MRScrollView *view = imageViewArray[index];
-    NSLog(@"inscrollview %@",NSStringFromCGRect(view.frame));
-    if(downloadProgress){
-        [downloadProgress removeFromSuperview];
-//        [downloadProgress release];
-        downloadProgress = nil;
-    }
-    
-    downloadProgress = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-    [downloadProgress setFrame:CGRectMake(30, 340, 260, 10)];
-    [view addSubview:downloadProgress];
-    //    UIImageView *imageView = [[UIImageView alloc]init];//WithFrame:
-    [self.navigationItem.rightBarButtonItem setEnabled:NO];
-    
-    NSString *imgUrl = myList[index];//[NSString stringWithFormat:@"https://%@%@%@",myDic[@"server"],myDic[@"dir"],myDic[@"filename"][index]];
-    NSLog(@"imgUrl %@",imgUrl);
-    
-    NSArray *urlArray = [imgUrl componentsSeparatedByString:@"/"];
-    NSLog(@"urlArray %@",urlArray);
-    
-    NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/%@",NSHomeDirectory(),urlArray[[urlArray count]-1]];
-    
-    //            UIImage *img = dic[@"image"];
-    //            [inScrollView displayImage:img];
-    if([[NSFileManager defaultManager] fileExistsAtPath:cachefilePath]) {
-        if(downloadProgress){
-            [downloadProgress removeFromSuperview];
-//            [downloadProgress release];
-            downloadProgress = nil;
-        }
-        [self.navigationItem.rightBarButtonItem setEnabled:YES];
-        //        NSLog(@"fileexist %@",cachefilePath);
-        //
-        //        [self.navigationItem.rightBarButtonItem setEnabled:YES];
-        UIImage *img = [UIImage imageWithContentsOfFile:cachefilePath];
-        [view displayImage:img];
-        NSData *data = [[NSFileManager defaultManager] contentsAtPath:cachefilePath];
-        willSaveImage = data;
-        //        NSLog(@"image %@",img);
-        return;
-    }
-    
-    //
-    
-    
-    
-    
-    NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:imgUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
-    AFHTTPRequestOperation *operation =   [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    
-    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead)
-     {
-         NSLog(@"progress %f",(float)totalBytesRead / totalBytesExpectedToRead);
-         [downloadProgress setProgress:(float)totalBytesRead / totalBytesExpectedToRead];
-         
-     }];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
-        
-        NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/%@",NSHomeDirectory(),urlArray[[urlArray count]-1]];
-        NSLog(@"cachefilepath %@",cachefilePath);
-        [operation.responseData writeToFile:cachefilePath atomically:YES];
-        
-        if(downloadProgress){
-            [downloadProgress removeFromSuperview];
-//            [downloadProgress release];
-            downloadProgress = nil;
-        }
-        //         [downloadProgress release];
-        UIImage *img = [UIImage imageWithData:operation.responseData];
-        //        [imageArray addObject:@{@"image" : img, @"index" : [NSString stringWithFormat:@"%d",index]}];
-        //        imageView.image = img;
-        [view displayImage:img];
-        willSaveImage = operation.responseData;
-        [self.navigationItem.rightBarButtonItem setEnabled:YES];
-        
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"failed %@",error);
-		[HTTPExceptionHandler handlingByError:error];
-        
-    }];
-    [operation start];
-    
-    
-}
+
 
 -(void)handleDoubleTap:(UITapGestureRecognizer *)recognizer  {
     

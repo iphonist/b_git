@@ -1271,15 +1271,15 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
     
 #else
     
-    self.navigationController.navigationBar.translucent = YES;
-    
-   
-    
-        
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-		[self.navigationController.navigationBar setBackgroundImage:[CustomUIKit customImageNamed:@"photoviewbarbg_ios7.png"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
-        self.navigationController.navigationBar.barTintColor = RGB(37, 37, 37);
-        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:RGB(225, 223, 224)}];
+//    self.navigationController.navigationBar.translucent = YES;
+//    
+//   
+//    
+//        
+//        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+//		[self.navigationController.navigationBar setBackgroundImage:[CustomUIKit customImageNamed:@"photoviewbarbg_ios7.png"] forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+//        self.navigationController.navigationBar.barTintColor = RGB(37, 37, 37);
+//        [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:RGB(225, 223, 224)}];
     
 #endif
 
@@ -1313,10 +1313,10 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
   
     
 #else
-    self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController.navigationBar setBackgroundImage:nil forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.barTintColor = RGB(226, 226, 226);
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
+//    self.navigationController.navigationBar.translucent = NO;
+//    [self.navigationController.navigationBar setBackgroundImage:nil forBarPosition:UIBarPositionTopAttached barMetrics:UIBarMetricsDefault];
+//    self.navigationController.navigationBar.barTintColor = RGB(226, 226, 226);
+//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
     
 #endif
     
