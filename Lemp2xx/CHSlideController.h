@@ -187,7 +187,7 @@
 - (void)initPushCount:(NSString *)rk;
 //- (void)getRoomWithRk:(NSString *)rk number:(NSString *)num sendMemo:(NSString *)memo;
 - (void)getRoomWithRk:(NSString *)rk number:(NSString *)num sendMemo:(NSString *)memo modal:(BOOL)modal;
-- (void)getRoomFromPushWithRk:(NSString *)rk number:(NSString *)num;
+- (void)getRoomFromPushWithRk:(NSString *)rk;
 - (void)addNotiNumber;
 - (void)startup;
 - (UIView *)coverDisableViewWithFrame:(CGRect)frame;

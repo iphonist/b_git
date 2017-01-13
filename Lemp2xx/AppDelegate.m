@@ -619,7 +619,7 @@
 			} else {
                 NSLog(@"push else %@ / %@ /",[self readPlist:@"pw"],[self readPlist:@"pwsaved"]);
 #if defined(GreenTalk) || defined(GreenTalkCustomer)
-                [root getRoomFromPushWithRk:[aps valueForKey:@"rkey"] number:@""];
+                [root getRoomFromPushWithRk:[aps valueForKey:@"rkey"]];
 #else
                 [root getRoomWithRk:[aps valueForKey:@"rkey"] number:@"" sendMemo:@"" modal:NO];
 #endif

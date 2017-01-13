@@ -165,6 +165,7 @@
 {
     
     
+    if([SharedAppDelegate.root.main.myList count]> 0){
     for(NSDictionary *dic in [SQLiteDBManager getChatList]){
         NSLog(@"chatlist_dic %@",dic);
         if([dic[@"newfield"]length]>0 && [dic[@"newfield"]intValue]>0){
@@ -181,10 +182,11 @@
             if(!socialExist){
                 [SQLiteDBManager removeRoom:dic[@"roomkey"] all:NO];
             }
+                
         }
         
     }
-    
+    }
   
     
     [myList removeAllObjects];

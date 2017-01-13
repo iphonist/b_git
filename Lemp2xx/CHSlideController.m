@@ -4267,11 +4267,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 }
 
 
-- (void)getRoomFromPushWithRk:(NSString *)rk number:(NSString *)num{
-    NSLog(@"getRoomFromPushWithRk rk %@ num %@",rk,num);
+- (void)getRoomFromPushWithRk:(NSString *)rk{
+    NSLog(@"getRoomFromPushWithRk rk %@ ",rk);
     
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+    
+    
+    [SharedAppDelegate.root.main refreshTimeline];
     
     [SharedAppDelegate.root modalChatView];//:_slidingViewController];
     
@@ -4286,25 +4289,13 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     NSString *roomkey = [NSString stringWithFormat:@"%@",rk];
     NSString *roomname = @"";
     
-//    if([num length]>0){
-//        
-//        for(int i = 0; i < [SharedAppDelegate.root.main.myList count]; i++){
-//            NSString *groupnumber = SharedAppDelegate.root.main.myList[i][@"groupnumber"];
-//            if([groupnumber isEqualToString:num]){
-//                
-//                roomname = SharedAppDelegate.root.main.myList[i][@"groupname"];
-//            }
-//        }
-//    }
-//    
-//    NSString *lastmsg = @"";
-//    NSString *orderindex = @"";
-    NSString *groupnumber = [NSString stringWithFormat:@"%@",num];
+    
+//    NSString *groupnumber = [NSString stringWithFormat:@"%@",num];
     NSString *roomtype = @"";
     [SharedAppDelegate.root.chatList refreshContents:NO];
-//    BOOL alreadyExist = NO;
+    NSLog(@"[SQLiteDBManager getChatList] %@",[SQLiteDBManager getChatList]);
     for(NSDictionary *roomDic in [SQLiteDBManager getChatList]) {
-        
+        NSLog(@"roomDic %@",roomDic);
         if([roomDic[@"roomkey"] isEqualToString:roomkey]) {
 //            alreadyExist = YES;
             NSLog(@"alreadyExist %@",roomDic);
@@ -4335,7 +4326,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [ResourceLoader sharedInstance].myUID,@"uid",
                                 [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
-                                roomkey,@"roomkey",groupnumber,@"groupnumber",nil];
+                                roomkey,@"roomkey",@"",@"groupnumber",nil];
     
     NSLog(@"parameters %@",parameters);
 //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/chat/info/chatroom.lemp" parameters:parameters];
@@ -4415,29 +4406,13 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             }
             else if([roomtype isEqualToString:@"2"] || [roomtype isEqualToString:@"5"]){
   
-                if([roomtype isEqualToString:@"5"]){
-#ifdef GreenTalk
-                    
-                    roomname = [[ResourceLoader sharedInstance] getUserName:uids];
-#endif
-                }
+ 
                 
-                if(!alreadyExist){
-                    
-                    NSString *groupnumberString = @"";
-                    if([groupnumber length]>0 && [groupnumber intValue]!=0)
-                        groupnumberString = groupnumber;
-                
-                    
-                    [SQLiteDBManager AddChatListWithRk:roomkey uids:uids names:roomname lastmsg:[SharedAppDelegate.root.chatView checkType:0 msg:lastmsg] date:strDate time:strTime msgidx:@"" type:roomtype order:orderindex groupnumber:groupnumberString];
-                }
-                else{
-                    NSLog(@"already exist ");
                     if([roomtype isEqualToString:@"5"]){
                         NSLog(@"[SharedAppDelegate.root.main.myList count] %@",SharedAppDelegate.root.main.myList);
                         NSLog(@"groupnumber %@",groupnumber);
 #ifdef GreenTalk
-                        NSLog(@"GreenTalk already exist ");
+                        roomname = [[ResourceLoader sharedInstance] getUserName:uids];
                         
                         for(int i = 0; i < [SharedAppDelegate.root.main.myList count]; i++){
                             NSString *gnum = SharedAppDelegate.root.main.myList[i][@"groupnumber"];
@@ -4462,7 +4437,11 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                     else{
 #ifdef GreenTalk
                         if([groupnumber length]>0 && [groupnumber intValue]>0){
+                            NSLog(@"groupnumber %@",groupnumber);
+                            NSLog(@"SharedAppDelegate.root.main %@",SharedAppDelegate.root.main);
+                            NSLog(@"SharedAppDelegate.root.main.myList %@",SharedAppDelegate.root.main.myList);
                         for(int i = 0; i < [SharedAppDelegate.root.main.myList count]; i++){
+                            NSLog(@"SharedAppDelegate.root.main.myList %@",SharedAppDelegate.root.main.myList[i]);
                             NSString *gnum = SharedAppDelegate.root.main.myList[i][@"groupnumber"];
                             if([gnum isEqualToString:groupnumber]){
                                 
@@ -4474,13 +4453,30 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 #endif
                     }
                     NSLog(@"roomname %@",roomname);
+                
+                if(!alreadyExist){
                     
-                    [SQLiteDBManager updateRoomkey:roomkey number:groupnumber];
+                    NSLog(@"NOT already exist ");
+                    NSString *groupnumberString = @"";
+                    if([groupnumber length]>0 && [groupnumber intValue]!=0)
+                        groupnumberString = groupnumber;
+                    
+                    
+                    [SQLiteDBManager AddChatListWithRk:roomkey uids:uids names:roomname lastmsg:[SharedAppDelegate.root.chatView checkType:0 msg:lastmsg] date:strDate time:strTime msgidx:@"" type:roomtype order:orderindex groupnumber:groupnumberString];
+                    
                 }
+                else{
+                    
+                    NSLog(@"already exist ");
+                    [SQLiteDBManager updateRoomkey:roomkey number:groupnumber];
+                    [SQLiteDBManager updateRoomMember:uids rk:roomkey];
+                }
+                
+                
+                
                 [SharedAppDelegate.root.chatView settingUid:uids];//settingRoomWithName:grouproomname uid:uids type:type];
                 [SharedAppDelegate.root.chatView settingMaster:resultDic[@"roomuid"]];
                 [SharedAppDelegate.root.chatView settingRoomWithName:roomname uid:uids type:roomtype number:groupnumber];
-                [SQLiteDBManager updateRoomMember:uids rk:resultDic[@"roupdateRoomMember:rkomkey"]];
                 [SharedAppDelegate.root.chatView settingRk:roomkey sendMemo:@""];
                 
             }
