@@ -788,11 +788,15 @@ const char paramNumber;
     if(group != nil){
         for(NSDictionary *dic in group){
 #ifdef Batong
+            
+#ifdef MQM
+#else
             if([dic[@"groupnumber"]isEqualToString:@"10301"]){
                 [batongArray addObject:dic];
             }
             else{
-            
+#endif
+                
 #endif
             NSString *attribute2 = dic[@"groupattribute2"];
             if([attribute2 length]<1)
@@ -828,8 +832,10 @@ const char paramNumber;
             }
 #ifdef Batong
                 
+#ifdef MQM
+#else
             }
-            
+#endif
 #endif
         }
 
@@ -1780,14 +1786,22 @@ const char paramNumber;
         else{
             //                if([[di
 #ifdef Batong
+            
+#ifdef MQM
+#else
             if([myList[indexPath.row][@"groupnumber"]isEqualToString:@"10301"]){
                 [SharedAppDelegate.root.ecmdmain enterContentsGroup:dic con:self];
             }
             else{
 #endif
+#endif
             [SharedAppDelegate.root settingJoinGroup:myList[indexPath.row] add:NO];
 #ifdef Batong
+                
+#ifdef MQM
+#else
             }
+#endif
 #endif
         }
     }

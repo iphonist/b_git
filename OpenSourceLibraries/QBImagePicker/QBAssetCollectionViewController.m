@@ -162,8 +162,8 @@
         }
     }];
     
-    NSArray *tempArray = [[self.assets reverseObjectEnumerator] allObjects];
-    [self.assets setArray:tempArray];
+//    NSArray *tempArray = [[self.assets reverseObjectEnumerator] allObjects];
+//    [self.assets setArray:tempArray];
     [self.tableView reloadData];
     [self.tableView setContentOffset:CGPointMake(0,0)];//self.tableView.contentSize.height)];
     // Set footer view

@@ -4362,7 +4362,7 @@ try {
                 name = @"알 수 없는 사용자";
             else if([type intValue] == 2){
                 
-                
+                NSLog(@"SharedAppDelegate.root.main.myList %@",SharedAppDelegate.root.main.myList);
                 for(int i = 0; i < [SharedAppDelegate.root.main.myList count]; i++){
                     NSString *groupnumber = SharedAppDelegate.root.main.myList[i][@"groupnumber"];
                     if([groupnumber isEqualToString:number]){
