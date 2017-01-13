@@ -21,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.9.20</string>
+	<string>0.9.24</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -42,7 +42,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1526</string>
+	<string>1673</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -61,14 +61,29 @@
 	<array>
 		<string>db-2z06lztlavpszkt</string>
 		<string>db-76y0qkvvslf5i4d</string>
+		<string>mECMD</string>
+		<string>PulmuoneKWP</string>
+		<string>db-brupmn1geoarhei</string>
 	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Batong needs access to Media Library.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Batong needs access to Camera.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Batong needs access to Contacts.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSLocationWhenInUseUsageDescription - 2</key>
+	<string>Batong needs access to Location.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Batong needs access to Microphone.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Batong needs access to Photo Library.</string>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>
