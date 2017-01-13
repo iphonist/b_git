@@ -235,11 +235,76 @@
 }
 
 
+- (void)directMsgWithBeartalk:(NSString *)key{
+    
+    
+    
+    if([ResourceLoader sharedInstance].myUID == nil || [[ResourceLoader sharedInstance].myUID length]<1){
+        NSLog(@"userindex null");
+        return;
+    }
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    
+    
+    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/memos/list/"];
+    NSURL *baseUrl = [NSURL URLWithString:urlString];
+    
+    
+    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    
+    client.responseSerializer=[AFHTTPResponseSerializer serializer];
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:key,@"memokey",nil];
+    NSLog(@"parameters %@",parameters);
+    
+    
+    NSError *serializationError = nil;
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    
+    //    client.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@[@"application/json",@"charset=utf-8"]];
+    
+    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        NSLog(@"operation.responseString  %@",operation.responseString );
+        //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+            
+            [self setSubViews:[operation.responseString objectFromJSONString][0]];
+            
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
+        NSLog(@"FAIL : %@",operation.error);
+        [HTTPExceptionHandler handlingByError:error];
+        //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        [alert show];
+        
+    }];
+    
+    [operation start];
+    
+    
+    
+}
 
 - (void)directMsg:(NSString *)idx{
     
     NSLog(@"directMsg %@",idx);
     
+#ifdef BearTalk
+    [self directMsgWithBeartalk:idx];
+    return;
+#endif
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
 //    [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
@@ -307,12 +372,18 @@
 
 - (void)setSubViews:(NSDictionary *)dic{
     
+    
+#ifdef BearTalk
+    contentsTextView.text = dic[@"MSG"];
+    [time performSelectorOnMainThread:@selector(setText:) withObject:dic[@"WRITE_DATE"] waitUntilDone:NO];
+#else
     NSDictionary *msgDic = [dic[@"content"][@"msg"]objectFromJSONString];
     contentsTextView.text = msgDic[@"msg"];
     NSLog(@"text length %d",(int)[contentsTextView.text length]);
-    [spellNum performSelectorOnMainThread:@selector(setText:) withObject:[NSString stringWithFormat:@"%d",(int)[contentsTextView.text length]] waitUntilDone:NO];
     NSString *datetime = [NSString formattingDate:dic[@"writetime"] withFormat:@"yyyy.MM.dd HH:mm"];
     [time performSelectorOnMainThread:@selector(setText:) withObject:datetime waitUntilDone:NO];
+#endif
+    [spellNum performSelectorOnMainThread:@selector(setText:) withObject:[NSString stringWithFormat:@"%d",(int)[contentsTextView.text length]] waitUntilDone:NO];
 //    [contentsTextView setText:[[[[dicobjectForKey:@"content"]objectForKey:@"msg"]objectFromJSONString]objectForKey:@"msg"]];
     
     self.title = contentsTextView.text;
@@ -340,6 +411,12 @@
         contentImageView = nil;
     }
     contentImageView  = [[UIImageView alloc]init];
+    
+#ifdef BearTalk
+    
+    
+    contentImageView.frame = CGRectMake(contentsTextView.frame.origin.x, contentsTextView.frame.origin.y + contentsTextView.frame.size.height + 18, 140.0f, 0);
+#else
     NSLog(@"msgDic[image] %@",msgDic[@"image"]);
     imgArray = [[NSMutableArray alloc]init];
     if([msgDic[@"image"]length]>0 && msgDic[@"image"] != nil){
@@ -405,14 +482,14 @@
         contentImageView.frame = CGRectMake(contentsTextView.frame.origin.x, contentsTextView.frame.origin.y + contentsTextView.frame.size.height + 18, 140.0f, 0);
         
     }
-    
+    target= [[NSString alloc]initWithFormat:@"%@",dic[@"target"]];
+#endif
     [scrollView addSubview:contentImageView];
 //    [contentImageView release];
     scrollView.contentSize = CGSizeMake(320, contentImageView.frame.origin.y + contentImageView.frame.size.height + 10);
     
     
     
-    target= [[NSString alloc]initWithFormat:@"%@",dic[@"target"]];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(editMemo)];
     [scrollView addGestureRecognizer:tapGesture];
@@ -803,6 +880,67 @@
 		}
 	}
 }
+- (void)deleteMemos:(NSString *)index{
+    
+    
+    
+    if([ResourceLoader sharedInstance].myUID == nil || [[ResourceLoader sharedInstance].myUID length]<1){
+        NSLog(@"userindex null");
+        return;
+    }
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    
+    
+    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/memos/dels/"];
+    NSURL *baseUrl = [NSURL URLWithString:urlString];
+    
+    
+    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    
+    client.responseSerializer=[AFHTTPResponseSerializer serializer];
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:index,@"memokeys",nil];
+    NSLog(@"parameters %@",parameters); // memokeys
+    
+    
+    NSError *serializationError = nil;
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"PUT" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    
+    //    client.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@[@"application/json",@"charset=utf-8"]];
+    
+    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        NSLog(@"operation.responseString  %@",operation.responseString );
+        //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
+        
+        if([[operation.responseString objectFromJSONString] count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+            
+            
+        }
+        [self backTo];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
+        NSLog(@"FAIL : %@",operation.error);
+        [HTTPExceptionHandler handlingByError:error];
+        //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        [alert show];
+        
+    }];
+    
+    [operation start];
+    
+    
+    
+}
 
 
 #define kNote 1
@@ -1080,7 +1218,11 @@
 
 - (void)commitDeleteMemo{
     
+#ifdef BearTalk
+    [self deleteMemos:memoArray[row]];
+#else
     [SharedAppDelegate.root modifyPost:memoArray[row] modify:1 msg:@"" oldcategory:@"" newcategory:@"" oldgroupnumber:@"" newgroupnumber:@"" target:target replyindex:@"" viewcon:self];
+#endif
 }
 
 

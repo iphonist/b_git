@@ -248,17 +248,162 @@
 }
 
 
+- (void)getMemosWithBearTalk{
+    
+    NSLog(@"getMemosWithBearTalk");
+        
+        if([ResourceLoader sharedInstance].myUID == nil || [[ResourceLoader sharedInstance].myUID length]<1){
+            NSLog(@"userindex null");
+            return;
+        }
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        
+        
+        
+        NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/memos/list/"];
+        NSURL *baseUrl = [NSURL URLWithString:urlString];
+        
+        
+    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    
+    client.responseSerializer=[AFHTTPResponseSerializer serializer];
+        
+        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",nil];
+        NSLog(@"parameters %@",parameters);
+        
+        
+        NSError *serializationError = nil;
+        NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    
+//    client.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@[@"application/json",@"charset=utf-8"]];
+
+    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+            NSLog(@"operation.responseString  %@",operation.responseString );
+//            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+            /*
+             {
+             FILES =         (
+             );
+             "MEMO_KEY" = "e9a883ce-66b1-454c-8e41-1b2ae2a7edaa";
+             MSG = test;
+             "WRITE_DATE" = "2017-01-13T02:14:47.487Z";
+             "_id" = "ObjectId:(\"e9a883ce-66b1-454c-8e41-1b2ae2a7edaa\")";
+             }
+
+             */
+            if([[operation.responseString objectFromJSONString]count]>0){
+            [self performSelectorOnMainThread:@selector(setResultArray:) withObject:[operation.responseString objectFromJSONString] waitUntilDone:NO];
+            }
+            else{
+                [myTable reloadData];
+                
+            }
+        }
+        else{
+            [myTable reloadData];
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+            [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
+            NSLog(@"FAIL : %@",operation.error);
+            [HTTPExceptionHandler handlingByError:error];
+            //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        [alert show];
+            
+        }];
+        
+        [operation start];
+        
+        
+    
+}
+- (void)deleteMemos:(NSString *)index{
+    
+    
+    
+    if([ResourceLoader sharedInstance].myUID == nil || [[ResourceLoader sharedInstance].myUID length]<1){
+        NSLog(@"userindex null");
+        return;
+    }
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    
+    
+    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/memos/dels/"];
+    NSURL *baseUrl = [NSURL URLWithString:urlString];
+    
+    
+    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    
+    client.responseSerializer=[AFHTTPResponseSerializer serializer];
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:index,@"memokeys",nil];
+    NSLog(@"parameters %@",parameters); // memokeys
+    
+    
+    NSError *serializationError = nil;
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"PUT" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    
+    //    client.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@[@"application/json",@"charset=utf-8"]];
+    
+    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        NSLog(@"operation.responseString  %@",operation.responseString );
+        //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
+        
+        if([[operation.responseString objectFromJSONString] count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+       
+            
+        }
+        [self getMemosWithBearTalk];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
+        NSLog(@"FAIL : %@",operation.error);
+        [HTTPExceptionHandler handlingByError:error];
+        //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        [alert show];
+        
+    }];
+    
+    [operation start];
+    
+    
+    
+}
+
 - (void)getTimeline:(NSString *)idx
 {
     NSLog(@"getTimeline %@",idx);
     
+    
+#ifdef BearTalk
+    [self getMemosWithBearTalk];
+    return;
+    
+#endif
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
 //         [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
     
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
-//    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
-//    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/read/categorymsg.lemp",[SharedAppDelegate readPlist:@"was"]];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
@@ -325,6 +470,15 @@
     [operation start];
 }
 
+- (void)setResultArray:(NSMutableArray *)arr
+{
+    NSLog(@"arr %@",arr);
+    //    [self.refreshControl endRefreshing];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [myList removeAllObjects];
+    [myList addObjectsFromArray:arr];
+    [myTable reloadData];
+}
 
 - (void)setResult:(NSDictionary *)dic
 {
@@ -367,6 +521,9 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
+ if([myList count]==0)
+     return NO;
+    
     
     NSDictionary *dic = myList[indexPath.row];
     if([dic[@"contentindex"]isEqualToString:@"0"] && [dic[@"type"]isEqualToString:@"6"])
@@ -439,6 +596,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     // Return the number of rows in the section.
     NSLog(@"numberof %d",(int)[myList count]);
+
     return [myList count];
 }
 
@@ -455,7 +613,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
     static NSString *myTableIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:myTableIdentifier];
 
@@ -519,8 +677,73 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
 		countLabel = (UILabel *)[cell viewWithTag:5];
 	}
     
-    NSDictionary *dic = myList[indexPath.row];
-    NSLog(@"dic %@",dic);
+    NSDictionary *dic;
+    
+#ifdef BearTalk
+  
+        
+        dic = myList[indexPath.row];
+        NSLog(@"dic %@",dic);
+//        NSDictionary *msgDic = [dic[@"content"][@"msg"]objectFromJSONString];
+//        
+//        if([msgDic[@"image"]length]>0 && msgDic[@"image"] != nil){
+//            
+//            title.frame = CGRectMake(10+46+5, 9, 270-46-5, 20);
+//            time.frame = CGRectMake(10+46+5, 31, 270-46-5, 15);
+//            addView.hidden = NO;
+//            int imgCount = (int)[[msgDic[@"image"]objectFromJSONString][@"filename"]count];
+//            if(imgCount>1){
+//                
+//                title.frame = CGRectMake(16, 18, self.view.frame.size.width - addView.frame.size.width - 16 - 16 - 10, 15);
+//                time.frame = CGRectMake(title.frame.origin.x, CGRectGetMaxY(title.frame)+8,title.frame.size.width, 11);
+//                title.textColor = RGB(51,61,71);
+//                title.font = [UIFont systemFontOfSize:14];
+//                time.textColor = RGB(153,153,153);
+//                time.font = [UIFont systemFontOfSize:11];
+//                countView.hidden = YES;
+//                countLabel.text = @"";
+//                addView.image = [CustomUIKit customImageNamed:@"ic_memo_images.png"];
+//            }
+//            else{
+//                countView.hidden = YES;
+//                countLabel.text = @"";
+//                
+//                title.frame = CGRectMake(16, 18, self.view.frame.size.width - addView.frame.size.width - 16 - 16 - 10, 15);
+//                time.frame = CGRectMake(title.frame.origin.x, CGRectGetMaxY(title.frame)+8,title.frame.size.width, 11);
+//                title.textColor = RGB(51,61,71);
+//                title.font = [UIFont systemFontOfSize:14];
+//                time.textColor = RGB(153,153,153);
+//                time.font = [UIFont systemFontOfSize:11];
+//                addView.image = [CustomUIKit customImageNamed:@"ic_memo_image.png"];
+//            }
+//            
+//        }
+//        else{
+        
+            addView.hidden = YES;
+            countView.hidden = YES;
+            countLabel.text = @"";
+            
+            title.frame = CGRectMake(16, 18, self.view.frame.size.width - 16 - 16, 15);
+            time.frame = CGRectMake(title.frame.origin.x, CGRectGetMaxY(title.frame)+8,title.frame.size.width, 11);
+            title.textColor = RGB(51,61,71);
+            title.font = [UIFont systemFontOfSize:14];
+            time.textColor = RGB(153,153,153);
+            time.font = [UIFont systemFontOfSize:11];
+            
+            
+//        }
+        
+        
+        title.text = dic[@"MSG"];//]msgDic[@"msg"];
+                         time.text = dic[@"WRITE_DATE"];//[NSString formattingDate:dic[@"writetime"] withFormat:@"yyyy.MM.dd HH:mm:ss"];
+        
+    
+    
+#else
+        
+        dic = myList[indexPath.row];
+        NSLog(@"dic %@",dic);
     if([dic[@"contentindex"]isEqualToString:@"0"] && [dic[@"type"]isEqualToString:@"6"])
     {
         title.frame = CGRectMake(10, 17, 270, 20);
@@ -532,17 +755,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
         title.text = @"첫 메모를 작성해 보세요.";
         time.text = nil;//@"사진도 첨부되고 작성한 메모를 쉽게 공유할 수 있어요.";
 
-#ifdef BearTalk
-        
-        title.frame = CGRectMake(16, 0, self.view.frame.size.width - 16 - 16, 25+17+25);
-        title.textColor = RGB(51,61,71);
-        title.font = [UIFont systemFontOfSize:14];
-        countView.hidden = YES;
-        countLabel.text = @"";
-#endif
         
     }
     else{
+
         NSDictionary *msgDic = [dic[@"content"][@"msg"]objectFromJSONString];
         
         if([msgDic[@"image"]length]>0 && msgDic[@"image"] != nil){
@@ -554,31 +770,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
             if(imgCount>1){
             countView.hidden = NO;
                 countLabel.text = [NSString stringWithFormat:@"%d",imgCount];
-#ifdef BearTalk
-                title.frame = CGRectMake(16, 18, self.view.frame.size.width - addView.frame.size.width - 16 - 16 - 10, 15);
-                time.frame = CGRectMake(title.frame.origin.x, CGRectGetMaxY(title.frame)+8,title.frame.size.width, 11);
-                title.textColor = RGB(51,61,71);
-                title.font = [UIFont systemFontOfSize:14];
-                time.textColor = RGB(153,153,153);
-                time.font = [UIFont systemFontOfSize:11];
-                countView.hidden = YES;
-                countLabel.text = @"";
-                addView.image = [CustomUIKit customImageNamed:@"ic_memo_images.png"];
-#endif
+
             }
             else{
                 countView.hidden = YES;
                 countLabel.text = @"";
                 
-#ifdef BearTalk
-                title.frame = CGRectMake(16, 18, self.view.frame.size.width - addView.frame.size.width - 16 - 16 - 10, 15);
-                time.frame = CGRectMake(title.frame.origin.x, CGRectGetMaxY(title.frame)+8,title.frame.size.width, 11);
-                title.textColor = RGB(51,61,71);
-                title.font = [UIFont systemFontOfSize:14];
-                time.textColor = RGB(153,153,153);
-                time.font = [UIFont systemFontOfSize:11];
-                addView.image = [CustomUIKit customImageNamed:@"ic_memo_image.png"];
-#endif
+
             }
             
         }
@@ -589,17 +787,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
             addView.hidden = YES;
             countView.hidden = YES;
             countLabel.text = @"";
-            
-#ifdef BearTalk
-            title.frame = CGRectMake(16, 18, self.view.frame.size.width - 16 - 16, 15);
-            time.frame = CGRectMake(title.frame.origin.x, CGRectGetMaxY(title.frame)+8,title.frame.size.width, 11);
-            title.textColor = RGB(51,61,71);
-            title.font = [UIFont systemFontOfSize:14];
-            time.textColor = RGB(153,153,153);
-            time.font = [UIFont systemFontOfSize:11];
-           
-            
-#endif
+
             
         }
         
@@ -609,6 +797,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
 
     }
     
+#endif
     return cell;
 }
 
@@ -828,18 +1017,26 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
               		if ([selectedIdx length] > 0) {
                         [selectedIdx appendString:@","];
                     }
+#ifdef BearTalk
+                
+                [selectedIdx appendString:myList[indexPath.row][@"MEMO_KEY"]];
+#else
                 [selectedIdx appendString:myList[indexPath.row][@"contentindex"]];
+#endif
                 [indexSet addIndex:indexPath.row];
                 
             }
             NSLog(@"selectedRoomKey %@",selectedIdx);
            
-            
-             [SharedAppDelegate.root modifyPost:selectedIdx modify:1 msg:@"" oldcategory:@"" newcategory:@"" oldgroupnumber:@"" newgroupnumber:@"" target:@"" replyindex:@"" viewcon:self];
-            
+#ifdef BearTalk
+            [self deleteMemos:selectedIdx];
+#else
+            [SharedAppDelegate.root modifyPost:selectedIdx modify:1 msg:@"" oldcategory:@"" newcategory:@"" oldgroupnumber:@"" newgroupnumber:@"" target:@"" replyindex:@"" viewcon:self];
             [myList removeObjectsAtIndexes:indexSet];
-            
             [myTable reloadData];
+#endif
+            
+            
             
             
 #ifdef GreenTalk
@@ -896,6 +1093,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
 
 #define kWrite 1
 - (void)writeMemo{
+    
+    [self initAction];
     WriteMemoViewController *memo = [[WriteMemoViewController alloc]initWithTitle:@"메모 쓰기" tag:kWrite content:@"" length:@"0" index:@"" image:nil];
     UINavigationController *nc = [[CBNavigationController alloc]initWithRootViewController:memo];
     [self presentViewController:nc animated:YES completion:nil];
@@ -915,12 +1114,42 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
      [self.navigationController pushViewController:detailViewController animated:YES];
      [detailViewController release];
      */
-    
     NSMutableArray *indexArray = [NSMutableArray array];
+    
+    
+#ifdef BearTalk
+    if (tableView.editing == YES) {
+        
+        NSLog(@"editing %@",tableView.editing?@"YES":@"NO");
+        // 삭제버튼 갱신
+        
+        NSNumber *count = [NSNumber numberWithInteger:[[tableView indexPathsForSelectedRows] count]];
+        [self performSelector:@selector(setCountForRightBar:) withObject:count];
+        
+        
+        
+    } else {
+
+    for(NSDictionary *dic in myList){
+        [indexArray addObject:dic[@"MEMO_KEY"]];
+    }
+    
+    MemoViewController *memo = [[MemoViewController alloc]initWithArray:indexArray row:indexPath.row];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(![self.navigationController.topViewController isKindOfClass:[memo class]])
+            [self.navigationController pushViewController:memo animated:YES];
+    });
+    //        [memo release];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+#else
+  
     
     for(NSDictionary *dic in myList){
         [indexArray addObject:dic[@"contentindex"]];
     }
+    
     if([indexArray[indexPath.row]isEqualToString:@"0"]){
         NSLog(@"contentindex 0");
         [self writeMemo];
@@ -948,8 +1177,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
 //        [memo release];
            [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
+    }
+#endif
  
-}
 }
 
 
