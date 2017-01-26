@@ -12,6 +12,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "OWActivityViewController.h"
 #import <KakaoOpenSDK/KakaoOpenSDK.h>
+#import "UIImage+GIF.h"
 
 #define PI 3.14159265358979323846
 
@@ -469,17 +470,23 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
     NSLog(@"getFile %d",type);
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/%@",NSHomeDirectory(),fileName];
+    NSLog(@"fileexist %@",cachefilePath);
     
     if(type == 12){
         
         NSLog(@"type 12");
-        NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/%@",NSHomeDirectory(),fileName];
            
         if([[NSFileManager defaultManager] fileExistsAtPath:cachefilePath]) {
-            NSLog(@"fileexist %@",cachefilePath);
             
             [self.navigationItem.rightBarButtonItem setEnabled:YES];
-            image = [UIImage imageWithContentsOfFile:cachefilePath];
+            NSData *data = [[NSFileManager defaultManager] contentsAtPath:cachefilePath];
+//            if([fileExt hasSuffix:@"gif"]){
+                image = [UIImage sd_animatedGIFWithData:data];
+//            }
+//            else{
+//                image = [UIImage imageWithContentsOfFile:cachefilePath];
+//            }
             [mrView displayImage:image];
             NSLog(@"image %@",image);
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -525,7 +532,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
                 
                 [operation.responseData writeToFile:filePath atomically:YES];
             }
-            else{
+            else if(type != 12){
             [operation.responseData writeToFile:filePath atomically:YES];
             }
 #else
@@ -544,7 +551,6 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
         
         if(type == 12){
             NSLog(@"else %@",fileName);
-            NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/%@",NSHomeDirectory(),fileName];
             NSLog(@"cachefilepath %@",cachefilePath);
             [operation.responseData writeToFile:cachefilePath atomically:YES];
 
@@ -555,7 +561,8 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
 		[self.navigationItem.rightBarButtonItem setEnabled:YES];
 		
 		if(type == 2 || type == 12) {
-			image = [UIImage imageWithData:operation.responseData];
+//			image = [UIImage imageWithData:operation.responseData];
+                   image = [UIImage sd_animatedGIFWithData:operation.responseData];
 			NSLog(@"length %d",(int)[operation.responseData length]);
 			NSLog(@"image %@",image);
 			
@@ -567,7 +574,8 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
 				if (uid && [uid isEqualToString:[ResourceLoader sharedInstance].myUID]) {
 					
 					NSArray *searchPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-					NSString *fullPathToFile = [[searchPaths lastObject] stringByAppendingFormat:@"/%@.JPG",uid];
+					NSString *fullPathToFile = [[searchPaths lastObject] stringByAppendingFormat:@"/%@.%@",uid,[fileName pathExtension]];
+                    NSLog(@"fullPathTofile %@",fullPathToFile);
 					NSURL *imgURL = [NSURL fileURLWithPath:fullPathToFile];
 					[[SDImageCache sharedImageCache] removeImageForKey:[imgURL description] fromDisk:YES];
 					

@@ -141,7 +141,7 @@
     
 }
 
-- (void)initNotice:(NSString *)delete{
+- (void)initNotice:(NSString *)del{
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
 
@@ -152,26 +152,47 @@
 //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/initnotice.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString;
+    
+#ifdef BearTalk
+    urlString = [NSString stringWithFormat:@"%@/api/sns/alarm/check",BearTalkBaseUrl];
+#else
+    
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/initnotice.lemp",[SharedAppDelegate readPlist:@"was"]];
+#endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
-    
+    NSLog(@"baseurl %@",baseUrl);
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     
     
+    
+#ifdef BearTalk
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+             [ResourceLoader sharedInstance].myUID,@"uid",
+             nil];//@{ @"uniqueid" : @"c110256" };
+    
+    NSError *serializationError = nil;
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"PUT" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    NSLog(@"param %@",parameters);
+#else
+    
+
     NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [ResourceLoader sharedInstance].myUID,@"uid",
                                 [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
                                 nil];//@{ @"uniqueid" : @"c110256" };
-    if([delete isEqualToString:@"1"]){
+    if([del isEqualToString:@"1"]){
         param = [NSDictionary dictionaryWithObjectsAndKeys:
                  [ResourceLoader sharedInstance].myUID,@"uid",
                  [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
                  @"1",@"delete",
                  nil];
     }
+    NSLog(@"param %@",param);
 //    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:param,@"param",nil];
 //    NSString *jsonString = [NSString stringWithFormat:@"param=%@",[param JSONString]];
 //    NSLog(@"jsonString %@",jsonString);
@@ -179,14 +200,24 @@
     
     
     NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parametersJson:param key:@"param"];
+    
+#endif
+    
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+#ifdef BearTalk
+        
+        NSDictionary *resultDic = [operation.responseString objectFromJSONString];
+        NSLog(@"resultDic %@",resultDic);
+        [SVProgressHUD dismiss];
+#else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
         if ([isSuccess isEqualToString:@"0"]) {
             [SharedAppDelegate.root.main setNewNoticeBadge:0];
-               if([delete isEqualToString:@"1"]){
+               if([del isEqualToString:@"1"]){
                    [SVProgressHUD dismiss];
             [self refresh];
                }else{
@@ -201,6 +232,8 @@
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
         }
+        
+#endif
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
@@ -243,11 +276,15 @@
     
     NSLog(@"scrollView.contentOffset.y %.0f",scrollView.contentOffset.y - scrollView.contentSize.height);
     NSLog(@"self.view.frame.size.height %.0f",self.view.frame.size.height);
+    
+#ifdef BearTalk
+    
+#else
     if(scrollView.contentSize.height - scrollView.contentOffset.y== self.view.frame.size.height)
     {
         [SharedAppDelegate.root getNotice:[self getLastTime] viewcon:self];
     }
-    
+#endif
   
 }
 
@@ -489,21 +526,24 @@
     }
         
         if(dic != nil){
-        NSArray *noticeArray = [dic[@"noticemsg"]componentsSeparatedByString:@"\n"];
-        if([noticeArray count]>0){
-        titleLabel.text = noticeArray[0];
+//        NSArray *noticeArray = [dic[@"noticemsg"]componentsSeparatedByString:@"\n"];
+//        if([noticeArray count]>0){
+            
+            if(!IS_NULL(dic[@"ALARM_MSG"])){
+                
+                NSString *decoded = [dic[@"ALARM_MSG"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            titleLabel.text = decoded;
+            }
         
-        }
         
-        
-            if([noticeArray count]>1 && [noticeArray[1]length]>0){
-                NSLog(@"noticearray %@",noticeArray[1]);
+            if(!IS_NULL(dic[@"CONTENTS_ORI"])){
+                
             titleLabel.frame = CGRectMake(16+42+10, 12, self.view.frame.size.width - 16 - 16 - 42 - 10, 14);
             titleLabel.textAlignment = NSTextAlignmentLeft;
             
             subtitleLabel.frame = CGRectMake(16+42+10, CGRectGetMaxY(titleLabel.frame)+5, self.view.frame.size.width - 16 - 16 - 42 - 10, 12);
             subtitleLabel.numberOfLines = 1;
-            subtitleLabel.text = noticeArray[1];
+            subtitleLabel.text = dic[@"CONTENTS_ORI"];
                 
                 
             
@@ -522,14 +562,15 @@
             subtitleLabel.text = @"";
             time.frame = CGRectMake(16+42+10, CGRectGetMaxY(subtitleLabel.frame)+5, self.view.frame.size.width - 16 - 16 - 42 - 10, 10);
         }
+            
+            NSString *dateValue = [NSString stringWithFormat:@"%lli",[dic[@"WRITE_DATE"]longLongValue]/1000];
         
-        
-    time.text = [NSString calculateDate:dic[@"operatingtime"]];// with:self.currentTime];
+            time.text = [NSString calculateDate:dateValue];
     
     
-    NSString *infoType = dic[@"writeinfotype"];
+    NSString *infoType = @"1";// = dic[@"writeinfotype"];
 
-    NSDictionary *personDic = [dic[@"writeinfo"]objectFromJSONString];
+            NSDictionary *personDic = nil;//[dic[@"writeinfo"]objectFromJSONString];
 
     if([infoType isEqualToString:@"2"]){
 //
@@ -589,7 +630,7 @@
 //        position.text = personDic[@"position"];
 //        team.text = personDic[@"deptname"];
         
-        [SharedAppDelegate.root getProfileImageWithURL:dic[@"uid"] ifNil:@"profile_photo.png" view:profileView scale:0];
+        [SharedAppDelegate.root getProfileImageWithURL:dic[@"WRITER_UID"] ifNil:@"profile_photo.png" view:profileView scale:0];
 
     }
     else if([infoType isEqualToString:@"10"]){
@@ -944,18 +985,18 @@
         headerLabel.text = @"새 알림";
         
         
-        UILabel *label = [CustomUIKit labelWithText:@"모두읽음" fontSize:11 fontColor:RGB(161,176,191) frame:CGRectMake(headerView.frame.size.width - 16 - 40, 34/2-12/2, 40, 12) numberOfLines:1 alignText:NSTextAlignmentRight];
-        [headerView addSubview:label];
-        
-        UIImageView *cellImage = [[UIImageView alloc]init];
-        cellImage.frame = CGRectMake(label.frame.origin.x - 4-16, label.frame.origin.y, 16, 13);
-        cellImage.image = [CustomUIKit customImageNamed:@"select_check_gray.png"];
-        [headerView addSubview:cellImage];
-        
-        headerView.userInteractionEnabled = YES;
-        UIButton *edit;
-        edit = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(confirmInit) frame:CGRectMake(cellImage.frame.origin.x, 0, headerView.frame.size.width - cellImage.frame.origin.x, headerView.frame.size.height) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
-        [headerView addSubview:edit];
+//        UILabel *label = [CustomUIKit labelWithText:@"모두읽음" fontSize:11 fontColor:RGB(161,176,191) frame:CGRectMake(headerView.frame.size.width - 16 - 40, 34/2-12/2, 40, 12) numberOfLines:1 alignText:NSTextAlignmentRight];
+//        [headerView addSubview:label];
+//        
+//        UIImageView *cellImage = [[UIImageView alloc]init];
+//        cellImage.frame = CGRectMake(label.frame.origin.x - 4-16, label.frame.origin.y, 16, 13);
+//        cellImage.image = [CustomUIKit customImageNamed:@"select_check_gray.png"];
+//        [headerView addSubview:cellImage];
+//        
+//        headerView.userInteractionEnabled = YES;
+//        UIButton *edit;
+//        edit = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(confirmInit) frame:CGRectMake(cellImage.frame.origin.x, 0, headerView.frame.size.width - cellImage.frame.origin.x, headerView.frame.size.height) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+//        [headerView addSubview:edit];
     }
 else //if(section == 1)
     headerLabel.text = @"지난 알림";
@@ -1054,26 +1095,51 @@ else //if(section == 1)
     if(didRequest)
         return;
 
+    
+#ifdef BearTalk
+    if( [readList count]>0 && [readList[0][@"CONTS_KEY"]isEqualToString:@"0"]){
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return;
+    }
+    
+    if([unreadList count]>0 && [unreadList[0][@"CONTS_KEY"]isEqualToString:@"0"]){
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return;
+    }
+    
+    
+    
+    if(indexPath.section == 0 && [unreadList count]>0)
+    {
+        NSLog(@"readList[indexPath.row] %@",unreadList[indexPath.row]);
+        [self loadDetail:unreadList[indexPath.row][@"CONTS_KEY"] snskey:unreadList[indexPath.row][@"SNS_KEY"] name:unreadList[indexPath.row][@"SNS_NAME"]];
+    }else{
+        NSLog(@"readList[indexPath.row] %@",readList[indexPath.row]);
+        [self loadDetail:readList[indexPath.row][@"CONTS_KEY"] snskey:readList[indexPath.row][@"SNS_KEY"] name:readList[indexPath.row][@"SNS_NAME"]];
+    }
+#else
     if( [readList count]>0 && [readList[0][@"contentindex"]isEqualToString:@"0"]){
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
     
     if([unreadList count]>0 && [unreadList[0][@"contentindex"]isEqualToString:@"0"]){
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
     
-   
-
-        if(indexPath.section == 0 && [unreadList count]>0)
-        {
-            NSLog(@"readList[indexPath.row] %@",unreadList[indexPath.row]);
-            [self loadDetail:unreadList[indexPath.row][@"contentindex"]];
-}else{
-    NSLog(@"readList[indexPath.row] %@",readList[indexPath.row]);
-            [self loadDetail:readList[indexPath.row][@"contentindex"]];
-        }
+    
+    
+    if(indexPath.section == 0 && [unreadList count]>0)
+    {
+        NSLog(@"readList[indexPath.row] %@",unreadList[indexPath.row]);
+        [self loadDetail:unreadList[indexPath.row][@"contentindex"] snskey:@"" name:@""];
+    }else{
+        NSLog(@"readList[indexPath.row] %@",readList[indexPath.row]);
+        [self loadDetail:readList[indexPath.row][@"contentindex"] snskey:@"" name:@""];
+    }
+#endif
+  
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
@@ -1088,7 +1154,47 @@ else //if(section == 1)
 }
 
 
-- (void)loadDetail:(NSString *)idx{// con:(UIViewController *)con{
+- (void)loadDetail:(NSString *)idx snskey:(NSString *)snskey name:(NSString *)snsname{// con:(UIViewController *)con{
+    
+    NSLog(@"loadDetail");
+    
+#ifdef BearTalk
+    NSLog(@"idx %@ snskey %@ snsname %@",idx,snskey,snsname);
+    
+    NSString *decoded = [snsname stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"decoded %@",decoded);
+    DetailViewController *contentsViewCon = [[DetailViewController alloc] init];//WithViewCon:self]autorelease];
+    SharedAppDelegate.root.home.title = decoded;
+    contentsViewCon.parentViewCon = self;
+    
+    
+    TimeLineCell *cellData = [[TimeLineCell alloc] init];
+    cellData.idx = idx;
+    SharedAppDelegate.root.home.groupnum = snskey;    
+    contentsViewCon.contentsData = cellData;
+    
+    
+    
+    
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(![self.navigationController.topViewController isKindOfClass:[contentsViewCon class]]){
+            contentsViewCon.hidesBottomBarWhenPushed = YES;
+            //        UINavigationController *nv = (UINavigationController*)SharedAppDelegate.root.mainTabBar.selectedViewController;
+            //        MHTabBarController *subTab = (MHTabBarController*)nv.visibleViewController;
+            //        subTab.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:contentsViewCon animated:YES];
+            //        subTab.hidesBottomBarWhenPushed = NO;
+            //        self.hidesBottomBarWhenPushed = NO;
+        }
+    });
+    
+    
+    
+    return;
+#endif
+    
     
     NSLog(@"loadDetail");
     
@@ -1102,19 +1208,27 @@ else //if(section == 1)
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/read/directmsg.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString;
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/read/directmsg.lemp",[SharedAppDelegate readPlist:@"was"]];
+
+    
+
+    
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary *parameters;
+
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [ResourceLoader sharedInstance].myUID,@"uid",
                                 idx,@"contentindex",
                                 [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
                                 nil];//@{ @"uniqueid" : @"c110256" };
     
+
+    NSLog(@"parameters %@",parameters);
 //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/read/directmsg.lemp" parameters:parameters];
     
     NSError *serializationError = nil;
@@ -1124,7 +1238,9 @@ else //if(section == 1)
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         didRequest = NO;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //               [MBProgressHUD hideHUDForView:defaultView animated:YES];
+        
+  
+        
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
@@ -1178,6 +1294,8 @@ else //if(section == 1)
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
         }
+        
+        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         didRequest = NO;

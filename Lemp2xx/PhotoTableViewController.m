@@ -11,7 +11,7 @@
 #import "KakaoTalkActivity.h"
 #import "UIImage+GIF.h"
 #import <AssetsLibrary/AssetsLibrary.h>
-
+#import "DetailViewController.h"
 @interface PhotoTableViewController ()
 
 @end
@@ -365,6 +365,7 @@
          
 //            [inScrollView release];
         }
+        NSLog(@"viewTag %d",viewTag);
          if(viewTag == kDownload){
         [self downloadImage:(int)pIndex];
          }
@@ -530,7 +531,7 @@
     }
     fileExt = [fileExt lowercaseString];
     
-    imgUrl = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/file/%@",myList[index][@"message"]];
+    imgUrl = [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,myList[index][@"message"]];
     NSLog(@"imgUrl %@",imgUrl);
     
     NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
@@ -590,7 +591,7 @@
     
     
     
-    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/fileinfo/"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/fileinfo/",BearTalkBaseUrl];
     
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
@@ -623,7 +624,7 @@
             [defaultManager setObject:dic forKey:myList[index][@"message"]];
             
             
-            NSString *imgUrl = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/file/%@",myList[index][@"message"]];
+            NSString *imgUrl = [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,myList[index][@"message"]];
             
             NSLog(@"imgUrl %@",imgUrl);
             NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:imgUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
@@ -832,6 +833,7 @@
 }
 - (void)downloadImageWithUrl:(int)index{
     
+    NSLog(@"downloadImageWithURl %d",index);
     
     if([parentVC isKindOfClass:[ChatViewC class]]){
         [self downloadImageWithChat:(int)index];
@@ -854,15 +856,35 @@
     NSDictionary *msgDic = myList[index];
     NSLog(@"msgDic %@",msgDic);
 
+#ifdef BearTalk
+    
+    if([parentVC isKindOfClass:[DetailViewController class]]){
+        
+        imgUrl = [NSString stringWithFormat:@"BearTalkBaseUrl/api/file/%@",BearTalkBaseUrl,msgDic[@"FILE_KEY"]];
+        NSLog(@"imgUrl %@",imgUrl);
+        NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+        cachefilePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",msgDic[@"FILE_KEY"]]];
+    }
+    else{
         contentDic = [msgDic[@"content"]objectFromJSONString];
         NSLog(@"contentDic %@",contentDic);
         NSDictionary *aDic = [contentDic[@"image"]objectFromJSONString];
         imgUrl = [NSString stringWithFormat:@"https://%@%@%@",aDic[@"server"],aDic[@"dir"],aDic[@"filename"][0]];
         NSLog(@"imgUrl %@",imgUrl);
-//        cachefilePath = [NSString stringWithFormat:@"%@/Documents/%@",NSHomeDirectory(),aDic[@"filename"][0]];
-    
+        NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+        cachefilePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",aDic[@"filename"][0]]];
+        
+    }
+#else
+        contentDic = [msgDic[@"content"]objectFromJSONString];
+        NSLog(@"contentDic %@",contentDic);
+        NSDictionary *aDic = [contentDic[@"image"]objectFromJSONString];
+        imgUrl = [NSString stringWithFormat:@"https://%@%@%@",aDic[@"server"],aDic[@"dir"],aDic[@"filename"][0]];
+        NSLog(@"imgUrl %@",imgUrl);
+    //        cachefilePath = [NSString stringWithFormat:@"%@/Documents/%@",NSHomeDirectory(),aDic[@"filename"][0]];
     NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
     cachefilePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",aDic[@"filename"][0]]];
+#endif
         
     
     

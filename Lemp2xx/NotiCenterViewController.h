@@ -23,5 +23,6 @@
 //- (void)settingNotiList:(NSMutableArray *)array time:(NSString *)time;
 - (void)settingNotiColor:(int)num;
 - (void)settingReadList:(NSMutableArray *)array unread:(NSMutableArray *)unarray time:(NSString *)time;
+- (void)initNotice:(NSString *)del;
 
 @end
