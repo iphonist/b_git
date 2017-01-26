@@ -71,6 +71,7 @@
     [self.imageCropView setImageToCrop:sourceImage];
     [self.imageCropView setResizableCropArea:self.resizeableCropArea];
     [self.imageCropView setCropSize:cropSize];
+    NSLog(@"self.cropSize %@",NSStringFromCGSize(cropSize));
     [self.view addSubview:self.imageCropView];
 }
 

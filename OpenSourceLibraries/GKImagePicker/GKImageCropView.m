@@ -95,9 +95,11 @@ static CGRect GKScaleRect(CGRect rect, CGFloat scale)
         [self addSubview:self.cropOverlayView];
     }
     self.cropOverlayView.cropSize = cropSize;
+    NSLog(@"self.cropSize %@",NSStringFromCGSize(cropSize));
 }
 
 - (CGSize)cropSize{
+    NSLog(@"self.cropSize %@",NSStringFromCGSize(self.cropOverlayView.cropSize));
     return self.cropOverlayView.cropSize;
 }
 
@@ -243,9 +245,9 @@ static CGRect GKScaleRect(CGRect rect, CGFloat scale)
     [super layoutSubviews];
     
     CGSize size = self.cropSize;
+    NSLog(@"self.cropSize %@",NSStringFromCGSize(self.cropSize));
     CGFloat toolbarSize = 54;
     NSLog(@"self.bounds %@",NSStringFromCGRect(self.bounds)); // 320, 548
-    NSLog(@"size %@",NSStringFromCGSize(size)); // 320, 160
     CGRect frame = self.bounds;
   
     float gap = 0.0f;

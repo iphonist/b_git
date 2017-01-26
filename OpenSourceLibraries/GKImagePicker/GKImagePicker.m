@@ -30,7 +30,8 @@
     if (self = [super init]) {
         NSLog(@"init");
         self.cropSize = CGSizeMake(320, 320);
-        self.resizeableCropArea = NO;
+        NSLog(@"self.cropSize %@",NSStringFromCGSize(self.cropSize));
+        self.resizeableCropArea = YES;
         _imagePickerController = [[UIImagePickerController alloc] init];
         _imagePickerController.delegate = self;
         
@@ -84,6 +85,7 @@
     cropController.sourceImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     cropController.resizeableCropArea = self.resizeableCropArea;
     cropController.cropSize = self.cropSize;
+    NSLog(@"self.cropSize %@",NSStringFromCGSize(self.cropSize));
     cropController.delegate = self;
     
  
