@@ -152,73 +152,7 @@
 }
 
 
-- (void)refreshTimeline
-{
-    
-    
-    if([[SharedAppDelegate readPlist:@"was"]length]<1)
-        return;
-    //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
-    //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
-    
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/timeline.lemp",[SharedAppDelegate readPlist:@"was"]];
-    NSURL *baseUrl = [NSURL URLWithString:urlString];
-    
-    
-    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
-    client.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
-                                //                                [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
-                                [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
-    NSLog(@"parameters %@",parameters);
-    //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/info/timeline.lemp" parameters:parameters];
-    
-    NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        //        [myTable.pullToRefreshView stopAnimating];
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        
-        //        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
-        NSLog(@"resultDic %@",resultDic);
-        NSString *isSuccess = resultDic[@"result"];
-        if ([isSuccess isEqualToString:@"0"]) {
-            
-            if([resultDic[@"timeline"]count]>0){
-                
-                [self setGroupList:resultDic[@"timeline"]];
-                NSLog(@"main.groupList %@",resultDic[@"timeline"]);
-            }
-            
-            [SharedAppDelegate.root.mainTabBar comparePrivateSchedule:resultDic[@"lastprivateschedule"] note:resultDic[@"lastprivatemessage"]];
-            
-        }else {
-            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-            [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
-            NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
-            
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        //        [myTable.pullToRefreshView stopAnimating];
-        NSLog(@"FAIL : %@",operation.error);
-        
-        [HTTPExceptionHandler handlingByError:error];
-        
-        
-    }];
-    
-    [operation start];
-    
-    
-}
+
 - (void)addGroupDic:(NSDictionary *)dic{
     NSLog(@"addgroup %@",dic);
     [myList addObject:dic];
@@ -538,7 +472,9 @@
         
         explain.text = dic[@"groupexplain"];
         
-        NSURL *imgURL = [ResourceLoader resourceURLfromJSONString:dic[@"groupimage"] num:0 thumbnail:YES];
+        NSURL *imgURL;
+        imgURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BearTalkBaseUrl,dic[@"groupimage"]]];
+
         //				NSLog(@"== desc %@",[imgURL description]);
         NSLog(@"imgURL %@",imgURL);
         [coverImage sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed|SDWebImageLowPriority progress:^(NSInteger a, NSInteger b) {
@@ -553,7 +489,10 @@
         NSString *groupNumber = [SharedAppDelegate readPlist:dic[@"groupnumber"]];
         
         
-        if([dic[@"accept"]isEqualToString:@"N"] && [dic[@"grouptype"]isEqualToString:@"1"]){
+        
+        if([dic[@"INVITE_YN"]isEqualToString:@"Y"] && [dic[@"MEMBER_YN"]isEqualToString:@"N"]){
+
+            
             coverOverImage.hidden = YES;
             invitationImage.hidden = NO;
             accept.hidden = NO;
@@ -572,8 +511,11 @@
             acceptLabel.hidden = YES;
             denyLabel.hidden = YES;
             
+#ifdef BearTalk
+            if([dic[@"NEW_YN"]isEqualToString:@"Y"]){
+#else
             if([groupNumber length] < 1 || [groupNumber intValue] < [dic[@"lastcontentindex"] intValue]) {
-                
+#endif
                 new.hidden = NO;
                 newSocialLabel.hidden = NO;
             }
@@ -1034,12 +976,13 @@
     NSLog(@"array2 %@",array2);
             [SharedAppDelegate.root.home setGroup:dic regi:dic[@"accept"]];
     
-    if([dic[@"lastcontentindex"]length]<1 || dic[@"lastcontentindex"]==nil)
-        [SharedAppDelegate writeToPlist:dic[@"groupnumber"] value:@"0"];
-    else
-    {
-        [SharedAppDelegate writeToPlist:dic[@"groupnumber"] value:dic[@"lastcontentindex"]];
-    }
+//    NSString *lastcontentindex = [NSString stringWithFormat:@"%@",dic[@"lastcontentindex"]];
+//    if(IS_NULL(lastcontentindex) || [lastcontentindex length] == 0)
+//        [SharedAppDelegate writeToPlist:dic[@"groupnumber"] value:@"0"];
+//    else
+//    {
+//        [SharedAppDelegate writeToPlist:dic[@"groupnumber"] value:dic[@"lastcontentindex"]];
+//    }
     
 
     SharedAppDelegate.root.home.targetuid = @"";
@@ -1441,8 +1384,103 @@
     
 }
 
+- (void)regiGroupWithBearTalk:(NSString *)groupnum answer:(NSString *)yn{
+    
+    
+    NSLog(@"regiGroup");
+    
+    if([ResourceLoader sharedInstance].myUID == nil || [[ResourceLoader sharedInstance].myUID length]<1){
+        NSLog(@"userindex null");
+        return;
+    }
+    
+    
+    NSString *urlString;
+    if([yn isEqualToString:@"Y"]){
+    urlString = [NSString stringWithFormat:@"%@/api/sns/accept",BearTalkBaseUrl];
+    }
+    else{
+        urlString = [NSString stringWithFormat:@"%@/api/sns/reject",BearTalkBaseUrl];
+        
+    }
+        NSURL *baseUrl = [NSURL URLWithString:urlString];
+        
+        
+        
+        
+        AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+        client.responseSerializer = [AFHTTPResponseSerializer serializer];
+        
+        
+        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [ResourceLoader sharedInstance].myUID,@"uid",
+                                    groupnum,@"snskey",nil];
+        NSLog(@"parameters %@",parameters);
+        
+        //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/group/join.lemp" parameters:parameters];
+        
+        
+        NSError *serializationError = nil;
+        NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"PUT" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            NSLog(@"resultDic %@",[operation.responseString objectFromJSONString]);
+     
+            
+            if([yn isEqualToString:@"Y"]){
+                [CustomUIKit popupSimpleAlertViewOK:@"소셜 가입" msg:@"가입 완료!" con:self];
+                
+                
+                for(int i = 0; i < [myList count]; i++){
+                    if([myList[i][@"groupnumber"]isEqualToString:groupnum])
+                    {
+                        [SharedAppDelegate.root fromUnjoinToJoin:myList[i]];
+                        
+                        [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:myList[i] object:@"N" key:@"INVITE_YN"]];
+                        [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:myList[i] object:@"Y" key:@"MEMBER_YN"]];
+                    }
+                }
+            }
+            else{
+                [CustomUIKit popupSimpleAlertViewOK:nil msg:@"거절 완료!" con:self];
+                
+                
+                
+                for(int i = 0; i < [myList count]; i++){
+                    if([myList[i][@"groupnumber"]isEqualToString:groupnum])
+                        [myList removeObjectAtIndex:i];
+                    
+                }
+                
+                
+            }
+            
+            [myTable reloadData];
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            NSLog(@"FAIL : %@",operation.error);
+            [HTTPExceptionHandler handlingByError:error];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 가입하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        [alert show];
+            
+        }];
+        
+        [operation start];
+
+}
+    
+
 - (void)regiGroup:(NSString *)groupnum answer:(NSString *)yn{
     
+    
+#ifdef BearTalk
+    [self regiGroupWithBearTalk:groupnum answer:yn];
+    return;
+    
+#endif
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
     

@@ -64,5 +64,6 @@
 - (void)setNewNoticeBadge:(int)count;
 - (void)setNewChatBadge:(int)count;
 - (void)refreshSetupButton;
+- (void)refreshTimelineWithBearTalk;
 
 @end
