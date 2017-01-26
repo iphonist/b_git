@@ -11,6 +11,7 @@
 #import "PhotoTableViewController.h"
 #import <objc/runtime.h>
 #import "UIImage+Resize.h"
+#import "UIImage+GIF.h"
 
 
 #define PI 3.14159265358979323846
@@ -60,7 +61,10 @@ const char paramNumber;
         if([array count]>0){
         numberArray = [[NSMutableArray alloc]init];
         for(int i = 0 ; i < [dataArray count]; i++){
+#ifdef BearTalk
+#else
             [numberArray addObject:[NSString stringWithFormat:@"%d",i]];
+#endif
         }
         NSLog(@"numberArray %@",numberArray);
         }
@@ -91,7 +95,7 @@ const char paramNumber;
     button = [CustomUIKit emptyButtonWithTitle:@"barbutton_done.png" target:self selector:@selector(sendPost)];
     btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = btnNavi;
-    [self.navigationItem.rightBarButtonItem setEnabled:NO];
+//    [self.navigationItem.rightBarButtonItem setEnabled:NO];
 //    [btnNavi release];
     
     
@@ -442,8 +446,6 @@ const char paramNumber;
 
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
 {
-	//	NSLog(@"ipicker %@",info);
-    
     
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     
@@ -472,12 +474,21 @@ const char paramNumber;
 		image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(640, 960) interpolationQuality:kCGInterpolationHigh];
 	}
     
+    NSString *timeStamp = [[NSString alloc]initWithFormat:@"%.0f.jpg",[[NSDate date] timeIntervalSince1970]];
     if(viewTag == kModify){
-		[addDataArray addObject:@{@"data" : imageData, @"image" : image}];
+#ifdef BearTalk
+        [addDataArray addObject:@{@"data" : imageData, @"image" : image, @"filename" : timeStamp}];
+#else
+        [addDataArray addObject:@{@"data" : imageData, @"image" : image}];
         [numberArray addObject:@"100"];
+#endif
 	}
     else{
-		[dataArray addObject:@{@"data" : imageData, @"image" : image}];
+#ifdef BearTalk
+        [dataArray addObject:@{@"data" : imageData, @"image" : image, @"filename" : timeStamp}];
+#else
+        [dataArray addObject:@{@"data" : imageData, @"image" : image}];
+#endif
     }
     isChanged = YES;
 	[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
@@ -507,12 +518,22 @@ const char paramNumber;
 	// @"data" : imageData	= 실제 서버로 전송하는 이미지 데이터
 	// @"image" : image		= 썸네일로 보여줄 이미지
     
+    NSString *timeStamp = [[NSString alloc]initWithFormat:@"%.0f.jpg",[[NSDate date] timeIntervalSince1970]];
+    
     if(viewTag == kModify){
-		[addDataArray addObject:@{@"data" : imageData, @"image" : image}];
+#ifdef BearTalk
+        [addDataArray addObject:@{@"data" : imageData, @"image" : image, @"filename" : timeStamp}];
+#else
+        [addDataArray addObject:@{@"data" : imageData, @"image" : image}];
         [numberArray addObject:@"100"];
+#endif
 	}
     else{
-		[dataArray addObject:@{@"data" : imageData, @"image" : image}];
+#ifdef BearTalk
+        [dataArray addObject:@{@"data" : imageData, @"image" : image, @"filename" : timeStamp}];
+#else
+        [dataArray addObject:@{@"data" : imageData, @"image" : image}];
+#endif
     }
 //    [imageData release];
     isChanged = YES;
@@ -545,9 +566,32 @@ const char paramNumber;
                                          [CustomUIKit popupSimpleAlertViewOK:nil msg:@"이미지가 너무 작아 첨부할 수 없는 이미지가 있습니다." con:self];
                                          return;
                                      }
+                                     NSString *filename = ((NSURL *)info[@"PHImageFileURLKey"]).absoluteString;
+                                     UIImage *image;
+                                     //                                     image = [UIImage imageWithData:imageData];
+                                     //
+                                     NSLog(@"imageData length %d",(int)[imageData length]);
+#ifdef BearTalk
+                                     image = [UIImage sd_animatedGIFWithData:imageData];
+                                     NSLog(@"image %@",image);
+                                     NSLog(@"imagesize %@",NSStringFromCGSize(image.size));
+                                     filename = [filename lowercaseString];
+                                     if([filename hasSuffix:@"gif"]){
+                                         // gif 는 사이즈 안 줄임
+                                         NSLog(@"image is gif");
+                                     }
+                                     else{
+                                         if(image.size.width > 640 || image.size.height > 960) {
+                                             image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(640, 960) interpolationQuality:kCGInterpolationHigh];
+                                         }
+                                         imageData = [[NSData alloc] initWithData:[SharedAppDelegate.root imageWithImage:image scaledToSizeWithSameAspectRatio:CGSizeMake(640, 960)]];
+                                         NSLog(@"aimagedata length %d",[imageData length]);
+                                     }
+                                     NSLog(@"filename %@",filename);
+                                     [infoArray addObject:@{@"image" : image, @"filename" : filename, @"data" : imageData}];
+#else
                                      
-                                     
-                                     UIImage *image = [UIImage imageWithData:imageData];
+                                     image = [UIImage imageWithData:imageData];
                                      
                                      if(image.size.width > 640 || image.size.height > 960) {
                                          image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(640, 960) interpolationQuality:kCGInterpolationHigh];
@@ -556,7 +600,7 @@ const char paramNumber;
                                      NSData *aimageData = [[NSData alloc] initWithData:[SharedAppDelegate.root imageWithImage:image scaledToSizeWithSameAspectRatio:CGSizeMake(640, 960)]];
                                      NSLog(@"imageData length %d",(int)[aimageData length]);
                                      [infoArray addObject:@{@"image" : image, @"data" : aimageData}];
-                                     
+#endif
                                      if([assets count] == [infoArray count]){
                                          
                                          NSLog(@"infoArray count %d",(int)[infoArray count]);
@@ -620,11 +664,15 @@ const char paramNumber;
 //    [contentsTextView becomeFirstResponder];
     
     NSLog(@"saveImages %d %d",(int)[array count],(int)viewTag);
+    NSLog(@"saveImages %@",array);
     if(viewTag == kModify){
         [addDataArray addObjectsFromArray:array];
+#ifdef BearTalk
+#else
         for(int i = 0; i < [array count]; i++){
             [numberArray addObject:@"100"];
         }
+#endif
     }
     else{
     
@@ -651,16 +699,24 @@ const char paramNumber;
     
 	[SharedFunctions adjustContentOffsetForTextView:textView];
     
-    if([dataArray count]+[addDataArray count]>0){
-        [self.navigationItem.rightBarButtonItem setEnabled:YES];
-        
-    }
-    else{
-        if([textView.text length]==0)
-            [self.navigationItem.rightBarButtonItem setEnabled:NO];
-        else
-        [self.navigationItem.rightBarButtonItem setEnabled:YES];
-    }
+//    if([dataArray count]+[addDataArray count]>0){
+//        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+//        
+//    }
+//    else{
+//        if([textView.text length]==0)
+//            [self.navigationItem.rightBarButtonItem setEnabled:NO];
+//        else
+//        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+//    }
+    
+//    UIBarButtonItem *rightButton = [self.navigationItem.rightBarButtonItems lastObject];
+//    if([contentsTextView.text length]>0 || [dataArray count]+[addDataArray count]>0)
+//        [rightButton setEnabled:YES];
+//    else{
+//        [rightButton setEnabled:NO];
+//        
+//    }
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -823,7 +879,16 @@ const char paramNumber;
         //        [addPhoto setBackgroundImage:[CustomUIKit customImageNamed:@"wrt_photobg.png"] forState:UIControlStateNormal];
     }
     
-    
+   
+//#ifdef BearTalk
+//    UIBarButtonItem *rightButton = [self.navigationItem.rightBarButtonItems lastObject];
+//    if([contentsTextView.text length]>0 || [dataArray count]+[addDataArray count]>0)
+//        [rightButton setEnabled:YES];
+//    else{
+//        [rightButton setEnabled:NO];
+//        
+//    }
+//#endif
 }
 
 
@@ -921,11 +986,30 @@ const char paramNumber;
     if([contentsTextView isFirstResponder] == NO)
         [aCollectionView reloadData];
     
+    if([index length]>0){
+        for(NSDictionary *dic in dataArray){
+            
+            [numberArray addObject:[NSString stringWithFormat:@"%@",dic[@"filename"]]];
+        }
+    }
+    else{
+        [numberArray removeAllObjects];
+        
+    }
     
+    [dataArray removeAllObjects];
+    [addDataArray removeAllObjects];
     
     [addPhoto setBackgroundImage:[UIImage imageNamed:@"btn_camera_off.png"] forState:UIControlStateNormal];
     
     
+//    UIBarButtonItem *rightButton = [self.navigationItem.rightBarButtonItems lastObject];
+//    if([contentsTextView.text length]>0 || [dataArray count]+[addDataArray count]>0)
+//        [rightButton setEnabled:YES];
+//    else{
+//        [rightButton setEnabled:NO];
+//        
+//    }
 #else
     photoCountLabel.hidden = YES;
     
@@ -955,25 +1039,50 @@ const char paramNumber;
     //    }
     [addPhoto setBackgroundImage:[CustomUIKit customImageNamed:@"mmbtm_photo_dft.png"] forState:UIControlStateNormal];
     
-    if([contentsTextView.text length]==0)
-        [self.navigationItem.rightBarButtonItem setEnabled:NO];
-    else
-        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+//    if([contentsTextView.text length]==0)
+//        [self.navigationItem.rightBarButtonItem setEnabled:NO];
+//    else
+//        [self.navigationItem.rightBarButtonItem setEnabled:YES];
     
 #endif
 }
 - (void)confirmDelete:(int)row{
     
+#ifdef BearTalk
+    if([index length]>0)
+    [numberArray addObject:dataArray[row][@"filename"]];
+    
+    [dataArray removeObjectAtIndex:row];
+    if([contentsTextView isFirstResponder] == NO)
+        [aCollectionView reloadData];
+    
+//    UIBarButtonItem *rightButton = [self.navigationItem.rightBarButtonItems lastObject];
+//    if([contentsTextView.text length]>0 || [dataArray count]+[addDataArray count]>0)
+//        [rightButton setEnabled:YES];
+//    else{
+//        [rightButton setEnabled:NO];
+//        
+//    }
+#else
     [dataArray removeObjectAtIndex:row];
     [numberArray removeObjectAtIndex:row];
     if([contentsTextView isFirstResponder] == NO)
         [aCollectionView reloadData];
+#endif
 }
 - (void)confirmModify:(int)row{
     
     [addDataArray removeObjectAtIndex:row];
     if([contentsTextView isFirstResponder] == NO)
                     [aCollectionView reloadData];
+    
+//    UIBarButtonItem *rightButton = [self.navigationItem.rightBarButtonItems lastObject];
+//    if([contentsTextView.text length]>0 || [dataArray count]+[addDataArray count]>0)
+//        [rightButton setEnabled:YES];
+//    else{
+//        [rightButton setEnabled:NO];
+//        
+//    }
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -1007,20 +1116,260 @@ const char paramNumber;
     
 }
 
+- (void)sendMemo{
+    
+        
+        NSLog(@"sendMemo");
+        
+        if([ResourceLoader sharedInstance].myUID == nil || [[ResourceLoader sharedInstance].myUID length]<1){
+            NSLog(@"userindex null");
+            return;
+        }
+    [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    if([contentsTextView.text length] == 0 && [dataArray count]+[addDataArray count] == 0){
+        
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+        [CustomUIKit popupSimpleAlertViewOK:nil msg:@"메모내용을 입력하셔야 합니다." con:self];
+        return;
+    }
+    
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        
+    
+    NSLog(@"index %@",index);
+    NSLog(@"numberArray %@",numberArray);
+    NSLog(@"dataArray %d",[dataArray count]);
+    NSLog(@"addDataArray %d",[addDataArray count]);
+  
+    
+    NSString *encodedString = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                                                                                    NULL,
+                                                                                                    (__bridge CFStringRef)contentsTextView.text,
+                                                                                                    NULL,
+                                                                                                    (__bridge CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                                    kCFStringEncodingUTF8 );
+    
+    
+    NSLog(@"encodedString %@",encodedString);
+    
+    
+    NSDictionary *parameters;
+    if([index length]>0){
+        if([numberArray count]>0)
+        parameters = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",
+                      encodedString,@"msg",numberArray,@"delfiles",index,@"memokey",nil];
+        else
+            parameters = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",
+                          encodedString,@"msg",index,@"memokey",nil];
+    }
+    else{
+        parameters = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",
+                      encodedString,@"msg",nil];
+        
+    }
+        NSLog(@"parameters %@",parameters);
+        
+        
+        NSError *serializationError = nil;
+    NSMutableURLRequest *request;
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/memos/create/app/",BearTalkBaseUrl];
+    NSURL *baseUrl = [NSURL URLWithString:urlString];
+    
+    
+    if([addDataArray count]>0){
+        
+        AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+        
+        client.responseSerializer=[AFHTTPResponseSerializer serializer];
+        
+        NSLog(@"addDataArray count %d",[addDataArray count]);
+        request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:parameters JSONKey:@"" JSONParameter:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+            
+            for(int i = 0; i < [addDataArray count]; i++){
+                NSString *mimeType;
+                mimeType = [SharedFunctions getMimeTypeForData:addDataArray[i][@"data"]];
+                NSLog(@"mimeType %@",mimeType);
+                NSLog(@"mimeType %@",addDataArray[i][@"filename"]);
+                [formData appendPartWithFileData:addDataArray[i][@"data"] name:@"file" fileName:addDataArray[i][@"filename"] mimeType:mimeType];
+            }
+        }];
+        
+        
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        
+        [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+            NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+            NSLog(@"totalBytesWritten/totalBytesExpectedToWrite %f",(float)totalBytesWritten/totalBytesExpectedToWrite);
+            
+        }];
+        [operation  setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id  responseObject) {
+            [self.navigationItem.rightBarButtonItem setEnabled:YES];
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            [SVProgressHUD dismiss];
+            
+            [self cancel];
+            NSLog(@"operation.responseString  %@",operation.responseString );
+            //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
+            
+            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+                
+            }
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [self.navigationItem.rightBarButtonItem setEnabled:YES];
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            
+            [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
+            NSLog(@"FAIL : %@",operation.error);
+            [HTTPExceptionHandler handlingByError:error];
+            //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        [alert show];
+            
+        }];
+        
+        [operation start];
+
+    }
+       else if([index length] == 0 && [dataArray count]>0){
+            
+            AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+            
+            client.responseSerializer=[AFHTTPResponseSerializer serializer];
+            
+        NSLog(@"DataRray count %d",[dataArray count]);
+    request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:parameters JSONKey:@"" JSONParameter:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+        
+          for(int i = 0; i < [dataArray count]; i++){
+        NSString *mimeType;
+        mimeType = [SharedFunctions getMimeTypeForData:dataArray[i][@"data"]];
+              NSLog(@"mimeType %@",mimeType);
+              NSLog(@"mimeType %@",dataArray[i][@"filename"]);
+        [formData appendPartWithFileData:dataArray[i][@"data"] name:@"file" fileName:dataArray[i][@"filename"] mimeType:mimeType];
+          }
+    }];
+    
+    
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        NSLog(@"Sent %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+        NSLog(@"totalBytesWritten/totalBytesExpectedToWrite %f",(float)totalBytesWritten/totalBytesExpectedToWrite);
+    
+    }];
+           [operation  setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id  responseObject) {
+               [self.navigationItem.rightBarButtonItem setEnabled:YES];
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            [SVProgressHUD dismiss];
+            
+            [self cancel];
+            NSLog(@"operation.responseString  %@",operation.responseString );
+            //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
+            
+            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+                
+            }
+            
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               [self.navigationItem.rightBarButtonItem setEnabled:YES];
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            
+            [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
+            NSLog(@"FAIL : %@",operation.error);
+            [HTTPExceptionHandler handlingByError:error];
+            //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        [alert show];
+            
+        }];
+        
+        [operation start];
+        
+
+    }
+    else{
+        
+        
+        AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+        
+        client.responseSerializer=[AFHTTPResponseSerializer serializer];
+        
+        NSLog(@"DataaRray count 000");
+         request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+         
+         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+         
+         
+        operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [self.navigationItem.rightBarButtonItem setEnabled:YES];
+             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+             
+             [self cancel];
+             [SVProgressHUD dismiss];
+             
+             NSLog(@"operation.responseString  %@",operation.responseString );
+             //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
+             
+             if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+                 NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+                 
+             }
+             
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [self.navigationItem.rightBarButtonItem setEnabled:YES];
+             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+             
+             [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
+             NSLog(@"FAIL : %@",operation.error);
+             [HTTPExceptionHandler handlingByError:error];
+             //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+             //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+             //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+             //        [alert show];
+             
+         }];
+         
+         [operation start];
+         
+
+     }
+}
+
 
 - (void)sendPost{
     
+#ifdef BearTalk
+    [self sendMemo];
+    return;
+    
+#endif
+    
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+    
     [self.navigationItem.rightBarButtonItem setEnabled:NO];
+//    NSString *newString = [contentsTextView.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if([contentsTextView.text length] == 0 && [dataArray count]+[addDataArray count] == 0){
+        
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
+        [CustomUIKit popupSimpleAlertViewOK:nil msg:@"메모내용을 입력하셔야 합니다." con:self];
+        return;
+    }
+    
     NSLog(@"dataarray count %d",(int)[dataArray count]);
     NSLog(@"addDataArray count %d",(int)[addDataArray count]);
     
-    NSString *newString = [contentsTextView.text stringByReplacingOccurrencesOfString:@" " withString:@""];
-    if([newString length]<1 && [dataArray count]+[addDataArray count] == 0){
-        [self cancel];
-        return;
-    }
+    
     
     if([contentsTextView.text length]>10000)
     {    NSLog(@"4");
@@ -1031,6 +1380,8 @@ const char paramNumber;
         //        [sender setEnabled:YES];
         return;
     }
+    
+    
     if([index length]>0)
     {
         [self modifyPost:index modify:2 msg:contentsTextView.text];
