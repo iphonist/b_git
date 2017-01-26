@@ -695,7 +695,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
     
     NSString *urlString;
 #ifdef BearTalk
-    urlString = @"https://sns.lemp.co.kr/api/emoticon";
+    urlString = [NSString stringWithFormat:@"%@/api/emoticon",BearTalkBaseUrl];
 #else
     urlString = [NSString stringWithFormat:@"https://%@/lemp/info/emoticon.lemp",[SharedAppDelegate readPlist:@"was"]];
     
@@ -955,7 +955,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
     }
     
 #ifdef BearTalk
-    NSString *imgUrl = [NSString stringWithFormat:@"https://sns.lemp.co.kr/images/emoticon/%@",emoticonUrlArray[indexPath.row]];
+    NSString *imgUrl = [NSString stringWithFormat:@"%@/images/emoticon/%@",BearTalkBaseUrl,emoticonUrlArray[indexPath.row]];
      NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/emoticon_%@",NSHomeDirectory(),emoticonUrlArray[indexPath.row]];
 #else
     
@@ -1046,7 +1046,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
     
     
 #ifdef BearTalk
-    NSString *imgUrl = [NSString stringWithFormat:@"https://sns.lemp.co.kr/images/emoticon/%@",emoticonUrlArray[indexPath.row]];
+    NSString *imgUrl = [NSString stringWithFormat:@"%@/images/emoticon/%@",BearTalkBaseUrl,emoticonUrlArray[indexPath.row]];
     [self showImage:imgUrl];
     if(selectedEmoticon){
         //        [selectedEmoticon release];
@@ -2929,7 +2929,7 @@ try {
     
     
     
-    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/rooms/lastreadmsg/"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/rooms/lastreadmsg/",BearTalkBaseUrl];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -3275,7 +3275,7 @@ try {
     
     
     
-    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/chats/unreadmsg/"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/chats/unreadmsg/",BearTalkBaseUrl];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -3518,7 +3518,7 @@ try {
     
 //    sendingDic = [[NSDictionary alloc]initWithObjectsAndKeys:msg,@"msg",t,@"type",index,@"index",nil];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/upload"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/upload",BearTalkBaseUrl];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -3962,7 +3962,7 @@ try {
     
 #ifdef BearTalk
     
-    urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/chats/msglist"];
+    urlString = [NSString stringWithFormat:@"%@/api/chats/msglist",BearTalkBaseUrl];
 #else
     urlString = [NSString stringWithFormat:@"https://%@/lemp/chat/read/msg.lemp",[SharedAppDelegate readPlist:@"was"]];
 #endif
@@ -4605,7 +4605,7 @@ try {
     
     
     
-    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/rooms/change/info/"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/rooms/change/info/",BearTalkBaseUrl];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -8101,7 +8101,7 @@ if([message length]<1)
             NSString *urlString = text;
 #ifdef BearTalk
 //            urlString = [NSString stringWithFormat:text];
-             urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/images/emoticon/%@",text];
+             urlString = [NSString stringWithFormat:@"%@/images/emoticon/%@",BearTalkBaseUrl,text];
             cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/emoticon_%@",NSHomeDirectory(),text];
             NSLog(@"cachefilePath %@",cachefilePath);
             
@@ -8271,7 +8271,7 @@ if([message length]<1)
             NSString *urlString = text;
 #ifdef BearTalk
             //            urlString = text];
-            urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/images/emoticon/%@",text];
+            urlString = [NSString stringWithFormat:@"%@/images/emoticon/%@",BearTalkBaseUrl,text];
             cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/emoticon_%@",NSHomeDirectory(),urlString];
             NSLog(@"cachefilePath %@",cachefilePath);
             
@@ -8494,7 +8494,7 @@ if([message length]<1)
                     }
                 }
                 else{
-                    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/fileinfo/"];
+                    NSString *urlString = [NSString stringWithFormat:@"%@/api/fileinfo/",BearTalkBaseUrl];
                     
                     NSURL *baseUrl = [NSURL URLWithString:urlString];
                     
@@ -8648,7 +8648,7 @@ if([message length]<1)
                 
                 NSString *imgUrl;
                 
-                imgUrl= [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/file/%@/thumb",text];
+                imgUrl= [NSString stringWithFormat:@"%@/api/file/%@/thumb",BearTalkBaseUrl,text];
                     [mediaButton setTitle:text forState:UIControlStateSelected];
                     [downloadButton setTitle:text forState:UIControlStateSelected];
                 
@@ -9066,7 +9066,7 @@ if([message length]<1)
                     
                     
                     
-                    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/fileinfo/"];
+                    NSString *urlString = [NSString stringWithFormat:@"%@/api/fileinfo/",BearTalkBaseUrl];
                     
                     NSURL *baseUrl = [NSURL URLWithString:urlString];
                     
@@ -9429,7 +9429,7 @@ if([message length]<1)
                     }
                 }
                 else{
-                NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/fileinfo/"];
+                NSString *urlString = [NSString stringWithFormat:@"%@/api/fileinfo/",BearTalkBaseUrl];
                 
                 NSURL *baseUrl = [NSURL URLWithString:urlString];
                 
@@ -9573,7 +9573,7 @@ if([message length]<1)
                 
                 NSString *imgUrl;
                 
-                imgUrl= [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/file/%@/thumb",text];
+                imgUrl= [NSString stringWithFormat:@"%@/api/file/%@/thumb",BearTalkBaseUrl,text];
                 
                     
                 
@@ -9855,7 +9855,7 @@ if([message length]<1)
                     if([contactLabel.text length]<1){
                         
                         
-                        NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/fileinfo/"];
+                        NSString *urlString = [NSString stringWithFormat:@"%@/api/fileinfo/",BearTalkBaseUrl];
                         
                         NSURL *baseUrl = [NSURL URLWithString:urlString];
                         
@@ -11197,7 +11197,7 @@ if([message length]<1)
         fileURL = [NSURL fileURLWithPath:cachefilePath];
     }
     else{
-        fileUrlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/file/%@",text];
+        fileUrlString = [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,text];
         NSLog(@"fileUrlString.....%@",fileUrlString);
         fileURL = [NSURL URLWithString:fileUrlString];
         
@@ -11318,7 +11318,7 @@ if([message length]<1)
             NSLog(@"before downloading");// 다운 받기 전 - 포토뷰 들어가서 업뎃해줘야.
             
             
-//            NSString *imgUrl = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/file/%@",fileName];
+//            NSString *imgUrl = [NSString stringWithFormat:@"%@/api/file/%@",fileName];
             PhotoViewController *photoViewCon = [[PhotoViewController alloc] initWithFileName:fileName image:image type:5 parentViewCon:self roomkey:self.roomKey server:fileUrlString];
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(![self.navigationController.topViewController isKindOfClass:[photoViewCon class]]){
@@ -11620,7 +11620,7 @@ else{
          NSLog(@"before downloading");// 다운 받기 전 - 포토뷰 들어가서 업뎃해줘야.
         
 #ifdef BearTalk
-        NSString *imgUrl = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/file/%@",fileName];
+        NSString *imgUrl = [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,fileName];
         PhotoViewController *photoViewCon = [[PhotoViewController alloc] initWithFileName:fileName image:image type:(int)[sender tag] parentViewCon:self roomkey:self.roomKey server:imgUrl];
         dispatch_async(dispatch_get_main_queue(), ^{
             if(![self.navigationController.topViewController isKindOfClass:[photoViewCon class]]){
@@ -11738,7 +11738,7 @@ else{
 //    AFHTTPRequestOperation *operation =   [[AFHTTPRequestOperation alloc] initWithRequest:request];
     
 #ifdef BearTalk
-    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/file/%@",FileName];
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,FileName];
 #else
     NSString *urlString = [NSString stringWithFormat:@"%@://%@%@%@",dic[@"protocol"],dic[@"server"],dic[@"dir"],dic[@"filename"][0]];
 #endif
