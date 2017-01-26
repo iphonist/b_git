@@ -121,10 +121,14 @@ return self;
 
     
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+    if([texts count]>0){
     [string addAttribute:NSForegroundColorAttributeName value:RGB(51, 61, 71) range:[msg rangeOfString:texts[0]]];
     [string addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:18] range:[msg rangeOfString:texts[0]]];
+    }
+    else if([texts count]>1){
     [string addAttribute:NSForegroundColorAttributeName value:RGB(153, 153, 153) range:[msg rangeOfString:texts[1]]];
     [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:[msg rangeOfString:texts[1]]];
+    }
     [label setAttributedText:string];
     NSLog(@"label %@",label);
     NSLog(@"msg %@",msg);
@@ -722,7 +726,9 @@ return self;
     NSString *msg = NSLocalizedString(@"do_pulmuone_ki_test", @"do_pulmuone_ki_test");
     NSArray *texts=[NSArray arrayWithObjects:NSLocalizedString(@"pulmuone_ki", @"pulmuone_ki"), NSLocalizedString(@"do_test", @"do_test"),nil];
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+    if([texts count]>1){
     [string addAttribute:NSForegroundColorAttributeName value:RGB(244, 223, 163) range:[msg rangeOfString:texts[1]]];
+    }
     [label setAttributedText:string];
     
     

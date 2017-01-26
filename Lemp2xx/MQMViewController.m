@@ -683,7 +683,7 @@
        NSLog(@"param %@",param);
     NSDictionary *nilDic = nil;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    //        request = [client multipartFormRequestWithMethod:@"POST" path:@"/lemp/timeline/write/timeline.lemp" parameters:parameters JSONKey:@"poll" JSONParameter:pollDic constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+    
     
     NSMutableURLRequest *request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:nilDic JSONKey:@"param" JSONParameter:param constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         

@@ -85,6 +85,9 @@
 //#ifdef GreenTalk
 //    return;
 //#endif
+#ifdef BearTalk
+    return;
+#endif
     
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;

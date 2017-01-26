@@ -2321,7 +2321,9 @@ if(tag0 >= 0)
             NSString *msg = NSLocalizedString(@"pulmuone_ki_calculate", @"pulmuone_ki_calculate");//@"지수 계산하기";
             NSArray *texts=[NSArray arrayWithObjects:NSLocalizedString(@"pulmuone_ki_calculate_sep1", @"pulmuone_ki_calculate_sep1"), NSLocalizedString(@"pulmuone_ki_calculate_sep2", @"pulmuone_ki_calculate_sep2"),nil];
             NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+            if([texts count]>1){
             [string addAttribute:NSForegroundColorAttributeName value:RGB(244, 223, 163) range:[msg rangeOfString:texts[1]]];
+            }
             [buttonLabel setAttributedText:string];
             buttonLabel.backgroundColor = RGB(139, 76, 217);
 //            resultButton.enabled = YES;

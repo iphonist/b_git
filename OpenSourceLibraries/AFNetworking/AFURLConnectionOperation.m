@@ -639,7 +639,6 @@ willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challe
 totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSLog(@"uploadProgress %@",self.uploadProgress);
         if (self.uploadProgress) {
             self.uploadProgress((NSUInteger)bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
         }

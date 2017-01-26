@@ -611,6 +611,7 @@ const char paramDic;
     profileView.clipsToBounds = YES;
     profileView.layer.cornerRadius = profileView.frame.size.width / 2;
     
+//    profileView.contentMode = UIViewContentModeScaleAspectFill;
     
     
     UIImageView *addView;
@@ -1087,7 +1088,9 @@ const char paramDic;
     NSString *msg = [NSString stringWithFormat:@"휴대폰 %@",[mydic[@"cellphone"]length]>0?mydic[@"cellphone"]:@"정보없음"];
     NSArray *texts=[NSArray arrayWithObjects:@"휴대폰 ", [mydic[@"cellphone"]length]>0?mydic[@"cellphone"]:@"정보없음", nil];
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+    if([texts count]>0){
     [string addAttribute:NSForegroundColorAttributeName value:GreenTalkColor range:[msg rangeOfString:texts[0]]];
+    }
     //        [string addAttribute:NSForegroundColorAttributeName value:RGB(87, 107, 149) range:[msg rangeOfString:[texts[4]]];
     [label setAttributedText:string];
 //    [string release];
@@ -1100,7 +1103,9 @@ const char paramDic;
     msg = [NSString stringWithFormat:@"이메일 %@",mydic[@"email"]];
     texts=[NSArray arrayWithObjects:@"이메일 ", mydic[@"email"], nil];
     string = [[NSMutableAttributedString alloc]initWithString:msg];
+    if([texts count]>0){
     [string addAttribute:NSForegroundColorAttributeName value:GreenTalkColor range:[msg rangeOfString:texts[0]]];
+    }
     //        [string addAttribute:NSForegroundColorAttributeName value:RGB(87, 107, 149) range:[msg rangeOfString:[texts[4]]];
     [label setAttributedText:string];
 //    [string release];
@@ -3613,9 +3618,9 @@ const char paramDic;
 
 
 - (void)getMyInfo{
-    //#ifdef GreenTalk
-    //    return;
-    //#endif
+    #ifdef BearTalk
+        return;
+    #endif
     
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;

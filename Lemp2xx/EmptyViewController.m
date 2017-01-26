@@ -549,7 +549,7 @@
             AFHTTPRequestOperation *operation;
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-//            request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/write/timeline.lemp" parameters:parameters];
+    
     
     NSError *serializationError = nil;
     request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];

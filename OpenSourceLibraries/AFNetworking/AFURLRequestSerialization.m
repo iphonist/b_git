@@ -662,7 +662,16 @@ forHTTPHeaderField:(NSString *)field
 
     return [formData requestByFinalizingMultipartFormData];
 }
-
+-(NSData*) dataFromString:(NSString*) s
+{
+    NSMutableData *d = [[NSMutableData alloc] init];
+    for (int i = 0; i < [s length]; i++)
+    {
+        char c = [s characterAtIndex:i];
+        [d appendBytes:&c length:1];
+    }
+    return d;
+}
 
 - (NSMutableURLRequest *)multipartFormRequestWithMethod:(NSString *)method
                                                    path:(NSString *)URLString
@@ -683,14 +692,19 @@ forHTTPHeaderField:(NSString *)field
     if (parameters) {
         for (AFQueryStringPair *pair in AFQueryStringPairsFromDictionary(parameters)) {
             NSData *data = nil;
+            NSLog(@"pair.value %@",pair.value);
             if ([pair.value isKindOfClass:[NSData class]]) {
                 data = pair.value;
             } else if ([pair.value isEqual:[NSNull null]]) {
                 data = [NSData data];
             } else {
                 
-                data = [[AFPercentEscapedStringFromString(pair.value) description] dataUsingEncoding:self.stringEncoding];
+#ifdef BearTalk
+                data = [[pair.value description] dataUsingEncoding:self.stringEncoding];//[self dataFromString:pair.value];//[AFPercentEscapedStringFromString(pair.value) description];
                 
+#else
+                data = [[AFPercentEscapedStringFromString(pair.value) description] dataUsingEncoding:self.stringEncoding];
+#endif
             }
             
             if (data) {

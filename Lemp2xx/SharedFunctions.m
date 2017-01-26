@@ -547,7 +547,7 @@
 
 + (void)setLastUpdate:(NSString*)date
 {
-	NSLog(@"setLastUpdate");
+	NSLog(@"setLastUpdate %@",date);
 //    NSDate *now = [[NSDate alloc] init];
 //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 //    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];

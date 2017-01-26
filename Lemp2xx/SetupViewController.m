@@ -1379,7 +1379,14 @@ else if (indexPath.row == globalFontSize) {
 - (void)confirmInit{
     
     //			[MBProgressHUD showHUDAddedTo:SharedAppDelegate.window label:@"앱을 종료하지 말고 기다려주세요." animated:YES];
-    [SharedAppDelegate writeToPlist:@"lastdate" value:@"0000-00-00 00:00:00"];
+  
+    
+#ifdef BearTalk
+    
+     [SharedAppDelegate writeToPlist:@"lastdate" value:@"0"];
+#else
+        [SharedAppDelegate writeToPlist:@"lastdate" value:@"0000-00-00 00:00:00"];
+#endif
     [SharedAppDelegate.root setShowFeedbackMessage:YES];
     [SVProgressHUD showWithStatus:@"앱을 종료하지 말고\n기다려주세요." maskType:SVProgressHUDMaskTypeBlack];
     [SharedAppDelegate.root startup];
