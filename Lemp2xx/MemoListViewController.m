@@ -261,7 +261,7 @@
         
         
         
-        NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/memos/list/"];
+        NSString *urlString = [NSString stringWithFormat:@"%@/api/memos/list/",BearTalkBaseUrl];
         NSURL *baseUrl = [NSURL URLWithString:urlString];
         
         
@@ -340,7 +340,7 @@
     
     
     
-    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/memos/dels/"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/memos/dels/",BearTalkBaseUrl];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -684,41 +684,40 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
         
         dic = myList[indexPath.row];
         NSLog(@"dic %@",dic);
-//        NSDictionary *msgDic = [dic[@"content"][@"msg"]objectFromJSONString];
-//        
-//        if([msgDic[@"image"]length]>0 && msgDic[@"image"] != nil){
-//            
-//            title.frame = CGRectMake(10+46+5, 9, 270-46-5, 20);
-//            time.frame = CGRectMake(10+46+5, 31, 270-46-5, 15);
-//            addView.hidden = NO;
-//            int imgCount = (int)[[msgDic[@"image"]objectFromJSONString][@"filename"]count];
-//            if(imgCount>1){
-//                
-//                title.frame = CGRectMake(16, 18, self.view.frame.size.width - addView.frame.size.width - 16 - 16 - 10, 15);
-//                time.frame = CGRectMake(title.frame.origin.x, CGRectGetMaxY(title.frame)+8,title.frame.size.width, 11);
-//                title.textColor = RGB(51,61,71);
-//                title.font = [UIFont systemFontOfSize:14];
-//                time.textColor = RGB(153,153,153);
-//                time.font = [UIFont systemFontOfSize:11];
-//                countView.hidden = YES;
-//                countLabel.text = @"";
-//                addView.image = [CustomUIKit customImageNamed:@"ic_memo_images.png"];
-//            }
-//            else{
-//                countView.hidden = YES;
-//                countLabel.text = @"";
-//                
-//                title.frame = CGRectMake(16, 18, self.view.frame.size.width - addView.frame.size.width - 16 - 16 - 10, 15);
-//                time.frame = CGRectMake(title.frame.origin.x, CGRectGetMaxY(title.frame)+8,title.frame.size.width, 11);
-//                title.textColor = RGB(51,61,71);
-//                title.font = [UIFont systemFontOfSize:14];
-//                time.textColor = RGB(153,153,153);
-//                time.font = [UIFont systemFontOfSize:11];
-//                addView.image = [CustomUIKit customImageNamed:@"ic_memo_image.png"];
-//            }
-//            
-//        }
-//        else{
+        
+        if([dic[@"FILES"]count]>0){
+            
+            title.frame = CGRectMake(10+46+5, 9, 270-46-5, 20);
+            time.frame = CGRectMake(10+46+5, 31, 270-46-5, 15);
+            addView.hidden = NO;
+            int imgCount = (int)[dic[@"FILES"]count];
+            if(imgCount>1){
+                
+                title.frame = CGRectMake(16, 18, self.view.frame.size.width - addView.frame.size.width - 16 - 16 - 10, 15);
+                time.frame = CGRectMake(title.frame.origin.x, CGRectGetMaxY(title.frame)+8,title.frame.size.width, 11);
+                title.textColor = RGB(51,61,71);
+                title.font = [UIFont systemFontOfSize:14];
+                time.textColor = RGB(153,153,153);
+                time.font = [UIFont systemFontOfSize:11];
+                countView.hidden = YES;
+                countLabel.text = @"";
+                addView.image = [CustomUIKit customImageNamed:@"ic_memo_images.png"];
+            }
+            else{
+                countView.hidden = YES;
+                countLabel.text = @"";
+                
+                title.frame = CGRectMake(16, 18, self.view.frame.size.width - addView.frame.size.width - 16 - 16 - 10, 15);
+                time.frame = CGRectMake(title.frame.origin.x, CGRectGetMaxY(title.frame)+8,title.frame.size.width, 11);
+                title.textColor = RGB(51,61,71);
+                title.font = [UIFont systemFontOfSize:14];
+                time.textColor = RGB(153,153,153);
+                time.font = [UIFont systemFontOfSize:11];
+                addView.image = [CustomUIKit customImageNamed:@"ic_memo_image.png"];
+            }
+            
+        }
+        else{
         
             addView.hidden = YES;
             countView.hidden = YES;
@@ -732,11 +731,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
             time.font = [UIFont systemFontOfSize:11];
             
             
-//        }
-        
-        
-        title.text = dic[@"MSG"];//]msgDic[@"msg"];
-                         time.text = dic[@"WRITE_DATE"];//[NSString formattingDate:dic[@"writetime"] withFormat:@"yyyy.MM.dd HH:mm:ss"];
+        }
+
+    NSLog(@"dic %@",dic);
+    
+    NSString *decoded = [dic[@"MSG"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        title.text = decoded;//]msgDic[@"msg"];
+    time.text = [NSString formattingDate:[NSString stringWithFormat:@"%lli",[dic[@"WRITE_DATE"]longLongValue]/1000] withFormat:@"yyyy.MM.dd HH:mm:ss"];
         
     
     

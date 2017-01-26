@@ -248,7 +248,7 @@
     
     
     
-    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/memos/list/"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/memos/list/",BearTalkBaseUrl];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -273,6 +273,12 @@
         
         if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
             NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+            
+            if(imageString)
+                imageString = nil;
+            
+            
+            imageString = operation.responseString;
             
             [self setSubViews:[operation.responseString objectFromJSONString][0]];
             
@@ -330,7 +336,7 @@
                                 myDic[@"sessionkey"],@"sessionkey",
                                 nil];//@{ @"uniqueid" : @"c110256" };
     NSLog(@"parameters %@",parameters);
-//    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/read/directmsg.lemp" parameters:parameters];
+    
     
     
     NSError *serializationError = nil;
@@ -374,8 +380,9 @@
     
     
 #ifdef BearTalk
-    contentsTextView.text = dic[@"MSG"];
-    [time performSelectorOnMainThread:@selector(setText:) withObject:dic[@"WRITE_DATE"] waitUntilDone:NO];
+    NSString *decoded = [dic[@"MSG"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    contentsTextView.text = decoded;
+    [time performSelectorOnMainThread:@selector(setText:) withObject:[NSString formattingDate:[NSString stringWithFormat:@"%lli",[dic[@"WRITE_DATE"]longLongValue]/1000] withFormat:@"yyyy.MM.dd HH:mm:ss"] waitUntilDone:NO];
 #else
     NSDictionary *msgDic = [dic[@"content"][@"msg"]objectFromJSONString];
     contentsTextView.text = msgDic[@"msg"];
@@ -413,9 +420,81 @@
     contentImageView  = [[UIImageView alloc]init];
     
 #ifdef BearTalk
-    
-    
-    contentImageView.frame = CGRectMake(contentsTextView.frame.origin.x, contentsTextView.frame.origin.y + contentsTextView.frame.size.height + 18, 140.0f, 0);
+    imgArray = [[NSMutableArray alloc]init];
+    if([dic[@"FILES"]count]>0){
+        
+        contentImageView.userInteractionEnabled = YES;
+        
+        NSArray *imageArray = dic[@"FILES"];
+        
+        
+        NSLog(@"imageArray %@\ncount %d",imageArray, (int)[imageArray count]);
+        CGFloat imageHeight = 0.0f;
+        for(int i = 0; i < [imageArray count]; i++){// imageScale * [sizeDic[@"height"]floatValue]);
+            float width;
+            float height;
+            if([imageArray[i][@"FILE_INFO"]count]>0){
+            width = [imageArray[i][@"FILE_INFO"][0][@"width"]floatValue];
+             height = [imageArray[i][@"FILE_INFO"][0][@"height"]floatValue];
+            }
+            else{
+                 width = 140;
+                 height = 140;
+            }
+            NSString *imgUrl= [NSString stringWithFormat:@"%@/api/file/%@/thumb",BearTalkBaseUrl,imageArray[i][@"FILE_KEY"]];
+            
+            NSLog(@"sizeDic %f %f",width,height);
+            CGFloat imageScale = 0.0f;
+            imageScale = 140.0f/width;
+            UIImageView *inImageView = [[UIImageView alloc]init];
+            inImageView.frame = CGRectMake(0,imageHeight,140.0f,imageScale * height);
+            imageHeight += inImageView.frame.size.height + 10;
+            NSLog(@"inimageview frame %@",NSStringFromCGRect(inImageView.frame));
+            inImageView.backgroundColor = [UIColor blackColor];
+            [inImageView setContentMode:UIViewContentModeScaleAspectFill];//AspectFill];//AspectFit];//ToFill];
+            [inImageView setClipsToBounds:YES];
+            NSLog(@"thumb imgURL %@",[NSURL URLWithString:imgUrl]);
+            [inImageView sd_setImageWithPreviousCachedImageWithURL:[NSURL URLWithString:imgUrl] andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b) {
+            } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl){
+                NSData *imageData = UIImagePNGRepresentation(image);
+#ifdef BearTalk
+                [imgArray addObject:@{@"data" : imageData, @"image" : image, @"filename" : imageArray[i][@"FILE_KEY"]}];
+#else
+                [imgArray addObject:@{@"data" : imageData, @"image" : image}];
+#endif
+                NSLog(@"fail %@",[error localizedDescription]);
+                [HTTPExceptionHandler handlingByError:error];
+                
+            }];
+            
+            
+            
+            [contentImageView addSubview:inImageView];
+            inImageView.userInteractionEnabled = YES;
+            
+            UIButton *viewImageButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,inImageView.frame.size.width,inImageView.frame.size.height)];
+            //                        [viewImageButton setBackgroundImage:[UIImage imageNamed:@"datview_bg.png"] forState:UIControlStateNormal];
+            [viewImageButton addTarget:self action:@selector(viewImage:) forControlEvents:UIControlEventTouchUpInside];
+            viewImageButton.tag = i;
+            [inImageView addSubview:viewImageButton];
+            //            [viewImageButton release];
+            //            [inImageView release];
+            
+            
+            
+        }
+        
+        
+        contentImageView.frame = CGRectMake(contentsTextView.frame.origin.x, contentsTextView.frame.origin.y + contentsTextView.frame.size.height + 18, 140.0f, imageHeight);
+        
+        
+        NSLog(@"contentImage %@",contentImageView);
+        
+    }
+    else{
+        contentImageView.frame = CGRectMake(contentsTextView.frame.origin.x, contentsTextView.frame.origin.y + contentsTextView.frame.size.height + 18, 140.0f, 0);
+        
+    }
 #else
     NSLog(@"msgDic[image] %@",msgDic[@"image"]);
     imgArray = [[NSMutableArray alloc]init];
@@ -499,19 +578,29 @@
 
 - (void)viewImage:(id)sender{
     
+    UIViewController *photoCon;
+#ifdef BearTalk
+    
+    
+    
+    NSArray *imageArray = [imageString objectFromJSONString][0][@"FILES"];
+    NSString *imgUrl= [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,imageArray[[sender tag]][@"FILE_KEY"]];
+    NSLog(@"imgURl %@",imgUrl);
+    photoCon = [[PhotoViewController alloc] initWithFileName:imageArray[[sender tag]][@"FILE_KEY"] image:contentImageView.image type:12 parentViewCon:self roomkey:@"" server:imgUrl];
+    
+#else
     NSDictionary *imgDic = [imageString objectFromJSONString];
     NSString *imgUrl = [NSString stringWithFormat:@"https://%@%@%@",imgDic[@"server"],imgDic[@"dir"],imgDic[@"filename"][[sender tag]]];
     NSLog(@"imgUrl %@",imgUrl);
     
     
-    UIViewController *photoCon;
     
         if([[imgDic objectForKey:@"filename"]count]==1)
             photoCon = [[PhotoViewController alloc] initWithFileName:imgDic[@"filename"][[sender tag]] image:contentImageView.image type:12 parentViewCon:self roomkey:@"" server:imgUrl];
         else
             photoCon = [[PhotoTableViewController alloc]initForDownload:imgDic parent:self index:(int)[sender tag]];
         
-    
+#endif
     UINavigationController *nc = [[CBNavigationController alloc]initWithRootViewController:photoCon];
     
     //    [self.navigationController pushViewController:photoViewCon animated:YES];
@@ -893,7 +982,7 @@
     
     
     
-    NSString *urlString = [NSString stringWithFormat:@"https://sns.lemp.co.kr/api/memos/dels/"];
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/memos/dels/",BearTalkBaseUrl];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
