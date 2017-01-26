@@ -289,7 +289,7 @@
     if(viewTag == kNewGroup || viewTag == kModifyGroupImage || viewTag == kModifyGroupAll)
     {
         
-        #if defined(GreenTalk) || defined(GreenTalkCustomer)
+#if defined(GreenTalk) || defined(GreenTalkCustomer)
         
         UIImageView *imageBackgroundView = [[UIImageView alloc]init];
         imageBackgroundView.userInteractionEnabled = YES;
@@ -423,7 +423,7 @@
         
         int page = 50;
 #ifdef BearTalk
-        page = 15;
+        page = 76;
 #endif
         for(int i = 1; i <= page; i++){
             UIImageView *imgView = [[UIImageView alloc]init];
@@ -432,7 +432,15 @@
             //                imgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%d.png",i]];
             
 //            [imgView setContentMode:UIViewContentModeCenter];
-            NSString *imgUrl = [NSString stringWithFormat:@"https://%@/file/group/%d.jpg",[SharedAppDelegate readPlist:@"was"],i];
+            NSString *imgUrl;
+#ifdef BearTalk
+            
+            imgUrl = [NSString stringWithFormat:@"%@/images/sns/main/%d.png",BearTalkBaseUrl,i-1];
+#else
+            imgUrl = [NSString stringWithFormat:@"https://%@/file/group/%d.jpg",[SharedAppDelegate readPlist:@"was"],i];
+            
+#endif
+            NSLog(@"imgUrl %@",imgUrl);
             NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:imgUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
             AFHTTPRequestOperation *operation =   [[AFHTTPRequestOperation alloc] initWithRequest:request];
             
@@ -1069,7 +1077,7 @@
 //                            GKImagePicker *gkpicker = [[GKImagePicker alloc] init];
                             
 #ifdef BearTalk
-                            gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width*158/165);
+                            gkpicker.cropSize =  gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width*158/165);
 #else
                             gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, [SharedFunctions scaleFromHeight:470/2]);
 #endif
@@ -1125,14 +1133,10 @@
             case 0:
         {
             
-                //                UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-                //                picker.delegate = self;
+
             
-#ifdef BearTalk
-            gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width*158/165);
-#else
 				gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, [SharedFunctions scaleFromHeight:470/2]);
-#endif
+
 				gkpicker.delegate = self;
                 gkpicker.sourceType = UIImagePickerControllerSourceTypeCamera;
                 [self presentViewController:gkpicker.imagePickerController animated:YES completion:nil];
@@ -1142,12 +1146,10 @@
                 break;
             case 1:
 			{
+
                 
-#ifdef BearTalk
-                gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width*158/165);
-#else
 				gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, [SharedFunctions scaleFromHeight:470/2]);
-#endif
+
 				gkpicker.delegate = self;
 
                 gkpicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -1208,12 +1210,10 @@
         return;
     }
     
-    
 #ifdef BearTalk
     if(image.size.width > [SharedFunctions scaleFromWidth:250] || image.size.height > [SharedFunctions scaleFromHeight:416/2]) { // cover
         image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:CGSizeMake([SharedFunctions scaleFromWidth:250], [SharedFunctions scaleFromHeight:416/2]) interpolationQuality:kCGInterpolationHigh];
     }
-
     
 #else
 	if(image.size.width > 700 || image.size.height > 400) { // cover
@@ -1230,7 +1230,15 @@
         selectedImageData = nil;
     }
     
+#ifdef BearTalk
+    
+    
+    UIImage *newImage = [SharedAppDelegate.root imageWithImage:image scaledToSize:CGSizeMake(230, 190)];
+    NSData* saveImage = UIImageJPEGRepresentation(newImage, 0.7);
+    selectedImageData = [[NSData alloc] initWithData:saveImage];
+#else
     selectedImageData = [[NSData alloc] initWithData:[SharedAppDelegate.root imageWithImage:image scaledToSizeWithSameAspectRatio:CGSizeMake(700, 400)]];
+#endif
     
     [coverImage performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:YES];
    
@@ -1411,7 +1419,17 @@
     _currentPage = (int)[sender tag];
     
     
-    NSString *imgUrl = [NSString stringWithFormat:@"https://%@/file/group/%d.jpg",[SharedAppDelegate readPlist:@"was"],(int)[sender tag]];
+    
+    NSString *imgUrl;
+#ifdef BearTalk
+    NSLog(@"_currentPage %d",_currentPage);
+    
+    imgUrl = [NSString stringWithFormat:@"%@/images/sns/main/%d.png",BearTalkBaseUrl,(int)[sender tag]-1];
+#else
+    imgUrl = [NSString stringWithFormat:@"https://%@/file/group/%d.jpg",[SharedAppDelegate readPlist:@"was"],(int)[sender tag]];
+    
+#endif
+    
     NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:imgUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
     AFHTTPRequestOperation *operation =   [[AFHTTPRequestOperation alloc] initWithRequest:request];
     
@@ -1469,6 +1487,7 @@
 }
 - (void)done:(id)sender
 {
+    NSLog(@"viewTag %d",viewTag);
     [tf resignFirstResponder];
     [subtf resignFirstResponder];
 //    NSString *msg = @"";
@@ -1549,20 +1568,27 @@
             NSLog(@"tf %@",tf.text);
             NSLog(@"substring %@",substring);
             NSLog(@"members %d",[selectedImageData length]);
+            NSLog(@"_currentPage %d",_currentPage);
        
             if(viewTag == kNewGroup){
                 
-            [SharedAppDelegate.root createGroupTimeline:members name:tf.text sub:substring image:selectedImageData imagenumber:_currentPage manage:rk];// public:publicGroup];
+                [SharedAppDelegate.root createGroupTimeline:members name:tf.text sub:substring image:selectedImageData imagenumber:_currentPage manage:rk con:self];// public:publicGroup];
             [self dismissViewControllerAnimated:YES completion:nil];
             }
             else if(viewTag == kModifyGroupAll){
 
+           
                 
+#ifdef BearTalk
+                
+                [SharedAppDelegate.root createGroupWithBearTalk:@"" name:tf.text sub:@"" image:selectedImageData imagenumber:_currentPage manage:groupnum con:self];
+#else
                 [SharedAppDelegate.root modifyGroup:@"" modify:3 name:tf.text sub:substring number:groupnum con:self];
                 if([selectedImageData length]>0 || _currentPage>0){
                 [SharedAppDelegate.root.home modifyGroupImage:selectedImageData groupnumber:groupnum create:NO imagenumber:_currentPage];
                 }
                 [self dismissViewControllerAnimated:YES completion:nil];
+#endif
             }
         }
         
@@ -1579,8 +1605,9 @@
             [CustomUIKit popupSimpleAlertViewOK:nil msg:@"소셜 이름을 정해주세요." con:self];
             
         }
-        else if((![originName isEqualToString:tf.text] || ![originSub isEqualToString:substring]))
+        else if((![originName isEqualToString:tf.text] || ![originSub isEqualToString:substring])){
             [SharedAppDelegate.root modifyGroup:@"" modify:3 name:tf.text sub:substring number:groupnum con:self]; //public:publicGroup];
+        }
 else
     [self dismissViewControllerAnimated:YES completion:nil];
     }
@@ -1801,7 +1828,6 @@ else
                                 num,@"groupnumber",nil];
     NSLog(@"groupinfo %@",parameters);
     
-//    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/group/groupinfo.lemp" parameters:parameters];
     
     NSError *serializationError = nil;
     NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
@@ -4326,7 +4352,6 @@ else
                                 num,@"groupnumber",nil];
     NSLog(@"groupinfo %@",parameters);
     
-//    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/group/groupinfo.lemp" parameters:parameters];
     
     NSError *serializationError = nil;
     NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
