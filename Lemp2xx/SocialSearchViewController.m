@@ -203,7 +203,14 @@
     NSLog(@"home.category %@",SharedAppDelegate.root.home.category);
         //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
         
-        NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/read/searchmsg.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString;
+#ifdef BearTalk
+    
+    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/list",BearTalkBaseUrl];
+#else
+    
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/read/searchmsg.lemp",[SharedAppDelegate readPlist:@"was"]];
+#endif
         NSURL *baseUrl = [NSURL URLWithString:urlString];
         
         
@@ -211,12 +218,40 @@
         client.responseSerializer = [AFHTTPResponseSerializer serializer];
         
         
-        
-    NSDictionary *param;
     
+    
+    
+#ifdef BearTalk
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setObject:[ResourceLoader sharedInstance].myUID forKey:@"uid"];
+    
+    [parameters setObject:msg forKey:@"search"];
+    
+  
+    
+    if([SharedAppDelegate.root.home.category isEqualToString:@"3"] && [SharedAppDelegate.root.home.targetuid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+        // mine
+        
+        [parameters setObject:@"myconts" forKey:@"myconts"];
+        
+    }
+    else if([SharedAppDelegate.root.home.category isEqualToString:@"10"]){
+        // bookmark
+        
+        [parameters setObject:@"bookmark" forKey:@"bookmark"];
+    }
+    else{
+        [parameters setObject:SharedAppDelegate.root.home.groupnum forKey:@"snskey"];
+    }
+    
+    
+#else
+    NSDictionary *parameters;
     if([SharedAppDelegate.root.home.category isEqualToString:@"3"] || [SharedAppDelegate.root.home.category isEqualToString:@"10"] || [SharedAppDelegate.root.home.category isEqualToString:@"1"]){
         
-        param = @{
+        parameters = @{
                   @"sessionkey" : [ResourceLoader sharedInstance].mySessionkey,
                   @"uid" : [ResourceLoader sharedInstance].myUID,
                   @"category" : SharedAppDelegate.root.home.category,
@@ -224,7 +259,7 @@
                   };
     }
     else{
-    param = @{
+    parameters = @{
                                 @"sessionkey" : [ResourceLoader sharedInstance].mySessionkey,
                                 @"uid" : [ResourceLoader sharedInstance].myUID,
                                 @"groupnumber" : SharedAppDelegate.root.home.groupnum,
@@ -232,14 +267,21 @@
                                 };
     }
     
-            NSLog(@"jsonString %@",param);
+#endif
+            NSLog(@"jsonString %@",parameters);
         
     
     
         
-        NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parametersJson:param key:@"param"];
-        
-        
+    NSMutableURLRequest *request;
+    
+#ifdef BearTalk
+    
+    request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:nil];
+#else
+    request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parametersJson:parameters key:@"param"];
+#endif
+    
         
         
         
@@ -248,6 +290,98 @@
             [SVProgressHUD dismiss];
             
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+#ifdef BearTalk
+            
+            
+            if(searchArray){
+                //                    [searchArray release];
+                searchArray = nil;
+            }
+            searchArray = [[NSMutableArray alloc]init];
+            
+            if([[operation.responseString objectFromJSONString] isKindOfClass:[NSArray class]]){
+            
+            NSMutableArray *resultDic = [operation.responseString objectFromJSONString];
+            NSLog(@"resultDic %@",resultDic);
+            
+            if([resultDic count]>0){
+                for (NSDictionary *dic in resultDic) {
+                    TimeLineCell *cellData = [[TimeLineCell alloc] init];
+                    
+                    cellData.idx = dic[@"CONTS_KEY"];
+                    NSLog(@"cellData.idx %@",cellData.idx);
+                    cellData.writeinfoType = @"1";//dic[@"writeinfotype"]; // ##
+                    
+                    NSLog(@"cellData.idx %@",cellData.writeinfoType);
+                    
+                    NSString *dateValue = [NSString stringWithFormat:@"%lli",[dic[@"WRITE_DATE"]longLongValue]/1000];
+                    cellData.currentTime = dateValue;
+                    cellData.time = cellData.currentTime;
+                    cellData.writetime = cellData.currentTime;
+                    
+                    
+                    cellData.profileImage = dic[@"WRITE_UID"]!=nil?dic[@"WRITE_UID"]:@"";
+                    cellData.personInfo = nil;//[dic[@"writeinfo"]objectFromJSONString];// ##
+                    
+                    NSLog(@"cellData.idx %@",cellData.profileImage);
+                    BOOL myFav = NO;
+                    
+                    NSLog(@"cellData.idx %@",dic[@"BOOKMARK_MEMBER"]);
+                    for(NSString *auid in dic[@"BOOKMARK_MEMBER"]){
+                        if([auid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+                            myFav = YES;
+                        }
+                    }
+                    
+                    cellData.favorite = (myFav == YES)?@"1":@"0";
+                    NSLog(@"cellData.idx %@",cellData.favorite);
+                    cellData.readArray = dic[@"READ_MEMBER"];
+                    NSLog(@"cellData.idx %@",cellData.readArray);
+                    cellData.notice = @"0";//dic[@"notice"];
+                    cellData.targetdic = nil;//dic[@"target"];
+                    
+                    //                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
+                    cellData.contentDic = nil;//contentDic;
+                    NSString *decoded = [dic[@"CONTENTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                    NSLog(@"decoded %@",decoded);
+                    cellData.content = decoded;
+                    cellData.imageArray = dic[@"IMAGES"];
+                    NSLog(@"imageArray %@",cellData.imageArray);
+                    cellData.pollDic = dic[@"POLL"];//[@"poll_data"] objectFromJSONString];
+                    NSLog(@"pollDic %@",cellData.pollDic);
+                    cellData.fileArray = dic[@"FILES"];//[@"attachedfile"] objectFromJSONString];
+                    NSLog(@"fileArray %@",cellData.fileArray);
+                    cellData.contentType = @"1";//dic[@"contenttype"];
+                    cellData.type = @"1";//dic[@"type"];
+                    cellData.categoryType = SharedAppDelegate.root.home.category;
+                    NSLog(@"cellData.idx %@",cellData.categoryType);
+                    cellData.sub_category = nil;//dic[@"sub_category"];
+                    cellData.likeCount = [dic[@"LIKE_MEMBER"]count];
+                    cellData.likeArray = dic[@"LIKE_MEMBER"];
+                    NSLog(@"cellData.idx %@",cellData.likeArray);
+                    cellData.replyCount = [dic[@"REPLY"]count];
+                    cellData.replyArray = dic[@"REPLY"];
+                    NSLog(@"cellData.idx %@",cellData.replyArray);
+                    
+                    NSLog(@"cellData %@",cellData);
+                    
+                    
+                    
+                    
+                    [searchArray addObject:cellData];
+                    //                        [cellData release];
+                }
+            }
+            NSLog(@"searchArray %@",searchArray);
+            
+            }
+            else{
+                
+            }
+            [myTable reloadData];
+            searching = NO;
+#else
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
             NSLog(@"resultDic %@",resultDic);
             NSString *isSuccess = resultDic[@"result"];
@@ -324,7 +458,7 @@
             
             
             searching = NO;
-            
+#endif
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             searching = NO;
@@ -359,157 +493,704 @@
 }
 
 
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    if([searchArray count]==0)
-        return 100;
+    NSLog(@"heightForRowAtIndexPath");
     
     CGFloat height = 0.0;
     
+   
     
-    NSInteger fontSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"GlobalFontSize"];
-    
-    
-    TimeLineCell *dataItem = nil;
-    dataItem = searchArray[indexPath.row];
-    
-    NSString *imageString = dataItem.contentDic[@"image"];
-    NSString *content = dataItem.contentDic[@"msg"];
-    
-    if([dataItem.contentType intValue] != 12){
-        if ([content length] > 500) {
-            content = [content substringToIndex:500];
-        }
-    }
-    NSString *where = dataItem.contentDic[@"jlocation"];
-    NSDictionary *dic = [where objectFromJSONString];
-    //			NSString *invite = dataItem.contentDic[@"question"];
-    //			NSString *regiStatus = dataItem.contentDic[@"result"];
-    NSDictionary *pollDic = dataItem.pollDic;
-    NSArray *fileArray = dataItem.fileArray;
-    
-    
-    if([dataItem.contentType intValue]>17 || [dataItem.type intValue]>7 || ([dataItem.writeinfoType intValue]>4 && [dataItem.writeinfoType intValue]!=10)){
-        height += 15+40; // gap + defaultview
-        height += 10 + 25; // gap 업그레이드가 필요합니다.
-    }
-    else
-    {
-        if([dataItem.writeinfoType intValue]==0){
-            height += 15;
-        }
-        else{
-            height += 15+40; // gap + defaultview
-        }
+        
+#ifdef BearTalk
+        NSInteger fontSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"GlobalFontSize"];
         
         
+        TimeLineCell *dataItem = nil;
+    
+            dataItem = searchArray[indexPath.row];
+            
         
-        height += 10; // gap
-        if(imageString != nil && [imageString length]>0)
+        
+        NSLog(@"dataItem.contentDic %@",dataItem.contentDic);
+        //        NSString *imageString = dataItem.contentDic[@"image"];
+        NSString *content = dataItem.content;//contentDic[@"msg"];
+        
+        if([dataItem.contentType intValue] != 12){
+            if ([content length] > 500) {
+                content = [content substringToIndex:500];
+            }
+        }
+        //        NSString *where = dataItem.contentDic[@"jlocation"];
+        //        NSDictionary *dic = [where objectFromJSONString];
+        //			NSString *invite = dataItem.contentDic[@"question"];
+        //			NSString *regiStatus = dataItem.contentDic[@"result"];
+        NSDictionary *pollDic = dataItem.pollDic;
+        NSArray *fileArray = dataItem.fileArray;
+        
+        
+        if([dataItem.contentType intValue]>17 || [dataItem.type intValue]>7 || ([dataItem.writeinfoType intValue]>4 && [dataItem.writeinfoType intValue]!=10)){
+            height += 0+14+42+14; // gap + defaultview
+            height += 14 + 25; // gap 업그레이드가 필요합니다.
+        }
+        else
         {
-            height += 5; // gap
-            if([dataItem.contentType intValue]==10)
-                height += 434-35;
-            else
-                height += 137;
-            //                else
-            //                    height += (imgCount+1)/2*75;
-            
-            
-            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
-            paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
-            NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
-            CGSize contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*6) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-            
-            CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-            
-//            CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*6) lineBreakMode:NSLineBreakByWordWrapping];
-            
-//            CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
-            CGFloat moreLabelHeight = 0.0;
-            if (realSize.height > contentSize.height) {
-                moreLabelHeight = 17.0;
+            if([dataItem.writeinfoType intValue]==0){
+                height += 0;
+            }
+            else{
+                height += 0+14+42+14; // gap + defaultview
             }
             
-            height += contentSize.height + moreLabelHeight;
-            NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
             
+            
+            if(!IS_NULL(dataItem.imageArray) && [dataItem.imageArray count]>0)
+                // if(imageString != nil && [imageString length]>0)
+            {
+                height += 5; // gap
+                if([dataItem.contentType intValue]==10)
+                    height += 434-35;
+                else
+                    height += 137;
+                //                else
+                //                    height += (imgCount+1)/2*75;
+                
+                NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+                paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+                NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
+                CGSize contentSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, fontSize*6) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                
+                //     CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.view.frame.size.width - 32 - 20, fontSize*6) lineBreakMode:NSLineBreakByWordWrapping];
+                CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                //   CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+                CGFloat moreLabelHeight = 0.0;
+                if (realSize.height > contentSize.height) {
+                    moreLabelHeight = 17.0;
+                }
+                
+                height += contentSize.height + moreLabelHeight;
+                NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+                
+            }
+            else{
+                
+                CGFloat moreLabelHeight = 0.0;
+                CGSize contentSize;
+             
+                
+                    
+                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+                    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+                    NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
+                    contentSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                    
+                    
+                    //         contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.view.frame.size.width - 32 - 20, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                    //     CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    if (realSize.height > contentSize.height) {
+                        moreLabelHeight = 17.0;
+                    }
+                    height += contentSize.height + moreLabelHeight;
+                    NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+               
+                
+            }
+            height += 10; // contentslabel gap
+            
+            if(!IS_NULL(pollDic)){
+                height += 57+10;
+            }
+            if(!IS_NULL(fileArray) && [fileArray count]>0){
+                height += 57+10; // gap+
+            }
+            if(!IS_NULL(content) && [content length]>0)
+            {
+                height += 22; // location
+            }
+            
+            
+            
+            
+            if([dataItem.type isEqualToString:@"5"] || [dataItem.type isEqualToString:@"6"]){
+                
+            }
+            else{
+                height += 10 + 46; // optionView;
+                
+                
+            }
         }
-        else{
+        
+        
+        
+        
+        if ([searchArray count] == 1 && height < 80) {
+            height = 80;
+        }
+        
+        height += 8; // gap
+        
+        
+        
+        
+        
+#elif defined(GreenTalk) || defined(GreenTalkCustomer)
+        
+        NSInteger fontSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"GlobalFontSize"];
+        
+        
+        TimeLineCell *dataItem = nil;
+        dataItem = searchArray[indexPath.row];
+        
+        NSString *imageString = dataItem.contentDic[@"image"];
+        NSString *content = dataItem.contentDic[@"msg"];
+        
+        if([dataItem.contentType intValue] != 12){
+            if ([content length] > 500) {
+                content = [content substringToIndex:500];
+            }
+        }
+        NSString *where = dataItem.contentDic[@"jlocation"];
+        NSDictionary *dic = [where objectFromJSONString];
+        //			NSString *invite = dataItem.contentDic[@"question"];
+        //			NSString *regiStatus = dataItem.contentDic[@"result"];
+        NSDictionary *pollDic = dataItem.pollDic;
+        NSArray *fileArray = dataItem.fileArray;
+        
+        
+        if([dataItem.contentType intValue]>17 || [dataItem.type intValue]>7 || ([dataItem.writeinfoType intValue]>4 && [dataItem.writeinfoType intValue]!=10)){
+            height += 15+40; // gap + defaultview
+            height += 10 + 25; // gap 업그레이드가 필요합니다.
+        }
+        else
+        {
+            if([dataItem.writeinfoType intValue]==0){
+                height += 15;
+            }
+            else{
+                height += 15+40; // gap + defaultview
+            }
             
-            CGFloat moreLabelHeight = 0.0;
-            CGSize contentSize;
-            //                webviewHeight = 0;
             
-            NSLog(@"dataitem contenttype2 %@",dataItem.contentType);
-            if([dataItem.contentType intValue] == 12){
+            
+            height += 10; // gap
+            if(imageString != nil && [imageString length]>0)
+            {
+                height += 5; // gap
+                if([dataItem.contentType intValue]==10)
+                    height += 434-35;
+                else
+                    height += 137;
+                //                else
+                //                    height += (imgCount+1)/2*75;
+                
+                NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+                paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+                NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
+                CGSize contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*6) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                
+                CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                
+                //            CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*6) lineBreakMode:NSLineBreakByWordWrapping];
+                
+                //          CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+                CGFloat moreLabelHeight = 0.0;
+                if (realSize.height > contentSize.height) {
+                    moreLabelHeight = 17.0;
+                }
+                
+                height += contentSize.height + moreLabelHeight;
+                NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+                
+            }
+            else{
+                
+                CGFloat moreLabelHeight = 0.0;
+                CGSize contentSize;
+                //                webviewHeight = 0;
+                
+        
+                
+                    
+                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+                    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+                    NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
+                    contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                    
+                    CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                    
+                    
+                    //contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    //CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    if (realSize.height > contentSize.height) {
+                        moreLabelHeight = 17.0;
+                    }
+                    height += contentSize.height + moreLabelHeight;
+                    NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+                
+                
+            }
+            height += 10; // contentslabel gap
+            
+            if(pollDic != nil){
+                height += 78;
+            }
+            if([fileArray count]>0){
+                height += 78; // gap+
+            }
+            if(dic[@"text"] != nil && [dic[@"text"] length]>0)
+            {
+                height += 22; // location
+            }
+            
+            
+            
+            
+            if([dataItem.type isEqualToString:@"5"] || [dataItem.type isEqualToString:@"6"]){
+                
+            }
+            else{
+                height += 10 + 30; // optionView;
+                
+                
+            }
+        }
+        
+        
+        
+        
+        if ([searchArray count] == 1 && height < 80) {
+            height = 80;
+        }
+        
+        height += 10; // gap
+        
+        
+        
+#else
+        
+        
+        
+        NSInteger fontSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"GlobalFontSize"];
+        
+        
+        
+        TimeLineCell *dataItem = nil;
+        //                            if([self.groupDic[@"category"]isEqualToString:@"2"] && [self.groupDic[@"grouptype"]isEqualToString:@"1"])
+        dataItem = searchArray[indexPath.row];
+        //                            else
+        //                                    dataItem = searchArray[indexPath.row-1];
+        
+        NSString *imageString = dataItem.contentDic[@"image"];
+        NSString *content = dataItem.contentDic[@"msg"];
+        
+        
+        if([dataItem.contentType intValue] != 12){
+            if ([content length] > 500) {
+                content = [content substringToIndex:500];
+            }
+        }
+        NSString *where = dataItem.contentDic[@"jlocation"];
+        NSDictionary *dic = [where objectFromJSONString];
+        //			NSString *invite = dataItem.contentDic[@"question"];
+        //			NSString *regiStatus = dataItem.contentDic[@"result"];
+        NSDictionary *pollDic = dataItem.pollDic;
+        NSArray *fileArray = dataItem.fileArray;
+        
+        
+        if([dataItem.contentType intValue]>17 || [dataItem.type intValue]>7 || ([dataItem.writeinfoType intValue]>4 && [dataItem.writeinfoType intValue]!=10)){
+            height += 15+40; // gap + defaultview
+            height += 10 + 25; // gap 업그레이드가 필요합니다.
+        }
+        else
+        {
+            
+            if([dataItem.writeinfoType intValue]==0){
+                height += 15;
+            }
+            else{
+                height += 15+40; // gap + defaultview
+            }
+            
+            height += 10; // gap
+            if(imageString != nil && [imageString length]>0)
+            {
+                height += 5; // gap
+                
+                if([dataItem.contentType intValue] == 10)
+                    height += 434-35;
+                else
+                    height += 137;
+                //                else
+                //                    height += (imgCount+1)/2*75;
+                
+                
+                CGFloat moreLabelHeight = 0.0;
+                CGSize contentSize;
+                if([dataItem.contentType intValue] == 12){
+                    
+                    
+                    //                        contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(290, 1500) lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    
+                    //                        height += contentSize.height;
+                    //                        if(webviewHeight == 0){
+                    //                            height += 0;
+                    //
+                    //                            //                                 [myWebView loadHTMLString:[NSString stringWithFormat:@"%@",content] baseURL: nil];
+                    
+                    //                        else{
+                    height += webviewHeight;
+                    //}
+                    
+                }
+                else{
+                    
+                    
+                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+                    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+                    NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
+                    contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*6) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                    
+                    CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                    
+                    
+                    //     contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*6) lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    //      CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    if (realSize.height > contentSize.height) {
+                        moreLabelHeight = 17.0;
+                    }
+                    
+                    height += contentSize.height + moreLabelHeight;
+                    NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+                }
                 
                 
             }
             else{
                 
-                NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
-                paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
-                NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
-                 contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-                
-                CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-            
-                
- //               contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
-                
-//                CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
-                
-                if (realSize.height > contentSize.height) {
-                    moreLabelHeight = 17.0;
+                if([dataItem.contentType intValue] != 10){
+                    
+                    
+                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+                    paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+                    NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
+                    CGSize  contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                    
+                    CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                    
+                    
+                    // CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
+                    
+                    //   CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+                    CGFloat moreLabelHeight = 0.0;
+                    if (realSize.height > contentSize.height) {
+                        moreLabelHeight = 17.0;
+                    }
+                    
+                    height += contentSize.height + moreLabelHeight;
+                    NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
                 }
-                height += contentSize.height + moreLabelHeight;
-                NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+                
+            }
+            height += 10; // contentslabel gap
+            
+            if(pollDic != nil){
+                height += 78;
+            }
+            if([fileArray count]>0){
+                height += 78; // gap+
+            }
+            if(dic[@"text"] != nil && [dic[@"text"] length]>0)
+            {
+                height += 22; // location
             }
             
-        }
-        height += 10; // contentslabel gap
-        
-        if(pollDic != nil){
-            height += 78;
-        }
-        if([fileArray count]>0){
-            height += 78; // gap+
-        }
-        if(dic[@"text"] != nil && [dic[@"text"] length]>0)
-        {
-            height += 22; // location
-        }
-        
-        
-        
-        
-        if([dataItem.type isEqualToString:@"5"] || [dataItem.type isEqualToString:@"6"]){
-            
-        }
-        else{
-            height += 10 + 30; // optionView;
             
             
+            
+            if([dataItem.type isEqualToString:@"5"] || [dataItem.type isEqualToString:@"6"]){
+                
+            }
+            else{
+                height += 10 + 30; // optionView;
+                
+                
+                
+                if(dataItem.replyCount>0)
+                {
+                    height += 5; // optionview gap;
+                    
+                    if(dataItem.replyCount < 3)
+                    {
+                        height += (dataItem.replyCount)*35; // gap name time line gap
+                        for(NSDictionary *dic in dataItem.replyArray)
+                        {
+                            if([dic[@"writeinfotype"]intValue]>4 && [dic[@"writeinfotype"]intValue]!=10){
+                                height +=25;
+                            }
+                            else{
+                                NSString *replyCon = [dic[@"replymsg"]objectFromJSONString][@"msg"];
+                                if ([replyCon length] > 90) {
+                                    replyCon = [replyCon substringToIndex:90];
+                                }
+                                
+                                NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+                                paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+                                NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
+                                
+                                CGSize replySize = [replyCon boundingRectWithSize:CGSizeMake(250, fontSize*2) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                                
+                                
+                                //     CGSize replySize = [replyCon sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(250, fontSize*2) lineBreakMode:NSLineBreakByWordWrapping];
+                                NSString *replyPhotoUrl = [dic[@"replymsg"]objectFromJSONString][@"image"];
+                                NSLog(@"replyphotourl %@",replyPhotoUrl);
+                                if([replyPhotoUrl length]>0){
+                                    
+                                    replySize = [replyCon boundingRectWithSize:CGSizeMake(250-24-10, fontSize*2) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                                    //  replySize = [replyCon sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(250-24-10, fontSize*2) lineBreakMode:NSLineBreakByWordWrapping];
+                                }
+                                NSLog(@"replySize.height %.0f",replySize.height);
+                                float replyHeight = replySize.height<20?20:replySize.height;
+                                height += replyHeight;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        height += 2*35; // gap name time line gap
+                        
+                        for(int i = (int)[dataItem.replyArray count]-2; i < (int)[dataItem.replyArray count]; i++)//NSDictionary *dic in dataItem.replyArray)
+                        {
+                            if([dataItem.replyArray[i][@"writeinfotype"]intValue]>4 && [dataItem.replyArray[i][@"writeinfotype"]intValue]!=10){
+                                height += 25;
+                            }
+                            else{
+                                NSString *replyCon = [dataItem.replyArray[i][@"replymsg"]objectFromJSONString][@"msg"];
+                                if ([replyCon length] > 90) {
+                                    replyCon = [replyCon substringToIndex:90];
+                                }
+                                NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+                                paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+                                NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
+                                CGSize contentSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                                
+                                CGSize replySize = [replyCon boundingRectWithSize:CGSizeMake(250, fontSize*2) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                                
+                                //    CGSize replySize = [replyCon sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(250, fontSize*2) lineBreakMode:NSLineBreakByWordWrapping];
+                                NSString *replyPhotoUrl = [dataItem.replyArray[i][@"replymsg"]objectFromJSONString][@"image"];
+                                NSLog(@"replyphotourl %@",replyPhotoUrl);
+                                if([replyPhotoUrl length]>0){
+                                    replySize = [replyCon boundingRectWithSize:CGSizeMake(250-24-10, fontSize*2) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                                    
+                                    //   replySize = [replyCon sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(250-24-10, fontSize*2) lineBreakMode:NSLineBreakByWordWrapping];
+                                }
+                                NSLog(@"replySize.height %.0f",replySize.height);
+                                float replyHeight = replySize.height<20?20:replySize.height;
+                                height += replyHeight;
+                            }
+                            
+                        }
+                        height += 28; // moreLabel
+                        
+                    }
+                }
+                
+                
+            }
         }
-    }
+        
+        
+        
+        
+        if ([searchArray count] == 1 && height < 80) {
+            height = 80;
+        }
+        
+        height += 10; // gap
+        
+        
+#endif
     
     
     
     
-    if ([searchArray count] == 1 && height < 80) {
-        height = 80;
-    }
-    
-    height += 10; // gap
-    
-
     
     
     return height;
 }
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    
+//    if([searchArray count]==0)
+//        return 100;
+//    
+//    CGFloat height = 0.0;
+//    
+//    
+//    NSInteger fontSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"GlobalFontSize"];
+//    
+//    
+//    TimeLineCell *dataItem = nil;
+//    dataItem = searchArray[indexPath.row];
+//    
+//    
+//#ifdef BearTalk
+//    NSString *content = dataItem.content;
+//#else
+//    NSString *imageString = dataItem.contentDic[@"image"];
+//    NSString *content = dataItem.contentDic[@"msg"];
+//    NSString *where = dataItem.contentDic[@"jlocation"];
+//    NSDictionary *dic = [where objectFromJSONString];
+//#endif
+//    
+//    if([dataItem.contentType intValue] != 12){
+//        if ([content length] > 500) {
+//            content = [content substringToIndex:500];
+//        }
+//    }
+//    
+//    NSDictionary *pollDic = dataItem.pollDic;
+//    NSArray *fileArray = dataItem.fileArray;
+//    
+//    
+//    if([dataItem.contentType intValue]>17 || [dataItem.type intValue]>7 || ([dataItem.writeinfoType intValue]>4 && [dataItem.writeinfoType intValue]!=10)){
+//        
+//        height += 0+14+42+14; // gap + defaultview
+//        height += 14 + 25; // gap 업그레이드가 필요합니다.
+//    }
+//    else
+//    {
+//        if([dataItem.writeinfoType intValue]==0){
+//            height += 15;
+//        }
+//        else{
+//            height += 15+40; // gap + defaultview
+//        }
+//        
+//        
+//        
+//        height += 10; // gap
+//        
+//#ifdef BearTalk
+//        if(!IS_NULL(dataItem.imageArray) && [dataItem.imageArray count]>0)
+//        {
+//#else
+//        if(imageString != nil && [imageString length]>0)
+//        {
+//#endif
+//            height += 5; // gap
+//            if([dataItem.contentType intValue]==10)
+//                height += 434-35;
+//            else
+//                height += 137;
+//            //                else
+//            //                    height += (imgCount+1)/2*75;
+//            
+//            
+//            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+//            paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+//            NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
+//            CGSize contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*6) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+//            
+//            CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+//            
+////            CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*6) lineBreakMode:NSLineBreakByWordWrapping];
+//            
+////            CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+//            CGFloat moreLabelHeight = 0.0;
+//            if (realSize.height > contentSize.height) {
+//                moreLabelHeight = 17.0;
+//            }
+//            
+//            height += contentSize.height + moreLabelHeight;
+//            NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+//            
+//        }
+//        else{
+//            
+//            CGFloat moreLabelHeight = 0.0;
+//            CGSize contentSize;
+//            //                webviewHeight = 0;
+//            
+//            NSLog(@"dataitem contenttype2 %@",dataItem.contentType);
+//            if([dataItem.contentType intValue] == 12){
+//                
+//                
+//            }
+//            else{
+//                
+//                NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+//                paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+//                NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
+//                 contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+//                
+//                CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+//            
+//                
+// //               contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
+//                
+////                CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+//                
+//                if (realSize.height > contentSize.height) {
+//                    moreLabelHeight = 17.0;
+//                }
+//                height += contentSize.height + moreLabelHeight;
+//                NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+//            }
+//            
+//        }
+//        height += 10; // contentslabel gap
+//        
+//        if(!IS_NULL(pollDic)){
+//            height += 78;
+//        }
+//        if(!IS_NULL(fileArray) && [fileArray count]>0){
+//            height += 78; // gap+
+//        }
+//            
+//#ifdef BearTalk
+//#else
+//        if(dic[@"text"] != nil && [dic[@"text"] length]>0)
+//        {
+//            height += 22; // location
+//        }
+//#endif   
+//        
+//        
+//        
+//        if([dataItem.type isEqualToString:@"5"] || [dataItem.type isEqualToString:@"6"]){
+//            
+//        }
+//        else{
+//            height += 10 + 30; // optionView;
+//            
+//            
+//        }
+//    }
+//    
+//    
+//    
+//    
+//    if ([searchArray count] == 1 && height < 80) {
+//        height = 80;
+//    }
+//    
+//    height += 10; // gap
+//    
+//
+//    
+//    
+//    return height;
+//}
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
@@ -585,7 +1266,43 @@
         TimeLineCell *dataItem = nil;
         dataItem = searchArray[indexPath.row];
         NSLog(@"dataItem %@",dataItem);
+#ifdef BearTalk
         
+        cell.idx = dataItem.idx;
+        
+        cell.writeinfoType = dataItem.writeinfoType;
+        cell.currentTime = dataItem.currentTime;
+        cell.time = dataItem.time;
+        cell.writetime = dataItem.writetime;
+        
+        cell.profileImage = dataItem.profileImage;
+        cell.personInfo = dataItem.personInfo;
+        cell.favorite = dataItem.favorite;
+        //            cell.deletePermission = dataItem.deletePermission;
+        
+        cell.readArray = dataItem.readArray;
+        cell.targetdic = dataItem.targetdic;
+        
+        cell.contentDic = dataItem.contentDic;
+        cell.content = dataItem.content;
+        cell.imageArray = dataItem.imageArray;
+        cell.pollDic = dataItem.pollDic;
+        cell.fileArray = dataItem.fileArray;
+        
+        cell.contentType = dataItem.contentType;
+        
+        cell.notice = dataItem.notice;
+        
+        cell.type = dataItem.type;
+        cell.categoryType = dataItem.categoryType;
+        cell.sub_category = dataItem.sub_category;//dic[@"sub_category"];
+        cell.likeCount = dataItem.likeCount;//
+        cell.likeArray = dataItem.likeArray;
+        cell.replyCount = dataItem.replyCount;
+        cell.replyArray = dataItem.replyArray;
+        
+        
+#else
         cell.idx = dataItem.idx;
         
         cell.profileImage = dataItem.profileImage;
@@ -620,7 +1337,7 @@
         cell.likeArray = dataItem.likeArray;
         cell.replyCount = dataItem.replyCount;
         cell.replyArray = dataItem.replyArray;
-
+#endif
         [cell setSearchText:search.text];
         
         NSLog(@"cell.replyArray %@",cell.replyArray);
@@ -644,23 +1361,54 @@
     //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/good.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString;
+    NSString *type;
+    
+    
+    
+#ifdef BearTalk
+    UIButton *btn = (UIButton *)sender;
+    if(btn.selected == NO){
+        type = @"i";
+    }
+    else{
+        type = @"d";
+    }
+    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/like",BearTalkBaseUrl];
+#else
+    
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/good.lemp",[SharedAppDelegate readPlist:@"was"]];
+#endif
+    
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
+    NSDictionary *parameters;
+    NSString *method;
+#ifdef BearTalk
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                  [ResourceLoader sharedInstance].myUID,@"uid",type,@"type",
+                  idx,@"contskey",nil];//@{ @"uniqueid" : @"c110256" };
+    method = @"PUT";
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
-                                [ResourceLoader sharedInstance].myUID,@"uid",@"1",@"writeinfotype",
-                                idx,@"contentindex",nil];//@{ @"uniqueid" : @"c110256" };
+#else
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                  [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
+                  [ResourceLoader sharedInstance].myUID,@"uid",@"1",@"writeinfotype",
+                  idx,@"contentindex",nil];//@{ @"uniqueid" : @"c110256" };
+    method = @"POST";
+    
+#endif
+    
+    
     
     //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/write/good.lemp" parameters:parameters];
     
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:method URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
@@ -671,6 +1419,34 @@
         //        [MBProgressHUD hideHUDForView:sender animated:YES];
         [buttonActivity stopAnimating];
         //        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+#ifdef BearTalk
+        
+        NSLog(@"resultDic %@",operation.responseString);
+        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
+        
+        
+        if(sendLikeTarget != nil) {
+            NSLog(@"sendLikeTareget %@",sendLikeTarget);
+            //            [sendLikeTarget performSelectorOnMainThread:sendLikeSelector withObject:resultDic waitUntilDone:NO];
+            sendLikeTarget = nil;
+        }
+        
+        for(TimeLineCell *cell in searchArray) {
+            if([cell.idx isEqualToString:idx]){
+                cell.likeCount = [resultDic[@"LIKE_MEMBER"]count];
+                //                    cell.likeCountUse = 1;
+                cell.likeArray = resultDic[@"LIKE_MEMBER"];
+                
+            }
+        }
+        
+        [myTable reloadData];
+        
+        
+        
+#else
+        
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
@@ -699,6 +1475,8 @@
             NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
             
         }
+        
+#endif
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         //        [MBProgressHUD hideHUDForView:sender animated:YES];
@@ -790,9 +1568,14 @@
     
     for(TimeLineCell *cell in searchArray) {
         if([cell.idx isEqualToString:index]){
+#ifdef BearTalk
+            cell.replyCount = [resultDic[@"REPLY"]count];
+            cell.replyArray = resultDic[@"REPLY"];
+            
+#else
             cell.replyCount = [resultDic[@"replymsg"]count];
             cell.replyArray = resultDic[@"replymsg"];
-            
+#endif
             if(cell.replyCount > 2){
                 NSMutableArray *array = [NSMutableArray array];
                 
@@ -806,11 +1589,21 @@
                 //                        NSLog(@"array %@",array);
                 cell.replyArray = array;
             }
+#ifdef BearTalk
             
+            if (resultDic[@"LIKE_MEMBER"]) {
+                
+                cell.likeCount = [resultDic[@"LIKE_MEMBER"] count];
+                cell.likeArray = resultDic[@"LIKE_MEMBER"];
+            }
+            
+#else
             if (resultDic[@"goodmember"]) {
+                
                 cell.likeCount = [resultDic[@"goodmember"] count];
                 cell.likeArray = resultDic[@"goodmember"];
             }
+#endif
         }
     }
     //    progressLabel.hidden = YES;

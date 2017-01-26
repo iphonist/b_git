@@ -152,7 +152,13 @@
             
         }
         
-        else if([[SharedAppDelegate readPlist:@"lastdate"]length]>0 && ![[SharedAppDelegate readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"]){
+        else if([[SharedAppDelegate readPlist:@"lastdate"]length]>0 &&
+#ifdef BearTalk
+                
+                ![[SharedAppDelegate readPlist:@"lastdate"]isEqualToString:@"0"]){
+#else
+                ![[SharedAppDelegate readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"]){
+#endif
             
             [[ResourceLoader sharedInstance] settingDeptList];
             [[ResourceLoader sharedInstance] settingContactList];
@@ -258,7 +264,14 @@
 
         }
         
-        else if([[SharedAppDelegate readPlist:@"lastdate"]length]>0 && ![[SharedAppDelegate readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"]){
+        else if([[SharedAppDelegate readPlist:@"lastdate"]length]>0 &&
+                
+#ifdef BearTalk
+                
+                ![[SharedAppDelegate readPlist:@"lastdate"]isEqualToString:@"0"]){
+#else
+            ![[SharedAppDelegate readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"]){
+#endif
         
             [self settingMain];
 
@@ -355,23 +368,6 @@
     //    }
 }
 
-
-- (void)settingHomeOnly{
-//    _centerController = [[CBNavigationController alloc]initWithRootViewController:home];
-//    self.slidingViewController = _centerController;
-    NSLog(@"settinghomeonly");
-//#ifdef BearTalk
-//    
-//    UINavigationController *nc = [[CBNavigationController alloc]initWithRootViewController:self.home];
-//    [main.navigationController presentViewController:nc animated:YES completion:nil];
-//#else
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-    if(![main.navigationController.topViewController isKindOfClass:[self.home class]])
-        [main.navigationController pushViewController:self.home animated:YES];
-    });
-//#endif
-}
 
 
 
@@ -1020,8 +1016,7 @@
 //    [self.home getTimeline:@"" target:@"" type:@"1" groupnum:@""];
 ////    [home isBookmark:NO];
 //    //    [home settingComCover];
-//    
-//    [self settingHomeOnly];
+//
 ////    _centerController = [[CBNavigationController alloc]initWithRootViewController:home];
 ////    self.slidingViewController = _centerController;
 //    
@@ -1203,14 +1198,6 @@
     
     
     
-//    if([dic[@"category"]isEqualToString:@"1"]){
-//        [self settingHomeOnly];
-//        
-//    }
-//    else if([dic[@"grouptype"]isEqualToString:@"0"]){
-//        [self settingHomeOnly];
-//    }
-//    else{
 		self.home.targetuid = @"";
 		self.home.category = dic[@"category"];
 		self.home.groupnum = dic[@"groupnumber"];
@@ -1362,7 +1349,12 @@
     
     [self.home settingGroupDic:dic];
 #else
-    [self settingHomeOnly];
+  
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(![main.navigationController.topViewController isKindOfClass:[self.home class]])
+            [main.navigationController pushViewController:self.home animated:YES];
+    });
 
 #endif
 
@@ -1959,6 +1951,7 @@
 //}
 - (void)setGroupDic:(NSDictionary *)dic regi:(NSString *)yn{
     
+    NSLog(@"dic %@ yn %@",dic,yn?@"YES":@"NO");
     [self.home setGroup:dic regi:yn];
     
     [member setGroup:dic];

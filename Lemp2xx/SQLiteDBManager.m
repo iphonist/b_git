@@ -398,7 +398,7 @@
 + (BOOL)addDept:(NSMutableArray *)array init:(BOOL)init
 {
 //    if(init == NO)
-    NSLog(@"array %@",array);
+    
     /****************************************************************
      작업자 : 김혜민 > 박형준
      작업일자 : 2012/06/04 > 2013/11/06
@@ -421,16 +421,57 @@
 		if(sqlite3_prepare_v2(database, sql, -1, &statement, NULL) == SQLITE_OK){
             if(init == YES)
 			sqlite3_exec(database, "BEGIN", 0, 0, 0);
-
+            
+#ifdef BearTalk
+            
+            
+                NSString *MyCd = [NSString stringWithFormat:@"%@",@"00000"];
+                NSString *PaCd = [NSString stringWithFormat:@"%@",@""];
+                NSString *Sname = @"대웅그룹";
+                NSString *sequence = [NSString stringWithFormat:@"%@",@"0"];
+                NSString *member = [NSString stringWithFormat:@"%@",@"0"];
+                
+                
+                
+                
+                sqlite3_bind_text(statement, 1, [!IS_NULL(MyCd)?MyCd:@"" UTF8String], -1, SQLITE_TRANSIENT);
+                sqlite3_bind_text(statement, 2, [!IS_NULL(PaCd)?PaCd:@"" UTF8String], -1, SQLITE_TRANSIENT);
+                sqlite3_bind_text(statement, 3, [!IS_NULL(Sname)?[AESExtention aesEncryptString:Sname]:@"" UTF8String], -1, SQLITE_TRANSIENT);
+                sqlite3_bind_text(statement, 4, [!IS_NULL(sequence)?sequence:@"" UTF8String], -1, SQLITE_TRANSIENT);
+                sqlite3_bind_text(statement, 5, [!IS_NULL(member)?member:@"" UTF8String], -1, SQLITE_TRANSIENT);
+                
+                
+                
+                if(sqlite3_step(statement) != SQLITE_DONE) {
+                    NSLog(@"step != done error message : %s",sqlite3_errmsg(database));
+                }
+                sqlite3_clear_bindings(statement);
+                sqlite3_reset(statement);
+                
+                //					FREEMEM(encSname);
+            
+            
+#endif
 			for(NSDictionary *forDic in array) {
-				if([forDic[@"close"] isEqualToString:@"N"]) {
-					NSString *MyCd = forDic[@"deptcode"];
-					NSString *PaCd = forDic[@"parentdeptcode"];
-					NSString *Sname = forDic[@"deptname"];
-//					char *encSname = [dbManager encryptString:Sname!=nil&&![Sname isKindOfClass:[NSNull class]]?Sname:@""];
+                    
+#ifdef BearTalk
+                    
+                    if([forDic[@"USE_YN"] isEqualToString:@"Y"]) {
+                        NSString *MyCd = [NSString stringWithFormat:@"%@",forDic[@"ORG_CODE"]];
+                        NSString *PaCd = [NSString stringWithFormat:@"%@",forDic[@"PORG_CODE"]];
+                    NSString *Sname = forDic[@"ORG_NAME"];
+                        NSString *sequence = [NSString stringWithFormat:@"%@",forDic[@"SORT_INDEX"]];
+                    NSString *member = [NSString stringWithFormat:@"%@",forDic[@"DORG_CNT"]];
+                    
+#else
+                        if([forDic[@"close"] isEqualToString:@"N"]) {
+                    NSString *MyCd = forDic[@"deptcode"];
+                    NSString *PaCd = forDic[@"parentdeptcode"];
+                    NSString *Sname = forDic[@"deptname"];
+                    //					char *encSname = [dbManager encryptString:Sname!=nil&&![Sname isKindOfClass:[NSNull class]]?Sname:@""];
                     NSString *sequence = forDic[@"sequence"];
                     NSString *member = forDic[@"member"];
-                    
+#endif
                     
                     
                     sqlite3_bind_text(statement, 1, [!IS_NULL(MyCd)?MyCd:@"" UTF8String], -1, SQLITE_TRANSIENT);
@@ -470,7 +511,7 @@
 	}
 	sqlite3_close(database);	
 //    [dbManager release];
-
+        NSLog(@"dept end");
 	return success;
 }
 
@@ -497,13 +538,22 @@
 			const char *sql = "INSERT INTO ORGANIZE (mycode, parentcode, shortname,newfield1, newfield) values (?,?,?,?,?)";
 			
 			if(sqlite3_prepare_v2(database, sql, -1, &statement, NULL) == SQLITE_OK) {
+#ifdef BearTalk
+                
+                NSString *MyCd = [NSString stringWithFormat:@"%@",dic[@"ORG_CODE"]];
+                NSString *PaCd = [NSString stringWithFormat:@"%@",dic[@"PORG_CODE"]];
+                NSString *Sname = dic[@"ORG_NAME"];
+                NSString *sequence = [NSString stringWithFormat:@"%@",dic[@"SORT_INDEX"]];
+                    NSString *member = [NSString stringWithFormat:@"%@",dic[@"DORG_CNT"]];
+                    
+#else
 				NSString *MyCd = dic[@"deptcode"];
 				NSString *PaCd = dic[@"parentdeptcode"];
 				NSString *Sname = dic[@"deptname"];
 //				char *encSname = [dbManager encryptString:Sname!=nil&&![Sname isKindOfClass:[NSNull class]]?Sname:@""];
                 NSString *sequence = dic[@"sequence"];
                 NSString *member = dic[@"member"];
-                
+#endif
                 
 				sqlite3_bind_text(statement, 1, [!IS_NULL(MyCd)?MyCd:@"" UTF8String], -1, SQLITE_TRANSIENT);
 				sqlite3_bind_text(statement, 2, [!IS_NULL(PaCd)?PaCd:@"" UTF8String], -1, SQLITE_TRANSIENT);
@@ -530,7 +580,7 @@
 
 + (BOOL)addContact:(NSMutableArray *)array init:(BOOL)init
 {
-    
+    NSLog(@"addcontact %d",[array count]);
     if(init == NO)
         NSLog(@"array %@",array);
     /****************************************************************
@@ -558,6 +608,37 @@
 			NSDictionary *mydic = [SharedAppDelegate readPlist:@"myinfo"];
 			
 			for(NSDictionary *forDic in array) {
+#ifdef BearTalk
+                
+                if([forDic[@"USE_YN"]isEqualToString:@"Y"]) {
+                    
+                    NSString *Name = (!IS_NULL(forDic[@"USER_NAME"]))?forDic[@"USER_NAME"]:@"";
+                    NSString *Email = (!IS_NULL(forDic[@"EMAIL"]))?forDic[@"EMAIL"]:@"";
+                    NSString *Cellphone = (!IS_NULL(forDic[@"MOBILE_NUM"]))?forDic[@"MOBILE_NUM"]:@"";
+                    NSString *Companyphone = (!IS_NULL(forDic[@"COMPANY_TEL_NUM"]))?forDic[@"COMPANY_TEL_NUM"]:@"";
+                    NSString *Position = (!IS_NULL(forDic[@"DUTY_NAME"]))?forDic[@"DUTY_NAME"]:@"";
+                    NSString *Department = (!IS_NULL(forDic[@"DEPT_CODE"]))?forDic[@"DEPT_CODE"]:@"";
+                    
+                    NSString *Team = (!IS_NULL(forDic[@"DEPT_NAME"]))?forDic[@"DEPT_NAME"]:@"";//[[ResourceLoader sharedInstance] searchCode:Department];
+                    NSString *Uniqueid = (!IS_NULL(forDic[@"UID"]))?forDic[@"UID"]:@"";
+                    NSString *ProfileImage = (!IS_NULL(forDic[@"MY_AVATAR"]))?forDic[@"MY_AVATAR"]:@"";
+                    NSString *Available = @"1";//forDic[@"available"];
+//                    if([Available length] < 1 || Available == nil)
+//                        Available = @"0";
+                    
+                    NSString *Favorite = @"0";
+                    NSString *Grade2 = (!IS_NULL(forDic[@"POS_NAME"]))?forDic[@"POS_NAME"]:@"";
+                    Grade2 = [Grade2 stringByAppendingFormat:@"%@",Position];
+                    NSString *Info = (!IS_NULL(forDic[@"MY_INTRO"]))?forDic[@"MY_INTRO"]:@"";//objectFromJSONString][@"msg"];
+                    if([Available isEqualToString:@"0"])
+                        Info = @"";
+                    NSString *sequence = (!IS_NULL(forDic[@"SORT_INDEX"]))?[NSString stringWithFormat:@"%@",forDic[@"SORT_INDEX"]]:@"";
+                    NSString *userlevel = (!IS_NULL(forDic[@"userlevel"]) && [forDic[@"userlevel"]length]>0)?forDic[@"userlevel"]:@"";
+                    NSString *deptarray = (!IS_NULL(forDic[@"SUB_TITLE"]))?[forDic[@"SUB_TITLE"]JSONString ]:@"";
+                    NSString *leave_type = (!IS_NULL(forDic[@"LEAVE_TYPE"]) && [forDic[@"LEAVE_TYPE"]length]>0)?forDic[@"LEAVE_TYPE"]:@"";
+                    NSString *timelineimage = (!IS_NULL(forDic[@"timelineimage"]) && [forDic[@"timelineimage"]length]>0)?forDic[@"timelineimage"]:@"";
+                
+#else
                 if([forDic[@"retirement"]isEqualToString:@"N"]) {
                     NSLog(@"forDic %@",forDic);
 					
@@ -586,6 +667,7 @@
                     NSString *leave_type = [forDic[@"leave_type"]length]>0?forDic[@"leave_type"]:@"";
                     NSString *timelineimage = [forDic[@"timelineimage"]length]>0?forDic[@"timelineimage"]:@"";
                     
+#endif
 //					char *encName = [dbManager encryptString:Name!=nil&&![Name isKindOfClass:[NSNull class]]?Name:@""];
 //					char *encEmail = [dbManager encryptString:Email!=nil&&![Email isKindOfClass:[NSNull class]]?Email:@""];
 //					char *encCellphone = [dbManager encryptString:Cellphone!=nil&&![Cellphone isKindOfClass:[NSNull class]]?Cellphone:@""];
@@ -676,6 +758,8 @@
 	}
 	sqlite3_close(database);
 //    [dbManager release];
+        
+        NSLog(@"contact end");
 	return success;
 }
 
@@ -697,7 +781,38 @@
 		if (sqlite3_open([dbfilePath UTF8String], &database) == SQLITE_OK) {
 			sqlite3_stmt *statement;
 			const char *sql = "INSERT INTO CONTACT (name,email,cellphone,companyphone,deptcode,team,position,uniqueid,profileimage,available,favorite,grade2,newfield1,newfield2,newfield3,newfield4,newfield5,newfield6) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-			
+#ifdef BearTalk
+            
+            
+            NSString *Name = (!IS_NULL(dic[@"USER_NAME"]))?dic[@"USER_NAME"]:@"";
+            NSString *Email = (!IS_NULL(dic[@"EMAIL"]))?dic[@"EMAIL"]:@"";
+            NSString *Cellphone = (!IS_NULL(dic[@"MOBILE_NUM"]))?dic[@"MOBILE_NUM"]:@"";
+            NSString *Companyphone = (!IS_NULL(dic[@"COMPANY_TEL_NUM"]))?dic[@"COMPANY_TEL_NUM"]:@"";
+            NSString *Position = (!IS_NULL(dic[@"DUTY_NAME"]))?dic[@"DUTY_NAME"]:@"";
+            NSString *Department = (!IS_NULL(dic[@"DEPT_CODE"]))?dic[@"DEPT_CODE"]:@"";
+            
+            NSString *Team = (!IS_NULL(dic[@"DEPT_NAME"]))?dic[@"DEPT_NAME"]:@"";//[[ResourceLoader sharedInstance] searchCode:Department];
+            NSString *Uniqueid = (!IS_NULL(dic[@"UID"]))?dic[@"UID"]:@"";
+            NSString *ProfileImage = (!IS_NULL(dic[@"MY_AVATAR"]))?dic[@"MY_AVATAR"]:@"";
+            NSString *Available = @"1";//dic[@"available"];
+            //                    if([Available length] < 1 || Available == nil)
+            //                        Available = @"0";
+            
+            NSString *Favorite = @"0";
+            NSString *Grade2 = (!IS_NULL(dic[@"POS_NAME"]))?dic[@"POS_NAME"]:@"";
+            Grade2 = [Grade2 stringByAppendingFormat:@"%@",Position];
+            NSString *Info = (!IS_NULL(dic[@"MY_INTRO"]))?dic[@"MY_INTRO"]:@"";//objectFromJSONString][@"msg"];
+            if([Available isEqualToString:@"0"])
+                Info = @"";
+            
+            NSString *sequence = (!IS_NULL(dic[@"SORT_INDEX"]))?[NSString stringWithFormat:@"%@",dic[@"SORT_INDEX"]]:@"";
+            NSString *userlevel = (!IS_NULL(dic[@"userlevel"]) && [dic[@"userlevel"]length]>0)?dic[@"userlevel"]:@"";
+            NSString *deptarray = (!IS_NULL(dic[@"SUB_TITLE"]))?[dic[@"SUB_TITLE"]JSONString ]:@"";
+            NSString *leave_type = (!IS_NULL(dic[@"LEAVE_TYPE"]) && [dic[@"LEAVE_TYPE"]length]>0)?dic[@"LEAVE_TYPE"]:@"";
+            NSString *timelineimage = (!IS_NULL(dic[@"timelineimage"]) && [dic[@"timelineimage"]length]>0)?dic[@"timelineimage"]:@"";
+            
+                
+#else
 			NSString *Name = dic[@"name"];
 			NSString *Email = dic[@"email"];
 			NSString *Cellphone = dic[@"cellphone"];
@@ -721,7 +836,7 @@
             NSString *deptarray = dic[@"concurrent_position"]!=nil?dic[@"concurrent_position"]:@"";
             NSString *leave_type = [dic[@"leave_type"]length]>0?dic[@"leave_type"]:@"";
             NSString *timelineimage = [dic[@"timelineimage"]length]>0?dic[@"timelineimage"]:@"";
-			
+#endif
 //			char *encName = [dbManager encryptString:Name!=nil&&![Name isKindOfClass:[NSNull class]]?Name:@""];
 //			char *encEmail = [dbManager encryptString:Email!=nil&&![Email isKindOfClass:[NSNull class]]?Email:@""];
 //			char *encCellphone = [dbManager encryptString:Cellphone!=nil&&![Cellphone isKindOfClass:[NSNull class]]?Cellphone:@""];
@@ -1092,6 +1207,40 @@
 		
 		sqlite3_stmt *statement;
     
+        
+#ifdef BearTalk
+        
+        
+        
+        NSString *Name = (!IS_NULL(dic[@"USER_NAME"]))?dic[@"USER_NAME"]:@"";
+        NSString *Email = (!IS_NULL(dic[@"EMAIL"]))?dic[@"EMAIL"]:@"";
+        NSString *Cellphone = (!IS_NULL(dic[@"MOBILE_NUM"]))?dic[@"MOBILE_NUM"]:@"";
+        NSString *Companyphone = (!IS_NULL(dic[@"COMPANY_TEL_NUM"]))?dic[@"COMPANY_TEL_NUM"]:@"";
+        NSString *Position = (!IS_NULL(dic[@"DUTY_NAME"]))?dic[@"DUTY_NAME"]:@"";
+        NSString *Deptcode = (!IS_NULL(dic[@"DEPT_CODE"]))?dic[@"DEPT_CODE"]:@"";
+        
+        NSString *Team = (!IS_NULL(dic[@"DEPT_NAME"]))?dic[@"DEPT_NAME"]:@"";//[[ResourceLoader sharedInstance] searchCode:Department];
+        NSString *Uniqueid = (!IS_NULL(dic[@"UID"]))?dic[@"UID"]:@"";
+        NSString *ProfileImage = (!IS_NULL(dic[@"MY_AVATAR"]))?dic[@"MY_AVATAR"]:@"";
+        NSString *Available = @"1";//dic[@"available"];
+        //                    if([Available length] < 1 || Available == nil)
+        //                        Available = @"0";
+        
+        NSString *Favorite = @"0";
+        NSString *Grade2 = (!IS_NULL(dic[@"POS_NAME"]))?dic[@"POS_NAME"]:@"";
+        Grade2 = [Grade2 stringByAppendingFormat:@"%@",Position];
+        NSString *Info = (!IS_NULL(dic[@"MY_INTRO"]))?dic[@"MY_INTRO"]:@"";//objectFromJSONString][@"msg"];
+        if([Available isEqualToString:@"0"])
+            Info = @"";
+        NSString *sequence = (!IS_NULL(dic[@"SORT_INDEX"]))?[NSString stringWithFormat:@"%@",dic[@"SORT_INDEX"]]:@"";
+        NSString *userlevel = (!IS_NULL(dic[@"userlevel"]) && [dic[@"userlevel"]length]>0)?dic[@"userlevel"]:@"";
+        NSString *deptarray = (!IS_NULL(dic[@"SUB_TITLE"]))?[dic[@"SUB_TITLE"]JSONString ]:@"";
+        NSString *leave_type = (!IS_NULL(dic[@"LEAVE_TYPE"]) && [dic[@"LEAVE_TYPE"]length]>0)?dic[@"LEAVE_TYPE"]:@"";
+        NSString *timelineimage = (!IS_NULL(dic[@"timelineimage"]) && [dic[@"timelineimage"]length]>0)?dic[@"timelineimage"]:@"";
+        
+        
+
+#else
 		NSString *Name = dic[@"name"];
 		NSString *Email = dic[@"email"];
 		NSString *Cellphone = dic[@"cellphone"];
@@ -1118,7 +1267,7 @@
         NSString *leave_type = [dic[@"leave_type"]length]>0?dic[@"leave_type"]:@"";
         NSString *timelineimage = [dic[@"timelineimage"]length]>0?dic[@"timelineimage"]:@"";
 
-	
+#endif
 //		char *encName = [dbManager encryptString:Name!=nil&&![Name isKindOfClass:[NSNull class]]?Name:@""];
 //		char *encEmail = [dbManager encryptString:Email!=nil&&![Email isKindOfClass:[NSNull class]]?Email:@""];
 //		char *encCellphone = [dbManager encryptString:Cellphone!=nil&&![Cellphone isKindOfClass:[NSNull class]]?Cellphone:@""];
@@ -1197,6 +1346,40 @@
 //			sqlite3_exec(database, "BEGIN", 0, 0, 0);
 			
             for(NSDictionary *dic in array) {
+                
+#ifdef BearTalk
+                
+                
+                
+                NSString *Name = (!IS_NULL(dic[@"USER_NAME"]))?dic[@"USER_NAME"]:@"";
+                NSString *Email = (!IS_NULL(dic[@"EMAIL"]))?dic[@"EMAIL"]:@"";
+                NSString *Cellphone = (!IS_NULL(dic[@"MOBILE_NUM"]))?dic[@"MOBILE_NUM"]:@"";
+                NSString *Companyphone = (!IS_NULL(dic[@"COMPANY_TEL_NUM"]))?dic[@"COMPANY_TEL_NUM"]:@"";
+                NSString *Position = (!IS_NULL(dic[@"DUTY_NAME"]))?dic[@"DUTY_NAME"]:@"";
+                NSString *Deptcode = (!IS_NULL(dic[@"DEPT_CODE"]))?dic[@"DEPT_CODE"]:@"";
+                
+                NSString *Team = (!IS_NULL(dic[@"DEPT_NAME"]))?dic[@"DEPT_NAME"]:@"";//[[ResourceLoader sharedInstance] searchCode:Department];
+                NSString *Uniqueid = (!IS_NULL(dic[@"UID"]))?dic[@"UID"]:@"";
+                NSString *ProfileImage = (!IS_NULL(dic[@"MY_AVATAR"]))?dic[@"MY_AVATAR"]:@"";
+                NSString *Available = @"1";//dic[@"available"];
+                //                    if([Available length] < 1 || Available == nil)
+                //                        Available = @"0";
+                
+                NSString *Favorite = @"0";
+                NSString *Grade2 = (!IS_NULL(dic[@"POS_NAME"]))?dic[@"POS_NAME"]:@"";
+                Grade2 = [Grade2 stringByAppendingFormat:@"%@",Position];
+                NSString *Info = (!IS_NULL(dic[@"MY_INTRO"]))?dic[@"MY_INTRO"]:@"";//objectFromJSONString][@"msg"];
+                if([Available isEqualToString:@"0"])
+                    Info = @"";
+                NSString *sequence = (!IS_NULL(dic[@"SORT_INDEX"]))?[NSString stringWithFormat:@"%@",dic[@"SORT_INDEX"]]:@"";
+                NSString *userlevel = (!IS_NULL(dic[@"userlevel"]) && [dic[@"userlevel"]length]>0)?dic[@"userlevel"]:@"";
+                NSString *deptarray = (!IS_NULL(dic[@"SUB_TITLE"]))?[dic[@"SUB_TITLE"]JSONString ]:@"";
+                NSString *leave_type = (!IS_NULL(dic[@"LEAVE_TYPE"]) && [dic[@"LEAVE_TYPE"]length]>0)?dic[@"LEAVE_TYPE"]:@"";
+                NSString *timelineimage = (!IS_NULL(dic[@"timelineimage"]) && [dic[@"timelineimage"]length]>0)?dic[@"timelineimage"]:@"";
+                
+                
+                
+#else
                 NSLog(@"updateContactdic %@",dic);
 				NSString *Name = dic[@"name"];
 				NSString *Email = dic[@"email"];
@@ -1223,6 +1406,7 @@
                 
                 NSString *Uniqueid = dic[@"uid"];
 				
+#endif
 //				char *encName = [dbManager encryptString:Name!=nil&&![Name isKindOfClass:[NSNull class]]?Name:@""];
 //				char *encEmail = [dbManager encryptString:Email!=nil&&![Email isKindOfClass:[NSNull class]]?Email:@""];
 //				char *encCellphone = [dbManager encryptString:Cellphone!=nil&&![Cellphone isKindOfClass:[NSNull class]]?Cellphone:@""];
@@ -1346,10 +1530,19 @@
 		NSString *sql = [NSString stringWithFormat:@"UPDATE ORGANIZE set parentcode=?, shortname=?, newfield1=?,newfield=? where mycode='%@'",dic[@"mycode"]];
 		if(sqlite3_prepare_v2(database, [sql UTF8String], -1, &statement, NULL) == SQLITE_OK){
 			
+            
+#ifdef BearTalk
+            
+            NSString *PaCd = [NSString stringWithFormat:@"%@",dic[@"PORG_CODE"]];
+            NSString *Sname = dic[@"ORG_NAME"];
+            NSString *sequence = [NSString stringWithFormat:@"%@",dic[@"SORT_INDEX"]];
+            NSString *member = [NSString stringWithFormat:@"%@",dic[@"DORG_CNT"]];
+#else
 			NSString *PaCd = dic[@"parentdeptcode"];
 			NSString *Sname = dic[@"shortname"];
             NSString *sequence = dic[@"sequence"];
             NSString *member = dic[@"member"];
+#endif
 //			char *encSname = [dbManager encryptString:Sname!=nil&&![Sname isKindOfClass:[NSNull class]]?Sname:@""];
 			
             
@@ -1395,11 +1588,21 @@
 //			sqlite3_exec(database, "BEGIN", 0, 0, 0);
 			
 			for(NSDictionary *dic in array) {
+                
+#ifdef BearTalk
+                
+                NSString *PaCd = [NSString stringWithFormat:@"%@",dic[@"PORG_CODE"]];
+                NSString *Sname = dic[@"ORG_NAME"];
+                NSString *sequence = [NSString stringWithFormat:@"%@",dic[@"SORT_INDEX"]];
+                NSString *member = [NSString stringWithFormat:@"%@",dic[@"DORG_CNT"]];
+                NSString *deptCode = dic[@"DEPT_CODE"];
+#else
 				NSString *PaCd = dic[@"parentdeptcode"];
 				NSString *Sname = dic[@"deptname"];
 				NSString *sequence = dic[@"sequence"];
                 NSString *member = dic[@"member"];
                 NSString *deptCode = dic[@"deptcode"];
+#endif
 //				char *encSname = [dbManager encryptString:Sname!=nil&&![Sname isKindOfClass:[NSNull class]]?Sname:@""];
                 
                 sqlite3_bind_text(statement, 1, [!IS_NULL(PaCd)?PaCd:@"" UTF8String], -1, SQLITE_TRANSIENT);
