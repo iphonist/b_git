@@ -174,162 +174,153 @@ const char paramNumber;
 }
 
 
-- (void)setGroupDic:(NSDictionary *)dic withSec:(int)sec withRow:(int)row// regi:(NSString *)regi//Member:(NSArray *)array regi:(NSString *)regi explain:(NSString *)explain{
-{
-    NSLog(@"setgroup %@",dic);
-    
-    if(groupDic){
-//        [groupDic release];
-        groupDic = nil;
-    }
-    groupDic = [[NSDictionary alloc]initWithDictionary:dic];
-//    if(groupImage){
-//        [groupImage release];
-//        groupImage = nil;
-//    }
-//    groupImage = [[NSString alloc]initWithFormat:@"%@",dic[@"groupimage"]];
+//- (void)setGroupDic:(NSDictionary *)dic withSec:(int)sec withRow:(int)row// regi:(NSString *)regi//Member:(NSArray *)array regi:(NSString *)regi explain:(NSString *)explain{
+//{
+//    NSLog(@"setgroup %@",dic);
 //    
-//    if(groupnum){
-//        [groupnum release];
-//        groupnum = nil;
+//    if(groupDic){
+//        
+//        groupDic = nil;
 //    }
-//    groupnum = [[NSString alloc]initWithFormat:@"%@",dic[@"groupnumber"]];
-    //[SharedAppDelegate.root.home setGroupNumber:[dic[@"groupnumber"]];
-    NSLog(@"setGroup  %@",dic);
-   
-    if(memberList){
-//        [memberList release];
-        memberList = nil;
-    }
-    memberList = [[NSMutableArray alloc]init];
-    
-    for(NSString *uid in dic[@"member"])
-    {
-        //            if(![uid isEqualToString:[ResourceLoader sharedInstance].myUID])
-        if([[SharedAppDelegate.root searchContactDictionary:uid]count]>0)
-        [memberList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
-//        NSLog(@"memberList 2 %@",memberList);
-    }
-    
-    if(waitList){
-//        [waitList release];
-        waitList = nil;
-    }
-    waitList = [[NSMutableArray alloc]init];
-    
-    for(NSString *uid in dic[@"waitmember"])
-    {
-        //            if(![uid isEqualToString:[ResourceLoader sharedInstance].myUID])
-        if([[SharedAppDelegate.root searchContactDictionary:uid]count]>0)
-        [waitList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
-//        NSLog(@"memberList 2 %@",memberList);
-    }
-    
-    [myTable reloadData];
-    
-//    NSLog(@"memberList 3 %@",memberList);
-//    if(groupInfo)
-//    {
-//        [groupInfo release];
-//        groupInfo = nil;
-//    }
-//    groupInfo = [[NSString alloc]initWithFormat:@"%@",dic[@"groupexplain"]];
+//    groupDic = [[NSDictionary alloc]initWithDictionary:dic];
+//
 //    
-//    if(groupMaster)
-//    {
-//        [groupMaster release];
-//        groupMaster = nil;
+//    NSLog(@"setGroup  %@",dic);
+//   
+//    if(memberList){
+////        [memberList release];
+//        memberList = nil;
 //    }
-//    groupMaster = [[NSString alloc]initWithFormat:@"%@",dic[@"groupmaster"]];
-//    NSLog(@"Groupmaster %@",groupMaster);
-    
-    
-    //    if([[dicobjectForKey:@"grouptype"]isEqualToString:@"1"])
-    //        publicGroup = NO;
-    //    else
-    //        publicGroup = YES;
-    
-    if(sec == kConfig){
-        if(row == 0){
-            [self modifySocialAll:groupDic];
-        }
-    }
-   else if(sec == kSocial)
-    {
-        
-        if(row == 0){
-            
-            [self modifySocialImage:groupDic];
-        }
-        else if(row == 1){
-            [self modifySocialName:groupDic];
-        }
-        else if(row == 2){
-            [self modifySocialExp:groupDic];
-        }
-        
-    }
-    else if(sec == kMember){
-        
-        
-        
-        NSString *attribute2 = groupDic[@"groupattribute2"];
-        if([attribute2 length]<1)
-            attribute2 = @"00";
-        
-        
-        NSMutableArray *array2 = [NSMutableArray array];
-        for (int i = 0; i < [attribute2 length]; i++) {
-            
-            [array2 addObject:[NSString stringWithFormat:@"%C", [attribute2 characterAtIndex:i]]];
-            
-        }
-#ifdef Batong
-       if([array2[0]isEqualToString:@"0"]){
-           if(row == 0){
-               [self controlMember:attribute2];
-               
-           }
-           else if(row == 1){
-               [self groupMemberAdd];
-               
-           }
-       }
-       else if([array2[0]isEqualToString:@"1"]){
-           [self showMemer];
-       }
-#else
-        if([attribute2 hasPrefix:@"00"]){
-            
-            
-            
-            if(row == 0){
-                [self controlMember:attribute2];
-            }
-            else if(row == 1){
-                [self groupMemberAdd];
-            }
-            
-        }
-        else if([attribute2 hasPrefix:@"10"]){
-            [self controlMember:attribute2];
-        }
-        else if([attribute2 hasPrefix:@"11"]){
-            // customer invite
-            if(row == 0){
-            [self loadLocalNumber];
-            }
-            else if(row == 1){
-                [self controlMember:attribute2];
-                
-            }
-        }
-        
-#endif
-    }
-
-    
-}
+//    memberList = [[NSMutableArray alloc]init];
+//    
+//    
+//#ifdef BearTalk
+//    
+//    for(NSDictionary *dic in dic[@"member"])
+//    {
+//        NSString *uid = dic[@"UID"];
+//        
+//        if([[SharedAppDelegate.root searchContactDictionary:uid]count]>0)
+//            [memberList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
+//    }
+//#else
+//    for(NSString *uid in dic[@"member"])
+//    {
+//        if([[SharedAppDelegate.root searchContactDictionary:uid]count]>0)
+//        [memberList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
+//    }
+//#endif
+//    if(waitList){
+//        waitList = nil;
+//    }
+//    waitList = [[NSMutableArray alloc]init];
+//    
+//    
+//#ifdef BearTalk
+//    
+//    for(NSDictionary *dic in dic[@"waitmember"])
+//    {
+//        NSString *uid = dic[@"UID"];
+//        
+//        if([[SharedAppDelegate.root searchContactDictionary:uid]count]>0)
+//            [waitList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
+//        //        NSLog(@"memberList 2 %@",memberList);
+//    }
+//#else
+//    for(NSString *uid in dic[@"waitmember"])
+//    {
+//        //            if(![uid isEqualToString:[ResourceLoader sharedInstance].myUID])
+//        if([[SharedAppDelegate.root searchContactDictionary:uid]count]>0)
+//        [waitList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
+////        NSLog(@"memberList 2 %@",memberList);
+//    }
+//#endif
+//    
+//    [myTable reloadData];
+//    
+//
+//    
+//    if(sec == kConfig){
+//        if(row == 0){
+//            [self modifySocialAll:groupDic];
+//        }
+//    }
+//   else if(sec == kSocial)
+//    {
+//        
+//        if(row == 0){
+//            
+//            [self modifySocialImage:groupDic];
+//        }
+//        else if(row == 1){
+//            [self modifySocialName:groupDic];
+//        }
+//        else if(row == 2){
+//            [self modifySocialExp:groupDic];
+//        }
+//        
+//    }
+//    else if(sec == kMember){
+//        
+//        
+//        
+//        NSString *attribute2 = groupDic[@"groupattribute2"];
+//        if([attribute2 length]<1)
+//            attribute2 = @"00";
+//        
+//        
+//        NSMutableArray *array2 = [NSMutableArray array];
+//        for (int i = 0; i < [attribute2 length]; i++) {
+//            
+//            [array2 addObject:[NSString stringWithFormat:@"%C", [attribute2 characterAtIndex:i]]];
+//            
+//        }
+//#ifdef Batong
+//       if([array2[0]isEqualToString:@"0"]){
+//           if(row == 0){
+//               [self controlMember:attribute2];
+//               
+//           }
+//           else if(row == 1){
+//               [self groupMemberAdd];
+//               
+//           }
+//       }
+//       else if([array2[0]isEqualToString:@"1"]){
+//           [self showMemer];
+//       }
+//#else
+//        if([attribute2 hasPrefix:@"00"]){
+//            
+//            
+//            
+//            if(row == 0){
+//                [self controlMember:attribute2];
+//            }
+//            else if(row == 1){
+//                [self groupMemberAdd];
+//            }
+//            
+//        }
+//        else if([attribute2 hasPrefix:@"10"]){
+//            [self controlMember:attribute2];
+//        }
+//        else if([attribute2 hasPrefix:@"11"]){
+//            // customer invite
+//            if(row == 0){
+//            [self loadLocalNumber];
+//            }
+//            else if(row == 1){
+//                [self controlMember:attribute2];
+//                
+//            }
+//        }
+//        
+//#endif
+//    }
+//
+//    
+//}
 
 #define kRequest 14
 
@@ -345,14 +336,17 @@ const char paramNumber;
     
 }
 
-- (void)setGroup:(NSDictionary *)dic// regi:(NSString *)regi//Member:(NSArray *)array regi:(NSString *)regi explain:(NSString *)explain{
+
+- (void)setGroup:(NSDictionary *)dic{
+    
+    NSLog(@"setGroup %@",dic);
+    [self setGroup:dic withSec:-1 withRow:-1];
+}
+- (void)setGroup:(NSDictionary *)dic withSec:(int)sec withRow:(int)row// regi:(NSString *)regi//Member:(NSArray *)array regi:(NSString *)regi explain:(NSString *)explain{
 {
     
     NSLog(@"setgroup %@",dic);
-    kSocial = 10;
-    kMember = 10;
-    kNotice = 10;
-    kOut = 10;
+    NSLog(@"sec %d row %d",sec,row);
 //    kDelete = 10;
     
     if(groupDic){
@@ -360,36 +354,63 @@ const char paramNumber;
         groupDic = nil;
     }
     groupDic = [[NSDictionary alloc]initWithDictionary:dic];
-//    groupnum = [[NSString alloc]initWithFormat:@"%@",dic[@"groupnumber"]];
-    //[SharedAppDelegate.root.home setGroupNumber:[dic[@"groupnumber"]];
+    
     NSLog(@"setGroup  %@",dic);
-    
-    if(waitList){
-//        [waitList release];
-        waitList = nil;
-    }
-    waitList = [[NSMutableArray alloc]init];
-    
-    for(NSString *uid in dic[@"waitmember"])
-    {
-        if([[SharedAppDelegate.root searchContactDictionary:uid]count]>0)
-        [waitList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
-     
-    }
     if(memberList){
-//        [memberList release];
+        //        [memberList release];
         memberList = nil;
     }
     memberList = [[NSMutableArray alloc]init];
     
-//    NSLog(@"memberList 1 %@",memberList);
+    
+#ifdef BearTalk
+    
+    for(NSDictionary *adic in groupDic[@"member"])
+    {
+        NSString *uid = adic[@"UID"];
+        NSLog(@"uid %@",uid);
+        if([[SharedAppDelegate.root searchContactDictionary:uid]count]>0)
+            [memberList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
+    }
+#else
     for(NSString *uid in dic[@"member"])
+    {
+        if([[SharedAppDelegate.root searchContactDictionary:uid]count]>0)
+            [memberList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
+    }
+#endif
+    if(waitList){
+        waitList = nil;
+    }
+    waitList = [[NSMutableArray alloc]init];
+    
+    
+#ifdef BearTalk
+    
+    NSLog(@"1");
+    for(NSDictionary *adic in groupDic[@"waitmember"])
+    {
+        NSLog(@"2");
+        NSString *uid = adic[@"UID"];
+        
+        NSLog(@"uid %@",uid);
+        if([[SharedAppDelegate.root searchContactDictionary:uid]count]>0)
+            [waitList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
+        //        NSLog(@"memberList 2 %@",memberList);
+    }
+#else
+    for(NSString *uid in dic[@"waitmember"])
     {
         //            if(![uid isEqualToString:[ResourceLoader sharedInstance].myUID])
         if([[SharedAppDelegate.root searchContactDictionary:uid]count]>0)
-        [memberList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
-//        NSLog(@"memberList 2 %@",memberList);
+            [waitList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
+        //        NSLog(@"memberList 2 %@",memberList);
     }
+#endif
+    
+    
+    
+    
     newAlert = [[NSString alloc]initWithFormat:@"%@",dic[@"notice"][@"notice_new"]];
     replyAlert = [[NSString alloc]initWithFormat:@"%@",dic[@"notice"][@"notice_reply"]];
     NSLog(@"newalert %@ replyAlert %@",newAlert,replyAlert);
@@ -397,7 +418,11 @@ const char paramNumber;
     
 //    NSLog(@"memberList 3 %@",memberList);
 
-    
+    if(sec == -1 && row == -1){
+    kSocial = 10;
+    kMember = 10;
+    kNotice = 10;
+    kOut = 10;
 #ifdef GreenTalkCustomer
     kNotice = 0;
     kOut = 1;
@@ -560,16 +585,96 @@ const char paramNumber;
     }
     
 #endif
+        
+        NSLog(@"kNotice %d member %d out %d  fconfig %d",kNotice,kMember,kOut,kConfig);
     
-//    if([groupDic[@"groupmaster"] isEqualToString:[ResourceLoader sharedInstance].myUID]){
-//        
-//        
-//        if([array2[0]isEqualToString:@"0"]){
-//        
-//        kDelete = kOut+1;
-//        }
-//    }
         [myTable reloadData];
+    }
+    else{
+    
+    if(sec == kConfig){
+        if(row == 0){
+            [self modifySocialAll:groupDic];
+        }
+    }
+    else if(sec == kSocial)
+    {
+        
+        if(row == 0){
+            
+            [self modifySocialImage:groupDic];
+        }
+        else if(row == 1){
+            [self modifySocialName:groupDic];
+        }
+        else if(row == 2){
+            [self modifySocialExp:groupDic];
+        }
+        
+    }
+    else if(sec == kMember){
+        
+        
+        
+        NSString *attribute2 = groupDic[@"groupattribute2"];
+        if([attribute2 length]<1)
+            attribute2 = @"00";
+        
+        
+        NSMutableArray *array2 = [NSMutableArray array];
+        for (int i = 0; i < [attribute2 length]; i++) {
+            
+            [array2 addObject:[NSString stringWithFormat:@"%C", [attribute2 characterAtIndex:i]]];
+            
+        }
+#ifdef Batong
+        if([array2[0]isEqualToString:@"0"]){
+            if(row == 0){
+                [self controlMember:attribute2];
+                
+            }
+            else if(row == 1){
+                [self groupMemberAdd];
+                
+            }
+        }
+        else if([array2[0]isEqualToString:@"1"]){
+            [self showMemer];
+        }
+#else
+        if([attribute2 hasPrefix:@"00"]){
+            
+            
+            
+            if(row == 0){
+                [self controlMember:attribute2];
+            }
+            else if(row == 1){
+                [self groupMemberAdd];
+            }
+            
+        }
+        else if([attribute2 hasPrefix:@"10"]){
+            [self controlMember:attribute2];
+        }
+        else if([attribute2 hasPrefix:@"11"]){
+            // customer invite
+            if(row == 0){
+                [self loadLocalNumber];
+            }
+            else if(row == 1){
+                [self controlMember:attribute2];
+                
+            }
+        }
+        
+#endif
+    }
+        
+    }
+    
+
+    
 }
 
 - (void)setRegi:(NSString *)yn{
@@ -633,10 +738,17 @@ const char paramNumber;
     
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
-//    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/group/groupinfo.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSLog(@"setGroupInfoWithSec sec %d row %d",sec,row);
+    
+    NSString *urlString;
+    
+#ifdef BearTalk
+    urlString = [NSString stringWithFormat:@"%@/api/sns/info",BearTalkBaseUrl];
+#else
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/group/groupinfo.lemp",[SharedAppDelegate readPlist:@"was"]];
+#endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -644,12 +756,20 @@ const char paramNumber;
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",
+    NSDictionary *parameters;
+    
+#ifdef BearTalk
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                  SharedAppDelegate.root.home.groupnum,@"snskey",nil];
+#else
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",
                                 [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
                                 SharedAppDelegate.root.home.groupnum,@"groupnumber",nil];
+    
+#endif
     NSLog(@"groupinfo %@",parameters);
     
-//    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/group/groupinfo.lemp" parameters:parameters];
+    
     
     NSError *serializationError = nil;
     NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
@@ -658,13 +778,60 @@ const char paramNumber;
     
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSLog(@"resultDic %@", [operation.responseString objectFromJSONString]);
+        
+#ifdef BearTalk
+        
+        
+        NSDictionary *resultDic = [operation.responseString objectFromJSONString];
+        
+        NSDictionary *origindic;
+        for(NSDictionary *dic in SharedAppDelegate.root.main.myList){
+            if([dic[@"groupnumber"]isEqualToString:SharedAppDelegate.root.home.groupnum]){
+                origindic = dic;
+            }
+        }
+        NSMutableDictionary *newdic = [NSMutableDictionary dictionaryWithDictionary:origindic];
+        
+        NSLog(@"newdic %@",newdic);
+        
+        [newdic setObject:resultDic[@"SNS_KEY"] forKey:@"groupnumber"];
+        [newdic setObject:resultDic[@"SNS_AVATAR"] forKey:@"groupimage"];
+        [newdic setObject:resultDic[@"SNS_MEMBER"] forKey:@"member"];
+        [newdic setObject:resultDic[@"SNS_INVITE_MEMBER"] forKey:@"waitmember"];
+        if([resultDic[@"SNS_ADMIN_UID"]count]>0)
+        [newdic setObject:resultDic[@"SNS_ADMIN_UID"][0] forKey:@"groupmaster"];
+        NSString *decoded = [resultDic[@"SNS_NAME"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [newdic setObject:decoded forKey:@"groupname"];
+      
+        
+        
+        [SharedAppDelegate.root.home setNoticeSnsArray:resultDic[@"NOTICE_INFO"]];
+        
+        
+        NSLog(@"newdic %@",newdic);
+//        if(sec < 0 && row < 0){
+        
+            [self setGroup:newdic withSec:sec withRow:row];
+//        }
+//        else{
+//        [self setGroupDic:newdic withSec:sec withRow:row];
+//        }
+        
+        [SharedAppDelegate.root.home setGroup:newdic regi:@"Y"];
+#else
+        
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
-        NSLog(@"resultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
         if ([isSuccess isEqualToString:@"0"]) {
             
-            
-            [self setGroupDic:resultDic withSec:sec withRow:row];
+//            if(sec < 0 && row < 0){
+//                  [self setGroup:resultDic];
+//                
+//            }
+//            else{
+            [self setGroup:resultDic withSec:sec withRow:row];
+//            }
             
         }
         else {
@@ -675,6 +842,9 @@ const char paramNumber;
                 [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
             
         }
+        
+        
+#endif
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -690,61 +860,64 @@ const char paramNumber;
 
 - (void)setGroupInfo:(NSString *)num{
     
-    
-    if([[SharedAppDelegate readPlist:@"was"]length]<1)
-        return;
-//    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
-    
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/group/groupinfo.lemp",[SharedAppDelegate readPlist:@"was"]];
-    NSURL *baseUrl = [NSURL URLWithString:urlString];
-    
-    
-    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
-    client.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
-    
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",
-                                [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
-                                num,@"groupnumber",nil];
-    NSLog(@"groupinfo %@",parameters);
-    
-//    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/group/groupinfo.lemp" parameters:parameters];
-    
-    NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
-        NSLog(@"resultDic %@",resultDic);
-        NSString *isSuccess = resultDic[@"result"];
-        if ([isSuccess isEqualToString:@"0"]) {
-            
-            
-            [self setGroup:resultDic];
-            
-         }
-        else {
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
-            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-                        if(![isSuccess isEqualToString:@"0015"])
-            [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
-            
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"FAIL : %@",operation.error);
-        [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
-        //        [alert show];
-        
-    }];
-    
-    [operation start];
+    NSLog(@"setgroupinfo %@",num);
+    [self setGroupInfoWithSec:-1 withRow:-1];
+    return;
+
+//    if([[SharedAppDelegate readPlist:@"was"]length]<1)
+//        return;
+////    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
+//    
+//    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/group/groupinfo.lemp",[SharedAppDelegate readPlist:@"was"]];
+//    NSURL *baseUrl = [NSURL URLWithString:urlString];
+//    
+//    
+//    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+//    client.responseSerializer = [AFHTTPResponseSerializer serializer];
+//    
+//    
+//    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",
+//                                [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
+//                                num,@"groupnumber",nil];
+//    NSLog(@"groupinfo %@",parameters);
+//    
+//    
+//    
+//    NSError *serializationError = nil;
+//    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+//    
+//    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//    
+//    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
+//        NSLog(@"resultDic %@",resultDic);
+//        NSString *isSuccess = resultDic[@"result"];
+//        if ([isSuccess isEqualToString:@"0"]) {
+//            
+//            
+//            [self setGroup:resultDic];
+//            
+//         }
+//        else {
+//            [MBProgressHUD hideHUDForView:self.view animated:YES];
+//            NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
+//            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
+//                        if(![isSuccess isEqualToString:@"0015"])
+//            [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
+//            
+//        }
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//        NSLog(@"FAIL : %@",operation.error);
+//        [HTTPExceptionHandler handlingByError:error];
+//        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+//        //        [alert show];
+//        
+//    }];
+//    
+//    [operation start];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -909,6 +1082,8 @@ const char paramNumber;
     else{
 #ifdef BearTalk
         
+        NSLog(@"master %@ myuid %@",groupDic[@"groupmaster"],[ResourceLoader sharedInstance].myUID);
+         // kNotice 0 member 1 out 3 config 2
         if(section == kNotice)
             return 2;
         else if(section == kMember)
@@ -921,7 +1096,6 @@ const char paramNumber;
 
         }
         else if(section == kOut){
-            NSLog(@"out %@ %@",groupDic[@"groupmaster"],[ResourceLoader sharedInstance].myUID);
             if([groupDic[@"groupmaster"] isEqualToString:[ResourceLoader sharedInstance].myUID])
                 return 2;
             else
@@ -1136,7 +1310,7 @@ const char paramNumber;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    NSLog(@"cellforrow");
     static NSString *CellIdentifier = @"Cell";
 //    UIImageView *view;//, *imageView;
     //    UILabel *label;
@@ -1351,6 +1525,7 @@ const char paramNumber;
     else{
         
 #ifdef BearTalk
+        NSLog(@"NOT GREEN");
 //          if([groupDic[@"groupmaster"] isEqualToString:[ResourceLoader sharedInstance].myUID])
         
               cell.detailTextLabel.textColor = RGB(132,146,160);
