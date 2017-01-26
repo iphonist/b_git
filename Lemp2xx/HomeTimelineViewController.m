@@ -554,7 +554,7 @@ const char paramIndex;
     UIButton *button = (UIButton *)sender;
     
     
-    if([groupDic[@"groupfavorite"] isEqualToString:@"P"])
+    if([groupDic[@"favorite"] isEqualToString:@"P"])
         return;
     
     
@@ -569,9 +569,9 @@ const char paramIndex;
     [activityA startAnimating];
     
     
-    NSString *type = @"D";
+    NSString *type = @"d";
     if(button.selected == NO)
-        type = @"I";
+        type = @"i";
     
     
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
@@ -579,24 +579,29 @@ const char paramIndex;
     //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/timelinegroupfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/sns/fav",BearTalkBaseUrl];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
+    NSString *method;
+    NSDictionary *parameters;// = [NSDictionary dictionaryWithObjectsAndKeys:
+//                                [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
+//                                self.groupnum,@"groupnumber",
+//                                type,@"type",
+//                                [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
+//    NSLog(@"parameters %@",parameters);
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
-                                self.groupnum,@"groupnumber",
-                                type,@"type",
-                                [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
-    NSLog(@"parameters %@",parameters);
-    //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/info/timeline.lemp" parameters:parameters];
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                  self.groupnum,@"snskey",
+                  type,@"type",
+                  [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
+    method = @"PUT";
     
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:method URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
@@ -606,19 +611,19 @@ const char paramIndex;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         //        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
-        NSLog(@"resultDic %@",resultDic);
-        NSString *isSuccess = resultDic[@"result"];
+//        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
+        NSLog(@"resultDic %@",operation.responseString);
+//        NSString *isSuccess = resultDic[@"result"];
         NSString *msg;
-        if ([isSuccess isEqualToString:@"0"]) {
+//        if ([isSuccess isEqualToString:@"0"]) {
+        
             
-            
-            if([type isEqualToString:@"I"]){
+            if([type isEqualToString:@"i"]){
                 msg = @"즐겨찾기가 등록되었습니다.";
                 [favButton setBackgroundImage:[CustomUIKit customImageNamed:@"btn_social_bookmark_on.png"] forState:UIControlStateNormal];
                 favButton.selected = YES;
             }
-            else if([type isEqualToString:@"D"]){
+            else if([type isEqualToString:@"d"]){
                 
                 msg = @"즐겨찾기가 해제되었습니다.";
                 [favButton setBackgroundImage:[CustomUIKit customImageNamed:@"btn_social_bookmark_off.png"] forState:UIControlStateNormal];
@@ -637,12 +642,12 @@ const char paramIndex;
             
             
             
-        }else {
-            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-            [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
-            NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
-            
-        }
+//        }else {
+//            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
+//            [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
+//            NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
+//            
+//        }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         //        [myTable.pullToRefreshView stopAnimating];
@@ -1388,7 +1393,12 @@ const char paramIndex;
     
     
     
+#ifdef BearTalk
+    if([self.category isEqualToString:@"2"]){
+    
+#else
     if([self.category isEqualToString:@"2"] && [regi isEqualToString:@"Y"]){
+#endif
         
         
         NSString *msg;
@@ -1770,8 +1780,43 @@ const char paramIndex;
     
 }
 
+- (void)setGroupTitle:(NSString *)name{
+    NSLog(@"setGroupTitle %@",name);
+    groupTitleLabel.text = name;
+
+    if([groupTitleLabel.text length]>5){
+        groupTitleLabel.frame = CGRectMake(16, coverImageView.frame.size.height - (470/2-152), 140, 70);
+        groupTitleLabel.numberOfLines = 2;
+        groupCountLabel.frame = CGRectMake(33, groupTitleLabel.frame.origin.y - 20, coverImageView.frame.size.width - 16 - 33, 15);
+        groupIconImage.frame = CGRectMake(16, groupCountLabel.frame.origin.y, 12, 12);
+    }
+    else{
+        groupTitleLabel.frame = CGRectMake(16, coverImageView.frame.size.height - (470/2-185), 140, 30);
+        groupTitleLabel.numberOfLines = 1;
+        groupCountLabel.frame = CGRectMake(33, groupTitleLabel.frame.origin.y - 20, coverImageView.frame.size.width - 16 - 33, 15);
+        groupIconImage.frame = CGRectMake(16, groupCountLabel.frame.origin.y, 12, 12);
+    }
+    
+}
+- (void)setChangeCoverImage:(NSData *)img groupnum:(NSString *)number{
+    NSLog(@"img length %d",[img length]);
+    
+    
+    
+    
+            [coverImageView setImage:[UIImage imageWithData:img]];
+            
+            [SharedAppDelegate.root.main.myTable reloadData];
+    
+    
+}
+
+
 - (void)modifyGroupImage:(NSData *)selectedImageData groupnumber:(NSString *)number create:(BOOL)isCreate imagenumber:(int)num{
     
+    
+    
+
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
     
@@ -1836,10 +1881,16 @@ const char paramIndex;
                 //#if defined(GreenTalk) || defined(GreenTalkCustomer)
                 [SVProgressHUD showSuccessWithStatus:@"설정이 저장되었습니다."];
                 //#endif
+              
+                
                 for(NSDictionary *dic in SharedAppDelegate.root.main.myList){
                     if([dic[@"groupnumber"] isEqualToString:number]) {
+                        
+
                         NSURL *thumb = [ResourceLoader resourceURLfromJSONString:dic[@"groupimage"] num:0 thumbnail:YES];
                         NSURL *origin = [ResourceLoader resourceURLfromJSONString:dic[@"groupimage"] num:0 thumbnail:NO];
+
+                        NSLog(@"thumb %@",thumb);
                         NSLog(@"========= thumb %@ / ori %@",[thumb description],[origin description]);
                         [[SDImageCache sharedImageCache] removeImageForKey:[thumb description]];
                         [[SDImageCache sharedImageCache] removeImageForKey:[origin description]];
@@ -2101,15 +2152,19 @@ const char paramIndex;
     
     if([greenCode isEqualToString:@"SPG"] || [greenCode isEqualToString:@"HPG"] || [greenCode isEqualToString:@"NBG"] || [greenCode isEqualToString:@"구분없음"]){
         
-        [self getTimelineWithCodeName:greenCode time:[NSString stringWithFormat:@"-%d",(int)lastInteger]];
+        [self getTimelineWithCodeName:greenCode time:[NSString stringWithFormat:@"-%lli",(long long)lastInteger]];
     }
     else{
-        [self getTimelineWithCode:greenCode time:[NSString stringWithFormat:@"-%d",(int)lastInteger]];
+        [self getTimelineWithCode:greenCode time:[NSString stringWithFormat:@"-%lli",(long long)lastInteger]];
     }
     
 }
 else{
-    [self getTimeline:[NSString stringWithFormat:@"-%d",(int)lastInteger] target:self.targetuid type:self.category groupnum:self.groupnum];
+#ifdef BearTalk
+    [self getTimeline:[NSString stringWithFormat:@"%lli",(long long)lastInteger] target:self.targetuid type:self.category groupnum:self.groupnum];
+#else
+    [self getTimeline:[NSString stringWithFormat:@"-%lli",(long long)lastInteger] target:self.targetuid type:self.category groupnum:self.groupnum];
+#endif
 }
 }
 
@@ -2378,19 +2433,21 @@ else{
 
         }
         
-        NSString *imageString = dataItem.contentDic[@"image"];
-        NSString *content = dataItem.contentDic[@"msg"];
+        NSLog(@"dataItem.contentDic %@",dataItem.contentDic);
+//        NSString *imageString = dataItem.contentDic[@"image"];
+        NSString *content = dataItem.content;//contentDic[@"msg"];
         
         if([dataItem.contentType intValue] != 12){
             if ([content length] > 500) {
                 content = [content substringToIndex:500];
             }
         }
-        NSString *where = dataItem.contentDic[@"jlocation"];
-        NSDictionary *dic = [where objectFromJSONString];
+//        NSString *where = dataItem.contentDic[@"jlocation"];
+//        NSDictionary *dic = [where objectFromJSONString];
         //			NSString *invite = dataItem.contentDic[@"question"];
         //			NSString *regiStatus = dataItem.contentDic[@"result"];
         NSDictionary *pollDic = dataItem.pollDic;
+//        NSArray *pollCntArray = dataItem.pollCntArray;
         NSArray *fileArray = dataItem.fileArray;
         
         
@@ -2409,8 +2466,8 @@ else{
             
             
             
-            
-            if(imageString != nil && [imageString length]>0)
+            if(!IS_NULL(dataItem.imageArray) && [dataItem.imageArray count]>0)
+           // if(imageString != nil && [imageString length]>0)
             {
                 height += 5; // gap
                 if([dataItem.contentType intValue]==10)
@@ -2484,13 +2541,13 @@ else{
             }
             height += 10; // contentslabel gap
             
-            if(pollDic != nil){
+            if(!IS_NULL(pollDic)){
                 height += 57+10;
             }
-            if([fileArray count]>0){
+            if(!IS_NULL(fileArray) && [fileArray count]>0){
                 height += 57+10; // gap+
             }
-            if(dic[@"text"] != nil && [dic[@"text"] length]>0)
+            if(!IS_NULL(content) && [content length]>0)
             {
                 height += 22; // location
             }
@@ -2918,7 +2975,7 @@ else{
                     height += 10; // gap
                     
                 
-                #endif
+#endif
             }
 
 
@@ -3182,7 +3239,9 @@ return height;
                 
                 whiteBGView.hidden = NO;
                 noticeLabel.text = @"공지사항";
-                noticeExplainLabel.text = [noticeArray[0][@"content"][@"msg"]objectFromJSONString][@"msg"];
+                
+                NSString *decoded = [noticeArray[0][@"CONTENTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                noticeExplainLabel.text = decoded;
                 progressLabel.hidden = YES;
                 [activity stopAnimating];
                 
@@ -3223,6 +3282,45 @@ return height;
             noticeExplainLabel.text = @"";
             NSLog(@"dataItem %@",dataItem);
             
+            
+#ifdef BearTalk
+            
+            cell.idx = dataItem.idx;
+            
+            cell.writeinfoType = dataItem.writeinfoType;
+            cell.currentTime = dataItem.currentTime;
+            cell.time = dataItem.time;
+            cell.writetime = dataItem.writetime;
+            
+            cell.profileImage = dataItem.profileImage;
+            cell.personInfo = dataItem.personInfo;
+            cell.favorite = dataItem.favorite;
+            //            cell.deletePermission = dataItem.deletePermission;
+            
+            cell.readArray = dataItem.readArray;
+            cell.targetdic = dataItem.targetdic;
+            
+            cell.contentDic = dataItem.contentDic;
+            cell.content = dataItem.content;
+            cell.imageArray = dataItem.imageArray;
+            cell.pollDic = dataItem.pollDic;
+            cell.fileArray = dataItem.fileArray;
+            
+            cell.contentType = dataItem.contentType;
+            
+            cell.notice = dataItem.notice;
+            
+            cell.type = dataItem.type;
+            cell.categoryType = dataItem.categoryType;
+            cell.sub_category = dataItem.sub_category;//dic[@"sub_category"];
+            cell.likeCount = dataItem.likeCount;//
+            cell.likeArray = dataItem.likeArray;
+            cell.replyCount = dataItem.replyCount;
+            cell.replyArray = dataItem.replyArray;
+        
+            
+#else
+            
             cell.idx = dataItem.idx;
             
             cell.profileImage = dataItem.profileImage;
@@ -3236,15 +3334,8 @@ return height;
             cell.contentDic = dataItem.contentDic;
             cell.pollDic = dataItem.pollDic;
             cell.fileArray = dataItem.fileArray;
-            //            cell.imageString = dataItem.imageString;
-            //            cell.content = dataItem.content;
-            //            [cell setImageString:dataItem.imageString content:dataItem.content wh:dataItem.where];
-            //            cell.where = dataItem.where;
             cell.readArray = dataItem.readArray;
             
-            //            cell.group = dataItem.group;
-            //            cell.company = dataItem.company;
-            //            cell.targetname = dataItem.targetname;
             cell.notice = dataItem.notice;
             cell.targetdic = dataItem.targetdic;
             
@@ -3257,7 +3348,7 @@ return height;
             cell.likeArray = dataItem.likeArray;
             cell.replyCount = dataItem.replyCount;
             cell.replyArray = dataItem.replyArray;
-            
+#endif
             NSLog(@"cell.replyArray %@",cell.replyArray);
             //ContentImage:dataItem.imageContent
             //            cell.likeImage = dataItem.likeImage;
@@ -3831,12 +3922,12 @@ return height;
 #ifdef BearTalk
     
     favButton.frame = CGRectMake(self.view.frame.size.width - 16 - 28, coverImageView.frame.size.height - 16 - 28, 28, 28);
-    if([self.groupDic[@"groupfavorite"]isEqualToString:@"Y"]){
+    if([self.groupDic[@"favorite"]isEqualToString:@"Y"]){
         [favButton setBackgroundImage:[CustomUIKit customImageNamed:@"btn_social_bookmark_on.png"] forState:UIControlStateNormal];
         favButton.selected = YES;
         
     }
-    else if([self.groupDic[@"groupfavorite"]isEqualToString:@"N"]){
+    else if([self.groupDic[@"favorite"]isEqualToString:@"N"]){
         [favButton setBackgroundImage:[CustomUIKit customImageNamed:@"btn_social_bookmark_off.png"] forState:UIControlStateNormal];
         favButton.selected = NO;
 
@@ -3847,16 +3938,25 @@ return height;
 #endif
     
     
+    
     if([self.category isEqualToString:@"2"] || [self.category isEqualToString:@"1"])
     {
         NSLog(@"settingGroupCover");
         
                 
                 NSLog(@"dic %@",self.groupDic);
-                
-                NSURL *imgURL = [ResourceLoader resourceURLfromJSONString:self.groupDic[@"groupimage"] num:0 thumbnail:NO];
-                NSLog(@"imgURL %@",imgURL);
-                
+        
+        
+        NSLog(@"dic %@",BearTalkBaseUrl);
+        NSLog(@"dic %@",self.groupDic[@"groupimage"]);
+#ifdef BearTalk
+        NSURL *imgURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BearTalkBaseUrl,self.groupDic[@"groupimage"]]];
+        NSLog(@"imgURL1 %@",imgURL);
+#else
+        NSURL *imgURL = [ResourceLoader resourceURLfromJSONString:self.groupDic[@"groupimage"] num:0 thumbnail:NO];
+        NSLog(@"imgURL2 %@",imgURL);
+#endif
+        NSLog(@"imgURL3 %@",imgURL);
                 [coverImageView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:[UIImage imageNamed:@"flowers.jpg"] options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b)  {
                     //                    NSLog(@"CACHED : %@",cached?@"Y":@"N");
                     
@@ -4051,10 +4151,30 @@ return height;
     
 }
 
+- (void)setNoticeSnsArray:(NSMutableArray *)arr{
+    NSLog(@"setNoticeSnsArray %@",arr);
+    if([self.category isEqualToString:@"10"]){
+        NSLog(@"bookmark");
+    }
+    else if([self.category isEqualToString:@"3"] && [self.targetuid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+        NSLog(@"mine");
+    }
+    else{
+    if(noticeArray){
+        noticeArray = nil;
+    }
+    noticeArray = [[NSMutableArray alloc]initWithArray:arr];
+    [myTable reloadData];
+    }
+}
+
 - (void)getTimeline:(NSString *)idx target:(NSString *)target type:(NSString *)t groupnum:(NSString *)num
 {
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+    
+    NSLog(@"getTimeline %@",idx);
+    
     if(didRequest){
         if ([idx length] > 0) {
             [[SDImageCache sharedImageCache] clearMemory];
@@ -4076,7 +4196,6 @@ return height;
     
     
     [self checkSocialTabNew];
-    NSLog(@"getTimeline %@",idx);
     NSLog(@"self targetuid /%@/ category /%@/ groupnum /%@/",self.targetuid, self.category, self.groupnum);
     
     if(t == nil || [t length]<1) {
@@ -4108,7 +4227,14 @@ return height;
 //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/read/categorymsg.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString;
+    
+#ifdef BearTalk
+    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/list",BearTalkBaseUrl];
+#else
+   urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/read/categorymsg.lemp",[SharedAppDelegate readPlist:@"was"]];
+    
+#endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -4116,6 +4242,39 @@ return height;
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     
+    
+    
+#ifdef BearTalk
+    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    
+    [parameters setObject:[ResourceLoader sharedInstance].myUID forKey:@"uid"];
+    
+    if(idx != nil && [idx length]>5){
+        
+        [parameters setObject:@"idx" forKey:@"lastwritedate"];
+    }
+    
+    
+    if([self.category isEqualToString:@"3"] && [self.targetuid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+        // mine
+        
+        [parameters setObject:@"myconts" forKey:@"myconts"];
+        
+    }
+    else if([self.category isEqualToString:@"10"]){
+        // bookmark
+        
+        [parameters setObject:@"bookmark" forKey:@"bookmark"];
+    }
+    else{
+        [parameters setObject:num forKey:@"snskey"];
+    }
+    
+  
+    
+        
+#else
     NSDictionary *parameters;
     if(idx != nil && [idx length]>5)
         parameters = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -4152,6 +4311,10 @@ return height;
                       num,@"groupnumber",
                       nil];//@{ @"uniqueid" : @"c110256" };
     }
+    
+#endif
+    
+  
     NSLog(@"parameters %@",parameters);
 //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/read/categorymsg.lemp" parameters:parameters];
     
@@ -4160,13 +4323,11 @@ return height;
     
     NSLog(@"timeout: %f", request.timeoutInterval);
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
         didRequest = NO;
         refreshing = NO;
-        //        progressLabel.hidden = YES;
-        //        myTable.scrollEnabled = YES;
-        //        [activity stopAnimating];
-        //        [loadMoreIndicator stopAnimating];
-        //        [SVProgressHUD dismiss];
+        
         if ([idx length] > 0) {
             [myTable.infiniteScrollingView stopAnimating];
         } else {
@@ -4176,6 +4337,108 @@ return height;
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         //        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        
+        
+        
+#ifdef BearTalk
+        
+        NSLog(@"ResultDic %@",[operation.responseString objectFromJSONString]);
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString] count]>0){
+        NSLog(@"self.category %@",self.category);
+            
+            if(![self.category isEqualToString:@"2"] && ![self.category isEqualToString:@"1"])
+                [self setInfo];
+        
+            NSMutableArray *resultArray = [operation.responseString objectFromJSONString];
+        NSLog(@"resultArray count %d",[resultArray count]);
+            
+            
+            NSMutableArray *parsingArray = [NSMutableArray array];
+            if([resultArray count]>0){
+                
+                if(groupnum){
+                    //        [groupnum release];
+                    groupnum = nil;
+                }
+                self.groupnum = [[NSString alloc]initWithFormat:@"%@",resultArray[0][@"SNS_KEY"]];
+                
+                for (NSDictionary *dic in resultArray) {
+                    NSLog(@"dic %@",dic);
+               
+                    TimeLineCell *cellData = [[TimeLineCell alloc] init];
+                    cellData.idx = dic[@"CONTS_KEY"];
+                    NSLog(@"cellData.idx %@",cellData.idx);
+                    cellData.writeinfoType = @"1";//dic[@"writeinfotype"]; // ##
+                    
+                    NSLog(@"cellData.idx %@",cellData.writeinfoType);
+                    
+                    NSString *dateValue = [NSString stringWithFormat:@"%lli",[dic[@"WRITE_DATE"]longLongValue]/1000];
+                    cellData.currentTime = dateValue;
+                    cellData.time = cellData.currentTime;
+                    cellData.writetime = cellData.currentTime;
+                    
+                    lastInteger = [dic[@"WRITE_DATE"] longLongValue];
+                    NSLog(@"lastInteger %lli",lastInteger);
+                    
+                    cellData.profileImage = dic[@"WRITE_UID"]!=nil?dic[@"WRITE_UID"]:@"";
+                    cellData.personInfo = nil;//[dic[@"writeinfo"]objectFromJSONString];// ##
+                    
+                    NSLog(@"cellData.idx %@",cellData.profileImage);
+                    BOOL myFav = NO;
+                    
+                    NSLog(@"cellData.idx %@",dic[@"BOOKMARK_MEMBER"]);
+                    for(NSString *auid in dic[@"BOOKMARK_MEMBER"]){
+                        if([auid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+                            myFav = YES;
+                        }
+                    }
+                    
+                    cellData.favorite = (myFav == YES)?@"1":@"0";
+                    NSLog(@"cellData.idx %@",cellData.favorite);
+                    cellData.readArray = dic[@"READ_MEMBER"];
+                    NSLog(@"cellData.idx %@",cellData.readArray);
+                    cellData.notice = @"0";//dic[@"notice"];
+                    cellData.targetdic = nil;//dic[@"target"];
+                    
+//                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
+                    cellData.contentDic = nil;//contentDic;
+                    NSString *decoded = [dic[@"CONTENTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                    NSLog(@"decoded %@",decoded);
+                    cellData.content = decoded;
+                    cellData.imageArray = dic[@"IMAGES"];
+                    NSLog(@"imageArray %@",cellData.imageArray);
+                    cellData.pollDic = dic[@"POLL"];//[@"poll_data"] objectFromJSONString];
+                    NSLog(@"pollDic %@",cellData.pollDic);
+                    cellData.fileArray = dic[@"FILES"];//[@"attachedfile"] objectFromJSONString];
+                    NSLog(@"fileArray %@",cellData.fileArray);
+                    cellData.contentType = @"1";//dic[@"contenttype"];
+                    cellData.type = @"1";//dic[@"type"];
+                    cellData.categoryType = t;
+                    NSLog(@"cellData.idx %@",cellData.categoryType);
+                    cellData.sub_category = nil;//dic[@"sub_category"];
+                    cellData.likeCount = [dic[@"LIKE_MEMBER"]count];
+                    cellData.likeArray = dic[@"LIKE_MEMBER"];
+                    NSLog(@"cellData.idx %@",cellData.likeArray);
+                    cellData.replyCount = [dic[@"REPLY"]count];
+                    cellData.replyArray = dic[@"REPLY"];
+                    NSLog(@"cellData.idx %@",cellData.replyArray);
+                    
+                    NSLog(@"cellData %@",cellData);
+                    [parsingArray addObject:cellData];
+                    //                    [cellData release];
+                }
+            }
+            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:idx,@"idx",parsingArray,@"array",nil];
+            [self performSelectorOnMainThread:@selector(handleContents:) withObject:dic waitUntilDone:NO];
+            
+            if([self.groupDic[@"category"]isEqualToString:@"3"])
+                [self getGroupcategory];
+            
+        }
+        
+        
+#else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"ResultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
@@ -4215,7 +4478,8 @@ return height;
                     cellData.time = dic[@"operatingtime"];
                     cellData.writetime = dic[@"writetime"];
                     
-                    lastInteger = [cellData.time intValue];
+                    lastInteger = [cellData.time longLongValue];
+                    NSLog(@"lastInteger %lli",lastInteger);
                     //                NSLog(@"lastInteger %d",lastInteger);
                     
                     cellData.profileImage = dic[@"uid"]!=nil?dic[@"uid"]:@"";
@@ -4263,6 +4527,8 @@ return height;
             NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
         }
         
+        
+#endif
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         didRequest = NO;
@@ -4284,7 +4550,7 @@ return height;
         }
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"타임라인을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"타임라인을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세ㄹ!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -4419,7 +4685,8 @@ return height;
                     cellData.time = dic[@"operatingtime"];
                     cellData.writetime = dic[@"writetime"];
                     
-                    lastInteger = [cellData.time intValue];
+                    lastInteger = [cellData.time longLongValue];
+                    NSLog(@"lastInteger %lli",lastInteger);
                     //                NSLog(@"lastInteger %d",lastInteger);
                     
                     cellData.profileImage = dic[@"uid"]!=nil?dic[@"uid"]:@"";
@@ -4614,8 +4881,8 @@ return height;
                     cellData.time = dic[@"operatingtime"];
                     cellData.writetime = dic[@"writetime"];
                     
-                    lastInteger = [cellData.time intValue];
-                    //                NSLog(@"lastInteger %d",lastInteger);
+                    lastInteger = [cellData.time longLongValue];
+                                   NSLog(@"lastInteger %lli",lastInteger);
                     
                     cellData.profileImage = dic[@"uid"]!=nil?dic[@"uid"]:@"";
                     cellData.favorite = dic[@"favorite"];
@@ -4717,50 +4984,62 @@ return height;
 #ifdef BearTalk
     if([noticeArray count]>0)
     {
+        NSLog(@"noticearray count > 0");
         if(indexPath.row == 0)
         {
          
             NSDictionary *dic = noticeArray[0];
+            NSLog(@"dic %@",dic);
             TimeLineCell *cellData = [[TimeLineCell alloc] init];
-            cellData.idx = dic[@"contentindex"];  //[[imageArrayobjectatindex:i]objectForKey:@"image"];
-            cellData.writeinfoType = dic[@"writeinfotype"];
-            cellData.personInfo = [dic[@"writeinfo"]objectFromJSONString];
             
-            //                cellData.likeCountUse = [[dicobjectForKey:@"goodcount_use"]intValue];
-            cellData.currentTime = dic[@"writetime"];
-            cellData.time = dic[@"operatingtime"];
-            cellData.writetime = dic[@"writetime"];
             
-            lastInteger = [cellData.time intValue];
-            //                NSLog(@"lastInteger %d",lastInteger);
             
-            cellData.profileImage = dic[@"uid"]!=nil?dic[@"uid"]:@"";
-            cellData.favorite = dic[@"favorite"];
-            //                    cellData.deletePermission = [resultDic[@"delete"]intValue];
-            cellData.readArray = dic[@"readcount"];
-            //                    cellData.group = [dic[@"groupname"];
-            //                    cellData.targetname = [dicobjectForKey:@"targetname"];
-            cellData.notice = dic[@"notice"];
-            cellData.targetdic = dic[@"target"];
-            //                    cellData.company = [dicobjectForKey:@"companyname"];
+            cellData.idx = dic[@"CONTS_KEY"];
+            cellData.writeinfoType = @"1";//dic[@"writeinfotype"]; // ##
+//
+//            
+//            NSString *dateValue = [NSString stringWithFormat:@"%lli",[dic[@"WRITE_DATE"]longLongValue]/1000];
+//            cellData.currentTime = dateValue;
+//            cellData.time = cellData.currentTime;
+//            cellData.writetime = cellData.currentTime;
+//            
+//            lastInteger = [dic[@"WRITE_DATE"] longLongValue];
+//            NSLog(@"lastInteger %lli",lastInteger);
+//            
+//            cellData.profileImage = dic[@"WRITE_UID"]!=nil?dic[@"WRITE_UID"]:@"";
+//            
+//            cellData.personInfo = nil;//[dic[@"writeinfo"]objectFromJSONString];// ##
+//            BOOL myFav = NO;
+//            NSLog(@"cellData.idx %@",dic[@"BOOKMARK_MEMBER"]);
+//            for(NSString *auid in dic[@"BOOKMARK_MEMBER"]){
+//                if([auid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+//                    myFav = YES;
+//                }
+//            }
+//            cellData.favorite = (myFav == YES)?@"1":@"0";
+//            cellData.readArray = dic[@"READ_MEMBER"];
+//                                cellData.notice = @"0";//dic[@"notice"];
+//            cellData.targetdic = nil;//dic[@"target"];
+//            
+//            //                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
+//            cellData.contentDic = nil;//contentDic;
+            NSString *decoded = [dic[@"CONTENTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSLog(@"decoded %@",decoded);
+            cellData.content = decoded;
+//            cellData.imageArray = dic[@"IMAGES"];
+//            cellData.pollDic = dic[@"POLL"];//[@"poll_data"] objectFromJSONString];
+//            cellData.pollCntArray = dic[@"POLL_RESULT"];
+//            cellData.fileArray = dic[@"FILES"];//[@"attachedfile"] objectFromJSONString];
+            cellData.contentType = @"1";//dic[@"contenttype"];
+//            cellData.type = @"1";//dic[@"type"];
+//            cellData.categoryType = self.category;
+//            cellData.sub_category = nil;//dic[@"sub_category"];
+//            cellData.likeCount = [dic[@"LIKE_MEMBER"]count];
+//            cellData.likeArray = dic[@"LIKE_MEMBER"];
+//            cellData.replyCount = [dic[@"REPLY"]count];
+//            cellData.replyArray = dic[@"REPLY"];
             
-            NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
-            //                NSLog(@"contentDic %@",contentDic);
-            cellData.contentDic = contentDic;
-            cellData.pollDic = [dic[@"content"][@"poll_data"] objectFromJSONString];
-            cellData.fileArray = [dic[@"content"][@"attachedfile"] objectFromJSONString];
-            //                    cellData.imageString = [contentDicobjectForKey:@"image"];
-            //                    cellData.content = [contentDicobjectForKey:@"msg"];
-            //                    cellData.where = [contentDicobjectForKey:@"location"];
-            cellData.contentType = dic[@"contenttype"];
-            cellData.type = dic[@"type"];
-            cellData.categoryType = self.category;
-            cellData.sub_category = dic[@"sub_category"];
-            cellData.likeCount = [dic[@"goodmember"]count];
-            cellData.likeArray = dic[@"goodmember"];
-            cellData.replyCount = [dic[@"replymsgcount"]intValue];
-            cellData.replyArray = dic[@"replymsg"];
-
+    
             contentsViewCon.contentsData = cellData;
             
         }
@@ -4955,7 +5234,24 @@ return height;
 //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/good.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString;
+    NSString *type;
+    
+    
+    
+#ifdef BearTalk
+    UIButton *btn = (UIButton *)sender;
+    if(btn.selected == NO){
+        type = @"i";
+    }
+    else{
+        type = @"d";
+    }
+    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/like",BearTalkBaseUrl];
+#else
+    
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/good.lemp",[SharedAppDelegate readPlist:@"was"]];
+#endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -4963,15 +5259,26 @@ return height;
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
-                                [ResourceLoader sharedInstance].myUID,@"uid",@"1",@"writeinfotype",
-                                idx,@"contentindex",nil];//@{ @"uniqueid" : @"c110256" };
+    NSDictionary *parameters;
+    NSString *method;
+#ifdef BearTalk
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                  [ResourceLoader sharedInstance].myUID,@"uid",type,@"type",
+                  idx,@"contskey",nil];//@{ @"uniqueid" : @"c110256" };
+    method = @"PUT";
     
+#else
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                  [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
+                  [ResourceLoader sharedInstance].myUID,@"uid",@"1",@"writeinfotype",
+                  idx,@"contentindex",nil];//@{ @"uniqueid" : @"c110256" };
+    method = @"POST";
+    
+#endif
 //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/write/good.lemp" parameters:parameters];
     
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:method URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
@@ -4982,6 +5289,34 @@ return height;
         //        [MBProgressHUD hideHUDForView:sender animated:YES];
         [buttonActivity stopAnimating];
         //        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+#ifdef BearTalk
+        
+        NSLog(@"resultDic %@",operation.responseString);
+        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
+        
+        
+        if(sendLikeTarget != nil) {
+            NSLog(@"sendLikeTareget %@",sendLikeTarget);
+//            [sendLikeTarget performSelectorOnMainThread:sendLikeSelector withObject:resultDic waitUntilDone:NO];
+            sendLikeTarget = nil;
+        }
+        
+        for(TimeLineCell *cell in self.timeLineCells) {
+            if([cell.idx isEqualToString:idx]){
+                cell.likeCount = [resultDic[@"LIKE_MEMBER"]count];
+                //                    cell.likeCountUse = 1;
+                cell.likeArray = resultDic[@"LIKE_MEMBER"];
+                
+            }
+        }
+        
+        [myTable reloadData];
+        
+        if ([con isKindOfClass:[DetailViewController class]])
+            [(DetailViewController *)con reloadTableView];
+        
+#else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
@@ -5013,7 +5348,7 @@ return height;
             NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
             
         }
-        
+#endif
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         //        [MBProgressHUD hideHUDForView:sender animated:YES];
         [buttonActivity stopAnimating];
@@ -5156,32 +5491,43 @@ return height;
     [toast show];
 //    [toast release];
 }
+
 - (void)reloadTimeline:(NSString *)index dic:(NSDictionary *)resultDic
 {
     
     for(TimeLineCell *cell in self.timeLineCells) {
         if([cell.idx isEqualToString:index]){
+#ifdef BearTalk
+            cell.replyCount = [resultDic[@"REPLY"]count];
+            cell.replyArray = resultDic[@"REPLY"];
+            
+#else
             cell.replyCount = [resultDic[@"replymsg"]count];
             cell.replyArray = resultDic[@"replymsg"];
-            
+#endif
             if(cell.replyCount > 2){
                 NSMutableArray *array = [NSMutableArray array];
                 
                 [array addObject:cell.replyArray[cell.replyCount-2]];
                 [array addObject:cell.replyArray[cell.replyCount-1]];
                 
-                //                    for(int i = cell.replyCount-3; i >= 0; --i)
-                //                    {
-                //                        [array addObject:[cell.replyArrayobjectatindex:i]];
-                //                    }
-                //                        NSLog(@"array %@",array);
                 cell.replyArray = array;
             }
+#ifdef BearTalk
             
+            if (resultDic[@"LIKE_MEMBER"]) {
+                
+                cell.likeCount = [resultDic[@"LIKE_MEMBER"] count];
+                cell.likeArray = resultDic[@"LIKE_MEMBER"];
+            }
+            
+#else
             if (resultDic[@"goodmember"]) {
+                
                 cell.likeCount = [resultDic[@"goodmember"] count];
                 cell.likeArray = resultDic[@"goodmember"];
             }
+#endif
         }
     }
     //    progressLabel.hidden = YES;
@@ -5191,10 +5537,16 @@ return height;
 
 - (void)addOrClear:(NSString *)idx favorite:(NSString *)fav{
     NSLog(@"idx %@ fav %@",idx,fav);
+#ifdef BearTalk
+    
+    NSString *favorite = @"1";
+    if([fav isEqualToString:@"d"])
+        favorite = @"0";
+#else
     NSString *favorite = @"1";
     if([fav isEqualToString:@"2"])
         favorite = @"0";
-    
+#endif
     for(TimeLineCell *cell in self.timeLineCells) {
         if([cell.idx isEqualToString:idx]){
             cell.favorite = favorite;
@@ -5275,6 +5627,83 @@ return height;
 
 - (void)loadDetail:(NSString *)idx inModal:(BOOL)isModal con:(UIViewController *)con
 {
+    
+    
+#ifdef BearTalk
+    
+    
+    
+    DetailViewController *contentsViewCon = [[DetailViewController alloc] init];//WithViewCon:self]autorelease];
+    contentsViewCon.title = self.title;
+    contentsViewCon.parentViewCon = self;
+    
+    
+    TimeLineCell *cellData = [[TimeLineCell alloc] init];
+    cellData.idx = idx;
+    contentsViewCon.contentsData = cellData;
+    
+    
+    if (isModal == NO) {
+        //				NSLog(@"loadDetail : PUSH %@",[nc class]);
+        //				UINavigationController *nc = (UINavigationController*)SharedAppDelegate.root.mainTabBar.selectedViewController;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(![con.navigationController.topViewController isKindOfClass:[contentsViewCon class]]){
+                //                    UINavigationController *nv = (UINavigationController*)SharedAppDelegate.root.mainTabBar.selectedViewController;
+                //                    MHTabBarController *subTab = (MHTabBarController*)nv.visibleViewController;
+                contentsViewCon.hidesBottomBarWhenPushed = YES;
+                [con.navigationController pushViewController:contentsViewCon animated:YES];
+                //                    subTab.hidesBottomBarWhenPushed = NO;
+                //                    con.hidesBottomBarWhenPushed = NO;
+            }
+        });
+    } else {
+        NSLog(@"loadDetail : MODAL");
+        
+        if (SharedAppDelegate.root.slidingViewController.presentedViewController) {
+            NSLog(@"1 %@",SharedAppDelegate.root.slidingViewController.presentedViewController);
+            [SharedAppDelegate.root.slidingViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+        }
+        
+        if (SharedAppDelegate.root.slidingViewController.presentedViewController) {
+            NSLog(@"2 %@",SharedAppDelegate.root.slidingViewController.presentedViewController);
+            [SharedAppDelegate.root.slidingViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+        }
+        
+        if (SharedAppDelegate.root.slidingViewController.presentedViewController) {
+            NSLog(@"3  %@",SharedAppDelegate.root.slidingViewController.presentedViewController);
+            [SharedAppDelegate.root.slidingViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+        }
+        
+        if (SharedAppDelegate.root.slidingViewController.presentedViewController) {
+            NSLog(@"4 %@",SharedAppDelegate.root.slidingViewController.presentedViewController);
+            [SharedAppDelegate.root.slidingViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+        }
+        
+        
+        // 탭바 - 네비게이션 - 서브탭바 - 챗리스트...
+        UINavigationController *nv = (UINavigationController*)SharedAppDelegate.root.mainTabBar.selectedViewController;
+        
+        
+        if ([SharedAppDelegate.root.mainTabBar.tabBar isHidden]) {
+            [(CBNavigationController *)nv popToRootViewControllerWithBlockGestureAnimated:NO];
+        }
+        //					[SharedAppDelegate.root.mainTabBar setSelectedIndex:kTabIndexSocial];
+        //					nv = (UINavigationController*)SharedAppDelegate.root.mainTabBar.selectedViewController;
+        //				}
+        contentsViewCon.moveTab = YES;
+        UINavigationController *newNC = [[CBNavigationController alloc] initWithRootViewController:contentsViewCon];
+        [SharedAppDelegate.root.slidingViewController presentViewController:newNC animated:YES completion:nil];
+        //                [SharedAppDelegate.root anywhereModal:newNC];
+        //                [newNC release];
+    }
+    
+
+    
+    return;
+#endif
+    
+    
+    
     NSLog(@"loadDetail ");
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
@@ -5288,21 +5717,45 @@ return height;
 //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/read/directmsg.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString;
+    
+    
+#ifdef BearTalk
+    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/list",BearTalkBaseUrl];
+#else
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/read/directmsg.lemp",[SharedAppDelegate readPlist:@"was"]];
+#endif
+    
+
+    
+    
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     NSLog(@"urlstring %@",urlString);
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary *parameters;
+    
+    
+#ifdef BearTalk
+    
+    
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                  idx,@"contskey",
+                  self.groupnum,@"snskey",
+                  nil];//@{ @"uniqueid" : @"c110256" };
+#else
+  parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [ResourceLoader sharedInstance].myUID,@"uid",
                                 idx,@"contentindex",
                                 [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
                                 nil];
     
+#endif
+    
     NSLog(@"parameters %@",parameters);
-//    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/read/directmsg.lemp" parameters:parameters];
+    
     
     NSError *serializationError = nil;
     NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
@@ -5311,6 +5764,130 @@ return height;
         didRequest = NO;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
+        
+#ifdef BearTalk
+        
+        
+        NSLog(@"operation.responseString %@",operation.responseString);
+        NSDictionary *messagesDic;
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+            messagesDic = [operation.responseString objectFromJSONString][0];
+        }
+        else{
+            messagesDic = nil;
+        }
+        NSLog(@"messagesDic %@",messagesDic);
+        
+        DetailViewController *contentsViewCon = [[DetailViewController alloc] init];//WithViewCon:self];
+        
+        TimeLineCell *cellData = [[TimeLineCell alloc] init];
+        
+        
+        cellData.idx = messagesDic[@"CONTS_KEY"];
+        cellData.writeinfoType = @"1";//dic[@"writeinfotype"]; // ##
+        
+        NSString *dateValue = [NSString stringWithFormat:@"%lli",[messagesDic[@"WRITE_DATE"]longLongValue]/1000];
+        cellData.currentTime = dateValue;
+        cellData.time = cellData.currentTime;
+        cellData.writetime = cellData.currentTime;
+        
+        lastInteger = [messagesDic[@"WRITE_DATE"] longLongValue];
+        NSLog(@"lastInteger %lli",lastInteger);
+        cellData.profileImage = messagesDic[@"WRITE_UID"]!=nil?messagesDic[@"WRITE_UID"]:@"";
+        
+        cellData.personInfo = nil;//[dic[@"writeinfo"]objectFromJSONString];// ##
+        BOOL myFav = NO;
+        NSLog(@"cellData.idx %@",messagesDic[@"BOOKMARK_MEMBER"]);
+        for(NSString *auid in messagesDic[@"BOOKMARK_MEMBER"]){
+            if([auid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+                myFav = YES;
+            }
+        }
+        cellData.favorite = myFav == YES?@"1":@"0";
+        cellData.readArray = messagesDic[@"READ_MEMBER"];
+        //                    cellData.notice = dic[@"notice"];
+        cellData.targetdic = nil;//dic[@"target"];
+        
+        //                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
+        cellData.contentDic = nil;//contentDic;
+        NSString *decoded = [messagesDic[@"CONTENTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSLog(@"decoded %@",decoded);
+        cellData.content = decoded;
+        cellData.imageArray = messagesDic[@"IMAGES"];
+        cellData.pollDic = messagesDic[@"POLL"];//[@"poll_data"] objectFromJSONString];
+        cellData.fileArray = messagesDic[@"FILES"];//[@"attachedfile"] objectFromJSONString];
+        cellData.contentType = @"1";//dic[@"contenttype"];
+        cellData.type = @"1";//dic[@"type"];
+        cellData.categoryType = self.category;
+        cellData.sub_category = nil;//dic[@"sub_category"];
+        cellData.likeCount = [messagesDic[@"LIKE_MEMBER"]count];
+        cellData.likeArray = messagesDic[@"LIKE_MEMBER"];
+        cellData.replyCount = [messagesDic[@"REPLY"]count];
+        cellData.replyArray = messagesDic[@"REPLY"];
+        
+        
+        contentsViewCon.contentsData = cellData;//[[jsonDicobjectForKey:@"messages"]objectAtIndex:0];
+        //            [cellData release];
+        
+        [self reloadTimeline:idx dic:messagesDic];
+        
+        
+        if (isModal == NO) {
+            //				NSLog(@"loadDetail : PUSH %@",[nc class]);
+            //				UINavigationController *nc = (UINavigationController*)SharedAppDelegate.root.mainTabBar.selectedViewController;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(![con.navigationController.topViewController isKindOfClass:[contentsViewCon class]]){
+                    //                    UINavigationController *nv = (UINavigationController*)SharedAppDelegate.root.mainTabBar.selectedViewController;
+                    //                    MHTabBarController *subTab = (MHTabBarController*)nv.visibleViewController;
+                    contentsViewCon.hidesBottomBarWhenPushed = YES;
+                    [con.navigationController pushViewController:contentsViewCon animated:YES];
+                    //                    subTab.hidesBottomBarWhenPushed = NO;
+                    //                    con.hidesBottomBarWhenPushed = NO;
+                }
+            });
+        } else {
+            NSLog(@"loadDetail : MODAL");
+            
+            if (SharedAppDelegate.root.slidingViewController.presentedViewController) {
+                NSLog(@"1 %@",SharedAppDelegate.root.slidingViewController.presentedViewController);
+                [SharedAppDelegate.root.slidingViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+            }
+            
+            if (SharedAppDelegate.root.slidingViewController.presentedViewController) {
+                NSLog(@"2 %@",SharedAppDelegate.root.slidingViewController.presentedViewController);
+                [SharedAppDelegate.root.slidingViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+            }
+            
+            if (SharedAppDelegate.root.slidingViewController.presentedViewController) {
+                NSLog(@"3  %@",SharedAppDelegate.root.slidingViewController.presentedViewController);
+                [SharedAppDelegate.root.slidingViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+            }
+            
+            if (SharedAppDelegate.root.slidingViewController.presentedViewController) {
+                NSLog(@"4 %@",SharedAppDelegate.root.slidingViewController.presentedViewController);
+                [SharedAppDelegate.root.slidingViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+            }
+            
+            
+            // 탭바 - 네비게이션 - 서브탭바 - 챗리스트...
+            UINavigationController *nv = (UINavigationController*)SharedAppDelegate.root.mainTabBar.selectedViewController;
+           
+            
+            if ([SharedAppDelegate.root.mainTabBar.tabBar isHidden]) {
+                [(CBNavigationController *)nv popToRootViewControllerWithBlockGestureAnimated:NO];
+            }
+            //					[SharedAppDelegate.root.mainTabBar setSelectedIndex:kTabIndexSocial];
+            //					nv = (UINavigationController*)SharedAppDelegate.root.mainTabBar.selectedViewController;
+            //				}
+            contentsViewCon.moveTab = YES;
+            UINavigationController *newNC = [[CBNavigationController alloc] initWithRootViewController:contentsViewCon];
+            [SharedAppDelegate.root.slidingViewController presentViewController:newNC animated:YES completion:nil];
+            //                [SharedAppDelegate.root anywhereModal:newNC];
+            //                [newNC release];
+        }
+
+#else
+
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
@@ -5322,6 +5899,7 @@ return height;
             NSDictionary *dic = resultDic[@"messages"][0];
             
             TimeLineCell *cellData = [[TimeLineCell alloc] init];
+            
             cellData.idx = idx;  //[[imageArray[i]objectForKey:@"image"];
             //                cellData.likeCountUse = [[dicobjectForKey:@"goodcount_use"]intValue];
             cellData.writeinfoType = dic[@"writeinfotype"];
@@ -5348,7 +5926,7 @@ return height;
             cellData.likeArray = dic[@"goodmember"];
             cellData.replyCount = [dic[@"replymsgcount"]intValue];
             cellData.replyArray = dic[@"replymsg"];
-            
+
             contentsViewCon.contentsData = cellData;//[[jsonDicobjectForKey:@"messages"]objectAtIndex:0];
 //            [cellData release];
             
@@ -5435,6 +6013,9 @@ return height;
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
         }
+        
+        
+#endif
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         didRequest = NO;
@@ -5687,7 +6268,12 @@ return height;
         
         NSLog(@"dic %@",self.groupDic);
         
+        
+#ifdef BearTalk
+        NSURL *imgURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BearTalkBaseUrl,self.groupDic[@"groupimage"]]];
+#else
         NSURL *imgURL = [ResourceLoader resourceURLfromJSONString:self.groupDic[@"groupimage"] num:0 thumbnail:NO];
+#endif
         NSLog(@"imgURL %@",imgURL);
         
         [coverImageView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:[UIImage imageNamed:@"flowers.jpg"] options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b)  {

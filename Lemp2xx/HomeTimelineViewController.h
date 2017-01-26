@@ -34,7 +34,7 @@
 	
 	id sendLikeTarget;
 	SEL sendLikeSelector;
-    NSInteger lastInteger;
+    long long lastInteger;
     NSInteger firstInteger;
 //    UILabel *badgeLabel;
     NSString *targetuid;
@@ -137,5 +137,9 @@
 - (void)showRead:(NSMutableArray *)member con:(UIViewController *)con;
 - (void)didSelectImageScrollView:(NSString *)index;
 - (void)stayNavigationBarColor;
+- (void)setNoticeSnsArray:(NSMutableArray *)arr;
+
+- (void)setChangeCoverImage:(NSData *)img groupnum:(NSString *)number;
+- (void)setGroupTitle:(NSString *)name;
 
 @end
