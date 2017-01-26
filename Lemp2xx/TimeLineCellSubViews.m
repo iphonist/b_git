@@ -109,8 +109,7 @@
         
         
         
-        
-        
+        [defaultView setUserInteractionEnabled:YES];
         favButton = [[UIButton alloc]initWithFrame:CGRectMake(defaultView.frame.size.width - 16 - 17, 0, 0, 0)];
         [favButton setBackgroundImage:[UIImage imageNamed:@"btn_bookmark_off.png"] forState:UIControlStateNormal];
         [favButton addTarget:self action:@selector(addOrClear:) forControlEvents:UIControlEventTouchUpInside];
@@ -885,6 +884,21 @@
 {
     [super setPersonInfo:dic];// image:img time:newTime currentTime:current content:newContent where:location];
     
+    NSLog(@"self.profileImage %@",self.profileImage);
+    
+#ifdef BearTalk
+    
+    NSDictionary *adic = [SharedAppDelegate.root searchContactDictionary:self.profileImage];
+    [nameLabel setText:adic[@"name"]];
+    [positionLabel setText:adic[@"grade2"]];
+//    [positionLabel setText:[NSString stringWithFormat:@"%@ | %@",adic[@"position"],adic[@"deptname"]]];
+
+    
+    [SharedAppDelegate.root getProfileImageWithURL:self.profileImage ifNil:@"profile_photo.png" view:profileImageView scale:24];
+    
+    
+    
+#else
     
     if([self.writeinfoType isEqualToString:@"2"]){
         
@@ -1002,6 +1016,8 @@
         
     }
     
+#endif
+    
 #ifdef BearTalk
     UIImageView *roundingView2;
     roundingView2 = [[UIImageView alloc]init];
@@ -1075,6 +1091,25 @@
     
     
 }
+
+- (void)setContent:(NSString *)con{
+    [super setContent:con];
+    NSLog(@"self.content %@",self.content);
+}
+- (void)setFileArray:(NSArray *)array
+{
+    [super setFileArray:array];
+    
+}
+- (void)setImageArray:(NSArray *)array
+{
+    [super setImageArray:array];
+    
+    NSLog(@"self.imageArray %@",self.imageArray);
+    
+}
+
+
 
 - (void)setReadArray:(NSMutableArray *)array
 {
@@ -1470,7 +1505,7 @@
     if([self.type isEqualToString:@"5"] || [self.type isEqualToString:@"6"])
         return;
     
-    //    NSLog(@"likeArray %@",likeArray);
+        NSLog(@"likeArray %@",likeArray);
     
     //    likeMemberButton.tag = count;
     //    [likeButton setBackgroundImage:[UIImage imageNamed:@"good_btn_dft.png"] forState:UIControlStateNormal];
@@ -1479,13 +1514,17 @@
     //	[likeButton setTitleColor:[UIColor colorWithWhite:0.423 alpha:1.000] forState:UIControlStateNormal];
     
     if([array count] > 0) {
-        for(NSDictionary *dic in array){
-            if([dic[@"uid"] isEqualToString:[ResourceLoader sharedInstance].myUID]) {
             
 #ifdef BearTalk
-                
+        
+        likeButton.selected = NO;
+        for(NSString *uid in array){
+            if([uid isEqualToString:[ResourceLoader sharedInstance].myUID]) {
                 likeImage.image = [UIImage imageNamed:@"btn_like_on.png"];
+                likeButton.selected = YES;
 #else
+                for(NSDictionary *dic in array){
+                if([dic[@"uid"] isEqualToString:[ResourceLoader sharedInstance].myUID]) {
                 likeLabel.textColor = [UIColor whiteColor];
 
                 likeLabel.backgroundColor = RGB(252, 179, 66);
@@ -2157,12 +2196,13 @@
 //    NSMutableAttributedString* string = [[NSMutableAttributedString alloc]initWithString:contentsLabel.text];
 //        [string addAttribute:NSBackgroundColorAttributeName value:[UIColor yellowColor] range:searchRange];
 //        contentsLabel.attributedText = string;
-    
+    NSLog(@"contentsLabel.text %@",contentsLabel.text);
   NSMutableAttributedString* str = [[NSMutableAttributedString alloc]initWithString:contentsLabel.text];
+    NSLog(@"str %@",str);
     NSUInteger count = 0;
    NSUInteger length = [contentsLabel.text length];
     NSRange range = NSMakeRange(0, length);
-    
+    NSLog(@"length %d",length);
     while(range.location != NSNotFound)
     {
         range = [[contentsLabel.text lowercaseString] rangeOfString:[text lowercaseString] options:0 range:range];
@@ -2296,6 +2336,12 @@
     NSLog(@"self.contentDic %@",self.contentDic);
     NSString *location = self.contentDic[@"jlocation"];
     NSString *con = self.contentDic[@"msg"];
+    
+#ifdef BearTalk
+    con = self.content;
+    
+    NSLog(@"con %@",con);
+#endif
     //		NSLog(@"CONTENT SIZE %i / ENCODE %i",[con length],[con lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
     
     CGSize contentSize;
@@ -2343,8 +2389,11 @@
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
         paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
         NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
-        if(imgString != nil && [imgString length]>5){
-            
+#ifdef BearTalk
+        if(!IS_NULL(self.imageArray) && [self.imageArray count]>0){
+#else
+        if(!IS_NULL(imgString) && [imgString length]>5){
+#endif
             [contentsLabel setNumberOfLines:5];
             
             contentSize = [con boundingRectWithSize:CGSizeMake(self.contentView.frame.size.width - 32, fontSize*6) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
@@ -2421,17 +2470,26 @@
     
     
     NSLog(@"whImageView frame %@",NSStringFromCGRect(whImageView.frame));
-    
     if([ctype intValue] == 10){ // greentalk commercial // bigger image
-        if(imgString != nil && [imgString length]>5)
+        
+#ifdef BearTalk
+        if(!IS_NULL(self.imageArray) && [self.imageArray count]>0){
+            
+#else
+        if(!IS_NULL(imgString) && [imgString length]>5)
         {
+#endif
             NSLog(@"imgString %@",imgString);
             
             contentImageView.frame = CGRectMake(0, CGRectGetMaxY(whImageView.frame)+5-35, 310, 434);
             
+            int imgCount;// = (int)[[[imgString objectFromJSONString]objectForKey:@"thumbnail"]count];
             
-            
-            int imgCount = (int)[[[imgString objectFromJSONString]objectForKey:@"thumbnail"]count];
+#ifdef BearTalk
+            imgCount = (int)[self.imageArray count];
+#else
+            imgCount = (int)[[[imgString objectFromJSONString]objectForKey:@"thumbnail"]count];
+#endif
             NSLog(@"imgCount %d",imgCount);
             //         if(imgCount>1){
             contentImageView.userInteractionEnabled = YES;
@@ -2461,8 +2519,15 @@
                 }
                 
                 
-                NSURL *imgURL = [ResourceLoader resourceURLfromJSONString:imgString num:i thumbnail:YES];
+                NSURL *imgURL;// = [ResourceLoader resourceURLfromJSONString:imgString num:i thumbnail:YES];
+#ifdef BearTalk
+                  imgURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,self.imageArray[i][@"FILE_KEY"]]];
+#else
+                imgURL = [ResourceLoader resourceURLfromJSONString:imgString num:i thumbnail:YES];
+#endif
+                NSLog(@"imgURL %@",imgURL);
                 
+
                 [inImageView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b) {
                     
                 } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl){
@@ -2489,15 +2554,27 @@
         }
     }
     else {
-        if(imgString != nil && [imgString length]>5)
+        // not 10
+        NSLog(@"type not 10 ");
+#ifdef BearTalk
+        if(!IS_NULL(self.imageArray) && [self.imageArray count]>0){
+            
+#else
+        if(!IS_NULL(imgString) && [imgString length]>5)
         {
+#endif
             NSLog(@"imgString %@",imgString);
             
             contentImageView.frame = CGRectMake(0, CGRectGetMaxY(whImageView.frame)+5, self.contentView.frame.size.width - 32, 137);
             
             
             
-            int imgCount = (int)[[[imgString objectFromJSONString]objectForKey:@"thumbnail"]count];
+            int imgCount;
+#ifdef BearTalk
+            imgCount = (int)[self.imageArray count];
+#else
+            imgCount = (int)[[[imgString objectFromJSONString]objectForKey:@"thumbnail"]count];
+#endif
             NSLog(@"imgCount %d",imgCount);
             //         if(imgCount>1){
             contentImageView.userInteractionEnabled = YES;
@@ -2528,8 +2605,15 @@
                 }
                 
                 
-                NSURL *imgURL = [ResourceLoader resourceURLfromJSONString:imgString num:i thumbnail:YES];
+                NSURL *imgURL;
                 
+#ifdef BearTalk
+                
+                imgURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,self.imageArray[i][@"FILE_KEY"]]];
+#else
+                imgURL = [ResourceLoader resourceURLfromJSONString:imgString num:i thumbnail:YES];
+#endif
+                NSLog(@"imgURL %@",imgURL);
                 [inImageView sd_setImageWithPreviousCachedImageWithURL:imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b) {
                     
                 } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl){
@@ -2588,8 +2672,8 @@
     NSLog(@"pollDic %@",pDic);
     
     
-    if(pDic != nil){
-        
+    if(!IS_NULL(pDic)){
+        NSLog(@"poll not nil");
 #ifdef BearTalk
         
         pollView.frame = CGRectMake(0, CGRectGetMaxY(contentImageView.frame)+10, contentsView.frame.size.width, 57);
@@ -2631,12 +2715,14 @@
         
         
         NSString *subtitle = @"";
-        if([pDic[@"is_anon"]isEqualToString:@"1"]){
+        if([pDic[@"ANONYMOUS_YN"]isEqualToString:@"Y"]){
             subtitle = [subtitle stringByAppendingString:@"무기명 "];
         }
         subtitle = [subtitle stringByAppendingString:@"설문 "];
         
-        if([pDic[@"is_close"]isEqualToString:@"1"]){
+        NSString *pollCloseDate = [NSString stringWithFormat:@"%@",pollDic[@"POLL_CLOSE_DATE"]];
+        if(!IS_NULL(pDic[@"POLL_CLOSE_DATE"]) && [pollCloseDate length]>0){
+//        if([pDic[@"POLL_CLOSE"]isEqualToString:@"Y"]){
             subtitle = [subtitle stringByAppendingString:@"종료"];
         }
         else{
@@ -2644,16 +2730,22 @@
         }
         
         NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"]; // [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-        NSString *msg = [NSString stringWithFormat:@"설문 %@\n%@",subtitle,pDic[@"title"]];
+        NSString *msg = [NSString stringWithFormat:@"설문 %@\n%@",subtitle,pDic[@"POLL_TIT"]];
         NSLog(@"msg %@",msg);
-        NSArray *texts=[NSArray arrayWithObjects:@"설문 ",[NSString stringWithFormat:@"%@\n",subtitle],pDic[@"title"],nil];
+        NSArray *texts=[NSArray arrayWithObjects:@"설문 ",[NSString stringWithFormat:@"%@\n",subtitle],pDic[@"POLL_TIT"],nil];
         NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+        if([texts count]>0){
         [string addAttribute:NSForegroundColorAttributeName value:[NSKeyedUnarchiver unarchiveObjectWithData:colorData] range:[msg rangeOfString:texts[0]]];
         [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[0]]];
+        }
+        else if([texts count]>1){
         [string addAttribute:NSForegroundColorAttributeName value:RGB(153, 153, 153) range:[msg rangeOfString:texts[1]]];
         [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[1]]];
+        }
+        else if([texts count]>2){
         [string addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51) range:[msg rangeOfString:texts[2]]];
         [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:[msg rangeOfString:texts[2]]];
+        }
         [fileInfo setAttributedText:string];
         fileInfo.numberOfLines = 0;
         
@@ -2721,7 +2813,7 @@
     NSLog(@"fileArray %@",fArray);
     
     
-    if([fArray count]>0){
+    if(!IS_NULL(fArray) && [fArray count]>0){
         
         
 #ifdef BearTalk
@@ -2768,19 +2860,24 @@
         
         NSString *fileTitle;
         if([fArray count] == 1)
-            fileTitle = fArray[0][@"filename"];
+            fileTitle = fArray[0][@"FILE_NAME"];
         else
-            fileTitle = [NSString stringWithFormat:@"%@ 외 %d개의 첨부 파일",fArray[0][@"filename"],(int)[fArray count]-1];
+            fileTitle = [NSString stringWithFormat:@"%@ 외 %d개의 첨부 파일",fArray[0][@"FILE_NAME"],(int)[fArray count]-1];
         
         NSString *msg = [NSString stringWithFormat:@"첨부 파일 %d개\n%@",(int)[fArray count],fileTitle];
         NSLog(@"fileTitle %@",fileTitle);
         NSLog(@"msg %@",msg);
         NSArray *texts=[NSArray arrayWithObjects:[NSString stringWithFormat:@"첨부 파일 %d개",(int)[fArray count]],[NSString stringWithFormat:@"\n%@",fileTitle],nil];
                          NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+        
+        if([texts count]>0){
                          [string addAttribute:NSForegroundColorAttributeName value:[NSKeyedUnarchiver unarchiveObjectWithData:colorData] range:[msg rangeOfString:texts[0]]];
                          [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[0]]];
+        }
+        else if([texts count]>1){
                          [string addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51) range:[msg rangeOfString:texts[1]]];
                          [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:[msg rangeOfString:texts[1]]];
+        }
                          [fileInfo setAttributedText:string];
                          fileInfo.numberOfLines = 0;
                          
@@ -3143,66 +3240,91 @@
     
     [MBProgressHUD showHUDAddedTo:sender label:nil animated:YES];
     
-    NSString *parameterType = @"";
-    
+    NSString *p_type;
+    NSString *urlString;
+    NSString *method;
+#ifdef BearTalk
+    method = @"PUT";
     if([sender tag]==kNotFavorite){
-        parameterType = @"1";
+        p_type = @"i";
     }
     else{
-        parameterType = @"2";
+        p_type = @"d";
     }
+    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/bookmark",BearTalkBaseUrl];
+#else
     
+    method = @"POST";
+    if([sender tag]==kNotFavorite){
+        p_type = @"1";
+    }
+    else{
+        p_type = @"2";
+    }
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];
+
+#endif
 //    AFHTTPClient *client = [[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]]autorelease];
-    
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];
-    NSURL *baseUrl = [NSURL URLWithString:urlString];
+        NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                                parameterType,@"type",@"2",@"category",self.idx,@"contentindex",
+    NSDictionary *parameters;
+#ifdef BearTalk
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                  self.idx,@"contskey",
+                  SharedAppDelegate.root.home.groupnum,@"snskey",
+                  [ResourceLoader sharedInstance].myUID,@"uid",
+                  p_type,@"type",
+                  nil];//@{ @"uniqueid" : @"c110256" };
+#else
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                p_type,@"type",@"2",@"category",self.idx,@"contentindex",
                                 [ResourceLoader sharedInstance].myUID,@"uid",
                                 @"",@"member",
                                 [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",nil];
+#endif
+    
     NSLog(@"parameter %@",parameters);
     
 //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/info/setfavorite.lemp" parameters:parameters];
     
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:method URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
+#ifdef BearTalk
+        NSDictionary *resultDic = [operation.responseString objectFromJSONString];
+        NSLog(@"ResulstDic %@",resultDic);
+        
+        if([sender tag] == kNotFavorite){
+            
+                [favButton setBackgroundImage:[UIImage imageNamed:@"btn_bookmark_on.png"] forState:UIControlStateNormal];
+            
+            favButton.tag = kFavorite;
+        }
+        else{
+            
+                [favButton setBackgroundImage:[UIImage imageNamed:@"btn_bookmark_off.png"] forState:UIControlStateNormal];
+            
+            favButton.tag = kNotFavorite;
+            
+        }
+        [SharedAppDelegate.root setNeedsRefresh:YES];
+        [MBProgressHUD hideHUDForView:sender animated:YES];
+        NSLog(@"favButton frame %@",NSStringFromCGRect(favButton.frame));
+#else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"ResulstDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
         if ([isSuccess isEqualToString:@"0"]) {
-         
-#ifdef BearTalk
-            if([sender tag] == kNotFavorite){
-                if([self.contentType isEqualToString:@"7"])
-                    [favButton setBackgroundImage:[UIImage imageNamed:@"button_note_detail_bookmark_selected.png"] forState:UIControlStateNormal];
-                else
-                    [favButton setBackgroundImage:[UIImage imageNamed:@"btn_bookmark_on.png"] forState:UIControlStateNormal];
-                
-                favButton.tag = kFavorite;
-            }
-            else{
-                if([self.contentType isEqualToString:@"7"])
-                    [favButton setBackgroundImage:[UIImage imageNamed:@"button_note_detail_bookmark.png"] forState:UIControlStateNormal];
-                else
-                    [favButton setBackgroundImage:[UIImage imageNamed:@"btn_bookmark_off.png"] forState:UIControlStateNormal];
-                
-                favButton.tag = kNotFavorite;
-                
-            }
-            NSLog(@"favButton frame %@",NSStringFromCGRect(favButton.frame));
-#else
+
             if([sender tag] == kNotFavorite){
                 if([self.contentType isEqualToString:@"7"])
                     [favButton setBackgroundImage:[UIImage imageNamed:@"button_note_detail_bookmark_selected.png"] forState:UIControlStateNormal];
@@ -3221,7 +3343,7 @@
                 
             }
             
-#endif
+
             //            if([SharedAppDelegate.root.home.category isEqualToString:@"10"])
             [SharedAppDelegate.root setNeedsRefresh:YES];
             //                [SharedAppDelegate.root.home refreshTimeline];
@@ -3238,6 +3360,8 @@
             [MBProgressHUD hideHUDForView:sender animated:YES];
             
         }
+        
+#endif
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"FAIL : %@",operation.error);

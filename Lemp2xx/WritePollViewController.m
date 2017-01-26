@@ -342,14 +342,26 @@
     NSLog(@"scrollView %@",scrollView);
     NSLog(@"titleTf %@",titleTf);
 //    NSDictionary *dic = [str objectFromJSONString];
-
+    
+    
+#ifdef BearTalk
+    
+    titleTf.text = dic[@"POLL_TIT"];
+    NSArray *optArray = dic[@"POLL_CONTS"];
+#else
+    
     titleTf.text = dic[@"title"];
     NSArray *optArray = dic[@"options"];
+#endif
     NSLog(@"optArray %@",optArray);
     optionNumber = 0;
     
     for(NSDictionary *dic in optArray){
+#ifdef BearTalk
+        optionNumber = [dic[@"NUM"]intValue];
+#else
         optionNumber = [dic[@"number"]intValue];
+#endif
     }
     NSLog(@"optionNumber %d",optionNumber);
     
@@ -411,8 +423,13 @@
         
         
         for(NSDictionary *dic in optArray){
-            if([dic[@"number"]isEqualToString:[NSString stringWithFormat:@"%d",i+1]]){
-                optionTf.text = dic[@"name"];
+#ifdef BearTalk
+            if([dic[@"NUM"]isEqualToString:[NSString stringWithFormat:@"%d",i+1]]){
+                optionTf.text = dic[@"CONTS"];
+#else
+                if([dic[@"number"]isEqualToString:[NSString stringWithFormat:@"%d",i+1]]){
+                    optionTf.text = dic[@"name"];
+#endif
                 optionTf.placeholder = @"";
             }
         }
@@ -441,8 +458,14 @@
                                                         addOptionView.frame.size.width,
                                                         52*2);
 
-    
+        
+        
+#ifdef BearTalk
+        if([dic[@"ANONYMOUS_YN"]isEqualToString:@"Y"]){
+#else
+        
     if([dic[@"is_anon"]isEqualToString:@"1"]){
+#endif
 //        [nameCheck setBackgroundImage:[UIImage imageNamed:@"vote_check_prs.png"] forState:UIControlStateNormal];
         [nameCheck setOn:YES];
     }
@@ -451,8 +474,11 @@
         [nameCheck setOn:NO];
         
     }
-    
-    if([dic[@"is_multi"]isEqualToString:@"1"]){
+#ifdef BearTalk
+            if([dic[@"MULTI_YN"]isEqualToString:@"Y"]){
+#else
+                if([dic[@"is_multi"]isEqualToString:@"1"]){
+#endif
 //        [singularCheck setBackgroundImage:[UIImage imageNamed:@"vote_check_prs.png"] forState:UIControlStateNormal];
         [singularCheck setOn:YES];
     }
@@ -464,10 +490,17 @@
     
     
     // **********************************************
+                
+#ifdef BearTalk
+                
+                is_multi = [dic[@"MULTI_YN"]isEqualToString:@"Y"]?1:0;
+                is_anon = [dic[@"ANONYMOUS_YN"]isEqualToString:@"Y"]?1:0;
+                is_close = [dic[@"POLL_CLOSE"]isEqualToString:@"Y"]?1:0;
+#else
     is_multi = [dic[@"is_multi"]intValue];
     is_anon = [dic[@"is_anon"]intValue];
     is_close = [dic[@"is_close"]intValue];
-    
+#endif
     
     scrollView.contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(checkView.frame)+20+VIEWY);
     
@@ -604,10 +637,18 @@
             return;
         }
         if([tf.text length]>0){
-            NSDictionary *dic = @{
+            NSDictionary *dic;
+#ifdef BearTalk
+            dic = @{
+                    @"NUM" : [NSString stringWithFormat:@"%d",i+1],
+                    @"CONTS" : tf.text,
+                    };
+#else
+            dic = @{
                                   @"number" : [NSString stringWithFormat:@"%d",i+1],
                                   @"name" : tf.text,
                                   };
+#endif
         [optArray addObject:dic];
         }
     }
@@ -622,13 +663,27 @@
     NSLog(@"titletf.text %@",titleTf.text);
     NSLog(@"option2 %@",titleTf.text);
     
-    NSDictionary *parameters = @{
-                                 @"title" : titleTf.text,
-                                 @"options" : optArray,
-                                 @"is_multi" : [NSString stringWithFormat:@"%d",is_multi],
-                                 @"is_anon" : [NSString stringWithFormat:@"%d",is_anon],
-                                                      };
+    NSDictionary *parameters;
     
+#ifdef BearTalk
+    
+    NSString *timeStamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
+    parameters = @{
+                   @"POLL_KEY" : timeStamp,
+                                 @"POLL_TIT" : titleTf.text,
+                                 @"POLL_CONTS" : optArray,
+                                 @"MULTI_YN" : (is_multi == 0)?@"N":@"Y",
+                                 @"ANONYMOUS_YN" : (is_anon == 0)?@"N":@"Y",
+                                                      };
+#else
+    parameters = @{
+                   @"title" : titleTf.text,
+                   @"options" : optArray,
+                   @"is_multi" : [NSString stringWithFormat:@"%d",is_multi],
+                   @"is_anon" : [NSString stringWithFormat:@"%d",is_anon],
+                   };
+    
+#endif
 
     NSLog(@"param %@",parameters);
   

@@ -115,7 +115,13 @@
     NSMutableArray *readArray;
     NSDictionary *contentDic;
     NSDictionary *pollDic;
+    NSDictionary *pollResult;
+    NSDictionary *pollResultCnt;
+    NSDictionary *pollResultName;
     NSArray *fileArray;
+    NSArray *favoriteArray;
+    NSArray *imageArray;
+    NSString *content;
     NSString *favorite;
     NSString *sub_category;
 }
@@ -136,6 +142,7 @@
 //@property (retain) NSString *group;
 //@property (retain) NSString *targetname;
 @property (retain) NSString *notice;
+@property (retain) NSString *content;
 @property (retain) NSString *targetdic;
 //@property (retain) NSString *company;
 //@property (retain) NSString *replyImage;
@@ -155,7 +162,13 @@
 //@property NSInteger deletePermission;
 @property (retain) NSDictionary *contentDic;
 @property (retain) NSDictionary *pollDic;
+@property (retain) NSDictionary *pollResult;
+@property (retain) NSDictionary *pollResultCnt;
+@property (retain) NSDictionary *pollResultName;
+//@property (retain) NSMutableArray *pollDic;
 @property (retain) NSArray *fileArray;
+@property (retain) NSArray *imageArray;
+@property (retain) NSArray *favoriteArray;
 @property (retain) NSString *favorite;
 
 
