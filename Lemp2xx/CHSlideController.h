@@ -209,7 +209,7 @@
 
 - (void)modifyPost:(NSString *)index modify:(int)type msg:(NSString *)msg oldcategory:(NSString *)oldcate newcategory:(NSString *)newcate oldgroupnumber:(NSString *)oldnum newgroupnumber:(NSString *)newnum target:(NSString *)target replyindex:(NSString *)reindex viewcon:(UIViewController *)viewcon;
 - (void)modifyBatongPost:(NSString *)index modify:(int)type msg:(NSString *)msg sub:(NSString *)sub dept:(NSString *)deptcode viewcon:(UIViewController *)viewcon;
-- (void)modifyReply:(NSString *)index modify:(int)type msg:(NSString *)msg viewcon:(UIViewController *)viewcon;
+- (void)modifyReply:(NSString *)rdix idx:(NSString *)idx modify:(int)type msg:(NSString *)msg viewcon:(UIViewController *)viewcon;
 //- (void)getThumbImageWithURL:(NSString *)imgString ifNil:(NSString *)ifnil view:(UIImageView *)view scale:(int)scale;
 - (void)regiNoti:(int)dateInteger title:(NSString *)title idx:(NSString *)index sub:(NSString *)sub;
 - (void)getGroupInfo:(NSString *)num regi:(NSString *)yn add:(BOOL)add;
@@ -225,7 +225,7 @@
 - (void)endRefresh;
 - (void)loadNoti;
 - (void)createRoomWithWhom:(NSString *)member type:(NSString *)rtype roomname:(NSString *)roomname push:(UIViewController *)con;
-- (void)createGroupTimeline:(NSString *)member name:(NSString *)name sub:(NSString *)sub image:(NSData *)img imagenumber:(int)num manage:(NSString *)mng;
+- (void)createGroupTimeline:(NSString *)member name:(NSString *)name sub:(NSString *)sub image:(NSData *)img imagenumber:(int)num manage:(NSString *)mng con:(UIViewController *)con;
 - (void)modifyGroup:(NSString *)member modify:(int)type name:(NSString *)name sub:(NSString *)sub number:(NSString *)number con:(UIViewController *)con;
 //- (void)returnTitleWithTwoButton:(NSString *)title viewcon:(UIViewController *)con image:(NSString *)imageString sel:(SEL)selector alarm:(BOOL)alarm;
 - (void)initSound;
@@ -263,5 +263,7 @@
 - (void)viewAgree;
 - (void)startupForCustomer;
 - (void)getRoomWithSocket:(NSString *)rk;
+- (void)getGroupInfoWithBeartalk:(NSString *)snskey;
+- (void)createGroupWithBearTalk:(NSString *)member name:(NSString *)name sub:(NSString *)sub image:(NSData *)img imagenumber:(int)num manage:(NSString *)mn con:(UIViewController *)con;
 
 @end

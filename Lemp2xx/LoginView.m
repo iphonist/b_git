@@ -1184,7 +1184,12 @@ const char paramNumber;
 }
 - (void)registerToSever:(int)tag{
     
+#ifdef BearTalk
+    
+    [SharedAppDelegate writeToPlist:@"lastdate" value:@"0"];
+#else
     [SharedAppDelegate writeToPlist:@"lastdate" value:@"0000-00-00 00:00:00"];
+#endif
     NSString *type = (tag == kRegister) ? @"1" : @"2";
     
     [SharedAppDelegate.root customerRegisterToServer:agreeMarketing type:type key:@""];
@@ -1599,7 +1604,13 @@ const char paramNumber;
             NSLog(@"origin %@ email %@ loginfo %@",originEmail,[SharedAppDelegate readPlist:@"email"],[SharedAppDelegate readPlist:@"loginfo"]);
             if(![originEmail isEqualToString:[SharedAppDelegate readPlist:@"email"]] && [[SharedAppDelegate readPlist:@"loginfo"]isEqualToString:@"logout"]){
                 [SharedAppDelegate writeToPlist:@"loginfo" value:@"login"];
+                
+#ifdef BearTalk
+                
+                [SharedAppDelegate writeToPlist:@"lastdate" value:@"0"];
+#else
                 [SharedAppDelegate writeToPlist:@"lastdate" value:@"0000-00-00 00:00:00"];
+#endif
                 [SQLiteDBManager removeRoom:@"0" all:YES];
                 [SQLiteDBManager removeCallLogRecordWithId:0 all:YES];
             }
@@ -1817,7 +1828,12 @@ const char paramNumber;
             
             if(![originEmail isEqualToString:[SharedAppDelegate readPlist:@"email"]] && [[SharedAppDelegate readPlist:@"loginfo"]isEqualToString:@"logout"]){
                 [SharedAppDelegate writeToPlist:@"loginfo" value:@"login"];
+#ifdef BearTalk
+                
+                [SharedAppDelegate writeToPlist:@"lastdate" value:@"0"];
+#else
                 [SharedAppDelegate writeToPlist:@"lastdate" value:@"0000-00-00 00:00:00"];
+#endif
                 [SQLiteDBManager removeRoom:@"0" all:YES];
                 [SQLiteDBManager removeCallLogRecordWithId:0 all:YES];
             }
@@ -1864,14 +1880,31 @@ const char paramNumber;
 //    NSString *url = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"ipaddress"]];
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:url]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/auth/register.lemp",[SharedAppDelegate readPlist:@"ipaddress"]];
+    NSString *urlString;
+    
+    
+#ifdef BearTalk
+    
+    urlString = [NSString stringWithFormat:@"%@/api/check/email/",BearTalkBaseUrl];
+#else
+    
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/auth/register.lemp",[SharedAppDelegate readPlist:@"ipaddress"]];
+#endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[SharedAppDelegate readPlist:@"email"],@"authid",nil];//@{ @"uniqueid" : @"c112256" };
+    NSDictionary *parameters;
+    
+#ifdef BearTalk
+    
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:[SharedAppDelegate readPlist:@"email"],@"email",nil];//@{ @"uniqueid" : @"c112256" };
+#else
+    
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:[SharedAppDelegate readPlist:@"email"],@"authid",nil];//@{ @"uniqueid" : @"c112256" };
+#endif
     
     NSLog(@"parameters %@",parameters);
 //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"lemp/auth/register.lemp" parameters:parameters];
@@ -1882,8 +1915,27 @@ const char paramNumber;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible =
-        NO;
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+#ifdef BearTalk
+        
+        NSDictionary *resultDic = [operation.responseString objectFromJSONString];
+        NSLog(@"resultDic %@",resultDic);
+        
+        OLGhostAlertView *toast = [[OLGhostAlertView alloc] initWithTitle:@"사용자 확인이 완료되었습니다."];
+        //    if ([replyTextView isFirstResponder]) {
+        //        toast.position = OLGhostAlertViewPositionCenter;
+        //    } else {
+        toast.position = OLGhostAlertViewPositionCustomKeyboardVisible;
+        //    }
+        toast.style = OLGhostAlertViewStyleDark;
+        toast.timeout = 1.0;
+        toast.dismissible = YES;
+        [toast show];
+        //                [toast release];
+        
+        [self enterPassword:[SharedAppDelegate readPlist:@"email"]];// image:[resultDicobjectForKey:@"companyimage"]];
+#else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
@@ -1931,6 +1983,8 @@ const char paramNumber;
 //            [alert show];
             [self setEmail];
         }
+        
+#endif
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self setEmail];
@@ -2977,15 +3031,29 @@ const char paramNumber;
 //    NSString *url = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"ipaddress"]];
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:url]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/auth/install.lemp",[SharedAppDelegate readPlist:@"ipaddress"]];
+    NSString *urlString;
+    
+#ifdef BearTalk
+    
+    urlString = [NSString stringWithFormat:@"%@/api/check/password/",BearTalkBaseUrl];
+#else
+    
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/auth/install.lemp",[SharedAppDelegate readPlist:@"ipaddress"]];
+#endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[SharedAppDelegate readPlist:@"email"],@"authid",pw,@"password",@"2",@"installtype",nil];//@{ @"uniqueid" : @"c112256" };
+    NSDictionary *parameters;
+#ifdef BearTalk
     
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:[SharedAppDelegate readPlist:@"email"],@"email",pw,@"password",nil];//
+#else
+    
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:[SharedAppDelegate readPlist:@"email"],@"authid",pw,@"password",@"2",@"installtype",nil];//
+#endif
     NSLog(@"parameters %@",parameters);
 //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"lemp/auth/install.lemp" parameters:parameters];
     
@@ -2997,14 +3065,41 @@ const char paramNumber;
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		[idTextField setEnabled:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+#ifdef BearTalk
+        
+        NSDictionary *resultDic = [operation.responseString objectFromJSONString];
+        NSLog(@"resultDic %@",resultDic);
+        
+        informLabel.text = @"";
+        
+        if(!IS_NULL(resultDic[@"error"]) && [resultDic[@"error"]length]>0){
+            
+            pwTextField.text = @"";
+            buttonOK.enabled = YES;
+            
+            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"error"]];
+            informLabel.text = msg;
+            informLabel.frame = CGRectMake(informLabel.frame.origin.x, informLabel.frame.origin.y, informLabel.frame.size.width, 15);
+            buttonOK.frame = CGRectMake(buttonOK.frame.origin.x, CGRectGetMaxY(informLabel.frame)+18, buttonOK.frame.size.width, buttonOK.frame.size.height);
+        }
+        else{
+            
+            
+                [self install:pwTextField.text];//getEmpCert:idTextField.text pw:pwTextField.text];
+            
+        }
+        
+        
+        
+        
+#else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
         if ([isSuccess isEqualToString:@"0"]) {
             
-#ifdef BearTalk
-                 informLabel.text = @"";
-#endif
+
             if([[SharedAppDelegate readPlist:@"loginfo"]isEqualToString:@"logout"] && [[SharedAppDelegate readPlist:@"email"]isEqualToString:originEmail])
             {
 //				[self resetPersonalImage];
@@ -3016,23 +3111,10 @@ const char paramNumber;
         }
         
         }
-#ifdef BearTalk
-        else if([isSuccess isEqualToString:@"0012"]){
-            
-            pwTextField.text = @"";
-            buttonOK.enabled = YES;
-            
-            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-            informLabel.text = msg;
-            informLabel.frame = CGRectMake(informLabel.frame.origin.x, informLabel.frame.origin.y, informLabel.frame.size.width, 15);
-            buttonOK.frame = CGRectMake(buttonOK.frame.origin.x, CGRectGetMaxY(informLabel.frame)+18, buttonOK.frame.size.width, buttonOK.frame.size.height);
-        }
-#endif
+
           else {
               
-#ifdef BearTalk
-              informLabel.text = @"";
-#endif
+
             pwTextField.text = @"";
             buttonOK.enabled = YES;
               
@@ -3043,6 +3125,8 @@ const char paramNumber;
 //            [alert show];
             
         }
+        
+#endif
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -3347,8 +3431,13 @@ const char paramNumber;
 - (void)install:(NSString *)pw
 {
     NSLog(@"install");
-//    self.view.tag = kVerified;
+    //    self.view.tag = kVerified;
+#ifdef BearTalk
+    
+    [SharedAppDelegate writeToPlist:@"lastdate" value:@"0"];
+#else
     [SharedAppDelegate writeToPlist:@"lastdate" value:@"0000-00-00 00:00:00"];
+#endif
 //    [pwTextField resignFirstResponder];
   
     
@@ -3766,8 +3855,12 @@ const char paramNumber;
     
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
         
-        
+    
+#ifdef BearTalk
+#else
         [SharedAppDelegate.root startup];
+#endif
+    
     
 #if defined(GreenTalk) || defined(GreenTalkCustomer) || defined(Hicare)
     
@@ -4640,8 +4733,13 @@ const char paramNumber;
    
 	[[NSUserDefaults standardUserDefaults] setObject:@"Normal" forKey:@"ViewType"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
-	
-	[SharedAppDelegate writeToPlist:@"lastdate" value:@"0000-00-00 00:00:00"];
+    
+#ifdef BearTalk
+    
+    [SharedAppDelegate writeToPlist:@"lastdate" value:@"0"];
+#else
+    [SharedAppDelegate writeToPlist:@"lastdate" value:@"0000-00-00 00:00:00"];
+#endif
 	[idTextField resignFirstResponder];
 	
 	

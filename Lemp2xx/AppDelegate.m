@@ -526,7 +526,12 @@
 //	}
 	if ([def boolForKey:@"PushAlertLastStatus"] == NO
 		&& [[self readPlist:@"lastdate"]length] > 0
+#ifdef BearTalk
+        
+        && ![[self readPlist:@"lastdate"]isEqualToString:@"0"]
+#else
 		&& ![[self readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"]
+#endif
 		&& root.login == nil) {
 		// 마지막 푸시 상태가 OFF, 로그인 상태
 		[self setProfileForDeviceToken:deviceId];
@@ -828,11 +833,19 @@
 	}
 }
 - (void)initMyInfo{
+#ifdef BearTalk
+    
     
     if([self readPlist:@"myinfo"][@"uid"] != nil && [[self readPlist:@"myinfo"][@"uid"]length]>0){
+        [[ResourceLoader sharedInstance] setMyUID:[self readPlist:@"myinfo"][@"uid"]];
+    }
+#else
+    if([self readPlist:@"myinfo"][@"uid"] != nil && [[self readPlist:@"myinfo"][@"uid"]length]>0){
     [[ResourceLoader sharedInstance] setMyUID:[self readPlist:@"myinfo"][@"uid"]];
+        
     [[ResourceLoader sharedInstance] setMySessionkey:[self readPlist:@"myinfo"][@"sessionkey"]];
      }
+#endif
 }
 
 
@@ -1033,7 +1046,13 @@
     }
     
     if([[self readPlist:@"lastdate"]length] > 0
-	   && ![[self readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"]
+       
+#ifdef BearTalk
+       
+       && ![[self readPlist:@"lastdate"]isEqualToString:@"0"]
+#else
+       && ![[self readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"]
+#endif
 	   && root.login == nil)
     {
         
