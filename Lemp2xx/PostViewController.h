@@ -80,6 +80,8 @@
     
     NSMutableArray *addDataArray;
     NSMutableArray *numberArray;
+    NSMutableArray *addAttachFiles;
+    NSMutableArray *delfilesArray;
     float currentKeyboardHeight;
     UICollectionView *photoCollectionView;
     UICollectionView *fileCollectionView;
@@ -96,7 +98,7 @@
 - (id)initWithStyle:(int)style;
 - (void)saveArray:(NSArray *)list;
 - (void)saveImages:(NSMutableArray *)array;
-- (void)setModifyView:(NSString *)t idx:(NSString *)idx tag:(int)tag image:(BOOL)hasImage images:(NSMutableArray *)array poll:(NSDictionary *)pdic;
+- (void)setModifyView:(NSString *)t idx:(NSString *)idx tag:(int)tag image:(BOOL)hasImage images:(NSMutableArray *)array poll:(NSDictionary *)pdic files:(NSMutableArray *)farray ridx:(NSString *)ridx;
 - (void)fromMemoWithText:(NSString*)contentString images:(NSMutableArray*)imageArray groupInfo:(NSDictionary*)info;
 - (void)setActivityModifyView:(NSString *)t idx:(NSString *)idx conIdx:(NSString *)conIdx tag:(int)tag;
 

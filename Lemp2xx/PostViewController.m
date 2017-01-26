@@ -147,8 +147,18 @@ const char paramNumber;
     NSLog(@"dataArray %d",(int)[dataArray count]);
     NSLog(@"pollDic %@",pollDic);
     if([attachFiles count]>0 || [locationString length]>0){
-		[contentsTextView resignFirstResponder];
+#ifdef BearTalk
         
+        if(postTag == kModifyPost){
+            [contentsTextView becomeFirstResponder];
+        }
+        else{
+            [contentsTextView resignFirstResponder];
+            
+        }
+#else
+		[contentsTextView resignFirstResponder];
+#endif
         NSLog(@"viewWillAppear %@ tag %d",[contentsTextView isFirstResponder]?@"YES":@"NO",postTag);
     }
     else{
@@ -697,7 +707,9 @@ const char paramNumber;
         NSArray *texts=[NSArray arrayWithObjects:@"지금 어떤 생각을 하나요?\n", @"(", SharedAppDelegate.root.home.titleString, @" 타임라인에 소식이 공유됩니다.)",nil];
         NSLog(@"texts count %@",texts);
         NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+        if([texts count]>2){
         [string addAttribute:NSForegroundColorAttributeName value:RGB(160, 18, 19) range:[msg rangeOfString:texts[2]]];
+        }
         //        [string addAttribute:NSForegroundColorAttributeName value:RGB(87, 107, 149) range:[msg rangeOfString:[texts[4]]];
         [placeHolderLabel setAttributedText:string];
 //        [string release];
@@ -1480,11 +1492,16 @@ const char paramNumber;
     filterLabel.hidden = YES;
 #endif
 }
-- (void)setModifyView:(NSString *)t idx:(NSString *)idx tag:(int)tag image:(BOOL)hasImage images:(NSMutableArray *)array poll:(NSDictionary *)pdic{
+- (void)setModifyView:(NSString *)t idx:(NSString *)idx tag:(int)tag image:(BOOL)hasImage images:(NSMutableArray *)array poll:(NSDictionary *)pdic files:(NSMutableArray *)farray ridx:(NSString *)ridx{
     
+    NSLog(@"t %@",t);
+    NSLog(@"idx %@",idx);
+    NSLog(@"ridx %@",ridx);
     NSLog(@"setModifyView %d",tag);
     NSLog(@"setModifyView array %d",[array count]);
+    NSLog(@"array %@",array);
     NSLog(@"pdic %@",pdic);
+    NSLog(@"farray %@",farray);
     
 //    if(hasImage){
 //        [dataArray addObject:@"temp"];
@@ -1555,6 +1572,7 @@ const char paramNumber;
         noticeBtn.hidden = YES;
         if(noticeBgview)
             noticeBgview.hidden = YES;
+
         if(addFile)
         addFile.hidden = YES;
         if(addLocation)
@@ -1582,7 +1600,6 @@ const char paramNumber;
     }
     
     addDataArray = [[NSMutableArray alloc]init];
-    
     if(dataArray){
 //        [dataArray release];
         dataArray = nil;
@@ -1592,21 +1609,61 @@ const char paramNumber;
     [dataArray setArray:array];
     
     
+        
     if([array count]>0){
-        
-        
         if(numberArray){
-//            [numberArray release];
             numberArray = nil;
         }
-        
         numberArray = [[NSMutableArray alloc]init];
+    }
+    
+    
+#ifdef BearTalk
+   
+//    addFile.hidden = NO;
+//    
+    if(attachFiles){
+        attachFiles = nil;
+    }
+    attachFiles = [[NSMutableArray alloc]init];
+//    [attachFiles setArray:farray];
+//    
+    if(addAttachFiles){
+        addAttachFiles = nil;
+    }
+    addAttachFiles = [[NSMutableArray alloc]init];
+//
+//    if([farray count]>0){
+//    if(delfilesArray){
+//        delfilesArray = nil;
+//    }
+//    delfilesArray = [[NSMutableArray alloc]init];
+//    }
+//    
+//    if((int)[attachFiles count]>0){
+//        addFileBadge.text = [NSString stringWithFormat:@"%d",(int)[attachFiles count]];
+//        NSLog(@"addFileBadge %@",addFileBadge);
+//        addFileBadge.hidden = NO;
+//        [addFile setBackgroundImage:[UIImage imageNamed:@"btn_document_on.png"] forState:UIControlStateNormal];
+//        
+//    }
+//    else{
+//        addFileBadge.hidden = YES;
+//        [addFile setBackgroundImage:[UIImage imageNamed:@"btn_document_off.png"] forState:UIControlStateNormal];
+//    }
+
+    
+#else
+    
+    if([array count]>0){
         for(int i = 0 ; i < [dataArray count]; i++){
             [numberArray addObject:[NSString stringWithFormat:@"%d",i]];
         }
         NSLog(@"numberArray %@",numberArray);
-        
     }
+    
+    
+#endif
     
     
     UIButton *button;
@@ -1626,7 +1683,10 @@ const char paramNumber;
     }
     
     
-    button.titleLabel.text = idx;
+    
+    [button setTitle:idx forState:UIControlStateDisabled];
+    [button setTitle:ridx forState:UIControlStateSelected];
+    NSLog(@"ridx %@ idx %@",ridx,idx);
     btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = btnNavi;
 //    [btnNavi release];
@@ -1665,10 +1725,16 @@ const char paramNumber;
     
  
     //    [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    
+    
+    
+    NSString *ridx = [sender titleForState:UIControlStateSelected];
+    NSString *idx = [sender titleForState:UIControlStateDisabled];
+    NSLog(@"ridx %@ idx %@",ridx,idx);
 	UIBarButtonItem *rightButton = [self.navigationItem.rightBarButtonItems lastObject];
 	[rightButton setEnabled:NO];
 	
-    [SharedAppDelegate.root modifyReply:[[sender titleLabel]text]
+    [SharedAppDelegate.root modifyReply:ridx idx:idx
                                  modify:2 msg:contentsTextView.text
                                 viewcon:self];
 }
@@ -1680,10 +1746,14 @@ const char paramNumber;
     NSLog(@"modifyPost");
     
     
+    NSString *ridx = [sender titleForState:UIControlStateSelected];
+    NSString *idx = [sender titleForState:UIControlStateDisabled];
+    NSLog(@"ridx %@ idx %@",ridx,idx);
         
 #ifdef MQM
     
-    [self modifyPostImage:[[sender titleLabel]text]
+    
+    [self modifyPostImage:idx
                    modify:2 msg:contentsTextView.text];
 //    if([dataArray count] > 0 || [attachFilePaths count] > 0) {
 //        
@@ -1746,7 +1816,7 @@ const char paramNumber;
 
     
     
-        [self modifyBatongPostImage:[[sender titleLabel]text]
+        [self modifyBatongPostImage:idx
                              modify:2 msg:contentsTextView.text sub:config dept:deptcode viewcon:self];
         
     
@@ -1778,7 +1848,7 @@ const char paramNumber;
 //    }
 //
     
-    [self modifyPostImage:[[sender titleLabel]text]
+    [self modifyPostImage:idx
                    modify:2 msg:contentsTextView.text];
     
 #endif
@@ -1970,6 +2040,14 @@ const char paramNumber;
     
     
     
+#ifdef BearTalk
+    NSLog(@"delfilesArray %@",delfilesArray);
+    NSLog(@"attachFiles %d",[attachFiles count]);
+    NSLog(@"addAttachFiles %d",[addAttachFiles count]);
+    NSLog(@"numberArray %@",numberArray);
+    NSLog(@"dataArray %d",[dataArray count]);
+    NSLog(@"addDataArray %d",[addDataArray count]);
+#else
     NSLog(@"numberArray %@",numberArray);
     NSLog(@"pollDic %@",pollDic);
     NSString *imagenumber = @"";
@@ -1988,23 +2066,45 @@ const char paramNumber;
     }
     
     NSLog(@"imagenumber %@",imagenumber);
-    
+#endif
     UIBarButtonItem *rightButton = [self.navigationItem.rightBarButtonItems lastObject];
     [rightButton setEnabled:NO];
     
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
     
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/modifytimeline.lemp",[SharedAppDelegate readPlist:@"was"]];
-    NSURL *baseUrl = [NSURL URLWithString:urlString];
+    NSString *urlString;
+    NSDictionary *parameters;
+#ifdef BearTalk
+    NSString *category;
+    
+    category = SharedAppDelegate.root.home.category;
+    
+    if([category isEqualToString:@"0"])
+        category = @"1";
     
     
-    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
-    client.responseSerializer = [AFHTTPResponseSerializer serializer];
+    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/create/app",BearTalkBaseUrl];
     
-    NSMutableURLRequest *request;
+    NSString *encodedString = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                                                                                    NULL,
+                                                                                                    (__bridge CFStringRef)contentsTextView.text,
+                                                                                                    NULL,
+                                                                                                    (__bridge CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                                    kCFStringEncodingUTF8 );
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:encodedString,@"contents",
+                  contentsTextView.text,@"contentsori",
+                  [ResourceLoader sharedInstance].myUID,@"uid",
+                  category,@"category",
+                  index,@"contskey",
+                  SharedAppDelegate.root.home.groupnum,@"snskey",
+                  ([numberArray count]>0)?numberArray:@"",@"delimages",
+                  ([delfilesArray count]>0)?delfilesArray:@"",@"delfiles",nil];
+    
+#else
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/modifytimeline.lemp",[SharedAppDelegate readPlist:@"was"]];
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",
                                 [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
                                 index,@"contentindex",
                                 msg,@"msg",
@@ -2016,12 +2116,22 @@ const char paramNumber;
                                 [NSString stringWithFormat:@"%d",type],@"modifytype",
                                 @"",@"oldgroupnumber",
                                 @"",@"newgroupnumber",nil];
+#endif
+    
+    NSURL *baseUrl = [NSURL URLWithString:urlString];
+    
+    
+    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    client.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    NSMutableURLRequest *request;
+    
     
   
     
     NSLog(@"parameters %@",parameters);
     
-    if([addDataArray count]>0)
+    if([addDataArray count]>0 || [addAttachFiles count]>0)
     {
         
         
@@ -2034,30 +2144,49 @@ const char paramNumber;
 #ifdef BearTalk
         
         NSString *timeStamp = [[NSString alloc]initWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
-        if(pollDic != nil){
-            
-            request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:parameters JSONKey:@"poll" JSONParameter:pollDic constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+//        if(pollDic != nil){
+//            
+//            request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:parameters JSONKey:@"poll" JSONParameter:pollDic constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+//                for(int i = 0; i < [addDataArray count]; i++){//NSData *imageData in dataArray){
+//                    NSString *mimeType = [SharedFunctions getMimeTypeForData:addDataArray[i][@"data"]];
+//                    NSLog(@"mimeType %@",mimeType);
+//                    [formData appendPartWithFileData:addDataArray[i][@"data"] name:[NSString stringWithFormat:@"filename%d",i] fileName:[NSString stringWithFormat:@"%@",timeStamp] mimeType:mimeType];
+//                    
+//                }
+//            }];
+//            
+//            
+//        }
+        //        else{
+        NSLog(@"addDataArray %@",addDataArray);
+            request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:parameters JSONKey:@"" JSONParameter:nil constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
                 for(int i = 0; i < [addDataArray count]; i++){//NSData *imageData in dataArray){
                     NSString *mimeType = [SharedFunctions getMimeTypeForData:addDataArray[i][@"data"]];
                     NSLog(@"mimeType %@",mimeType);
-                    [formData appendPartWithFileData:addDataArray[i][@"data"] name:[NSString stringWithFormat:@"filename%d",i] fileName:[NSString stringWithFormat:@"%@",timeStamp] mimeType:mimeType];
+                    [formData appendPartWithFileData:addDataArray[i][@"data"] name:@"imagesArr" fileName:[NSString stringWithFormat:@"%@",timeStamp] mimeType:mimeType];
                     
                 }
-            }];
-            
-            
-        }
-        else{
-            request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:parameters JSONKey:@"" JSONParameter:paramdic constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-                for(int i = 0; i < [addDataArray count]; i++){//NSData *imageData in dataArray){
-                    NSString *mimeType = [SharedFunctions getMimeTypeForData:addDataArray[i][@"data"]];
-                    NSLog(@"mimeType %@",mimeType);
-                    [formData appendPartWithFileData:addDataArray[i][@"data"] name:[NSString stringWithFormat:@"filename%d",i] fileName:[NSString stringWithFormat:@"%@",timeStamp] mimeType:mimeType];
+                
+                
+                
+                for (int i = 0; i < [addAttachFiles count]; i++) {
+                    NSString *filePath = attachFilePaths[i];
+                    NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+                    NSString *mimeType = [SharedFunctions getMIMETypeWithFilePath:filePath];
+                    DBMetadata *metaData = (DBMetadata*)addAttachFiles[i];
+                    NSLog(@"ATTACH filePath %@ / fileSize %i / mimeType %@ / filename %@",filePath,(int)[fileData length],mimeType, metaData.filename);
+                    [formData appendPartWithFileData:fileData name:@"filesArr" fileName:metaData.filename mimeType:mimeType];
+                    
                     
                 }
+                
+                
             }];
-        }
+//        }
         
+        
+       
+            
 #else
         NSString *timeStamp = [[NSString alloc]initWithFormat:@"%.0f.jpg",[[NSDate date] timeIntervalSince1970]];
         if(pollDic != nil){
@@ -2090,6 +2219,11 @@ const char paramNumber;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             //            [MBProgressHUD hideHUDForView:contentsTextView animated:YES];
             [SVProgressHUD dismiss];
+#ifdef BearTalk
+            NSLog(@"resultDic yes image %@",[operation.responseString objectFromJSONString]);
+            [self cancel];
+            [SharedAppDelegate.root setNeedsRefresh:YES];
+#else
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
             NSLog(@"resultDic yes image %@",resultDic);
             NSString *isSuccess = resultDic[@"result"];
@@ -2103,6 +2237,8 @@ const char paramNumber;
                 [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
                 NSLog(@"not success but %@",isSuccess);
             }
+#endif
+            
             
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self.navigationItem.rightBarButtonItem setEnabled:YES];
@@ -2111,36 +2247,35 @@ const char paramNumber;
             [HTTPExceptionHandler handlingByError:error];
             NSLog(@"error: %@",  operation.responseString);
         }];
-        
-        
         [operation start];
     }
     
     else{
         
-        NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/modifytimeline.lemp",[SharedAppDelegate readPlist:@"was"]];
-        NSURL *baseUrl = [NSURL URLWithString:urlString];
-        
-        
-        AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
-        client.responseSerializer = [AFHTTPResponseSerializer serializer];
-        //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/write/modifytimeline.lemp" parameters:parameters];
-        
-        
-        
+//        NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/modifytimeline.lemp",[SharedAppDelegate readPlist:@"was"]];
+//        NSURL *baseUrl = [NSURL URLWithString:urlString];
+//        
+//        
+//        AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+//        client.responseSerializer = [AFHTTPResponseSerializer serializer];
+//        //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/write/modifytimeline.lemp" parameters:parameters];
+//        
+//        
+//        
         NSError *serializationError = nil;
-        if(pollDic != nil){
-            
-            request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:parameters JSONKey:@"poll" JSONParameter:pollDic constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
-                
-            }];
-            
-            
-        }
-        else{
-            
+        
+//        if(pollDic != nil){
+//            
+//            request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:parameters JSONKey:@"poll" JSONParameter:pollDic constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
+//                
+//            }];
+//            
+//            
+//        }
+//        else{
+//            
         request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
-        }
+//        }
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
         [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
@@ -2148,7 +2283,14 @@ const char paramNumber;
         AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             [SVProgressHUD dismiss];
+#ifdef BearTalk
+            
+            NSLog(@"resultDic no image %@",[operation.responseString objectFromJSONString]);
+            [self cancel];
+            [SharedAppDelegate.root setNeedsRefresh:YES];
+#else
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
+            
             NSLog(@"resultDic no image %@",resultDic);
             NSString *isSuccess = resultDic[@"result"];
             if ([isSuccess isEqualToString:@"0"]) {
@@ -2163,6 +2305,8 @@ const char paramNumber;
                 [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
                 
             }
+            
+#endif
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
@@ -2348,9 +2492,18 @@ const char paramNumber;
 
 - (void)sendPost {
     
+    
+#ifdef BearTalk
+    
+    if([ResourceLoader sharedInstance].myUID == nil || [[ResourceLoader sharedInstance].myUID length]<1){
+        NSLog(@"userindex null");
+        return;
+    }
+    
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
-
+#endif
     
 	UIBarButtonItem *rightButton = [self.navigationItem.rightBarButtonItems lastObject];
 	[rightButton setEnabled:NO];
@@ -2365,7 +2518,12 @@ const char paramNumber;
     
     
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/timeline.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString;
+#ifdef BearTalk
+    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/create/app",BearTalkBaseUrl];
+#else
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/timeline.lemp",[SharedAppDelegate readPlist:@"was"]];
+#endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -2376,11 +2534,48 @@ const char paramNumber;
     
     
     NSMutableURLRequest *request;
+    NSDictionary *parameters;
+    NSString *category;
+    NSString *contenttype;
+    NSString *type;
+    NSString *writeinfotype;
+    
+#ifdef BearTalk
     
     //    if(postType == kText)
-    NSString *category = SharedAppDelegate.root.home.category;
-    NSString *contenttype = @"1";
-    NSString *type = @"1";
+    category = SharedAppDelegate.root.home.category;
+    
+    if([category isEqualToString:@"0"])
+        category = @"1";
+    
+    
+    NSLog(@"category %@",category);
+    //    NSLog(@"category2 %@",SharedAppDelegate.root.home.category);
+    NSLog(@"type %@",type);
+    NSLog(@"contenttype %@",contenttype);
+    NSLog(@"groupnum %@",SharedAppDelegate.root.home.groupnum);
+    NSLog(@"targetuid %@",SharedAppDelegate.root.home.targetuid);
+    NSLog(@"pollDic %@",pollDic);
+    
+    NSString *encodedString = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                                                                                    NULL,
+                                                                                                    (__bridge CFStringRef)contentsTextView.text,
+                                                                                                    NULL,
+                                                                                                    (__bridge CFStringRef)@"!*'();:@&=+$,/?%#[]",
+                                                                                                    kCFStringEncodingUTF8 );
+    
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:encodedString,@"contents",
+                  contentsTextView.text,@"contentsori",
+                  [ResourceLoader sharedInstance].myUID,@"uid",
+                  category,@"category",
+                  ((int)notify==0)?@"N":@"Y",@"contentsAlarm",
+                  SharedAppDelegate.root.home.groupnum,@"snskey",nil];
+#else
+    
+    //    if(postType == kText)
+    category = SharedAppDelegate.root.home.category;
+    contenttype = @"1";
+    type = @"1";
     if(postTag == kQnA){
         contenttype = @"11";
      type = @"5";
@@ -2395,7 +2590,7 @@ const char paramNumber;
         contenttype = @"17";
         
     }
-    NSString *writeinfotype = @"1";
+    writeinfotype = @"1";
     
     
     if([category isEqualToString:@"2"]){
@@ -2435,7 +2630,7 @@ const char paramNumber;
     NSLog(@"targetuid %@",SharedAppDelegate.root.home.targetuid);
     NSLog(@"pollDic %@",pollDic);
 
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:contentsTextView.text,@"msg",
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:contentsTextView.text,@"msg",
                                 [ResourceLoader sharedInstance].myUID,@"uid",
                                 category,@"category",
                                 SharedAppDelegate.root.home.targetuid,@"targetuid",
@@ -2447,6 +2642,10 @@ const char paramNumber;
                                 @"",@"privateuid",
                                 @"1",@"replynotice",
                                 @"",@"noticeuid",nil];
+    
+#endif
+    
+    
     
 #ifdef MQM
 #elif Batong
@@ -2554,23 +2753,20 @@ const char paramNumber;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 //        request = [client multipartFormRequestWithMethod:@"POST" path:@"/lemp/timeline/write/timeline.lemp" parameters:parameters JSONKey:@"poll" JSONParameter:pollDic constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
         
-        request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:parameters JSONKey:@"poll" JSONParameter:pollDic constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
 #ifdef BearTalk
-            
+        
+        request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:parameters JSONKey:@"poll" JSONParameter:pollDic constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
             NSString *timeStamp = [[NSString alloc]initWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
-            if([dataArray count] == 1) {
-                NSString *mimeType = [SharedFunctions getMimeTypeForData:dataArray[0][@"data"]];
-                NSLog(@"mimeType %@",mimeType);
-                [formData appendPartWithFileData:dataArray[0][@"data"] name:@"filename" fileName:[NSString stringWithFormat:@"%@",timeStamp] mimeType:mimeType];
-            } else if([dataArray count] > 1) {
+           if([dataArray count] > 0) {
                 for(int i = 0; i < [dataArray count]; i++) {
                     NSString *mimeType = [SharedFunctions getMimeTypeForData:dataArray[i][@"data"]];
                     NSLog(@"mimeType %@",mimeType);
-                    [formData appendPartWithFileData:dataArray[i][@"data"] name:[NSString stringWithFormat:@"filename%d",i] fileName:[NSString stringWithFormat:@"%@",timeStamp] mimeType:mimeType];
+                    [formData appendPartWithFileData:dataArray[i][@"data"] name:@"imagesArr" fileName:[NSString stringWithFormat:@"%@",timeStamp] mimeType:mimeType];
                 }
             }
             
 #else
+            request = [client.requestSerializer multipartFormRequestWithMethod:@"POST" path:[baseUrl absoluteString] parameters:parameters JSONKey:@"poll" JSONParameter:pollDic constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
             NSString *timeStamp = [[NSString alloc]initWithFormat:@"%.0f.jpg",[[NSDate date] timeIntervalSince1970]];
             if([dataArray count] == 1) {
                 [formData appendPartWithFileData:dataArray[0][@"data"] name:@"filename" fileName:[NSString stringWithFormat:@"%@.jpg",timeStamp] mimeType:@"image/jpeg"];
@@ -2588,7 +2784,13 @@ const char paramNumber;
 					NSString *mimeType = [SharedFunctions getMIMETypeWithFilePath:filePath];
 					DBMetadata *metaData = (DBMetadata*)attachFiles[i];
 					NSLog(@"ATTACH filePath %@ / fileSize %i / mimeType %@ / filename %@",filePath,(int)[fileData length],mimeType, metaData.filename);
-					[formData appendPartWithFileData:fileData name:[NSString stringWithFormat:@"attach%d",i] fileName:metaData.filename mimeType:mimeType];
+#ifdef BearTalk
+                    [formData appendPartWithFileData:fileData name:@"filesArr" fileName:metaData.filename mimeType:mimeType];
+                    
+#else
+                    [formData appendPartWithFileData:fileData name:[NSString stringWithFormat:@"attach%d",i] fileName:metaData.filename mimeType:mimeType];
+                    
+#endif
 				}
 			}
         }];
@@ -2605,6 +2807,10 @@ const char paramNumber;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             //            [MBProgressHUD hideHUDForView:self.view animated:YES];
 			[SVProgressHUD dismiss];
+#ifdef BearTalk
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);     [SharedAppDelegate.root setNeedsRefresh:YES];
+            [self cancel];
+#else
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
             NSLog(@"resultDic %@",resultDic);
             NSString *isSuccess = resultDic[@"result"];
@@ -2626,6 +2832,8 @@ const char paramNumber;
                 [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
                 NSLog(@"not success but %@",isSuccess);
             }
+            
+#endif
             
         }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             //            [self.navigationItem.rightBarButtonItem setEnabled:YES];
@@ -2655,6 +2863,11 @@ const char paramNumber;
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             //            [MBProgressHUD hideHUDForView:self.view animated:YES];
 			[SVProgressHUD dismiss];
+#ifdef BearTalk
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+            [SharedAppDelegate.root setNeedsRefresh:YES];
+            [self cancel];
+#else
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
             
             NSString *isSuccess = resultDic[@"result"];
@@ -2679,6 +2892,7 @@ const char paramNumber;
                 [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
                 NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
             }
+#endif
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             //            [self.navigationItem.rightBarButtonItem setEnabled:YES];
@@ -3034,25 +3248,41 @@ const char paramNumber;
 //    return TRUE;
 //}
 - (void)commitAlertPhoto:(NSString *)tagString{
-    [dataArray removeObjectAtIndex:[tagString intValue]];
-    [numberArray removeObjectAtIndex:[tagString intValue]];
-    [self refreshPreView];
     
-  
+    int row = [tagString intValue];
+#ifdef BearTalk
+    if(postTag == kModifyPost)
+        [numberArray addObject:dataArray[row][@"filename"]];
+    
+    if([dataArray count]>row)
+    [dataArray removeObjectAtIndex:row];
+    
+    
+#else
+    [dataArray removeObjectAtIndex:row];
+    [numberArray removeObjectAtIndex:row];
+   
+    
+#endif
+    
+    [self refreshPreView];
     
 }
 
 - (void)deleteFile:(int)index {
     
     
+    if([attachFilePaths count]>index)
     [attachFiles removeObjectAtIndex:index];
+    
+    if(attachFilePaths != nil && [attachFilePaths count]>index)
     [attachFilePaths removeObjectAtIndex:index];
     
     NSLog(@"attachFiles %d",[attachFiles count]);
     NSLog(@"attachFilePaths %d",[attachFilePaths count]);
     [fileCollectionView reloadData];
     
-    if ([attachFilePaths count] == 0) {
+    if ((int)([addAttachFiles count]+[attachFiles count]) == 0) {
   
         
         [addFile setBackgroundImage:[UIImage imageNamed:@"btn_document_off.png"] forState:UIControlStateNormal];
@@ -3065,8 +3295,8 @@ const char paramNumber;
         [addFile setBackgroundImage:[UIImage imageNamed:@"btn_document_on.png"] forState:UIControlStateNormal];
 
     }
-    if((int)[attachFilePaths count]>0){
-        addFileBadge.text = [NSString stringWithFormat:@"%d",(int)[attachFilePaths count]];
+    if((int)([addAttachFiles count]+[attachFiles count])>0){
+        addFileBadge.text = [NSString stringWithFormat:@"%d",(int)([addAttachFiles count]+[attachFiles count])];
         addFileBadge.hidden = NO;
         
     }
@@ -3130,9 +3360,6 @@ const char paramNumber;
     
     NSLog(@"deletephotos");
     //    if(dataArray){
-    [dataArray removeAllObjects];
-    [addDataArray removeAllObjects];
-    [numberArray removeAllObjects];
     
 //        [dataArray release];
     //    dataArray = nil;
@@ -3158,6 +3385,19 @@ const char paramNumber;
             [pollCollectionView reloadData];
     }
     
+    if(postTag == kModifyPost){
+        for(NSDictionary *dic in dataArray){
+            
+            [numberArray addObject:[NSString stringWithFormat:@"%@",dic[@"filename"]]];
+        }
+    }
+    else{
+        [numberArray removeAllObjects];
+        
+    }
+    
+    [dataArray removeAllObjects];
+    [addDataArray removeAllObjects];
     
     CGRect countFrame = countLabel.frame;
     countFrame.origin.y = optionView.frame.origin.y - 20;
@@ -3204,6 +3444,10 @@ const char paramNumber;
     }
     
     [addPhoto setBackgroundImage:[CustomUIKit customImageNamed:@"photo_dft.png"] forState:UIControlStateNormal];
+    
+    [dataArray removeAllObjects];
+    [addDataArray removeAllObjects];
+    [numberArray removeAllObjects];
     
 #endif
     
@@ -3530,7 +3774,7 @@ const char paramNumber;
 		return;
 #endif
 	}
-	if ([attachFiles count] >= kMaxAttachFile) {
+	if ((int)([addAttachFiles count]+[attachFiles count]) >= kMaxAttachFile) {
 		[CustomUIKit popupSimpleAlertViewOK:nil msg:@"첨부파일은 최대 5개까지 가능합니다." con:self];
         
 		return;
@@ -3577,14 +3821,21 @@ const char paramNumber;
 	[keyboardUnderView reloadData];
 }
 
+                   // 예전 tableview
 - (void)deleteAttachFile:(id)sender
 {
 	UIButton *button = (UIButton*)sender;
 	NSInteger index = [button tag];
 	
-	[attachFiles removeObjectAtIndex:index];
-	[attachFilePaths removeObjectAtIndex:index];
-	
+    if(postTag == kModifyPost){
+            
+            [delfilesArray addObject:attachFiles[index][@"FILE_KEY"]];
+        
+    }
+    
+    [attachFiles removeObjectAtIndex:index];
+    [attachFilePaths removeObjectAtIndex:index];
+    
 	[keyboardUnderView reloadData];
     
 	if ([attachFilePaths count] == 0) {
@@ -3613,15 +3864,21 @@ const char paramNumber;
     
 	self.dropboxLastPath = browser.currentPath;
 	
-	if ([attachFiles count] < kMaxAttachFile) {
+	if (([addAttachFiles count] + [attachFiles count]) < kMaxAttachFile) {
+        if(postTag == kModifyPost){
+            
+            [addAttachFiles addObject:metaData];
+        }
+           else{
 		[attachFiles addObject:metaData];
+           }
 		[attachFilePaths addObject:[NSString stringWithString:browser.selectedFilePath]];
 		NSLog(@"attachFilescount %d",(int)[attachFiles count]);
 		[addFile setBackgroundImage:[CustomUIKit customImageNamed:@"file_prs.png"] forState:UIControlStateNormal];
 
         
-        if((int)[attachFilePaths count]>0){
-            addFileBadge.text = [NSString stringWithFormat:@"%d",(int)[attachFilePaths count]];
+        if((int)([addAttachFiles count]+[attachFiles count])>0){
+            addFileBadge.text = [NSString stringWithFormat:@"%d",(int)([addAttachFiles count]+[attachFiles count])];
             addFileBadge.hidden = NO;
             
 #ifdef BearTalk
@@ -3754,8 +4011,8 @@ const char paramNumber;
     NSLog(@"attachFiles %@",attachFiles);
 	if (tableView.tag == kLocation && [locationString length] > 0) {
 		numberOfRow = 2;
-	} else if (tableView.tag == kFile && [attachFiles count] > 0) {
-		numberOfRow = [attachFiles count] + 1;
+	} else if (tableView.tag == kFile && ([attachFiles count]) > 0) {
+		numberOfRow = [attachFiles count]+ 1;
 	}
     
 	NSLog(@"numrow %i",(int)numberOfRow);
@@ -4015,23 +4272,28 @@ const char paramNumber;
 		image = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:CGSizeMake(640, 960) interpolationQuality:kCGInterpolationHigh];
 	}
 	
-    //	if (dataArray) {
-    //		[dataArray release];
-    //		dataArray = nil;
-    //	}
-    //    dataArray = [[NSMutableArray alloc]init];
+    
     
 	NSData *imageData = [[NSData alloc] initWithData:[SharedAppDelegate.root imageWithImage:image scaledToSizeWithSameAspectRatio:CGSizeMake(640, 960)]];
-    //    UIImage *roundingImage = [SharedAppDelegate.root roundCornersOfImage:[UIImage imageWithData:imageData] scale:100];
+    
+    
+    NSString *timeStamp = [[NSString alloc]initWithFormat:@"%.0f.jpg",[[NSDate date] timeIntervalSince1970]];
     if(postTag == kModifyPost){
         
+#ifdef BearTalk
+        [addDataArray addObject:@{@"data" : imageData, @"image" : image, @"filename" : timeStamp}];
+#else
         [addDataArray addObject:@{@"data" : imageData, @"image" : image}];
         [numberArray addObject:@"100"];
   
-
+#endif
     }
     else{
+#ifdef BearTalk
+        [dataArray addObject:@{@"data" : imageData, @"image" : image, @"filename" : timeStamp}];
+#else
     [dataArray addObject:@{@"data" : imageData, @"image" : image}];
+#endif
     
     }
     
@@ -4073,6 +4335,9 @@ const char paramNumber;
                                      //                                     image = [UIImage imageWithData:imageData];
                                      //
                                      NSLog(@"imageData length %d",(int)[imageData length]);
+                                     
+                                     
+                                     
                                      image = [UIImage sd_animatedGIFWithData:imageData];
                                      NSLog(@"image %@",image);
                                      NSLog(@"imagesize %@",NSStringFromCGSize(image.size));
@@ -4158,10 +4423,12 @@ const char paramNumber;
     
     if(postTag == kModifyPost){
         [addDataArray addObjectsFromArray:array];
+#ifdef BearTalk
+#else
         for(int i = 0; i < [array count]; i++){
             [numberArray addObject:@"100"];
         }
-        
+#endif
     }
     else{
         
@@ -4337,8 +4604,8 @@ const char paramNumber;
     }
     else if(collectionView.tag == kFile){
         
-        NSLog(@"attachFiles %i",[attachFiles count] + 1);
-        return [attachFiles count] + 1;
+        NSLog(@"attachFiles %i",[attachFiles count]+[addAttachFiles count] + 1);
+        return [attachFiles count]+[addAttachFiles count] + 1;
     }
     else if(optionTag == kPoll){
         return 1;
@@ -4549,7 +4816,7 @@ if(dic != nil){
         
         
         if (indexPath.row == 0) {
-            
+            NSLog(@"000000000");
             clipIcon.image = [UIImage imageNamed:@"img_social_add_3.png"];
             clipIcon.frame = CGRectMake(bgView.frame.size.width/2 - 30, bgView.frame.size.height/2-14/2, 14, 14);
             
@@ -4594,7 +4861,91 @@ if(dic != nil){
             cell.contentView.backgroundColor = [UIColor clearColor];//RGB(242, 242, 242);
             
         } else {
-               DBMetadata *metaData = [attachFiles objectAtIndex:(indexPath.row - 1)];
+            
+            NSLog(@"NOT 000000000");
+            
+            if(postTag == kModifyPost){
+                
+                int aRow = (int)indexPath.row - 1;
+                int bRow = (int)aRow - (int)[addAttachFiles count];
+                NSLog(@"aRow %d bRow %d",aRow,bRow);
+                
+                if([attachFiles count]>aRow){
+                    NSDictionary *metaData;
+                metaData = [attachFiles objectAtIndex:(aRow)];
+                    
+                    
+                    NSLog(@"metadata %@",metaData);
+                    NSString *filename = metaData[@"FILE_NAME"];
+                    
+                    NSString *msg = [NSString stringWithFormat:@"파일\n%@",filename];
+                    NSLog(@"msg %@",msg);
+                    NSArray *texts=[NSArray arrayWithObjects:@"파일",[NSString stringWithFormat:@"\n%@",filename],nil];
+                    
+                    NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+                    if([texts count]>0){
+                        [string addAttribute:NSForegroundColorAttributeName value:[NSKeyedUnarchiver unarchiveObjectWithData:colorData] range:[msg rangeOfString:texts[0]]];
+                        [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[0]]];
+                    }
+                    else if([texts count]>1){
+                        [string addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51) range:[msg rangeOfString:texts[1]]];
+                        [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:[msg rangeOfString:texts[1]]];
+                    }
+                    else if([texts count]>2){
+                        [string addAttribute:NSForegroundColorAttributeName value:RGB(153, 153, 153) range:[msg rangeOfString:texts[2]]];
+                        [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[2]]];
+                    }
+                    [fileInfo setAttributedText:string];
+            }
+            else if([addAttachFiles count]>bRow){
+                DBMetadata *metaData;
+                    metaData = [addAttachFiles objectAtIndex:(bRow)];
+                NSString *filename = metaData.filename;
+                
+                NSString *msg = [NSString stringWithFormat:@"파일\n%@ (%@)",filename,metaData.humanReadableSize];
+                NSArray *texts=[NSArray arrayWithObjects:@"파일",[NSString stringWithFormat:@"\n%@",filename],[NSString stringWithFormat:@" (%@)",metaData.humanReadableSize],nil];
+                NSLog(@"msg %@",msg);
+                
+                NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+                if([texts count]>0){
+                    [string addAttribute:NSForegroundColorAttributeName value:[NSKeyedUnarchiver unarchiveObjectWithData:colorData] range:[msg rangeOfString:texts[0]]];
+                    [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[0]]];
+                }
+                else if([texts count]>1){
+                    [string addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51) range:[msg rangeOfString:texts[1]]];
+                    [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:[msg rangeOfString:texts[1]]];
+                }
+                else if([texts count]>2){
+                    [string addAttribute:NSForegroundColorAttributeName value:RGB(153, 153, 153) range:[msg rangeOfString:texts[2]]];
+                    [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[2]]];
+                }
+                [fileInfo setAttributedText:string];
+
+                }
+            }
+            else{
+                DBMetadata *metaData = [attachFiles objectAtIndex:(indexPath.row - 1)];
+                NSString *filename = metaData.filename;
+                
+                NSString *msg = [NSString stringWithFormat:@"파일\n%@ (%@)",filename,metaData.humanReadableSize];
+                NSLog(@"msg %@",msg);
+                NSArray *texts=[NSArray arrayWithObjects:@"파일",[NSString stringWithFormat:@"\n%@",filename],[NSString stringWithFormat:@" (%@)",metaData.humanReadableSize],nil];
+                
+                NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+                if([texts count]>0){
+                    [string addAttribute:NSForegroundColorAttributeName value:[NSKeyedUnarchiver unarchiveObjectWithData:colorData] range:[msg rangeOfString:texts[0]]];
+                    [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[0]]];
+                }
+                else if([texts count]>1){
+                    [string addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51) range:[msg rangeOfString:texts[1]]];
+                    [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:[msg rangeOfString:texts[1]]];
+                }
+                else if([texts count]>2){
+                    [string addAttribute:NSForegroundColorAttributeName value:RGB(153, 153, 153) range:[msg rangeOfString:texts[2]]];
+                    [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[2]]];
+                }
+                [fileInfo setAttributedText:string];
+            }
 //                NSString *fileExtension = [metaData.filename pathExtension];
             
             clipIcon.image = [UIImage imageNamed:@"btn_document_off.png"];
@@ -4605,18 +4956,7 @@ if(dic != nil){
             fileInfo.font = [UIFont systemFontOfSize:14];
 //            fileInfo.textColor = RGB(151,152,157);
             
-            
-            NSString *msg = [NSString stringWithFormat:@"파일\n%@ (%@)",metaData.filename,metaData.humanReadableSize];
-            NSLog(@"msg %@",msg);
-            NSArray *texts=[NSArray arrayWithObjects:@"파일",[NSString stringWithFormat:@"\n%@",metaData.filename],[NSString stringWithFormat:@" (%@)",metaData.humanReadableSize],nil];
-            NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
-            [string addAttribute:NSForegroundColorAttributeName value:[NSKeyedUnarchiver unarchiveObjectWithData:colorData] range:[msg rangeOfString:texts[0]]];
-            [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[0]]];
-            [string addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51) range:[msg rangeOfString:texts[1]]];
-            [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:[msg rangeOfString:texts[1]]];
-            [string addAttribute:NSForegroundColorAttributeName value:RGB(153, 153, 153) range:[msg rangeOfString:texts[2]]];
-            [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[2]]];
-            [fileInfo setAttributedText:string];
+         
             fileInfo.numberOfLines = 0;
             deleteImage.image = [UIImage imageNamed:@"btn_file_delete.png"];
             
@@ -4745,23 +5085,43 @@ if(dic != nil){
             fileInfo.font = [UIFont systemFontOfSize:14];
             
             NSString *pollInfo = @"";
+#ifdef BearTalk
+            
+            if([pollDic[@"ANONYMOUS_YN"]isEqualToString:@"Y"])
+                pollInfo = [pollInfo stringByAppendingString:@"무기명 "];
+            if([pollDic[@"MULTI_YN"]isEqualToString:@"Y"])
+                pollInfo = [pollInfo stringByAppendingString:@"복수 선택 가능"];
+                
+                NSString *msg = [NSString stringWithFormat:@"설문 %@\n%@",pollInfo,pollDic[@"POLL_TIT"]];
+                NSLog(@"msg %@",msg);
+                NSArray *texts=[NSArray arrayWithObjects:@"설문 ",[NSString stringWithFormat:@"%@\n",pollInfo],pollDic[@"POLL_TIT"],nil];
+#else
             if([pollDic[@"is_anon"]isEqualToString:@"1"])
                 pollInfo = [pollInfo stringByAppendingString:@"무기명 "];
             if([pollDic[@"is_multi"]isEqualToString:@"1"])
                 pollInfo = [pollInfo stringByAppendingString:@"복수 선택 가능"];
-
+                
+                NSString *msg = [NSString stringWithFormat:@"설문 %@\n%@",pollInfo,pollDic[@"title"]];
+                NSLog(@"msg %@",msg);
+                NSArray *texts=[NSArray arrayWithObjects:@"설문 ",[NSString stringWithFormat:@"%@\n",pollInfo],pollDic[@"title"],nil];
+#endif
+          
+                
             
             
-            NSString *msg = [NSString stringWithFormat:@"설문 %@\n%@",pollInfo,pollDic[@"title"]];
-            NSLog(@"msg %@",msg);
-            NSArray *texts=[NSArray arrayWithObjects:@"설문 ",[NSString stringWithFormat:@"%@\n",pollInfo],pollDic[@"title"],nil];
             NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+            if([texts count]>0){
             [string addAttribute:NSForegroundColorAttributeName value:[NSKeyedUnarchiver unarchiveObjectWithData:colorData] range:[msg rangeOfString:texts[0]]];
             [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[0]]];
+            }
+            else if([texts count]>1){
             [string addAttribute:NSForegroundColorAttributeName value:RGB(153, 153, 153) range:[msg rangeOfString:texts[1]]];
             [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[1]]];
+            }
+            else if([texts count]>2){
             [string addAttribute:NSForegroundColorAttributeName value:RGB(51, 51, 51) range:[msg rangeOfString:texts[2]]];
             [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:[msg rangeOfString:texts[2]]];
+            }
             [fileInfo setAttributedText:string];
             fileInfo.numberOfLines = 0;
             deleteImage.image = [UIImage imageNamed:@"btn_file_delete.png"];
@@ -4995,12 +5355,16 @@ if(dic != nil){
     
     }
     else if(collectionView.tag == kFile){
-        if([attachFiles count] < kMaxAttachFile && indexPath.row == 0){
+        
+        int aRow = (int)indexPath.row - 1;
+        int bRow = (int)aRow - (int)[attachFiles count];
+        
+        if([attachFiles count]+[addAttachFiles count] < kMaxAttachFile && indexPath.row == 0){
               [self loadAttachView];
         }
         else{
        
-            
+            if([attachFiles count]>aRow){
             UIAlertController *alertcontroller = [UIAlertController alertControllerWithTitle:@"파일 삭제"
                                                                                      message:@"선택한 파일이 삭제됩니다.\n계속하시겠습니까?"
                                                                               preferredStyle:UIAlertControllerStyleAlert];
@@ -5009,7 +5373,7 @@ if(dic != nil){
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             
-                                                            [self deleteFile:(int)indexPath.row-1];
+                                                            [self deleteFile:(int)aRow];
                                                             
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                         }];
@@ -5023,7 +5387,32 @@ if(dic != nil){
             [alertcontroller addAction:cancelb];
             [alertcontroller addAction:okb];
             [self presentViewController:alertcontroller animated:YES completion:nil];
+            }
             
+            else if([addAttachFiles count]>bRow){
+                UIAlertController *alertcontroller = [UIAlertController alertControllerWithTitle:@"파일 삭제"
+                                                                                         message:@"선택한 파일이 삭제됩니다.\n계속하시겠습니까?"
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * action){
+                                                                
+                                                                [self deleteFile:(int)bRow];
+                                                                
+                                                                [alertcontroller dismissViewControllerAnimated:YES completion:nil];
+                                                            }];
+                
+                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * action){
+                                                                    [alertcontroller dismissViewControllerAnimated:YES completion:nil];
+                                                                }];
+                
+                [alertcontroller addAction:cancelb];
+                [alertcontroller addAction:okb];
+                [self presentViewController:alertcontroller animated:YES completion:nil];
+            }
             
         }
     }
