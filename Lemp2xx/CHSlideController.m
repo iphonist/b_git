@@ -24,6 +24,9 @@
 #import "SendNoteViewController.h"
 #import "DetailViewController.h"
 #import "NotiCenterViewController.h"
+
+#import "SubSetupViewController.h"
+
 //#import "TimeLineCell.h"
 // Defining some defaults being set in the init
 #pragma mark - Constants
@@ -1525,26 +1528,7 @@ const char paramNumber;
     //	}
     NSLog(@"imgURL1 %@",imgURL);
     
-#ifdef BearTalk
-    
-    //    NSData *data = [NSData dataWithContentsOfURL:imgURL];
-    NSURLRequest *request = [NSMutableURLRequest requestWithURL:imgURL];
-    NSURLResponse *response = nil;
-    //    NSError *error=nil;
-    NSData *data= [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-    // you can use retVal , ignore if you don't need.
-    NSInteger httpStatus = [((NSHTTPURLResponse *)response) statusCode];
-    NSLog(@"responsecode:%d", httpStatus);
-    // there will be various HTTP response
-    
-    //    NSLog(@"data length %d",[data length]);
-    if(IS_NULL(imgURL) ||  httpStatus != 200){
-        imgURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://daewoong1.lemp.co.kr/file/%@//thumbnail:timelineimage_%@_.jpg",uid,uid]];
-        
-    }
-    NSLog(@"imgURL2 %@",imgURL);
-    
-#endif
+
     
     NSLog(@"ifnil %@",ifnil);
     
@@ -1933,7 +1917,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         }
     }
     //    [tempArray release];
-    NSLog(@"uid %@ searchContactDictionary %@",uid,dic);
+//    NSLog(@"uid %@ searchContactDictionary %@",uid,dic);
     return dic;
     
     
@@ -2135,22 +2119,22 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 #ifdef BearTalk
                     
                     NSMutableDictionary *newMyinfo = [NSMutableDictionary dictionary];
-                    [newMyinfo setObject:listDic[@"USER_NAME"] forKey:@"name"];
-                    [newMyinfo setObject:listDic[@"EMAIL"] forKey:@"email"];
-                    [newMyinfo setObject:listDic[@"MOBILE_NUM"] forKey:@"cellphone"];
-                    [newMyinfo setObject:listDic[@"COMPANY_TEL_NUM"] forKey:@"officephone"];
-                    [newMyinfo setObject:listDic[@"POS_NAME"] forKey:@"position"];
-                    [newMyinfo setObject:listDic[@"DUTY_NAME"] forKey:@"duty"];
-                    [newMyinfo setObject:listDic[@"DEPT_CODE"] forKey:@"deptcode"];
-                    [newMyinfo setObject:listDic[@"DEPT_NAME"] forKey:@"deptname"];
+                    [newMyinfo setObject:!IS_NULL(listDic[@"USER_NAME"])?listDic[@"USER_NAME"]:@"" forKey:@"name"];
+                    [newMyinfo setObject:!IS_NULL(listDic[@"EMAIL"])?listDic[@"EMAIL"]:@"" forKey:@"email"];
+                    [newMyinfo setObject:!IS_NULL(listDic[@"MOBILE_NUM"])?listDic[@"MOBILE_NUM"]:@"" forKey:@"cellphone"];
+                    [newMyinfo setObject:!IS_NULL(listDic[@"COMPANY_TEL_NUM"])?listDic[@"COMPANY_TEL_NUM"]:@"" forKey:@"officephone"];
+                    [newMyinfo setObject:!IS_NULL(listDic[@"POS_NAME"])?listDic[@"POS_NAME"]:@"" forKey:@"position"];
+                    [newMyinfo setObject:!IS_NULL(listDic[@"DUTY_NAME"])?listDic[@"DUTY_NAME"]:@"" forKey:@"duty"];
+                    [newMyinfo setObject:!IS_NULL(listDic[@"DEPT_CODE"])?listDic[@"DEPT_CODE"]:@"" forKey:@"deptcode"];
+                    [newMyinfo setObject:!IS_NULL(listDic[@"DEPT_NAME"])?listDic[@"DEPT_NAME"]:@"" forKey:@"deptname"];
                     [newMyinfo setObject:[ResourceLoader sharedInstance].myUID forKey:@"uid"];
-                    [newMyinfo setObject:listDic[@"MY_AVATAR"] forKey:@"profileimage"];
+                    [newMyinfo setObject:!IS_NULL(listDic[@"MY_AVATAR"])?listDic[@"MY_AVATAR"]:@"" forKey:@"profileimage"];
                     [newMyinfo setObject:mydic[@"privatetimelineimage"] forKey:@"privatetimelineimage"];
                     [newMyinfo setObject:mydic[@"companytimelineimage"] forKey:@"companytimelineimage"];
                     //                  #if defined(GreenTalk) || defined(GreenTalkCustomer)
-                    [newMyinfo setObject:listDic[@"userlevel"] forKey:@"userlevel"];
+                    [newMyinfo setObject:!IS_NULL(listDic[@"userlevel"])?listDic[@"userlevel"]:@"" forKey:@"userlevel"];
                     //#endif
-                    [SharedAppDelegate writeToPlist:@"employeinfo" value:listDic[@"MY_INTRO"]];
+                    [SharedAppDelegate writeToPlist:@"employeinfo" value:!IS_NULL(listDic[@"MY_INTRO"])?listDic[@"MY_INTRO"]:@""];
                     //                    [newMyinfo setObject:mydic[@"comname"] forKey:@"comname"];
                     
 #else
@@ -2222,8 +2206,10 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         addContact = YES;
     }
     if([updateArray count]>0) {
-        //		[self updateContactArray:updateArray];
-        updateContact = [SQLiteDBManager updateContactArray:updateArray];
+        		updateContact = [SQLiteDBManager updateContactArray:updateArray];
+//        for(NSDictionary *udic in updateArray){
+//        updateContact = [SQLiteDBManager updateContact:udic];
+//        }
     } else {
         updateContact = YES;
     }
@@ -2763,7 +2749,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         alert = [[UIAlertView alloc] initWithTitle:@"설치요청" message:@"멤버의 휴대폰으로 설치요청 SMS를\n발송하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
         
 #if defined(GreenTalk) || defined(GreenTalkCustomer)
-        NSDictionary *dic = [self searchContactDictionary:[[sender titleLabel]text]];
+        NSDictionary *dic = [self searchContactDictionary:[[sende ㅎ ㅎ titleLabel]text]];
         objc_setAssociatedObject(alert, &paramNumber, [dic[@"cellphone"]length]>0?dic[@"cellphone"]:@"", OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
 #else
@@ -2817,9 +2803,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         NSLog(@"SharedAppDelegate.root.main.myList %@",SharedAppDelegate.root.main.myList);
         NSDictionary *origindic;
-        for(NSDictionary *dic in SharedAppDelegate.root.main.myList){
-            if([dic[@"groupnumber"]isEqualToString:snskey]){
-                origindic = dic;
+        for(NSDictionary *adic in SharedAppDelegate.root.main.myList){
+            if([adic[@"groupnumber"]isEqualToString:snskey]){
+                origindic =adic;
             }
         }
         NSMutableDictionary *newdic = [NSMutableDictionary dictionaryWithDictionary:origindic];
@@ -2830,9 +2816,15 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [newdic setObject:@"" forKey:@"groupexplain"];
         [newdic setObject:dic[@"SNS_AVATAR"] forKey:@"groupimage"];
         [newdic setObject:dic[@"SNS_MEMBER"] forKey:@"member"];
-                NSString *decoded = [dic[@"SNS_NAME"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *beforedecoded = [dic[@"SNS_NAME"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+                NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         [newdic setObject:decoded forKey:@"groupname"];
+        if([dic[@"SNS_ADMIN_UID"]count]>0)
         [newdic setObject:dic[@"SNS_ADMIN_UID"][0] forKey:@"groupmaster"];
+        [newdic setObject:dic[@"SNS_TYPE"] forKey:@"SNS_TYPE"];
+        [newdic setObject:IS_NULL(dic[@"WRITE_AUTH"])?@"":dic[@"WRITE_AUTH"] forKey:@"WRITE_AUTH"];
+        [newdic setObject:dic[@"SNS_ADMIN_UID"] forKey:@"SNS_ADMIN_UID"];
         
         
         if([dic[@"SNS_TYPE"]isEqualToString:@"C"]) {
@@ -2900,8 +2892,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/group/groupinfo.lemp",[SharedAppDelegate readPlist:@"was"]];
@@ -2945,7 +2943,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                      resultDic[@"groupattribute2"],@"groupattribute2",nil];
                 
                 [SharedAppDelegate.root addJoinGroupTimeline:dic];
-                [SharedAppDelegate.root settingJoinGroup:dic add:YES];
+                [SharedAppDelegate.root settingJoinGroup:dic add:YES con:nil];
                 [SharedAppDelegate.root setGroupDic:resultDic regi:yn];
             }
             else{
@@ -2986,8 +2984,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     NSLog(@"modifyReply %d",type);
     NSLog(@"msg %@",msg);
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     
@@ -3136,8 +3140,13 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 
 - (void)modifyPost:(NSString *)index modify:(int)type msg:(NSString *)msg oldcategory:(NSString *)oldcate newcategory:(NSString *)newcate oldgroupnumber:(NSString *)oldnum newgroupnumber:(NSString *)newnum target:(NSString *)target replyindex:(NSString *)reindex viewcon:(UIViewController *)viewcon{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
     
     UIBarButtonItem *rightButton = [viewcon.navigationItem.rightBarButtonItems lastObject];
@@ -3347,8 +3356,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 
 - (void)modifyBatongPost:(NSString *)index modify:(int)type msg:(NSString *)msg sub:(NSString *)sub dept:(NSString *)deptcode viewcon:(UIViewController *)viewcon{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     UIBarButtonItem *rightButton = [viewcon.navigationItem.rightBarButtonItems lastObject];
     [rightButton setEnabled:NO];
@@ -3452,8 +3467,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 
 - (void)modifySchedule:(NSString *)index title:(NSString *)title location:(NSString *)location start:(NSString *)start end:(NSString *)end alarm:(NSString *)alarm allday:(NSString *)allday msg:(NSString *)msg type:(NSString *)type con:(UIViewController *)viewcon{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    [MBProgressHUD showHUDAddedTo:SharedAppDelegate.window label:nil animated:YES];
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
     
@@ -3539,8 +3560,15 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     return;
 #endif
     //    [MBProgressHUD showHUDAddedTo:SharedAppDelegate.window label:nil animated:YES];
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
     
     //    NSString *grouptype = @"1";
@@ -3837,8 +3865,6 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     NSLog(@"con.presentingViewController %@",con.presentingViewController);
     NSLog(@"con.presentingViewController.presentingViewController %@",con.presentingViewController.presentingViewController);
     
-    
-    //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/group/modifygroup.lemp" parameters:parameters];
     
     NSError *serializationError = nil;
     NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:method URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
@@ -4181,8 +4207,13 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 }
 - (void)createGroupTimeline:(NSString *)member name:(NSString *)name sub:(NSString *)sub image:(NSData *)img imagenumber:(int)num manage:(NSString *)mng con:(UIViewController *)con{// public:(BOOL)publicGroup{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
 #ifdef BearTalk
     [self createGroupWithBearTalk:member name:name sub:sub image:img imagenumber:num manage:@"" con:self];
@@ -4355,6 +4386,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
         
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
         NSMutableArray *array = [operation.responseString objectFromJSONString];
         NSLog(@"createarray %@",array);
         NSString *resultRoomkey = array[0][@"ROOM_KEY"];
@@ -4419,7 +4453,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             //                [SharedAppDelegate.root getRoomWithRk:resultRoomkey];
         }
         [self getRoomAfterCreateGroupWithRk:resultRoomkey];
-        
+       
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         NSLog(@"FAIL : %@",operation.error);
@@ -4441,8 +4476,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     [self createRoomWithSocket:member type:roomtype push:con];
     return;
 #endif
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     if([roomtype isEqualToString:@"5"])
         return;
     
@@ -4619,12 +4660,17 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
 #ifdef BearTalk
     
-    [self getRoomWithSocket:rk];
+    [self getRoomWithSocket:rk num:@""];
     return;
 #endif
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
     
     //    if(SharedAppDelegate.root.chatView.messages)
@@ -4749,8 +4795,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     if(!modal)
         [SharedAppDelegate.root pushChatView];//:_slidingViewController];
     else{
@@ -4760,7 +4812,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     
 #ifdef BearTalk
-    [self getRoomWithSocket:rk];
+    [self getRoomWithSocket:rk num:num];
     return;
 #endif
     
@@ -5023,8 +5075,13 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 - (void)getRoomFromPushWithRk:(NSString *)rk{
     NSLog(@"getRoomFromPushWithRk rk %@ ",rk);
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
     
     [SharedAppDelegate.root.main refreshTimeline];
@@ -5034,7 +5091,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     
 #ifdef BearTalk
-    [self getRoomWithSocket:rk];
+    [self getRoomWithSocket:rk num:@""];
     return;
 #endif
     
@@ -5342,6 +5399,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                       [ResourceLoader sharedInstance].myUID,@"uid",
+                      [ResourceLoader sharedInstance].myUID,@"outuid",
                       rk,@"roomkey",nil];
     }
     else if(modifytype == 4){
@@ -5356,7 +5414,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         
         parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                      members,@"uid",
+                      members,@"outuid",
+                      [ResourceLoader sharedInstance].myUID,@"uid",
                       rk,@"roomkey",nil];
         
         
@@ -5381,12 +5440,21 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         else if(modifytype == 4){
             
             [con performSelector:@selector(cancel)];
-            [self getRoomWithSocket:[operation.responseString objectFromJSONString][0][@"result"]];
+            
+            
+            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+                [self getRoomWithSocket:[operation.responseString objectFromJSONString][0][@"result"] num:@""];
+            }
             //            [SharedAppDelegate.root.chatView getMessage:[operation.responseString objectFromJSONString][0][@"result"] memo:@""];
         }
         else if(modifytype == 1){
             
-            [self getRoomWithSocket:[operation.responseString objectFromJSONString][0][@"ROOM_KEY"]];
+            
+            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+                [self getRoomWithSocket:[operation.responseString objectFromJSONString][0][@"ROOM_KEY"] num:@""];
+            }
             //             [SharedAppDelegate.root.chatView getMessage:[operation.responseString objectFromJSONString][0][@"ROOM_KEY"] memo:@""];
         }
         
@@ -5411,8 +5479,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     [self modifyRoomWithSocket:rk modify:modifytype members:members name:roomname con:con];
     return;
 #endif
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/chat/info/modifyroom.lemp",[SharedAppDelegate readPlist:@"was"]];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
@@ -5495,8 +5569,10 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 }
 
 
-- (void)getRoomWithSocket:(NSString *)rk{
+- (void)getRoomWithSocket:(NSString *)rk num:(NSString *)num{
     
+    if([rk length]<1 && [num length]>0)
+        rk = num;
     [SharedAppDelegate.root.chatView settingRk:rk sendMemo:@""];
     
     if([ResourceLoader sharedInstance].myUID == nil || [[ResourceLoader sharedInstance].myUID length]<1){
@@ -5530,7 +5606,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         NSLog(@"operation.responseString  %@",operation.responseString );
         NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
         // roomDic maybe count 1
-        if([[operation.responseString objectFromJSONString]count]>0){
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             NSDictionary *roomDic = [operation.responseString objectFromJSONString][0];
             NSLog(@"roomDic %@",roomDic);
             
@@ -5551,7 +5629,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
             NSLog(@"roomname %@ roomtype %@ uids %@",roomname,roomtype,uids);
             [SQLiteDBManager updateRoomName:roomname rk:rk];
-            [SharedAppDelegate.root.chatView settingRoomWithName:roomname uid:uids type:roomtype number:@""];
+            [SharedAppDelegate.root.chatView settingRoomWithName:roomname uid:uids type:roomtype number:num];
             
             [SharedAppDelegate.root.chatView settingUid:uids];
             //            [SharedAppDelegate.root.chatView settingMaster:resultDic[@"roomuid"]];
@@ -5622,7 +5700,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         
-        [self getRoomWithSocket:rk];
+        [self getRoomWithSocket:rk num:@""];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
@@ -5653,8 +5731,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     return;
 #endif
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/chat/info/chatroom.lemp",[SharedAppDelegate readPlist:@"was"]];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
@@ -5901,19 +5985,16 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                     
                     
                     [SharedAppDelegate writeToPlist:@"voip" value:resultDic[@"server"][@"mvoip"]];
-#ifdef BearTalkDev
-#else
+
                     [SharedAppDelegate writeToPlist:@"was" value:resultDic[@"server"][@"was"]];
-#endif
+
                     
                     NSMutableDictionary *newMyinfo = [NSMutableDictionary dictionary];
                     [newMyinfo setObject:resultDic[@"uid"] forKey:@"uid"];
-#ifdef BearTalk
-                    
-#else
+
                     [newMyinfo setObject:resultDic[@"sessionkey"] forKey:@"sessionkey"];
                     [[ResourceLoader sharedInstance] setMySessionkey:resultDic[@"sessionkey"]];
-#endif
+
                     [newMyinfo setObject:cellphone forKey:@"cellphone"];
                     [newMyinfo setObject:name forKey:@"name"];
                     [SharedAppDelegate writeToPlist:@"myinfo" value:newMyinfo];
@@ -5962,21 +6043,17 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 
                 
                 [SharedAppDelegate writeToPlist:@"voip" value:resultDic[@"server"][@"mvoip"]];
-#ifdef BearTalkDev
-#else
+
                 [SharedAppDelegate writeToPlist:@"was" value:resultDic[@"server"][@"was"]];
-#endif
-                
+         
                 
                 NSMutableDictionary *newMyinfo = [NSMutableDictionary dictionary];
                 [newMyinfo setObject:resultDic[@"uid"] forKey:@"uid"];
                 
-#ifdef BearTalk
-                
-#else
+
                 [newMyinfo setObject:resultDic[@"sessionkey"] forKey:@"sessionkey"];
                 [[ResourceLoader sharedInstance] setMySessionkey:resultDic[@"sessionkey"]];
-#endif
+
                 [newMyinfo setObject:cellphone forKey:@"cellphone"];
                 [newMyinfo setObject:name forKey:@"name"];
                 [SharedAppDelegate writeToPlist:@"myinfo" value:newMyinfo];
@@ -6308,11 +6385,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             //            [SharedAppDelegate writeToPlist:@"companytimelineimage" value:[resultDicobjectForKey:@"companytimelineimage"]];
             [SharedAppDelegate writeToPlist:@"myinfo" value:resultDic[@"myinfo"][0]];
             [[ResourceLoader sharedInstance] setMyUID:resultDic[@"myinfo"][0][@"uid"]];
-#ifdef BearTalk
-            
-#else
+
             [[ResourceLoader sharedInstance] setMySessionkey:resultDic[@"myinfo"][0][@"sessionkey"]];
-#endif
+
             
             NSMutableArray *deptArray = resultDic[@"dept"];
             NSLog(@"[deptArray count] %d",(int)[deptArray count]);
@@ -6412,10 +6487,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             //            [SharedAppDelegate writeToPlist:@"msg" value:[[resultDicobjectForKey:@"serverinfo"]objectForKey:@"message"]];
             //            [SharedAppDelegate writeToPlist:@"push" value:[[resultDicobjectForKey:@"serverinfo"]objectForKey:@"push"]];
             
-#ifdef BearTalkDev
-#else
+
             [SharedAppDelegate writeToPlist:@"was" value:resultDic[@"server"][@"was"]];
-#endif
+
             [SharedAppDelegate writeToPlist:@"sip" value:resultDic[@"serverinfo"][@"sip_domain"]];
             [SharedAppDelegate writeToPlist:@"voip" value:resultDic[@"serverinfo"][@"mvoip"]];
             [SharedAppDelegate writeToPlist:@"cdr" value:resultDic[@"serverinfo"][@"voip_info"]];
@@ -6525,7 +6599,17 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 
 - (void)installWithPw:(NSString *)pw{// bell:(NSString *)bell{//setDeviceInfo:(NSString *)bell{
     
-    
+#ifdef BearTalk
+    if(![[SharedAppDelegate readPlist:@"initContact"]isEqualToString:@"3.0.0"]){
+        NSLog(@"1111111 not 3.0.0");
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD showWithStatus:@"앱을 종료하지 말고\n기다려주세요."];
+            self.showFeedbackMessage = YES;
+            
+        });
+    }
+#endif
     
     [SharedAppDelegate writeToPlist:@"loginfo" value:@"login"];
     [SharedAppDelegate writeToPlist:@"pushsound" value:@""];
@@ -6537,8 +6621,11 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     if(SharedAppDelegate.root.login){
         dispatch_async(dispatch_get_main_queue(), ^{
             NSLog(@"11111111111111");
+#ifdef BearTalk
+//            [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(setProgressInteger2:) withObject:[NSNumber numberWithFloat:0.2] waitUntilDone:NO];
+#else
             [SharedAppDelegate.root.login changeText:@"중... 1/5" setProgressText:@"0.2"];
-            [SharedAppDelegate.root.login setProgressInteger:0.2];
+#endif
             //        [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(changeText:) withObject:@"중... 1/5" waitUntilDone:NO];
             //        [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(setProgressText:) withObject:@"0.2" waitUntilDone:NO];
         });
@@ -6630,6 +6717,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+        self.showFeedbackMessage = NO;
+        [SVProgressHUD dismiss];
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
@@ -6641,14 +6730,25 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         NSDictionary *resultDic = [operation.responseString objectFromJSONString];
         NSLog(@"resultDic %@",resultDic);
         
-        
+        if(!IS_NULL(resultDic[@"error"]) && [resultDic[@"error"]length]>0){
+            
+            
+            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"error"]];
+            
+            [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
+            
+            [SharedAppDelegate.root.login loginfail];
+            
+        }
+        else{
         
         NSMutableDictionary *newMyinfo = [NSMutableDictionary dictionary];
         [newMyinfo setObject:resultDic[@"uid"] forKey:@"uid"];
         [SharedAppDelegate writeToPlist:@"myinfo" value:newMyinfo];
         [[ResourceLoader sharedInstance] setMyUID:resultDic[@"uid"]];
-        
-        [self startup];
+            
+            [self registDeviceWithSocket:@""];
+        }
 #else
        
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
@@ -6668,7 +6768,6 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                     NSLog(@"222222222222222222");
                     
                     [SharedAppDelegate.root.login changeText:@"중... 2/5" setProgressText:@"0.4"];
-                    [SharedAppDelegate.root.login setProgressInteger:0.4];
                     //                [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(changeText:) withObject:@"중... 2/5" waitUntilDone:NO];
                     //                [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(setProgressText:) withObject:@"0.4" waitUntilDone:NO];
                 });
@@ -6722,7 +6821,6 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                     NSLog(@"333333333333333");
                     
                     [SharedAppDelegate.root.login changeText:@"중... 3/5" setProgressText:@"0.6"];
-                    [SharedAppDelegate.root.login setProgressInteger:0.6];
                     //                [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(changeText:) withObject:@"중... 3/5" waitUntilDone:NO];
                     //                [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(setProgressText:) withObject:@"0.6" waitUntilDone:NO];
                 });
@@ -6765,7 +6863,6 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                     NSLog(@"44444444444444444");
                     
                     [SharedAppDelegate.root.login changeText:@"중... 4/5" setProgressText:@"0.8"];
-                    [SharedAppDelegate.root.login setProgressInteger:0.8];
                     //                [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(changeText:) withObject:@"중... 4/5" waitUntilDone:NO];
                     //                [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(setProgressText:) withObject:@"0.8" waitUntilDone:NO];
                 });
@@ -6802,10 +6899,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             //            [SharedAppDelegate writeToPlist:@"msg" value:[[resultDicobjectForKey:@"serverinfo"]objectForKey:@"message"]];
             //            [SharedAppDelegate writeToPlist:@"push" value:[[resultDicobjectForKey:@"serverinfo"]objectForKey:@"push"]];
             
-#ifdef BearTalkDev
-#else
+
             [SharedAppDelegate writeToPlist:@"was" value:resultDic[@"server"][@"was"]];
-#endif
+
             [SharedAppDelegate writeToPlist:@"sip" value:resultDic[@"serverinfo"][@"sip_domain"]];
             [SharedAppDelegate writeToPlist:@"voip" value:resultDic[@"serverinfo"][@"mvoip"]];
             [SharedAppDelegate writeToPlist:@"cdr" value:resultDic[@"serverinfo"][@"voip_info"]];
@@ -6832,7 +6928,6 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                     NSLog(@"5555555555555555555555");
                     
                     [SharedAppDelegate.root.login changeText:@"중... 5/5" setProgressText:@"1.0"];
-                    [SharedAppDelegate.root.login setProgressInteger:1.0];
                 });
             }//                [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(changeText:) withObject:@"중... 5/5" waitUntilDone:NO];
             
@@ -6877,13 +6972,10 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [SharedAppDelegate.root.login loginfail];
         NSLog(@"FAIL : %@",operation.error);
-        //            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        //                if([bell length]>0){
-        //                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"벨소리를 변경하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
-        //                    [alert show];
-        //
-        //                }
-        //                else{
+        
+        self.showFeedbackMessage = NO;
+        [SVProgressHUD dismiss];
+        
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
             
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"오류"
@@ -6996,8 +7088,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 - (void)leaveApp{
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     
     if (SharedAppDelegate.root.slidingViewController.presentedViewController) {
@@ -7161,11 +7259,11 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 #pragma mark - start up
 
 
-- (void)registDeviceWithSocket{
+- (void)registDeviceWithSocket:(NSString *)key{
     
     
     
-    NSLog(@"registDeviceWithSocket");
+    NSLog(@"registDeviceWithSocket %@",key);
     
     
     
@@ -7185,9 +7283,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [SharedAppDelegate readPlist:@"email"],@"email",
-                                @"IOS",@"device",
+                                @"MOBILE",@"device",
                                 @"1",@"devicetype",
-                                [SharedFunctions getDeviceIDForParameter],@"deviceid",nil];
+                                ([key length]>0)?key:[SharedFunctions getDeviceIDForParameter],@"deviceid",nil];
     NSLog(@"parameters %@",parameters);
     
     
@@ -7205,6 +7303,19 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [SharedAppDelegate writeToPlist:@"devicekey" value:[operation.responseString objectFromJSONString][@"result"]];
         
         
+        if([[SharedAppDelegate readPlist:@"initContact"]isEqualToString:@"3.0.0"]){
+            
+            if([key length]>0)
+            [SharedFunctions saveDeviceToken:key status:NO];
+            
+            if(SharedAppDelegate.root.login){
+                [self startup];
+            }
+        }
+        else{
+            
+        [self startup];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
         NSLog(@"FAIL : %@",operation.error);
@@ -7225,6 +7336,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     
 }
+#define kSubLocation 201
 //#define kCancelInvite 5
 - (void)startup
 {
@@ -7235,13 +7347,18 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     NSLog(@"sapp ver %@",[[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"]);
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     
     NSString *urlString;
 #ifdef BearTalk
-    [self registDeviceWithSocket];
     urlString = [NSString stringWithFormat:@"%@/api/hr",BearTalkBaseUrl];
 #else
     
@@ -7265,6 +7382,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     NSLog(@"lastLinux %@, %.0f",[SharedAppDelegate readPlist:@"lastdate"],lastLinux);
 
+    NSLog(@"short version %@",[[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"]);
+
 #else
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -7280,8 +7399,16 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     if([SharedAppDelegate readPlist:@"initContact"] == nil ||
        [[SharedAppDelegate readPlist:@"initContact"]length]<1 ||
-       ![[SharedAppDelegate readPlist:@"initContact"]isEqualToString:@"YES_ver_2_5_23"] || [[SharedAppDelegate readPlist:@"lastdate"]isEqualToString:@"2016-06-01 00:00:00"]){
+       
+#ifdef BearTalk
+       ![[SharedAppDelegate readPlist:@"initContact"]isEqualToString:@"3.0.0"] ||
+#else
+       
+       ![[SharedAppDelegate readPlist:@"initContact"]isEqualToString:@"YES_ver_2_5_23"] ||
+#endif
+       [[SharedAppDelegate readPlist:@"lastdate"]isEqualToString:@"2016-06-01 00:00:00"]){
         
+        NSLog(@"222222 initContact");
         dispatch_async(dispatch_get_main_queue(), ^{
             [SVProgressHUD showWithStatus:@"앱을 종료하지 말고\n기다려주세요."];
             self.showFeedbackMessage = YES;
@@ -7295,14 +7422,13 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 #endif
     }
     // 약 3개월 이상 접속 안 했을 때
-    
 #ifdef BearTalk
     else if(![[SharedAppDelegate readPlist:@"lastdate"]isEqualToString:@"0"] && nowLinux - lastLinux > 10000000){
 #else
     else if(![[SharedAppDelegate readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"] && nowLinux - lastLinux > 10000000){
 #endif
     
-        NSLog(@" > 10,000,000");
+        NSLog(@"333333 > 10,000,000");
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [SVProgressHUD showWithStatus:@"장기간 미접속으로\n업데이트에 시간이 소요됩니다.\n앱을 종료하지 말고\n기다려주세요."];
@@ -7310,12 +7436,6 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
         });
         self.showFeedbackMessage = YES;
-        
-    }
-    else if([[SharedAppDelegate readPlist:@"initContact"]isEqualToString:@"YES_ver_2_5_23"]){
-        // 2.5.23 pass
-        // 베어톡 기준으로 2.5.23일 경우이기 때문에 2.5.23으로 했으나 다른 앱 버젼과는 무관..
-        self.showFeedbackMessage = NO;
         
     }
     else{
@@ -7328,14 +7448,30 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     NSLog(@"here readplist %@",[SharedAppDelegate readPlist:@"lastdate"]);
     
     
-    NSDictionary *parameters;
+        NSDictionary *parameters;
     
 #ifdef BearTalk
+        NSString *updatetime = [SharedAppDelegate readPlist:@"lastdate"];
         NSLog(@"uid1 %@",[ResourceLoader sharedInstance].myUID);
         NSLog(@"uid2 %@",[SharedAppDelegate readPlist:@"myinfo"][@"uid"]);
+        if(![[SharedAppDelegate readPlist:@"lastdate"]isEqualToString:@"0"]){
+            updatetime = [NSString stringWithFormat:@"%@000",[SharedAppDelegate readPlist:@"lastdate"]];
+        }
+        
+        // 3.0.0
+        if(![[SharedAppDelegate readPlist:@"initContact"]isEqualToString:@"3.0.0"]){
+            updatetime = @"0";
+            
+            NSLog(@"444444  not 3.0.0");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [SVProgressHUD showWithStatus:@"앱을 종료하지 말고\n기다려주세요."];
+                self.showFeedbackMessage = YES;
+                
+            });
+        }
     parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                   [SharedAppDelegate readPlist:@"myinfo"][@"uid"],@"uid",
-                  [NSString stringWithFormat:@"%@000",[SharedAppDelegate readPlist:@"lastdate"]],@"updatetime",
+                  updatetime,@"updatetime",
 //                  @"ios",@"ios",
                   nil];
 
@@ -7366,28 +7502,57 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
 #ifdef BearTalk
         
-        
-        NSString *lastDate = [[NSString alloc]initWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
         NSDictionary *resultDic = [operation.responseString objectFromJSONString];
+        
+        if(!IS_NULL(resultDic[@"error"]) && [resultDic[@"error"]length]>0){
+            
+            self.showFeedbackMessage = NO;
+            [SVProgressHUD dismiss];
+            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"error"]];
+            
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@""
+                                                                           message:msg
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * action){
+                                                           
+                                                           [SharedAppDelegate killApplication];
+                                                       }];
+            
+            
+            
+            [alert addAction:ok];
+            
+            //        [self presentViewController:alert animated:YES completion:nil];
+            [SharedAppDelegate.root anywhereModal:alert];
+            
+            
+        }
+        else{
+        NSString *lastDate = [[NSString alloc]initWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
         NSArray *loginArray = resultDic[@"login"];
         BOOL bomb = NO;
         for(NSDictionary *ldic in loginArray){
-            if([ldic[@"DEVICE"]isEqualToString:@"AND"]){
-                bomb = YES;
-            }
-            else{
-                if([ldic[@"DEVICE"]isEqualToString:@"IOS"]){
+          
+                if([ldic[@"DEVICE"]isEqualToString:@"MOBILE"]){
                     if(![ldic[@"DEVICE_ID"]isEqualToString:[SharedFunctions getDeviceIDForParameter]]){
+                        
+                        
                         bomb = YES;
                     }
                 }
-            }
+            
         }
         
         if(bomb == YES){
             // (폭탄)
             NSLog(@"bomb");
             
+            self.showFeedbackMessage = NO;
+            [SVProgressHUD dismiss];
             
             NSString *msg = @"다른 기기에 연결되어 현재 기기의 인증이 해제되었습니다.\n본인이 연결하지 않았다면 현재 기기에서 다시 로그인해주세요.";
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"오류"
@@ -7441,6 +7606,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             // (퇴사)
             NSLog(@"useyn n");
             
+            self.showFeedbackMessage = NO;
+            [SVProgressHUD dismiss];
             NSString *msg = @"사용자 정보가 존재하지 않아 D-inside 이용이 불가능합니다.\n확인 후 다시 로그인해주세요. 확인을 누르시면 자동 종료됩니다.\n(사용자 정보 문의: IdsTrust GW기술지원팀 1588-7571~2)";
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"오류"
                                                                            message:msg
@@ -7492,7 +7659,78 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         else{
             NSLog(@"bomb out else");
             
-            if([[SharedAppDelegate readPlist:@"lastdate"] isEqualToString:@"0"]){
+            [SharedAppDelegate writeToPlist:@"myindex" value:resultDic[@"myindex"]];
+            [SharedAppDelegate writeToPlist:@"serverappver" value:resultDic[@"ios_update"]];
+            
+            
+            if ([resultDic[@"ios_update"] compare:[[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"] options:NSNumericSearch] == NSOrderedDescending) {
+                NSLog(@"updategogogogo");
+                
+                
+                if ([resultDic[@"ios_f_update"] compare:[[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"] options:NSNumericSearch] == NSOrderedDescending) {
+                    
+                    
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"필수 업데이트"
+                                                                                   message:@"필수 업데이트가 있습니다. 업데이트를 하셔야 정상적인 서비스 이용이 가능합니다."
+                                                                            preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"지금 업데이트"
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action){
+                                                                   
+                                                                   
+                                                                   [[UIApplication sharedApplication] openURL:[NSURL URLWithString:updateLink]];
+                                                                   [alert dismissViewControllerAnimated:YES completion:nil];
+                                                               }];
+                    
+                    
+                    
+                    [alert addAction:ok];
+                    
+                    //        [self presentViewController:alert animated:YES completion:nil];
+                    [SharedAppDelegate.root anywhereModal:alert];
+                    
+                    
+                    
+                } else {
+                    
+                    
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"업데이트"
+                                                                                   message:@"새로운 업데이트가 있습니다. 기능의 원활한 이용을 위해 최신 버전으로 지금 바로 업데이트해 보세요!"
+                                                                            preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"나중에"
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * action){
+                                                                   
+                                                                   
+                                                                   [alert dismissViewControllerAnimated:YES completion:nil];
+                                                               }];
+                    
+                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"지금 업데이트"
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * action){
+                                                                       
+                                                                       
+                                                                       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:updateLink]];//@"itms-services://?action=download-manifest&url=http://app.thinkbig.co.kr:62230/file/ios/wjtb_teacher.plist"]];
+                                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                                   }];
+                    
+                    
+                    [alert addAction:cancel];
+                    [alert addAction:ok];
+                    //        [self presentViewController:alert animated:YES completion:nil];
+                    [SharedAppDelegate.root anywhereModal:alert];
+                    
+                    
+                    
+                }
+            }
+                else{
+            
+            
+            
+            if([updatetime isEqualToString:@"0"]){
                 
                 NSMutableArray *toptreearray = [NSMutableArray arrayWithObjects:@"00000",nil];
                 [SharedAppDelegate writeToPlist:@"toptree" value:toptreearray];
@@ -7513,8 +7751,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 }
                 
                 if(SharedAppDelegate.root.login){
-                    [SharedAppDelegate.root.login changeText:@"중... 2/5" setProgressText:@"0.4"];
-                    [SharedAppDelegate.root.login setProgressInteger:0.4];
+//                    [SharedAppDelegate.root.login setProgressInteger:0.4];
+//                     [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(setProgressInteger2:) withObject:[NSNumber numberWithFloat:0.4] waitUntilDone:NO];
                 }
                 
                 [[ResourceLoader sharedInstance] settingDeptList];
@@ -7536,8 +7774,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 //                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
                     
                     if(SharedAppDelegate.root.login){
-                        [SharedAppDelegate.root.login changeText:@"중... 3/5" setProgressText:@"0.6"];
-                        [SharedAppDelegate.root.login setProgressInteger:0.6];
+//                        [SharedAppDelegate.root.login setProgressInteger:0.6];
+                        
+//                        [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(setProgressInteger2:) withObject:[NSNumber numberWithFloat:0.6] waitUntilDone:NO];
                     }
                 [[ResourceLoader sharedInstance] settingContactList];
 
@@ -7607,12 +7846,19 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 }
                         
                         if(SharedAppDelegate.root.login){
-                            [SharedAppDelegate.root.login changeText:@"중... 4/5" setProgressText:@"0.8"];
-                            [SharedAppDelegate.root.login setProgressInteger:0.8];
+//                            [SharedAppDelegate.root.login setProgressInteger:0.8];
+                            
+//                            [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(setProgressInteger2:) withObject:[NSNumber numberWithFloat:0.8] waitUntilDone:NO];
                         }
                 
-                [SharedAppDelegate writeToPlist:@"initContact" value:@"YES_ver_2_5_23"];
+                NSLog(@"3.0.0 initContact");
+                [SharedAppDelegate writeToPlist:@"initContact" value:@"3.0.0"];
                 
+                [[ResourceLoader sharedInstance] settingDeptList];
+                [[ResourceLoader sharedInstance] settingContactList];
+                
+                
+
                 
                 NSLog(@"dept %@ contact %@",deptUpdateComplete?@"OK":@"NO",contactUpdateComplete?@"OK":@"NO");
                 //                if (deptUpdateComplete && contactUpdateComplete) {
@@ -7624,8 +7870,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 //                }
                             
                             if(SharedAppDelegate.root.login){
-                                [SharedAppDelegate.root.login changeText:@"중... 5/5" setProgressText:@"1.0"];
-                                [SharedAppDelegate.root.login setProgressInteger:1.0];
+//                                [SharedAppDelegate.root.login setProgressInteger:1.0];
+                                
+//                                [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(setProgressInteger2:) withObject:[NSNumber numberWithFloat:1.0] waitUntilDone:NO];
                             }
                 
                 if(SharedAppDelegate.root.login)
@@ -7635,6 +7882,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             else{
                 
                 NSLog(@"resultDic %@",resultDic);
+                
+            
                 
                 BOOL deptUpdateComplete = NO;
                 BOOL contactUpdateComplete = NO;
@@ -7815,10 +8064,20 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             }
             
             [self endRefresh];
+           
             
+            
+            if([resultDic[@"myarea"]isKindOfClass:[NSArray class]] && [resultDic[@"myarea"]count]==0){
+            
+                [self getAreas];
+            }
+                    
+                    
+                    [SharedAppDelegate.root getNotice:@"0" viewcon:SharedAppDelegate.root.main];
         }
         
-        
+        }
+        }
 #else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSString *isSuccess = resultDic[@"result"];
@@ -7991,10 +8250,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             [SharedAppDelegate writeToPlist:@"privatetimelineimage" value:resultDic[@"privatetimelineimage"]];
             [SharedAppDelegate writeToPlist:@"toptree" value:resultDic[@"toptree"]];
             
-#ifdef BearTalkDev
-#else
+
             [SharedAppDelegate writeToPlist:@"was" value:resultDic[@"server"][@"was"]];
-#endif
+
             [SharedAppDelegate writeToPlist:@"sip" value:resultDic[@"serverinfo"][@"sip_domain"]];
             [SharedAppDelegate writeToPlist:@"voip" value:resultDic[@"serverinfo"][@"mvoip"]];
             [SharedAppDelegate writeToPlist:@"cdr" value:resultDic[@"serverinfo"][@"voip_info"]];
@@ -8172,7 +8430,10 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 }
                 
                 
+
+                
                 [SharedAppDelegate writeToPlist:@"initContact" value:@"YES_ver_2_5_23"];
+
                 
                 
                 NSLog(@"dept %@ contact %@",deptUpdateComplete?@"OK":@"NO",contactUpdateComplete?@"OK":@"NO");
@@ -8441,18 +8702,35 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [SVProgressHUD dismiss];
         [CustomUIKit popupSimpleAlertViewOK:@"오류" msg:@"네트워크 접속이 원활하지 않습니다.\n요청한 동작이 수행되지 않을 수 있습니다.\n잠시 후 다시 시도해주세요." con:self];
         
-        //            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
-        //        [alert show];
         [HTTPExceptionHandler handlingByError:error];
         
+#ifdef BearTalk
+        if(SharedAppDelegate.root.login)
+        [SharedAppDelegate.root.login loginfail];
+#endif
         
     }];
     
     [operation start];
     
-    
+        
+#ifdef BearTalk
+        [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+            
+//            NSLog(@"DownloadProgress1 %f",(float)totalBytesRead / totalBytesExpectedToRead);
+//            NSLog(@"DownloadProgress2 %f",1-((float)bytesRead / totalBytesRead));
+//            NSLog(@"DownloadProgress3 %f",(float)bytesRead / totalBytesExpectedToRead);
+            if(SharedAppDelegate.root.login){
+              [SharedAppDelegate.root.login performSelectorOnMainThread:@selector(setProgressInteger2:) withObject:[NSNumber numberWithFloat:(float)totalBytesRead / totalBytesExpectedToRead] waitUntilDone:NO];
+                
+                if((float)totalBytesRead / totalBytesExpectedToRead == 1){
+                    
+                    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+                }
+            }
+            
+        }];
+#endif
     
 }
 - (void)startupForCustomer
@@ -8460,8 +8738,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     NSLog(@"startupForCustomer parameters");
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
@@ -8542,6 +8826,162 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
 }
 
+
+    
+    - (void)getAreas
+    {
+        
+        
+        
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        
+        //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
+        //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
+        
+        NSString *urlString;
+        
+        urlString = [NSString stringWithFormat:@"%@/api/area/list",BearTalkBaseUrl];
+        
+        NSURL *baseUrl = [NSURL URLWithString:urlString];
+        
+        
+        AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+        client.responseSerializer = [AFHTTPResponseSerializer serializer];
+        
+        
+        
+        NSDictionary *parameters = nil;
+        
+        
+        //
+        //    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+        //                  [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
+        //
+        NSLog(@"parameters %@",parameters);
+        
+        //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/read/notice.lemp" parameters:parameters];
+        
+        NSError *serializationError = nil;
+        NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+        
+        AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            //        NSLog(@"1");
+            NSLog(@"operation %@",[operation.responseString objectFromJSONString]);
+            //        NSLog(@"2");
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+            UIAlertController * view=   [UIAlertController
+                                         alertControllerWithTitle:@""
+                                         message:@""
+                                         preferredStyle:UIAlertControllerStyleActionSheet];
+            
+            UIAlertAction *actionButton;
+            
+            for(NSDictionary *dic in [operation.responseString objectFromJSONString]){
+                
+                if(![dic[@"AREA_NAME"]isEqualToString:@"전체"]){
+                    actionButton = [UIAlertAction
+                                    actionWithTitle:dic[@"AREA_NAME"]
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                        [self saveLocation:dic[@"AREA_KEY"] str:dic[@"AREA_NAME"]];
+                                    }];
+                    [view addAction:actionButton];
+                }
+                
+            }
+            
+            
+            [self presentViewController:view animated:YES completion:nil];
+                
+            }
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            NSLog(@"FAIL : %@",operation.error);
+            [HTTPExceptionHandler handlingByError:error];
+            //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        [alert show];
+            
+        }];
+        [operation start];
+        
+        
+    }
+    - (void)saveLocation:(NSString *)key str:(NSString*)str{
+        
+        
+        [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        
+        //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
+        //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
+        
+        NSString *urlString;
+        
+        urlString = [NSString stringWithFormat:@"%@/api/area/emp/set",BearTalkBaseUrl];
+        
+        NSURL *baseUrl = [NSURL URLWithString:urlString];
+        
+        
+        AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+        client.responseSerializer = [AFHTTPResponseSerializer serializer];
+        
+        
+        
+        NSDictionary *parameters;
+        
+        
+        parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                      key,@"areakey",
+                      @"i",@"type",
+                      [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
+        
+        NSLog(@"parameters %@",parameters);
+        
+        //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/read/notice.lemp" parameters:parameters];
+        
+        NSError *serializationError = nil;
+        NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"PUT" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+        
+        AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            [SVProgressHUD dismiss];
+            NSLog(@"operation %@",[operation.responseString objectFromJSONString]);
+            
+            
+            [SharedAppDelegate writeToPlist:@"kLocation" value:str];
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+            
+            
+            [SharedAppDelegate.root.main refreshTimeline];
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            [SVProgressHUD dismiss];
+            NSLog(@"FAIL : %@",operation.error);
+            [HTTPExceptionHandler handlingByError:error];
+            //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        [alert show];
+            
+        }];
+        [operation start];
+        
+        
+        
+        
+    }
 
 
 #define kSearch 2
@@ -8750,8 +9190,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 
 - (void)inviteBySMS:(NSString *)member{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
@@ -8825,8 +9271,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     //	NSString *identify = [NSString stringWithFormat:@"%.0f",[[SharedFunctions convertLocalDate] timeIntervalSince1970]];
     //    NSLog(@"identify %@",identify);
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
@@ -8890,6 +9342,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
             [read addObject:resultDic[@"data"][i]];
         }
+        
+        
+        [SharedAppDelegate.root.main setNewNoticeBadge:[cnt intValue]];
         
         
         if ([viewcon respondsToSelector:@selector(settingReadList:unread:time:)])
@@ -9017,8 +9472,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
      mode 2 : 알림음 설정
      */
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     if(mode == 0 && [[SharedAppDelegate readPlist:@"employeinfo"] isEqualToString:info]){
         if (hud) {
             [SVProgressHUD showSuccessWithStatus:@"성공적으로 저장되었습니다."];
@@ -9044,8 +9505,15 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     NSString *urlString;
     NSString *method;
 #ifdef BearTalk
+    if(mode == 0){
     method = @"PUT";
     urlString = [NSString stringWithFormat:@"%@/api/emps/myintro",BearTalkBaseUrl];
+    }
+    else if(mode == 2){
+        method = @"POST";
+        urlString = [NSString stringWithFormat:@"%@/api/ios/alarm/sound",BearTalkBaseUrl];
+        
+    }
 #else
     method = @"POST";
     urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setprofile.lemp",[SharedAppDelegate readPlist:@"was"]];
@@ -9065,6 +9533,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
             parameters = @{@"uid": [ResourceLoader sharedInstance].myUID,
                            @"intro": [info length]==0?@" ":info};
+            
 #else
             parameters = @{@"uid": [ResourceLoader sharedInstance].myUID,
                            @"sessionkey": [ResourceLoader sharedInstance].mySessionkey,
@@ -9077,9 +9546,16 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                            @"ringsound": info};
             break;
         case 2:
+            
+#ifdef BearTalk
+            
+            parameters = @{@"uid": [ResourceLoader sharedInstance].myUID,
+                           @"alarmsound": info};
+#else
             parameters = @{@"uid": [ResourceLoader sharedInstance].myUID,
                            @"sessionkey": [ResourceLoader sharedInstance].mySessionkey,
                            @"pushsound": info};
+#endif
             break;
         default:
             parameters = nil;
@@ -9094,7 +9570,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/info/setprofile.lemp" parameters:parameters];
     
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:method URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
     
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (sender) {
@@ -9215,8 +9691,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 - (void)setMyProfile:(NSData*)data filename:(NSString *)name
 {
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     [SVProgressHUD show];
     NSLog(@"imagedata %d",[data length]);
     
@@ -9294,7 +9776,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 //        
 //            [SQLiteDBManager updateMyProfileImage:resultDic[@"filename"]];
         
-        
+          [SQLiteDBManager updateMyProfileImage:[operation.responseString objectFromJSONString][@"profile"]];
 #else
         
         
@@ -9404,6 +9886,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         [SharedAppDelegate.root.chatList.myList removeAllObjects];
         
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
         roomArray = [operation.responseString objectFromJSONString];
         if([roomArray count]==0){
             
@@ -9457,7 +9942,11 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 //                        }
                 //
                 //
+                NSString *newfield = @"";
                 NSString *roomtype = roomDic[@"ROOM_TYPE"];
+                if([roomtype isEqualToString:@"S"]){
+                    newfield = aRoomkey;
+                }
                 NSString *roomname = @"";
                 NSString *uids = @"";
                 NSString *groupnumberString = @"";
@@ -9474,12 +9963,17 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 
                 NSString *decoded;
                 
-                if([roomDic[@"ROOM_LAST_CHAT_TYPE"]isEqualToString:@"101"]){
-                    decoded = [roomDic[@"ROOM_LAST_MSG"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                if([roomDic[@"ROOM_LAST_CHAT_TYPE"]isEqualToString:@"101"] || [roomDic[@"ROOM_LAST_CHAT_TYPE"]isEqualToString:@"110"]){
+                    NSString *beforedecoded = [roomDic[@"ROOM_LAST_MSG"]stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+                    decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                    
+                    
                 }
                 else{
                     decoded = [SharedAppDelegate.root.chatView checkType:[roomDic[@"ROOM_LAST_CHAT_TYPE"]intValue] msg:roomDic[@"ROOM_LAST_MSG"]];
                 }
+                
+                
                 NSLog(@"decoded %@",decoded);
                 
                 
@@ -9498,6 +9992,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                          decoded,@"lastmsg",
                                          strDate,@"lastdate",
                                          strTime,@"lasttime",
+                                         newfield,@"newfield",
                                          [self getLastIndexAtRoom:aRoomkey],@"lastindex",
                                          roomtype,@"rtype",
                                          unixtimeString,@"orderindex",
@@ -9560,7 +10055,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
             
         }
-        
+        }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
@@ -9591,8 +10086,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 #endif
     NSLog(@"getpushcount");
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    NSString *msgServer = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:msgServer]];
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/chat/info/pushcount.lemp",[SharedAppDelegate readPlist:@"was"]];
@@ -9831,8 +10332,15 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 - (void)getPushCountWithCustomerAndHA{
     
     NSLog(@"getPushCountWithCustomerAndHA");
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
 #ifdef Batong
     
@@ -9953,8 +10461,15 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     return;
 #endif
     NSLog(@"getPushCountWithCustomerAndHA");
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     
     if(![rk hasSuffix:@","])

@@ -262,8 +262,9 @@
 
 - (void)viewAgree;
 - (void)startupForCustomer;
-- (void)getRoomWithSocket:(NSString *)rk;
+- (void)getRoomWithSocket:(NSString *)rk num:(NSString *)num;
 - (void)getGroupInfoWithBeartalk:(NSString *)snskey;
 - (void)createGroupWithBearTalk:(NSString *)member name:(NSString *)name sub:(NSString *)sub image:(NSData *)img imagenumber:(int)num manage:(NSString *)mn con:(UIViewController *)con;
+- (void)registDeviceWithSocket:(NSString *)key;
 
 @end
