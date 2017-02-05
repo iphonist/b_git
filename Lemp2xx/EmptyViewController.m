@@ -76,8 +76,14 @@
     //    [target performSelector:selector withObject:nil];
     //    [self dismissViewControllerAnimated:YES completion:nil];
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/pulmuone_lozen.lemp",[SharedAppDelegate readPlist:@"was"]];
@@ -486,8 +492,14 @@
 
 - (void)sendByTalk:(int)index{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     NSDictionary *contactDic = [ResourceLoader sharedInstance].allContactList[index];
     NSLog(@"contactDic %@",contactDic);
     if(viewTag == kTest)

@@ -581,8 +581,13 @@
     if(progressing)
         return;
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
     progressing = YES;
     
@@ -605,39 +610,83 @@
         [self reloadList:dic[@"uniqueid"] fav:@"0"];
         type = @"2";
         
+#ifdef BearTalk
+        type = @"0";
+#endif
+        
+
+        
     }
     
     
     
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];
+    
+    NSString *urlString;
+    NSString *method;
+#ifdef BearTalk
+    urlString = [NSString stringWithFormat:@"%@/api/emps/favorite/",BearTalkBaseUrl];
+    method = @"PUT";
+#else
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];
+    method = @"POST";
+    
+#endif
+
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    NSDictionary *parameters = @{
+    NSDictionary *parameters;
+#ifdef BearTalk
+    
+    parameters = @{
+                   @"act" : type,
+                   @"uid" : [ResourceLoader sharedInstance].myUID,
+                   @"favuid" : dic[@"uniqueid"],
+                   };
+#else
+    
+    parameters = @{
                                  @"type" : type,
                                  @"uid" : [ResourceLoader sharedInstance].myUID,
                                  @"member" : dic[@"uniqueid"],
                                  @"category" : @"1",
                                  @"sessionkey" : [ResourceLoader sharedInstance].mySessionkey
                                  };
+#endif
     NSLog(@"parameter %@",parameters);
     
 //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/info/setfavorite.lemp" parameters:parameters];
     
     
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:method URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         progressing = NO;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        
+        
+#ifdef BearTalk
+        
+        if([dic[@"favorite"]isEqualToString:@"0"]){
+            [SQLiteDBManager updateFavorite:@"1" uniqueid:dic[@"uniqueid"]];
+            
+        }
+        else {//if([[dicobjectForKey:@"favorite"]isEqualToString:@"1"]){
+            [SQLiteDBManager updateFavorite:@"0" uniqueid:dic[@"uniqueid"]];
+            
+        }
+        
+#else
+
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
@@ -664,6 +713,8 @@
             NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
             
         }
+        
+#endif
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         progressing = NO;
@@ -1296,8 +1347,14 @@
     
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/auth/pulmuone_invite.lemp",[SharedAppDelegate readPlist:@"was"]];
     NSURL *baseUrl = [NSURL URLWithString:urlString];

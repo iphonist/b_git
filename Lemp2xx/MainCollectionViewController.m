@@ -232,6 +232,33 @@ const char paramNumber;
     
     NSLog(@"else greentalk maincollection");
     
+    
+#ifdef BearTalk
+    UIBarButtonItem *btnNaviNotice;
+   
+        noticebutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadNotice) frame:CGRectMake(0, 0, 25, 25)
+                                   imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_alarm.png" imageNamedPressed:nil];
+    
+    
+    btnNaviNotice = [[UIBarButtonItem alloc]initWithCustomView:noticebutton];
+    
+    
+    
+    setupButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadGreenSetup:) frame:CGRectMake(0, 0, 25, 25)
+                              imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_ect.png" imageNamedPressed:nil];
+    
+    [self refreshSetupButton];
+    
+    UIBarButtonItem *btnNavi;
+    btnNavi = [[UIBarButtonItem alloc]initWithCustomView:setupButton];
+    
+    
+    NSArray *arrBtns = [[NSArray alloc]initWithObjects:btnNavi, btnNaviNotice, nil]; // 순서는 거꾸로
+    self.navigationItem.rightBarButtonItems = arrBtns;
+    
+    
+#else
+    
     UIBarButtonItem *btnNaviNotice;
     noticebutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadNotice) frame:CGRectMake(0, 0, 25, 25)
                                imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_alarm.png" imageNamedPressed:nil];
@@ -243,23 +270,6 @@ const char paramNumber;
     
     UIBarButtonItem *btnNavi;
     //    [noticeView release];
-    
-    
-#ifdef BearTalk
-    
-    
-    setupButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadGreenSetup:) frame:CGRectMake(0, 0, 25, 25)
-                              imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_ect.png" imageNamedPressed:nil];
-    
-    [self refreshSetupButton];
-    btnNavi = [[UIBarButtonItem alloc]initWithCustomView:setupButton];
-    
-    
-    NSArray *arrBtns = [[NSArray alloc]initWithObjects:btnNavi, btnNaviNotice, nil]; // 순서는 거꾸로
-    self.navigationItem.rightBarButtonItems = arrBtns;
-    
-    
-#else
     
     button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadNewSocial) frame:CGRectMake(0, 0, 25, 25)
                          imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_plus.png" imageNamedPressed:nil];
@@ -627,8 +637,14 @@ const char paramNumber;
     return;
 #endif
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/timeline.lemp",[SharedAppDelegate readPlist:@"was"]];
@@ -972,9 +988,9 @@ const char paramNumber;
             [newdic setObject:dic[@"ADMIN_YN"] forKey:@"accept"];
             [newdic setObject:dic[@"INVITE_YN"] forKey:@"INVITE_YN"];
             [newdic setObject:dic[@"MEMBER_YN"] forKey:@"MEMBER_YN"];
-            [newdic setObject:dic[@"SNS_TYPE"] forKey:@"SNS_TYPE"];
             
-            NSString *decoded = [dic[@"SNS_NAME"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *beforedecoded = [dic[@"SNS_NAME"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+            NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             [newdic setObject:decoded forKey:@"groupname"];
             [newdic setObject:@"100" forKey:@"groupattribute"];
             [newdic setObject:@"00" forKey:@"groupattribute2"];
@@ -1157,8 +1173,14 @@ const char paramNumber;
     
     NSString *titleLabel = [[button titleLabel]text];
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     NSDictionary *dic = myList[[titleLabel intValue]];
     NSLog(@"dic %@",dic);
@@ -1182,8 +1204,14 @@ const char paramNumber;
         type = @"i";
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
@@ -1986,7 +2014,7 @@ const char paramNumber;
             else{
 #endif
 #endif
-            [SharedAppDelegate.root settingJoinGroup:myList[indexPath.row] add:NO];
+            [SharedAppDelegate.root settingJoinGroup:myList[indexPath.row] add:NO con:nil];
 #ifdef Batong
                 
 #ifdef MQM
@@ -2745,7 +2773,7 @@ const char paramNumber;
                 for(int i = 0; i < [myList count]; i++){
                     if([myList[i][@"groupnumber"]isEqualToString:groupnum])
                     {
-                        [SharedAppDelegate.root fromUnjoinToJoin:myList[i]];
+                        [SharedAppDelegate.root fromUnjoinToJoin:myList[i] con:self];
                         
                         [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:myList[i] object:@"N" key:@"INVITE_YN"]];
                         [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:myList[i] object:@"Y" key:@"MEMBER_YN"]];
@@ -2790,9 +2818,15 @@ const char paramNumber;
         return;
         
 #endif
-
-    if([[SharedAppDelegate readPlist:@"was"]length]<1)
-        return;
+        
+        
+#ifdef BearTalk
+#else
+        if([[SharedAppDelegate readPlist:@"was"]length]<1)
+            return;
+#endif
+        
+        
     
     
 #ifdef GreenTalkCustomer
@@ -2838,7 +2872,7 @@ const char paramNumber;
                 for(int i = 0; i < [myList count]; i++){
                     if([myList[i][@"groupnumber"]isEqualToString:groupnum])
                     {
-                        [SharedAppDelegate.root fromUnjoinToJoin:myList[i]];
+                        [SharedAppDelegate.root fromUnjoinToJoin:myList[i] con:self];
 
                         [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:myList[i] object:@"Y" key:@"accept"]];
 

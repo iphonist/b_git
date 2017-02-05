@@ -38,6 +38,27 @@ const static UPStackMenuItemLabelPosition_e kStackMenuItemDefaultLabelPosition  
     return [self initWithImage:image highlightedImage:highlightedImage title:title font:nil];
 }
 
+
+- (void)setAnothertitle:(NSString *)t{
+    NSLog(@"setAnothertitle %@",t);
+    _title = t;
+    
+    [_label setText:_title];
+    CGSize labelSize = [_title sizeWithAttributes:@{NSFontAttributeName : _label.font}];
+    [_label setFrame:CGRectMake(0, 0, labelSize.width, labelSize.height)];
+    NSLog(@"rect %@",NSStringFromCGRect(_label.frame));
+    _labelContainer.frame = _label.frame;
+    
+    CGRect frame = CGRectMake(0, 0,
+                              _labelContainer.frame.size.width + kStackItemInternMargin + _imageButton.frame.size.width,
+                              MAX(_labelContainer.frame.size.height, _imageButton.frame.size.height));
+    [self setFrame:frame];
+    
+    [_button setFrame:self.frame];
+    
+//    [self setLabelPosition:kStackMenuItemDefaultLabelPosition];
+    
+}
 - (id)initWithImage:(UIImage*)image highlightedImage:(UIImage*)highlightedImage title:(NSString*)title font:(UIFont*)font
 {
     self = [super initWithFrame:CGRectZero];

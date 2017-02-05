@@ -1423,8 +1423,15 @@ else if (indexPath.row == globalFontSize) {
 
 - (void)logout{
     
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     if (SharedAppDelegate.root.slidingViewController.presentedViewController) {
         NSLog(@"1 %@",SharedAppDelegate.root.slidingViewController.presentedViewController);
         [SharedAppDelegate.root.slidingViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
@@ -1613,7 +1620,7 @@ else if (indexPath.row == globalFontSize) {
     push = 0;
     alarm = 1;
     socialAlert = 2;
-    bell = 3;
+    bell = 102;
     
     globalFontSize = 0;
     password = 1;
@@ -1624,7 +1631,7 @@ else if (indexPath.row == globalFontSize) {
     location = 1;
     initContact = 2;
     programInfo = 3;
-    logOut = 4;
+    logOut = 102;
     
     history = 100;
     replySort = 101;
@@ -1647,9 +1654,9 @@ else if (indexPath.row == globalFontSize) {
     }
     myList = [[NSMutableArray alloc]init];
     [myList addObject:[NSArray arrayWithObjects:@"내 프로필",@"화면 가이드", nil]];
-    [myList addObject:[NSArray arrayWithObjects:@"푸시알림",@"알림음",@"소셜별 알림 설정",@"무료통화 벨소리",nil]];
+    [myList addObject:[NSArray arrayWithObjects:@"푸시알림",@"알림음",@"소셜별 알림 설정",nil]];
     [myList addObject:[NSArray arrayWithObjects:@"글자 크기",@"앱 잠금",@"공유 계정",@"직급자보기 설정",nil]];
-    [myList addObject:[NSArray arrayWithObjects:@"테마 설정", @"근무 지역 설정", @"주소록 다시받기",@"프로그램 정보",@"로그아웃",nil]];
+    [myList addObject:[NSArray arrayWithObjects:@"테마 설정", @"근무 지역 설정", @"주소록 다시받기",@"프로그램 정보",nil]];
 #else
               socialAlert = 100;
               viewDept = 101;

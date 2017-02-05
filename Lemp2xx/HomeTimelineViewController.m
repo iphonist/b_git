@@ -28,6 +28,7 @@
 #endif
 
 #import "UINavigationBar+Awesome.h"
+#import "WebBrowserViewController.h"
 
 //#import "SDWebImageDownloader.h"
 
@@ -420,37 +421,40 @@ const char paramIndex;
         disableView.hidden = YES;
         favButton.selected = NO;
         
-//        dailyItem = [[UPStackMenuItem alloc] initWithImage:[UIImage imageNamed:@"button_timeline_floating_daily.png"] highlightedImage:nil title:@"일지"];
-     //   chatItem = [[UPStackMenuItem alloc] initWithImage:[UIImage imageNamed:@"btn_add_chat_enable.png"] highlightedImage:nil title:@"소셜 채팅"];
-        scheduleItem = [[UPStackMenuItem alloc] initWithImage:[UIImage imageNamed:@"btn_add_calendar_enable.png"] highlightedImage:nil title:@"일정"];
+        
+        dailyItem = [[UPStackMenuItem alloc] initWithImage:[UIImage imageNamed:@"btn_add_link_enable.png"] highlightedImage:nil title:@"temp"];
+        
+//        [dailyItem setAnothertitle:@"temp"];
+        chatItem = [[UPStackMenuItem alloc] initWithImage:[UIImage imageNamed:@"btn_add_chat_enable.png"] highlightedImage:nil title:@"소셜 채팅"];
+//        scheduleItem = [[UPStackMenuItem alloc] initWithImage:[UIImage imageNamed:@"btn_add_calendar_enable.png"] highlightedImage:nil title:@"일정"];
         writeItem = [[UPStackMenuItem alloc] initWithImage:[UIImage imageNamed:@"btn_add_write_enable.png"] highlightedImage:nil title:@"글쓰기"];
         
 
         
         
-        NSString *colorNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColorNumber"];
-        if([colorNumber isEqualToString:@"2"]){
-            
-            writeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(writePost) frame:CGRectMake(self.view.frame.size.width - 16 - 60, self.view.frame.size.height - 16-60, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_urusa_enable.png" imageNamedPressed:nil];
-            
-        }
-        else if([colorNumber isEqualToString:@"3"]){
-            
-            writeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(writePost) frame:CGRectMake(self.view.frame.size.width - 16 - 60, self.view.frame.size.height - 16-60, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_ezn6_enable.png" imageNamedPressed:nil];
-        }
-        else if([colorNumber isEqualToString:@"4"]){
-            
-            writeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(writePost) frame:CGRectMake(self.view.frame.size.width - 16 - 60, self.view.frame.size.height - 16-60, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_impactamin_enable.png" imageNamedPressed:nil];
-        }
-        else{
-            
-            writeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(writePost) frame:CGRectMake(self.view.frame.size.width - 16 - 60, self.view.frame.size.height - 16-60, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_enable.png" imageNamedPressed:nil];
-            
-        }
-    
-        
-        [self.view addSubview:writeButton];
-        writeButton.hidden = YES;
+//        NSString *colorNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColorNumber"];
+//        if([colorNumber isEqualToString:@"2"]){
+//            
+//            writeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(writePost) frame:CGRectMake(self.view.frame.size.width - 16 - 60, self.view.frame.size.height - 16-60, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_urusa_enable.png" imageNamedPressed:nil];
+//            
+//        }
+//        else if([colorNumber isEqualToString:@"3"]){
+//            
+//            writeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(writePost) frame:CGRectMake(self.view.frame.size.width - 16 - 60, self.view.frame.size.height - 16-60, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_ezn6_enable.png" imageNamedPressed:nil];
+//        }
+//        else if([colorNumber isEqualToString:@"4"]){
+//            
+//            writeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(writePost) frame:CGRectMake(self.view.frame.size.width - 16 - 60, self.view.frame.size.height - 16-60, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_impactamin_enable.png" imageNamedPressed:nil];
+//        }
+//        else{
+//            
+//            writeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(writePost) frame:CGRectMake(self.view.frame.size.width - 16 - 60, self.view.frame.size.height - 16-60, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_enable.png" imageNamedPressed:nil];
+//            
+//        }
+//    
+//        
+//        [self.view addSubview:writeButton];
+//        writeButton.hidden = YES;
         
 #elif IVTalk
         
@@ -547,8 +551,13 @@ const char paramIndex;
 - (void)addOrClear:(id)sender
 {
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
     
     UIButton *button = (UIButton *)sender;
@@ -574,8 +583,14 @@ const char paramIndex;
         type = @"i";
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
@@ -724,13 +739,88 @@ const char paramIndex;
     
     switch (index) {
         case 0:
-            [self writePost];
+            
+            if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"P"]){
+                if([self.groupDic[@"WRITE_AUTH"]isEqualToString:@"ALL"]){
+                    
+                    [self writePost];
+                }
+                else{// if([self.groupDic[@"WRITE_AUTH"]isEqualToString:@"ADM"]){
+                    
+                    if([self.groupnum  isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"] || [self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
+                        BOOL excluded = NO;
+                        for(NSString *uid in self.groupDic[@"SNS_ADMIN_UID"]){
+                            if([uid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+                                excluded = YES;
+                                break;
+                            }
+                        }
+                        
+                        if(excluded){
+                            
+                            [self writePost];
+                        }
+                        else{
+                             // cannot popup
+                                [CustomUIKit popupSimpleAlertViewOK:nil msg:@"글쓰기 권한이 없습니다." con:self];
+                        }
+                    }
+                    else{
+                        [self writePost];
+                        
+                    }
+                }
+            }
+            else{
+                
+                [self writePost];
+            }
+            
             break;
         case 1:
             
             
-            [SharedAppDelegate.root settingScheduleList];
-            [SharedAppDelegate.root.scal fromWhere:kCalendar];
+            if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"S"]){
+                
+                
+                [SharedAppDelegate.root getRoomWithRk:@"" number:self.groupnum sendMemo:@"" modal:YES];
+            }
+            if([self.groupnum  isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"])
+            {
+            
+                
+                NSString *myid = [[[SharedAppDelegate readPlist:@"email"]componentsSeparatedByString:@"@"]objectAtIndex:0];
+                NSString *urlString = [NSString stringWithFormat:@"http://idc.daewoong.co.kr/?userid=%@",myid];
+                NSURL *url = [NSURL URLWithString:urlString];
+                NSLog(@"url %@",url);
+                WebBrowserViewController *webViewController = [[WebBrowserViewController alloc] initWithURL:url];
+                //	webViewController.isSimpleMode = YES;
+                [webViewController loadURL];
+                UINavigationController *navigationViewController = [[CBNavigationController alloc] initWithRootViewController:webViewController];
+                navigationViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                
+                [SharedAppDelegate.root anywhereModal:navigationViewController];
+                
+            }
+            else if([self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"])
+        {
+
+                NSString *urlString = [NSString stringWithFormat:@"http://pc.daewoong.co.kr/mindex.jsp?empno=%@",[SharedAppDelegate readPlist:@"myindex"]];
+                NSURL *url = [NSURL URLWithString:urlString];
+                NSLog(@"url %@",url);
+                WebBrowserViewController *webViewController = [[WebBrowserViewController alloc] initWithURL:url];
+                //	webViewController.isSimpleMode = YES;
+                [webViewController loadURL];
+                UINavigationController *navigationViewController = [[CBNavigationController alloc] initWithRootViewController:webViewController];
+                navigationViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                
+                [SharedAppDelegate.root anywhereModal:navigationViewController];
+            }
+            
+            
+            
+//            [SharedAppDelegate.root settingScheduleList];
+//            [SharedAppDelegate.root.scal fromWhere:kCalendar];
             break;
         case 2:
             
@@ -1766,7 +1856,15 @@ const char paramIndex;
     selectedImageData = [[NSData alloc] initWithData:[SharedAppDelegate.root imageWithImage:image scaledToSizeWithSameAspectRatio:CGSizeMake(700, 400)]];
     
     if([self.category isEqualToString:@"2"]){
+        
+#ifdef BearTalk
+        
+        
+        [SharedAppDelegate.root createGroupWithBearTalk:@"" name:@"" sub:@"" image:selectedImageData imagenumber:0 manage:self.groupnum con:self];
+#else
+        
         [self modifyGroupImage:selectedImageData groupnumber:self.groupnum create:NO imagenumber:0];
+#endif
         
     }
     else if([self.category isEqualToString:@"0"] || [self.category isEqualToString:@"3"] || [self.category isEqualToString:@"10"]){
@@ -1816,9 +1914,14 @@ const char paramIndex;
     
     
     
-
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
     NSString *imagenumber = [NSString stringWithFormat:@"%d.jpg",num];
     if(num == 0)
@@ -3240,7 +3343,8 @@ return height;
                 whiteBGView.hidden = NO;
                 noticeLabel.text = @"공지사항";
                 
-                NSString *decoded = [noticeArray[0][@"CONTENTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSString *beforedecoded = [noticeArray[0][@"CONTENTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+                NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 noticeExplainLabel.text = decoded;
                 progressLabel.hidden = YES;
                 [activity stopAnimating];
@@ -3808,9 +3912,31 @@ return height;
     
     
     [items addObject:writeItem];
-    [items addObject:scheduleItem];
-//    [items addObject:chatItem];
+//    [items addObject:scheduleItem];
     
+    if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"S"]){
+         [items addObject:chatItem];
+    }
+    if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"P"]){
+        if([self.groupDic[@"WRITE_AUTH"]isEqualToString:@"ALL"]){
+            
+        }
+        else{// if([self.groupDic[@"WRITE_AUTH"]isEqualToString:@"ADM"]){
+            
+            if([self.groupnum isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"] || [self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
+                
+                if([self.groupnum  isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"]){
+                    [dailyItem setAnothertitle:@"의뢰"];
+                    [items addObject:dailyItem];
+                }
+                else if([self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
+                    [dailyItem setAnothertitle:@"PC서비스"];
+                    [items addObject:dailyItem];
+                    
+                }
+            }
+        }
+    }
     
     [items enumerateObjectsUsingBlock:^(UPStackMenuItem *item, NSUInteger idx, BOOL *stop) {
         //                    [item setLabelPosition:UPStackMenuItemLabelPosition_right];
@@ -3819,7 +3945,7 @@ return height;
         [item setTitleColor:[UIColor whiteColor]];
     }];
     
-    
+    NSLog(@"items %@",items);
     
     stack = [[UPStackMenu alloc] initWithContentView:contentView];
     [stack setDelegate:self];
@@ -3835,34 +3961,99 @@ return height;
     [self setStackIconClosed:YES];
     
     
-    NSMutableArray *array = [NSMutableArray array];
-    for (int i = 0; i < [self.groupDic[@"groupattribute"] length]; i++) {
-        [array addObject:[NSString stringWithFormat:@"%C", [self.groupDic[@"groupattribute"] characterAtIndex:i]]];
-    }
-    NSLog(@"array %@",array);
-    
-    
     
  
     
-    if([array[0]isEqualToString:@"1"]) {
-        NSLog(@"here");
+    if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"S"])
+    {
+        stack.hidden = NO;
         
-        if([self.groupDic[@"grouptype"]isEqualToString:@"0"] || [self.groupDic[@"category"]isEqualToString:@"1"]){
-            stack.hidden = YES;
-            writeButton.hidden = NO;
+    }
+    else if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"C"]){
+        BOOL excluded = NO;
+        for(NSString *uid in self.groupDic[@"SNS_ADMIN_UID"]){
+            if([uid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+                excluded = YES;
+                break;
+            }
+        }
+        if(excluded == YES){
+            stack.hidden = NO;
         }
         else{
-            stack.hidden = NO;
-            writeButton.hidden = YES;
-            
+            stack.hidden = YES;
         }
-        
-    } else {
-        stack.hidden = YES;
-        writeButton.hidden = YES;
+    }
+    else if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"P"]){
+        if([self.groupDic[@"WRITE_AUTH"]isEqualToString:@"ALL"]){
+            
+            stack.hidden = NO;
+        }
+        else{// if([self.groupDic[@"WRITE_AUTH"]isEqualToString:@"ADM"]){
+            
+            if([self.groupnum  isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"]){
+                stack.hidden = NO;
+            }
+            else if([self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
+                stack.hidden = NO;
+
+            }
+            else{
+            BOOL excluded = NO;
+            for(NSString *uid in self.groupDic[@"SNS_ADMIN_UID"]){
+                if([uid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+                    excluded = YES;
+                    break;
+                }
+            }
+            if(excluded == YES){
+                stack.hidden = NO;
+            }
+            else{
+                stack.hidden = YES;
+            }
+            }
+        }
+    
     }
     
+    
+    
+    
+    favButton.frame = CGRectMake(self.view.frame.size.width - 16 - 28, coverImageView.frame.size.height - 16 - 28, 28, 28);
+    if([self.groupDic[@"favorite"]isEqualToString:@"Y"]){
+        [favButton setBackgroundImage:[CustomUIKit customImageNamed:@"btn_social_bookmark_on.png"] forState:UIControlStateNormal];
+        favButton.selected = YES;
+        
+    }
+    else if([self.groupDic[@"favorite"]isEqualToString:@"N"]){
+        [favButton setBackgroundImage:[CustomUIKit customImageNamed:@"btn_social_bookmark_off.png"] forState:UIControlStateNormal];
+        favButton.selected = NO;
+        
+    }
+    
+    
+    if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"S"]){
+        if([self.category isEqualToString:@"3"] && [self.targetuid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+            NSLog(@"mywrite");
+            favButton.hidden = YES;
+        }
+        else if([self.category isEqualToString:@"10"]){
+            NSLog(@"bookmark");
+            favButton.hidden = YES;
+            
+        }
+        else{
+            NSLog(@"sns_type s");
+            favButton.hidden = NO;
+            
+        }
+    }
+    else{
+        NSLog(@"else");
+        favButton.hidden = YES;
+        
+    }
 #elif IVTalk
     
     
@@ -3919,20 +4110,6 @@ return height;
     }
     
     
-#ifdef BearTalk
-    
-    favButton.frame = CGRectMake(self.view.frame.size.width - 16 - 28, coverImageView.frame.size.height - 16 - 28, 28, 28);
-    if([self.groupDic[@"favorite"]isEqualToString:@"Y"]){
-        [favButton setBackgroundImage:[CustomUIKit customImageNamed:@"btn_social_bookmark_on.png"] forState:UIControlStateNormal];
-        favButton.selected = YES;
-        
-    }
-    else if([self.groupDic[@"favorite"]isEqualToString:@"N"]){
-        [favButton setBackgroundImage:[CustomUIKit customImageNamed:@"btn_social_bookmark_off.png"] forState:UIControlStateNormal];
-        favButton.selected = NO;
-
-    }
-#endif
     
     
 #endif
@@ -4048,8 +4225,14 @@ return height;
 
 - (void)getGroupcategory{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
@@ -4169,9 +4352,15 @@ return height;
 }
 
 - (void)getTimeline:(NSString *)idx target:(NSString *)target type:(NSString *)t groupnum:(NSString *)num
-{
-    if([[SharedAppDelegate readPlist:@"was"]length]<1)
-        return;
+    {
+        
+#ifdef BearTalk
+#else
+        if([[SharedAppDelegate readPlist:@"was"]length]<1)
+            return;
+#endif
+        
+        
     
     NSLog(@"getTimeline %@",idx);
     
@@ -4252,7 +4441,7 @@ return height;
     
     if(idx != nil && [idx length]>5){
         
-        [parameters setObject:@"idx" forKey:@"lastwritedate"];
+        [parameters setObject:idx forKey:@"lastwritedate"];
     }
     
     
@@ -4382,7 +4571,19 @@ return height;
                     NSLog(@"lastInteger %lli",lastInteger);
                     
                     cellData.profileImage = dic[@"WRITE_UID"]!=nil?dic[@"WRITE_UID"]:@"";
-                    cellData.personInfo = nil;//[dic[@"writeinfo"]objectFromJSONString];// ##
+                    if(IS_NULL(dic[@"WRITER_INFO"])){
+                        
+                        cellData.personInfo = nil;
+                    }
+                    else{
+                    NSMutableDictionary *writeInfo = [NSMutableDictionary dictionaryWithDictionary:dic[@"WRITER_INFO"]];
+                        [writeInfo setObject:dic[@"WRITER_INFO"][@"USER_NAME"] forKey:@"name"];
+                        [writeInfo setObject:dic[@"WRITER_INFO"][@"DEPT_NAME"] forKey:@"team"];
+                        [writeInfo setObject:dic[@"WRITER_INFO"][@"UID"] forKey:@"uid"];
+                        [writeInfo setObject:[NSString stringWithFormat:@"%@/%@",dic[@"WRITER_INFO"][@"POS_NAME"],dic[@"WRITER_INFO"][@"DUTY_NAME"]] forKey:@"grade2"];
+                    
+                    cellData.personInfo = writeInfo;// ##
+                    }
                     
                     NSLog(@"cellData.idx %@",cellData.profileImage);
                     BOOL myFav = NO;
@@ -4403,7 +4604,9 @@ return height;
                     
 //                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
                     cellData.contentDic = nil;//contentDic;
-                    NSString *decoded = [dic[@"CONTENTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                    
+                    NSString *beforedecoded = [dic[@"CONTENTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+                    NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                     NSLog(@"decoded %@",decoded);
                     cellData.content = decoded;
                     cellData.imageArray = dic[@"IMAGES"];
@@ -4564,8 +4767,14 @@ return height;
     NSLog(@"filterLabel.text %@",code);
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     if([code isEqualToString:@"구분없음"])
         code = @"none";
@@ -4762,8 +4971,14 @@ return height;
     
     NSLog(@"getTimelineWithCode %@",code);
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     if(greenCode){
         NSLog(@"greenCode1 %@",greenCode);
 //        [greenCode release];
@@ -5022,8 +5237,9 @@ return height;
 //            cellData.targetdic = nil;//dic[@"target"];
 //            
 //            //                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
-//            cellData.contentDic = nil;//contentDic;
-            NSString *decoded = [dic[@"CONTENTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            //            cellData.contentDic = nil;//contentDic;
+            NSString *beforedecoded = [dic[@"CONTENTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+            NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSLog(@"decoded %@",decoded);
             cellData.content = decoded;
 //            cellData.imageArray = dic[@"IMAGES"];
@@ -5229,8 +5445,14 @@ return height;
     
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
@@ -5293,6 +5515,10 @@ return height;
 #ifdef BearTalk
         
         NSLog(@"resultDic %@",operation.responseString);
+        
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         
         
@@ -5315,6 +5541,8 @@ return height;
         
         if ([con isKindOfClass:[DetailViewController class]])
             [(DetailViewController *)con reloadTableView];
+            
+        }
         
 #else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
@@ -5367,8 +5595,14 @@ return height;
 
 - (void)goShare:(NSString *)idx{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/ecmdshare.lemp",[SharedAppDelegate readPlist:@"was"]];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
@@ -5705,8 +5939,15 @@ return height;
     
     
     NSLog(@"loadDetail ");
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     NSLog(@"didRequest %@",didRequest?@"YES":@"NO");
     if(didRequest)
         return;
@@ -5770,12 +6011,11 @@ return height;
         
         NSLog(@"operation.responseString %@",operation.responseString);
         NSDictionary *messagesDic;
-        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+
             messagesDic = [operation.responseString objectFromJSONString][0];
-        }
-        else{
-            messagesDic = nil;
-        }
+     
+            
         NSLog(@"messagesDic %@",messagesDic);
         
         DetailViewController *contentsViewCon = [[DetailViewController alloc] init];//WithViewCon:self];
@@ -5794,8 +6034,19 @@ return height;
         lastInteger = [messagesDic[@"WRITE_DATE"] longLongValue];
         NSLog(@"lastInteger %lli",lastInteger);
         cellData.profileImage = messagesDic[@"WRITE_UID"]!=nil?messagesDic[@"WRITE_UID"]:@"";
-        
-        cellData.personInfo = nil;//[dic[@"writeinfo"]objectFromJSONString];// ##
+            if(IS_NULL(messagesDic[@"WRITER_INFO"])){
+                
+                cellData.personInfo = nil;
+            }
+            else{
+            NSMutableDictionary *writeInfo =[NSMutableDictionary dictionaryWithDictionary:messagesDic[@"WRITER_INFO"]];
+            [writeInfo setObject:messagesDic[@"WRITER_INFO"][@"USER_NAME"] forKey:@"name"];
+            [writeInfo setObject:messagesDic[@"WRITER_INFO"][@"DEPT_NAME"] forKey:@"team"];
+            [writeInfo setObject:messagesDic[@"WRITER_INFO"][@"UID"] forKey:@"uid"];
+            [writeInfo setObject:[NSString stringWithFormat:@"%@/%@",messagesDic[@"WRITER_INFO"][@"POS_NAME"],messagesDic[@"WRITER_INFO"][@"DUTY_NAME"]] forKey:@"grade2"];
+            
+        cellData.personInfo = writeInfo;// ##
+            }
         BOOL myFav = NO;
         NSLog(@"cellData.idx %@",messagesDic[@"BOOKMARK_MEMBER"]);
         for(NSString *auid in messagesDic[@"BOOKMARK_MEMBER"]){
@@ -5809,8 +6060,9 @@ return height;
         cellData.targetdic = nil;//dic[@"target"];
         
         //                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
-        cellData.contentDic = nil;//contentDic;
-        NSString *decoded = [messagesDic[@"CONTENTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            cellData.contentDic = nil;//contentDic;
+            NSString *beforedecoded = [messagesDic[@"CONTENTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+        NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSLog(@"decoded %@",decoded);
         cellData.content = decoded;
         cellData.imageArray = messagesDic[@"IMAGES"];
@@ -5885,7 +6137,7 @@ return height;
             //                [SharedAppDelegate.root anywhereModal:newNC];
             //                [newNC release];
         }
-
+        }
 #else
 
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
@@ -6260,6 +6512,8 @@ return height;
         groupIconImage.frame = CGRectMake(16, groupCountLabel.frame.origin.y, 12, 12);
     }
     
+    
+    
 #endif
     if([self.category isEqualToString:@"2"] || [self.category isEqualToString:@"1"])
     {
@@ -6338,6 +6592,41 @@ return height;
         }
         
         
+        
+    }
+    
+    favButton.frame = CGRectMake(self.view.frame.size.width - 16 - 28, coverImageView.frame.size.height - 16 - 28, 28, 28);
+    if([self.groupDic[@"favorite"]isEqualToString:@"Y"]){
+        [favButton setBackgroundImage:[CustomUIKit customImageNamed:@"btn_social_bookmark_on.png"] forState:UIControlStateNormal];
+        favButton.selected = YES;
+        
+    }
+    else if([self.groupDic[@"favorite"]isEqualToString:@"N"]){
+        [favButton setBackgroundImage:[CustomUIKit customImageNamed:@"btn_social_bookmark_off.png"] forState:UIControlStateNormal];
+        favButton.selected = NO;
+        
+    }
+    
+    
+    if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"S"]){
+        if([self.category isEqualToString:@"3"] && [self.targetuid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+            NSLog(@"mywrite");
+            favButton.hidden = YES;
+        }
+        else if([self.category isEqualToString:@"10"]){
+            NSLog(@"bookmark");
+            favButton.hidden = YES;
+            
+        }
+        else{
+            NSLog(@"sns_type s");
+            favButton.hidden = NO;
+            
+        }
+    }
+    else{
+        NSLog(@"else");
+        favButton.hidden = YES;
         
     }
 #endif

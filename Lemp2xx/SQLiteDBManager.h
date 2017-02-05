@@ -27,7 +27,8 @@
 
 + (void)updateFavorite:(NSString *)fav uniqueid:(NSString *)uid;
 + (void)updateFavoriteOnlyDB:(NSString *)fav uniqueid:(NSString *)uid;
-+ (void)updateContact:(NSDictionary *)dic;
+
++ (BOOL)updateContact:(NSDictionary *)dic;
 + (BOOL)updateContactArray:(NSMutableArray *)array;
 + (void)updateMyProfileImage:(NSString*)fileName;
 + (void)updateDept:(NSDictionary *)dic;

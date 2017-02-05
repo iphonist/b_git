@@ -61,4 +61,6 @@
 - (void)setProgressInteger:(float)p;
 - (void)enterPassword:(NSString *)email;
 
+- (void)setProgressInteger2:(NSString *)p;
+
 @end

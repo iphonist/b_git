@@ -196,8 +196,14 @@
 - (void)searchMsg:(NSString *)msg{
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
     
-        if([[SharedAppDelegate readPlist:@"was"]length]<1)
-            return;
+    
+    
+#ifdef BearTalk
+#else
+    if([[SharedAppDelegate readPlist:@"was"]length]<1)
+        return;
+#endif
+    
     
     NSLog(@"home.groupnumber %@",SharedAppDelegate.root.home.groupnum);
     NSLog(@"home.category %@",SharedAppDelegate.root.home.category);
@@ -300,7 +306,9 @@
             }
             searchArray = [[NSMutableArray alloc]init];
             
-            if([[operation.responseString objectFromJSONString] isKindOfClass:[NSArray class]]){
+            
+            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             
             NSMutableArray *resultDic = [operation.responseString objectFromJSONString];
             NSLog(@"resultDic %@",resultDic);
@@ -343,7 +351,8 @@
                     
                     //                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
                     cellData.contentDic = nil;//contentDic;
-                    NSString *decoded = [dic[@"CONTENTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                    NSString *beforedecoded = [dic[@"CONTENTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+                    NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                     NSLog(@"decoded %@",decoded);
                     cellData.content = decoded;
                     cellData.imageArray = dic[@"IMAGES"];
@@ -1356,8 +1365,14 @@
     
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
@@ -1423,6 +1438,9 @@
 #ifdef BearTalk
         
         NSLog(@"resultDic %@",operation.responseString);
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         
         
@@ -1442,6 +1460,7 @@
         }
         
         [myTable reloadData];
+        }
         
         
         

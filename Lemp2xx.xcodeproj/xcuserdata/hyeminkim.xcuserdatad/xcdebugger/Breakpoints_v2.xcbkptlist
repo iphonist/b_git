@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "4991"
             endingLineNumber = "4991"
-            landmarkName = "-reloadList:fav:"
+            landmarkName = "-addOrClear:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

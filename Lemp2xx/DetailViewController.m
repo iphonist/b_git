@@ -1453,6 +1453,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     else
         addString = @"로 등록";
     
+    NSLog(@"contfirmAddNotice %@",noticeyn);
     [CustomUIKit popupAlertViewOK:@"소셜 공지" msg:[NSString stringWithFormat:@"현재 소셜의 공지%@합니다.\n계속하시겠습니까?",addString] delegate:self tag:kAddNotice sel:@selector(addNotice:) with:noticeyn csel:nil with:nil];
 }
 
@@ -1460,11 +1461,16 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 - (void)addNotice:(NSString *)yn{
     
     
+    NSLog(@"addNotice %@",yn);
     
     
     
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
     
     NSLog(@"groupnum %@",SharedAppDelegate.root.home.groupnum);
@@ -1476,8 +1482,6 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         type = @"i";
     
     
-    if([[SharedAppDelegate readPlist:@"was"]length]<1)
-        return;
     //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
@@ -1799,6 +1803,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             [self cancelSchedule];
         }
         else if(alertView.tag == kAddNotice)     {
+            NSLog(@"kaddnotice");
             [self addNotice:noticeyn];
         }
         else if(alertView.tag == kEndPoll){
@@ -2683,8 +2688,13 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
     NSLog(@"groupnum %@",SharedAppDelegate.root.home.groupnum);
     if([SharedAppDelegate.root.home.groupnum length]<1 || SharedAppDelegate.root.home.groupnum == nil){
@@ -4330,7 +4340,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         
 #ifdef BearTalk
                         
-                        NSString *decoded = [replyArray[row][@"REPLY_CONTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                        NSString *beforedecoded = [replyArray[row][@"REPLY_CONTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+                        NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                         NSString *replyCon = decoded;
                         
 #else
@@ -4887,7 +4898,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         else if([contentsData.writeinfoType isEqualToString:@"1"]){
             
 #ifdef BearTalk
-            NSDictionary *yourDic = [SharedAppDelegate.root searchContactDictionary:contentsData.profileImage];
+            
+            NSDictionary *yourDic = IS_NULL(contentsData.personInfo)?[SharedAppDelegate.root searchContactDictionary:contentsData.profileImage]:contentsData.personInfo;
             
             [nameLabel setText:yourDic[@"name"]];
             CGSize size = [nameLabel.text sizeWithAttributes:@{NSFontAttributeName:nameLabel.font}];
@@ -6092,7 +6104,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         NSURL *imgURL;
 #ifdef BearTalk
                         
-                        imgURL= [NSURL URLWithString:[NSString stringWithFormat:@"%@/api/file/%@/thumb",BearTalkBaseUrl,imageArray[i][@"FILE_KEY"]]];
+                        imgURL= [NSURL URLWithString:[NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,imageArray[i][@"FILE_KEY"]]];
                         NSData *imageData = [NSData dataWithContentsOfURL:imgURL];
                         NSLog(@"imgURL %@ imageData length %d",imgURL,[imageData length]);
                         UIImage *image = [UIImage imageWithData:imageData];
@@ -8504,7 +8516,22 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     
 #ifdef BearTalk
                     
-                    NSDictionary *infoDic = [SharedAppDelegate.root searchContactDictionary:replydic[@"UID"]];
+                    NSDictionary *infoDic;
+                    if(IS_NULL(replydic[@"REPLY_WRITER_INFO"])){
+                        
+                    infoDic = [SharedAppDelegate.root searchContactDictionary:replydic[@"UID"]];
+                    }
+                    else{
+                    
+                    NSMutableDictionary *writeInfo = [NSMutableDictionary dictionaryWithDictionary:replydic[@"REPLY_WRITER_INFO"]];
+                    [writeInfo setObject:replydic[@"REPLY_WRITER_INFO"][@"USER_NAME"] forKey:@"name"];
+                    [writeInfo setObject:replydic[@"REPLY_WRITER_INFO"][@"DEPT_NAME"] forKey:@"team"];
+                    [writeInfo setObject:replydic[@"REPLY_WRITER_INFO"][@"UID"] forKey:@"uid"];
+                    [writeInfo setObject:[NSString stringWithFormat:@"%@/%@",replydic[@"REPLY_WRITER_INFO"][@"POS_NAME"],replydic[@"REPLY_WRITER_INFO"][@"DUTY_NAME"]] forKey:@"grade2"];
+                    
+                    infoDic = writeInfo;// ##
+                    }
+                    
 #else
                     NSDictionary *infoDic = [replydic[@"writeinfo"]objectFromJSONString];
 #endif
@@ -8689,7 +8716,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     
 #ifdef BearTalk
                     
-                    NSString *decoded = [replydic[@"REPLY_CONTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                    NSString *beforedecoded = [replydic[@"REPLY_CONTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+                    NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                     NSString *replyCon = decoded;
 //                    NSString *originReplyCon = replyCon;
                     NSLog(@"replyCon %@",replyCon);
@@ -8718,7 +8746,24 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                             
                          
 #ifdef BearTalk
-                            NSDictionary *ainfoDic = [SharedAppDelegate.root searchContactDictionary:areplyDic[@"UID"]];
+                            
+                            
+                            NSDictionary *ainfoDic;
+                            if(IS_NULL(areplyDic[@"REPLY_WRITER_INFO"])){
+                                
+                                ainfoDic = [SharedAppDelegate.root searchContactDictionary:areplyDic[@"UID"]];
+                            }
+                            else{
+                                
+                                NSMutableDictionary *writeInfo = [NSMutableDictionary dictionaryWithDictionary:areplyDic[@"REPLY_WRITER_INFO"]];
+                                [writeInfo setObject:areplyDic[@"REPLY_WRITER_INFO"][@"USER_NAME"] forKey:@"name"];
+                                [writeInfo setObject:areplyDic[@"REPLY_WRITER_INFO"][@"DEPT_NAME"] forKey:@"team"];
+                                [writeInfo setObject:areplyDic[@"REPLY_WRITER_INFO"][@"UID"] forKey:@"uid"];
+                                [writeInfo setObject:[NSString stringWithFormat:@"%@/%@",areplyDic[@"REPLY_WRITER_INFO"][@"POS_NAME"],areplyDic[@"REPLY_WRITER_INFO"][@"DUTY_NAME"]] forKey:@"grade2"];
+                                
+                                ainfoDic = writeInfo;// ##
+                            }
+                            
 #else
                             NSDictionary *ainfoDic = [areplyDic[@"writeinfo"]objectFromJSONString];
                             
@@ -8929,7 +8974,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 #ifdef BearTalk
                         NSDictionary *imageDic = replyPhotoUrl[0];
                         NSLog(@"imageDic %@",imageDic);
-                        imgURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/api/file/%@/thumb",BearTalkBaseUrl,imageDic[@"FILE_KEY"]]];
+                        imgURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,imageDic[@"FILE_KEY"]]];
                         
 #else
                         imgURL = [ResourceLoader resourceURLfromJSONString:replyPhotoUrl num:0 thumbnail:NO];
@@ -9227,7 +9272,9 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 //    NSString *replyPhotoUrl = [dic[@"replymsg"]objectFromJSONString][@"image"];
 //    if([replyPhotoUrl length]>0)
     hasImage = NO;
-    NSString *decoded = [dic[@"REPLY_CONTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSString *beforedecoded = [dic[@"REPLY_CONTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+    NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [SharedAppDelegate.root.home.post setModifyView:decoded idx:contentsData.idx tag:kModifyReply image:hasImage images:nil poll:nil files:nil ridx:dic[@"REPLY_KEY"]];
     
 #else
@@ -9394,8 +9441,14 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 - (void)addOrClear:(id)sender
 {
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 #ifdef GreenTalkCustomer
     
     if([contentsData.contentType isEqualToString:@"1"]){
@@ -9673,7 +9726,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     else{
 #ifdef BearTalk
         
-        fileUrlString = [NSString stringWithFormat:@"htps://sns.lemp.co.kr/api/file/%@",dic[@"FILE_KEY"]];
+        fileUrlString = [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,dic[@"FILE_KEY"]];
 #else
         fileUrlString = dic[@"url"];
         NSLog(@"fileUrlString %@",fileUrlString);
@@ -10169,8 +10222,14 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     NSLog(@"arrivenew %@",arriveNew?@"YES":@"nO");
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     //    [MBProgressHUD showHUDAddedTo:myTable label:nil animated:YES];
     
@@ -10179,7 +10238,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     NSString *urlString;
     
 #ifdef BearTalk
-    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/list",BearTalkBaseUrl];
+    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/one",BearTalkBaseUrl];
 #else
     urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/read/directmsg.lemp",[SharedAppDelegate readPlist:@"was"]];
 #endif
@@ -10201,7 +10260,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                   contentsData.idx,@"contskey",
-                  SharedAppDelegate.root.home.groupnum,@"snskey",
+//                  SharedAppDelegate.root.home.groupnum,@"snskey",
                   nil];//@{ @"uniqueid" : @"c110256" };
 #else
     parameters = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -10225,13 +10284,16 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 #ifdef BearTalk
         
         NSLog(@"operation.responseString %@",operation.responseString);
-        NSDictionary *messagesDic;
         if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
-            messagesDic = [operation.responseString objectFromJSONString][0];
+            if([[operation.responseString objectFromJSONString]count]>0){
+                 [CustomUIKit popupSimpleAlertViewOK:nil msg:[operation.responseString objectFromJSONString][0][@"result"] con:self];
+                return;
+            }
         }
-        else{
-            messagesDic = nil;
-        }
+        NSDictionary *messagesDic;
+      
+            messagesDic = [operation.responseString objectFromJSONString];
+      
         NSLog(@"messagesDic %@",messagesDic);
 //        NSDictionary *dic = [operation.responseString objectFromJSONString][0];
         
@@ -10263,8 +10325,9 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 //        NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
         contentsData.contentDic = nil;//contentDic;
         
-        
-        NSString *decoded = [messagesDic[@"CONTENTS"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            
+            NSString *beforedecoded = [messagesDic[@"CONTENTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+        NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         contentsData.content = decoded;//decoded;
         
         contentsData.imageArray = messagesDic[@"IMAGES"];
@@ -10293,6 +10356,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             }
             noticeyn = [[NSString alloc]initWithFormat:@"%@",messagesDic[@"NOTICE_YN"]];
         }
+            
 #else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSString *isSuccess = resultDic[@"result"];
@@ -10870,6 +10934,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
             }
 #ifdef BearTalk
+        
 #else
         }
         else {
@@ -11494,7 +11559,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     }
     else{
         //        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid", @"1", @"writeinfotype",nil];
-        //        [likeArray addObject:dic];
+//                [likeArray addObject:[ResourceLoader sharedInstance].myUID];
         
     }
 #else
@@ -11526,11 +11591,13 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     [myTable reloadData];
     
-    if ([self.parentViewCon isKindOfClass:[HomeTimelineViewController class]])
-        [(HomeTimelineViewController *)self.parentViewCon sendLike:contentsData.idx sender:sender con:self];
+    
     
     if ([self.parentViewCon isKindOfClass:[SocialSearchViewController class]])
         [(SocialSearchViewController *)self.parentViewCon sendLike:contentsData.idx sender:sender];
+//    else
+    
+        [SharedAppDelegate.root.home sendLike:contentsData.idx sender:sender con:self];
     
 }
 //- (void)sendLikeResult:(NSDictionary *)dic{
@@ -11544,9 +11611,15 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 //}
 
 - (void)sendReply:(id)sender
-{
-    if([[SharedAppDelegate readPlist:@"was"]length]<1)
-        return;
+        {
+            
+#ifdef BearTalk
+#else
+            if([[SharedAppDelegate readPlist:@"was"]length]<1)
+                return;
+#endif
+            
+            
     
     if(selectedEmoticon){
         [self sendEmoticon];
@@ -11702,6 +11775,9 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             
 #ifdef BearTalk
             
+            
+            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
             NSLog(@"resultDic1 %@",resultDic);
             
@@ -11731,6 +11807,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             
             
             [self closePhoto];
+            }
 #else
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
             NSLog(@"resultDic %@",resultDic);
@@ -11811,6 +11888,9 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 #ifdef BearTalk
             
             
+            
+            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
             NSLog(@"resultDic %@",resultDic);
 
@@ -11841,6 +11921,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             replyTextView.text = @"";
             [self viewResizeUpdate:1];
             [sendButton setBackgroundImage:[UIImage imageNamed:@"send_btn_dft.png"] forState:UIControlStateNormal];
+            }
 
             
 #else
@@ -11930,8 +12011,14 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 
 - (void)setRegiGroup:(id)sender{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     if(myAttendValue == myOriginalAttendValue)
         return;
     
@@ -12213,8 +12300,14 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     NSLog(@"cmdEndPoll");
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
     
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
@@ -12317,8 +12410,15 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 - (void)cmdPoll{
     
     NSLog(@"cmdPoll");
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     //    if([contentsData.pollDic[@"is_close"]isEqualToString:@"1"]){
     //        [CustomUIKit popupSimpleAlertViewOK:nil msg:@"종료된 설문입니다."];
@@ -12526,8 +12626,15 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     return;
 #else
     
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
     
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
@@ -12713,8 +12820,15 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 
 - (void)getEmoticon
 {
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     showEmoticonView = NO;
   
@@ -12735,10 +12849,18 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     
     
-    NSDictionary *param = @{
-                            @"sessionkey" : [ResourceLoader sharedInstance].mySessionkey,
-                            @"uid" : [ResourceLoader sharedInstance].myUID,
-                            };
+    
+    NSDictionary *param;
+#ifdef BearTalk
+    param = @{
+              @"uid" : [ResourceLoader sharedInstance].myUID,
+              };
+#else
+    param = @{
+              @"sessionkey" : [ResourceLoader sharedInstance].mySessionkey,
+              @"uid" : [ResourceLoader sharedInstance].myUID,
+              };
+#endif
     
     //    NSString *jsonString = [NSString stringWithFormat:@"param=%@",[parameters JSONString]];
     //    NSLog(@"jsonString %@",jsonString);
@@ -12749,10 +12871,14 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 //    NSError *serializationError = nil;
     //    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
     
+#ifdef BearTalk
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:param error:nil];
+    
+#else
     NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parametersJson:param key:@"param"];
+#endif
     
-    
-    
+
     
     
     NSLog(@"request %@",request);
@@ -12765,6 +12891,9 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         
         
         
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             emoticonUrlArray = [[NSMutableArray alloc]init];//WithArray:resultDic[@"emoticon"]];
             for(NSDictionary *dic in [operation.responseString objectFromJSONString]){
                 [emoticonUrlArray addObject:dic[@"name"]];
@@ -12804,6 +12933,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
            
             
 #ifdef BearTalk
+        }
 #else
         }
         else {
@@ -13185,10 +13315,15 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 }
 
 - (void)sendEmoticon
-{
-    if([[SharedAppDelegate readPlist:@"was"]length]<1)
-        return;
-  
+        {
+            
+#ifdef BearTalk
+#else
+            if([[SharedAppDelegate readPlist:@"was"]length]<1)
+                return;
+#endif
+            
+            
     
     
     
@@ -13268,6 +13403,10 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
          
 #ifdef BearTalk
+            
+            
+            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
             NSLog(@"ResultDic %@",resultDic);
             
@@ -13301,7 +13440,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                 
                 
-
+            }
             
 #else
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];

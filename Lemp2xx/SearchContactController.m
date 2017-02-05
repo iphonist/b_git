@@ -697,7 +697,7 @@
         checkAddView = [[UIImageView alloc]init];
         checkAddView.tag = 51;
         checkAddView.image = [CustomUIKit customImageNamed:@"btn_bookmark_on.png"];
-        checkAddView.frame = CGRectMake(checkView.frame.size.width-20/2-26/2, checkView.frame.size.height/2-26/2-1, 26/2, 26/2);
+        checkAddView.frame = CGRectMake(checkView.frame.size.width/2-26/2, checkView.frame.size.height/2-26/2-1, 26, 26);
         checkAddView.backgroundColor = [UIColor clearColor];
         [checkView addSubview:checkAddView];
         

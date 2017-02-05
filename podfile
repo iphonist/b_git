@@ -14,7 +14,7 @@ target 'BearTalk' do
   use_frameworks!
 
   # Pods for BearTalk
-pod 'Socket.IO-Client-Swift', '~> 8.1.2'
+    pod 'Socket.IO-Client-Swift', '~> 8.1.2’ 
 end
 
 target 'BearTalkDev' do
@@ -22,7 +22,8 @@ target 'BearTalkDev' do
   use_frameworks!
 
   # Pods for BearTalkDev
-pod 'Socket.IO-Client-Swift', '~> 8.1.2'
+    pod 'Socket.IO-Client-Swift', '~> 8.1.2’ 
+
 end
 
 target 'ETalk' do

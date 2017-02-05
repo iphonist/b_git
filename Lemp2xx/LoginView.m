@@ -1884,7 +1884,7 @@ const char paramNumber;
     
     
 #ifdef BearTalk
-    
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
     urlString = [NSString stringWithFormat:@"%@/api/check/email/",BearTalkBaseUrl];
 #else
     
@@ -1919,9 +1919,19 @@ const char paramNumber;
         
 #ifdef BearTalk
         
+        [SVProgressHUD dismiss];
         NSDictionary *resultDic = [operation.responseString objectFromJSONString];
         NSLog(@"resultDic %@",resultDic);
         
+        if(!IS_NULL(resultDic[@"error"]) && [resultDic[@"error"]length]>0){
+            
+            
+            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"error"]];
+            
+            [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
+            [self setEmail];
+        }
+        else{
         OLGhostAlertView *toast = [[OLGhostAlertView alloc] initWithTitle:@"사용자 확인이 완료되었습니다."];
         //    if ([replyTextView isFirstResponder]) {
         //        toast.position = OLGhostAlertViewPositionCenter;
@@ -1935,6 +1945,7 @@ const char paramNumber;
         //                [toast release];
         
         [self enterPassword:[SharedAppDelegate readPlist:@"email"]];// image:[resultDicobjectForKey:@"companyimage"]];
+        }
 #else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
@@ -1988,6 +1999,7 @@ const char paramNumber;
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self setEmail];
+        [SVProgressHUD dismiss];
         NSLog(@"FAIL : %@",operation.error);
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         [HTTPExceptionHandler handlingByError:error];
@@ -2009,7 +2021,9 @@ const char paramNumber;
 #ifdef BearTalk
     [ingLabel setText:[NSString stringWithFormat:@"모두가 같은 마음으로 통하는 즐거운 소통"]];//(%d%%)",text]];
     NSLog(@"playing %f",p);
-    [playProgress setProgress:p animated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        playProgress.progress = p;
+    });
 #endif
 }
 - (void)changeText:(NSString *)text setProgressText:(NSString *)pro{
@@ -2027,7 +2041,18 @@ const char paramNumber;
     
 }
 
-
+    
+    - (void)setProgressInteger2:(NSNumber *)p {
+        
+        [ingLabel setText:[NSString stringWithFormat:@"모두가 같은 마음으로 통하는 즐거운 소통"]];//(%d%%)",text]];
+        NSLog(@"playing %@",p);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [playProgress setProgress:[p floatValue] animated:YES];
+        });
+        
+    }
+    
 
 - (void)createPassword{
     
@@ -2588,8 +2613,10 @@ const char paramNumber;
 }
 
 - (void)loginfail{
-    if(buttonOK != nil)
-    [buttonOK setEnabled:YES];
+//    if(buttonOK != nil)
+//    [buttonOK setEnabled:YES];
+    
+    [self setEmail];
 }
 
 
@@ -2934,7 +2961,7 @@ const char paramNumber;
     
     
     informLabel = [CustomUIKit labelWithText:@""
-                                       fontSize:15 fontColor:RGB(255, 0, 0)
+                                       fontSize:14 fontColor:RGB(255, 0, 0)
                                           frame:CGRectMake(textFieldImageView.frame.origin.x, CGRectGetMaxY(textFieldImageView.frame)+10, textFieldImageView.frame.size.width, 15) numberOfLines:1 alignText:NSTextAlignmentLeft];
     [transView addSubview:informLabel];
     
@@ -3035,6 +3062,7 @@ const char paramNumber;
     
 #ifdef BearTalk
     
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
     urlString = [NSString stringWithFormat:@"%@/api/check/password/",BearTalkBaseUrl];
 #else
     
@@ -3068,6 +3096,7 @@ const char paramNumber;
         
 #ifdef BearTalk
         
+        [SVProgressHUD dismiss];
         NSDictionary *resultDic = [operation.responseString objectFromJSONString];
         NSLog(@"resultDic %@",resultDic);
         
@@ -3130,6 +3159,7 @@ const char paramNumber;
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
+        [SVProgressHUD dismiss];
         pwTextField.text = @"";
         buttonOK.enabled = YES;
         NSLog(@"FAIL : %@",operation.error);
@@ -3270,9 +3300,12 @@ const char paramNumber;
     
 //    if([SharedAppDelegate readPlist:@"initContact"] == nil || [[SharedAppDelegate readPlist:@"initContact"]length]<1 || [[SharedAppDelegate readPlist:@"initContact"]isEqualToString:@"YES"]){
         [SVProgressHUD dismiss];
-        [SharedAppDelegate writeToPlist:@"initContact" value:@"YES_ver_2_5_23"];
 #ifdef BearTalk
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"kViewDept"];
+    [SharedAppDelegate writeToPlist:@"initContact" value:@"3.0.0"];
+#else
+    [SharedAppDelegate writeToPlist:@"initContact" value:@"YES_ver_2_5_23"];
+    
 #endif
 //    }
     
@@ -3530,7 +3563,6 @@ const char paramNumber;
 
 - (void)commandEndSaved{
     NSLog(@"commandEndSaved");
-    
 //    NSDate *now = [[NSDate alloc] init];
 //    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 //    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
@@ -3857,6 +3889,7 @@ const char paramNumber;
         
     
 #ifdef BearTalk
+    [SVProgressHUD dismiss];
 #else
         [SharedAppDelegate.root startup];
 #endif

@@ -37,6 +37,7 @@
         self.view.backgroundColor = RGB(238, 242, 245);
 #endif
         viewTag = t;
+        NSLog(@"viewTag %d",t);
 	}
 	return self;
 }
@@ -147,7 +148,12 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.translucent = NO;
-	[self checkSameLevel:@"0"];
+	
+#ifdef BearTalk
+    [self checkSameLevel:@"00000"];
+#else
+    [self checkSameLevel:@"0"];
+#endif
     [self reloadCheck];
 }
 
@@ -213,18 +219,48 @@
 {
 	[myList removeAllObjects];
 //	[myDeptList removeAllObjects];
-				
-	for(NSDictionary *forDic in [ResourceLoader sharedInstance].deptList) {
-		if ([code isEqualToString:@"0"]) {
-			        self.title = @"대상 부서 선택";
-		} else if([forDic[@"mycode"] isEqualToString:code]) {
-			self.title = forDic[@"shortname"];
-		}
-		if([forDic[@"parentcode"] isEqualToString:code]) {
-			[myList addObject:forDic];
-		}
-	}
-	
+			
+    
+#ifdef BearTalk
+    for(NSDictionary *forDic in [ResourceLoader sharedInstance].deptList) {
+        
+        
+        if ([code isEqualToString:@"00000"]) {
+            
+            self.title = @"대상 부서 선택";
+            if([forDic[@"mycode"]isEqualToString:code])
+            [myList addObject:forDic];
+            
+        }
+        else{
+            if([forDic[@"mycode"] isEqualToString:code]) {
+            self.title = forDic[@"shortname"];
+        }
+        
+        if([forDic[@"parentcode"] isEqualToString:code]) {
+            [myList addObject:forDic];
+        }
+        }
+    }
+    
+#else
+    for(NSDictionary *forDic in [ResourceLoader sharedInstance].deptList) {
+        
+        
+        if ([code isEqualToString:@"0"]) {
+            
+            self.title = @"대상 부서 선택";
+        } else if([forDic[@"mycode"] isEqualToString:code]) {
+            self.title = forDic[@"shortname"];
+        }
+        
+        if([forDic[@"parentcode"] isEqualToString:code]) {
+            [myList addObject:forDic];
+        }
+    }
+    
+#endif
+
 //    [SharedAppDelegate.root returnTitle:self.title viewcon:self noti:NO alarm:NO];
 
     [myTable reloadData];
@@ -490,7 +526,13 @@
     if([sender tag]==100)
     {
         tagInfo = 0;
-        [self checkSameLevel:@"0"];
+        
+#ifdef BearTalk
+        [self checkSameLevel:@"00000"];
+#else
+            [self checkSameLevel:@"0"];
+#endif
+                
         [selectCodeList removeAllObjects];
         [addArray removeAllObjects];
         [self reloadCheck];
@@ -559,8 +601,12 @@
         NSDictionary *mydic = [SharedAppDelegate.root searchContactDictionary:[ResourceLoader sharedInstance].myUID];
 		myCode = mydic[@"mycode"];
 		myName = mydic[@"shortname"];
-		myParent = @"0";
-		
+        
+#ifdef BearTalk
+        myParent = @"00000";
+#else
+        myParent = @"0";
+#endif
 		NSLog(@"%@,%@",myCode,myName);
 	}
 	

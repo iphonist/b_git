@@ -924,6 +924,24 @@ const char paramDic;
             self.title = NSLocalizedString(@"chat_list", @"chat_list");//@"채팅방 목록";
             
             [myList removeAllObjects];
+            
+#ifdef BearTalk
+            for(NSDictionary *dic in SharedAppDelegate.root.chatList.myList){
+                NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+                [newDic setObject:dic[@"lastdate"] forKey:@"lastdate"];
+                [newDic setObject:dic[@"lastindex"] forKey:@"lastindex"];
+                [newDic setObject:dic[@"lastmsg"] forKey:@"lastmsg"];
+                [newDic setObject:dic[@"lasttime"] forKey:@"lasttime"];
+                [newDic setObject:dic[@"names"] forKey:@"names"];
+                [newDic setObject:dic[@"newfield"] forKey:@"newfield"];
+                [newDic setObject:dic[@"orderindex"] forKey:@"orderindex"];
+                [newDic setObject:dic[@"roomkey"] forKey:@"roomkey"];
+                [newDic setObject:dic[@"rtype"] forKey:@"rtype"];
+                [newDic setObject:dic[@"uids"] forKey:@"uids"];
+                [newDic setObject:@"0" forKey:@"check"];
+                [myList addObject:newDic];
+            }
+#else
             for(NSDictionary *dic in [SQLiteDBManager getChatList]){
                 NSMutableDictionary *newDic = [NSMutableDictionary dictionaryWithDictionary:dic];
                 [newDic setObject:dic[@"id"] forKey:@"id"];
@@ -940,6 +958,8 @@ const char paramDic;
                 [newDic setObject:@"0" forKey:@"check"];
                 [myList addObject:newDic];
             }
+            
+#endif
     
             NSLog(@"myList %@",myList);
             
@@ -1756,7 +1776,7 @@ const char paramDic;
         }
         NSString *nameStr = dic[@"names"];
         if ([nameStr length] < 1) {
-            if([dic[@"rtype"]isEqualToString:@"2"]){
+            if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"S"]){
                 
                 if([tempArray count] == 0){
                     nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");//@"대화상대없음";
@@ -1853,12 +1873,12 @@ const char paramDic;
         
         logoImageView.hidden = YES;
         
-        if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"5"])
+        if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"5"] || [dic[@"rtype"]isEqualToString:@"S"])
         {
             
             if([dic[@"newfield"]length]>0 && [dic[@"newfield"]intValue]>0){
                 
-                if([dic[@"rtype"]isEqualToString:@"2"]){
+                if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"S"]){
                     inImageView.hidden = NO;
                     profileView.hidden = YES;
                     profileView.image = nil;
@@ -2024,7 +2044,7 @@ const char paramDic;
         NSArray *countArray = [dic[@"uids"] componentsSeparatedByString:@","];
         NSLog(@"countArray %@",countArray);
         CGSize nameSize = [name.text sizeWithAttributes:@{NSFontAttributeName:name.font}];
-        if([dic[@"rtype"]isEqualToString:@"2"]){
+        if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"S"]){
             if(nameSize.width > 320-55-80-30-10-5-30)
                 nameSize.width = 320-55-80-30-10-5-30;
             
@@ -5143,8 +5163,14 @@ if(tag0 >= 0)
     
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
@@ -5291,8 +5317,14 @@ if(tag0 >= 0)
 
 - (void)getMQMTestedList{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     NSLog(@"getMQMTestedLink");
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/mqm_vender_list.lemp",[SharedAppDelegate readPlist:@"was"]];
@@ -5404,8 +5436,15 @@ if(tag0 >= 0)
 - (void)addOrClear:(NSDictionary *)d
 {
     NSLog(@"addOrClear %@",d);
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     NSDictionary *dic = [[NSDictionary alloc]initWithDictionary:d];
     NSString *type = @"";
@@ -5417,40 +5456,113 @@ if(tag0 >= 0)
     }
     else{
         type = @"2";
+        
+        
+#ifdef BearTalk
+        type = @"0";
+#endif
+        
+
     }
     
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];
-    NSURL *baseUrl = [NSURL URLWithString:urlString];
     
+    NSString *urlString;
+    NSString *method;
+#ifdef BearTalk
+    urlString = [NSString stringWithFormat:@"%@/api/emps/favorite/",BearTalkBaseUrl];
+    method = @"PUT";
+#else
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];
+    method = @"POST";
+    
+#endif
+    
+    NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
+    NSDictionary *parameters;
+#ifdef BearTalk
     
-    NSDictionary *parameters = @{
+    parameters = @{
+                   @"act" : type,
+                   @"uid" : [ResourceLoader sharedInstance].myUID,
+                   @"favuid" : dic[@"uniqueid"],
+                   };
+#else
+    
+    parameters = @{
                                  @"type" : type,
                                  @"uid" : [ResourceLoader sharedInstance].myUID,
                                  @"member" : dic[@"uniqueid"],
                                  @"category" : @"1",
                                  @"sessionkey" : [ResourceLoader sharedInstance].mySessionkey
                                  };
+#endif
     NSLog(@"parameter %@",parameters);
     
 //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/info/setfavorite.lemp" parameters:parameters];
     
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:method URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            
+#ifdef BearTalk
+            
+            NSDictionary *resultDic = [operation.responseString objectFromJSONString];
+            NSLog(@"resultDic %@",resultDic);
+            
+            
+            if([dic[@"favorite"]isEqualToString:@"0"]){
+                [SQLiteDBManager updateFavorite:@"1" uniqueid:dic[@"uniqueid"]];
+              
+            }
+            else {//if([[dicobjectForKey:@"favorite"]isEqualToString:@"1"]){
+                [SQLiteDBManager updateFavorite:@"0" uniqueid:dic[@"uniqueid"]];
+                
+                
+            }
+            
+            
+            
+            
+            for(int i = 0; i < [myList count]; i++){
+                if([myList[i][@"uniqueid"]isEqualToString:dic[@"uniqueid"]]){
+                    if([dic[@"favorite"] isEqualToString:@"0"])
+                    {
+                        [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:myList[i] object:@"1" key:@"favorite"]];
+                        
+                    }
+                    else
+                    {
+                        [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:myList[i] object:@"0" key:@"favorite"]];
+                        
+                    }
+                }
+            }
+            
+            [resultArray removeAllObjects];
+            for(NSDictionary *dic in myList){
+                if([dic[@"favorite"]isEqualToString:@"1"]){
+                    [resultArray addObject:dic];
+                }
+            }
+            
+            self.title = [NSString stringWithFormat:@"즐겨찾기 멤버 %d",(int)[resultArray count]];
+            
+            [myTable reloadData];
+#else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
         if ([isSuccess isEqualToString:@"0"]) {
-         
             
             
             if([dic[@"favorite"]isEqualToString:@"0"]){
@@ -5461,12 +5573,9 @@ if(tag0 >= 0)
                 [SQLiteDBManager updateFavorite:@"0" uniqueid:dic[@"uniqueid"]];
                 
             }
-//            [myList removeAllObjects];
-//            for(NSString *uid in [ResourceLoader sharedInstance].favoriteList){
-//                
-//                [myList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
-//            }
             
+            
+
             
             for(int i = 0; i < [myList count]; i++){
                 if([myList[i][@"uniqueid"]isEqualToString:dic[@"uniqueid"]]){
@@ -5503,6 +5612,8 @@ if(tag0 >= 0)
             NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
             
         }
+        
+#endif
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

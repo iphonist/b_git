@@ -534,17 +534,12 @@
         
 //        [coverImageView release];
         
-        UIButton *viewButton;
-        viewButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(cmdButton:) frame:CGRectMake(0,0,coverImageView.frame.size.width,coverImageView.frame.size.height) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
-        viewButton.tag = kCover;
-        [coverImageView addSubview:viewButton];
 //        [viewButton release];
         
 #ifdef BearTalk
         coverImageView.frame = CGRectMake(0,0,backgroundView.frame.size.width, [SharedFunctions scaleFromHeight:464]);
         NSLog(@"coverImageView %@",NSStringFromCGRect(coverImageView.frame));
-        viewButton.hidden = YES;
-        
+      
         
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
 
@@ -565,6 +560,12 @@
             blurView.barStyle = UIBarStyleBlack;
             [coverImageView addSubview:blurView];
     }
+#else
+        
+        UIButton *viewButton;
+        viewButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(cmdButton:) frame:CGRectMake(0,0,coverImageView.frame.size.width,coverImageView.frame.size.height) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+        viewButton.tag = kCover;
+        [coverImageView addSubview:viewButton];
         
 #endif
         
@@ -794,8 +795,9 @@
         NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"]; // [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
         // chat call
         chatButton = [CustomUIKit buttonWithTitle:@"채팅" fontSize:16 fontColor:RGB(255,255,255) target:self selector:@selector(manToMan)
-                                        frame:CGRectMake(37, 0, buttonView.frame.size.width/2 - 13 - 37, 40)
+                                        frame:CGRectMake(buttonView.frame.size.width/2 - (buttonView.frame.size.width/2 - 13 - 37)/2, 0, buttonView.frame.size.width/2 - 13 - 37, 40)
                              imageNamedBullet:nil imageNamedNormal:@"" imageNamedPressed:nil];
+       
         [buttonView addSubview:chatButton];
         chatButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
         chatButton.backgroundColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
@@ -803,14 +805,14 @@
         chatButton.layer.cornerRadius = 19;
         
         
-        button = [CustomUIKit buttonWithTitle:@"무료통화" fontSize:16 fontColor:RGB(255,255,255) target:self selector:@selector(mVoip)
-                                        frame:CGRectMake(coverImageView.frame.size.width/2 + 13, 0, buttonView.frame.size.width/2 - 13 - 37, 40)
-                             imageNamedBullet:nil imageNamedNormal:@"" imageNamedPressed:nil];
-        [buttonView addSubview:button];
-        button.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-        button.backgroundColor = RGB(51,61,71);
-        button.clipsToBounds = YES;
-        button.layer.cornerRadius = 19;
+//        button = [CustomUIKit buttonWithTitle:@"무료통화" fontSize:16 fontColor:RGB(255,255,255) target:self selector:@selector(mVoip)
+//                                        frame:CGRectMake(coverImageView.frame.size.width/2 + 13, 0, buttonView.frame.size.width/2 - 13 - 37, 40)
+//                             imageNamedBullet:nil imageNamedNormal:@"" imageNamedPressed:nil];
+//        [buttonView addSubview:button];
+//        button.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+//        button.backgroundColor = RGB(51,61,71);
+//        button.clipsToBounds = YES;
+//        button.layer.cornerRadius = 19;
         
         
         // invite
@@ -1438,7 +1440,7 @@
     }
     
     
-    if([SharedAppDelegate.root checkVisible:SharedAppDelegate.root.chatView] && SharedAppDelegate.root.chatView.roomType == 1){
+    if([SharedAppDelegate.root checkVisible:SharedAppDelegate.root.chatView] && [SharedAppDelegate.root.chatView.roomType isEqualToString:@"1"]){
         NSLog(@"chatview / roomtype 1");
         return;
     }
@@ -1451,8 +1453,15 @@
 
 - (void)addOrClear:(id)sender
 {
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     UIButton *button = (UIButton *)sender;
     
     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -1475,36 +1484,92 @@
         type = @"2";
         //        clearFavButton.hidden = YES;
         //        addFavButton.hidden = NO;
+        
+#ifdef BearTalk
+        type = @"0";
+#endif
     }
     
-    //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
+    NSString *urlString;
+    NSString *method;
+#ifdef BearTalk
+    urlString = [NSString stringWithFormat:@"%@/api/emps/favorite/",BearTalkBaseUrl];
+    method = @"PUT";
+#else
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];
+    method = @"POST";
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];
+#endif
+
+    
+    
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary *parameters;
+#ifdef BearTalk
+    
+    parameters = @{
+                   @"act" : type,
+                   @"uid" : [ResourceLoader sharedInstance].myUID,
+                   @"favuid" : self.uniqueid,
+                   };
+#else
+    
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                                 type,@"type",
                                 [ResourceLoader sharedInstance].myUID,@"uid",
                                 self.uniqueid,@"member",
                                 @"1",@"category",
                                 [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",nil];
+    
+#endif
     NSLog(@"parameter %@",parameters);
     
     //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/info/setfavorite.lemp" parameters:parameters];
     
     
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:method URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
     
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        
+        
+#ifdef BearTalk
+        
+        NSDictionary *resultDic = [operation.responseString objectFromJSONString];
+        NSLog(@"resultDic %@",resultDic);
+        
+        if([sender tag] == kNotFavorite){
+            [SQLiteDBManager updateFavorite:@"1" uniqueid:self.uniqueid];
+            [SharedAppDelegate.root refreshSearchFavorite:self.uniqueid fav:@"1"];
+            favButton.tag = kFavorite;
+        
+            NSLog(@"favorite_1");
+            [favButton setBackgroundImage:[UIImage imageNamed:@"btn_profile_bookmark_on.png"] forState:UIControlStateNormal];
+
+        }
+        else{
+            [SQLiteDBManager updateFavorite:@"0" uniqueid:self.uniqueid];
+            [SharedAppDelegate.root refreshSearchFavorite:self.uniqueid fav:@"0"];
+            favButton.tag = kNotFavorite;
+           
+            NSLog(@"favorite_1");
+            [favButton setBackgroundImage:[UIImage imageNamed:@"btn_profile_bookmark_off.png"] forState:UIControlStateNormal];
+
+            
+        }
+        [activity stopAnimating];
+#else
+
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"ResulstDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
@@ -1516,23 +1581,14 @@
                 [SQLiteDBManager updateFavorite:@"1" uniqueid:self.uniqueid];
                 [SharedAppDelegate.root refreshSearchFavorite:self.uniqueid fav:@"1"];
                 favButton.tag = kFavorite;
-                //                [yourDic setObject:@"1" forKey:@"favorite"];
-                
-#ifdef BearTalk
-                NSLog(@"favorite_1");
-                [favButton setBackgroundImage:[UIImage imageNamed:@"btn_profile_bookmark_on.png"] forState:UIControlStateNormal];
-#endif
+
             }
             else{
                 [favButton setBackgroundImage:[CustomUIKit customImageNamed:@"button_profilepopup_notfavorite.png"] forState:UIControlStateNormal];
                 [SQLiteDBManager updateFavorite:@"0" uniqueid:self.uniqueid];
                 [SharedAppDelegate.root refreshSearchFavorite:self.uniqueid fav:@"0"];
                 favButton.tag = kNotFavorite;
-                //                [yourDic setObject:@"0" forKey:@"favorite"];
-#ifdef BearTalk
-                NSLog(@"favorite_1");
-                [favButton setBackgroundImage:[UIImage imageNamed:@"btn_profile_bookmark_off.png"] forState:UIControlStateNormal];
-#endif
+ 
                 
             }
             [activity stopAnimating];
@@ -1545,6 +1601,8 @@
             [activity stopAnimating];
             
         }
+        
+#endif
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"FAIL : %@",operation.error);
@@ -1595,19 +1653,6 @@
             
             
             
-//            
-//            NSString *theUID = [[SharedFunctions minusMe:self.uniqueid] componentsSeparatedByString:@","][0];
-//            NSLog(@"getCoverImage %@",theUID);
-//            
-//            NSURL *imgURL;
-//            NSString *profileImageInfo = [SharedAppDelegate.root searchContactDictionary:theUID][@"newfield6"];
-//            NSLog(@"otherProfile!!!! %@",profileImageInfo);
-//            imgURL = [ResourceLoader resourceURLfromJSONString:profileImageInfo num:0 thumbnail:NO];
-//            //	}
-//            NSLog(@"imgURL %@",imgURL);
-//            NSData * imageData = [[NSData alloc] initWithContentsOfURL:imgURL];
-
-            
             NSString *theUID = [[SharedFunctions minusMe:self.uniqueid] componentsSeparatedByString:@","][0];
             NSLog(@"getCoverImage %@",theUID);
             
@@ -1622,22 +1667,7 @@
             saved_imgURL = [ResourceLoader resourceURLfromJSONString:commercial_string num:0 thumbnail:NO];
             
             
-#ifdef BearTalk
-            
-            
-            
-            NSURLRequest *request = [NSMutableURLRequest requestWithURL:imgURL];
-            NSURLResponse *response = nil;
-            //    NSError *error=nil;
-            NSData *data=[[NSData alloc] initWithData:[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil]];
-            // you can use retVal , ignore if you don't need.
-            NSInteger httpStatus = [((NSHTTPURLResponse *)response) statusCode];
-            
-            if(IS_NULL(imgURL) || httpStatus != 200){
-                imgURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://daewoong1.lemp.co.kr/file/%@//thumbnail:timelineimage_%@_.jpg",self.uniqueid,self.uniqueid]];
-                
-            }
-#endif
+
             NSData *cover_data = nil;
             
             
@@ -1874,21 +1904,86 @@
     
     switch (result)
     {
-        case MFMailComposeResultCancelled:
+        case MFMailComposeResultCancelled:{
+            
+            [controller dismissViewControllerAnimated:YES completion:nil];
+        }
             break;
-        case MFMailComposeResultSaved:
+        case MFMailComposeResultSaved:{
+            
+            [controller dismissViewControllerAnimated:YES completion:nil];
+        }
             break;
         case MFMailComposeResultSent:
-            [CustomUIKit popupSimpleAlertViewOK:nil msg:@"메일을 전송하였습니다." con:self];
+        {
+            UIAlertController * view=   [UIAlertController
+                                         alertControllerWithTitle:@""
+                                         message:@""
+                                         preferredStyle:UIAlertControllerStyleActionSheet];
+            
+            UIAlertAction *actionButton;
+            
+            
+            
+            actionButton = [UIAlertAction
+                            actionWithTitle:@"메일을 전송하였습니다."
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [controller dismissViewControllerAnimated:YES completion:nil];
+                                
+                            }];
+            [view addAction:actionButton];
+            
+            
+            
+            
+            
+            [SharedAppDelegate.root anywhereModal:view];
+            
+
+            
+//            [CustomUIKit popupSimpleAlertViewOK:nil msg:@"메일을 전송하였습니다." con:self];
+        }
             break;
         case MFMailComposeResultFailed:
-            [CustomUIKit popupSimpleAlertViewOK:nil msg:@"메일 전송에 실패하였습니다. 잠시후 다시 시도해주세요!" con:self];
+        {
+            UIAlertController * view=   [UIAlertController
+                                         alertControllerWithTitle:@""
+                                         message:@""
+                                         preferredStyle:UIAlertControllerStyleActionSheet];
+            
+            UIAlertAction *actionButton;
+            
+            
+            
+            actionButton = [UIAlertAction
+                            actionWithTitle:@"메일 전송에 실패하였습니다. 잠시후 다시 시도해주세요!"
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [controller dismissViewControllerAnimated:YES completion:nil];
+                                
+                            }];
+            [view addAction:actionButton];
+            
+            
+            
+            
+            
+            [SharedAppDelegate.root anywhereModal:view];
+            
+        }
+//            [CustomUIKit popupSimpleAlertViewOK:nil msg:@"메일 전송에 실패하였습니다. 잠시후 다시 시도해주세요!" con:self];
             break;
-        default:
+        default:{
+            
+            [controller dismissViewControllerAnimated:YES completion:nil];
+        }
             break;
     }
     
-    [controller dismissViewControllerAnimated:YES completion:nil];
+    
     
     //	if(result == MFMailComposeResdismissViewControllerAnimated:YES completion:nil];ltFailed){
     //		UIAlertView *alert=[[UIAlertView alloc] initWithTitle:nil message:@"메일 전송에 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:self cancelButtonTitle:@"확인" otherButtonTitles:nil];
@@ -2170,8 +2265,15 @@
     
     
     
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/pulmuone_mlg_ha.lemp",[SharedAppDelegate readPlist:@"was"]];
@@ -2289,8 +2391,10 @@
         NSString *msg = [NSString stringWithFormat:@"%@ %@",dic[@"name"],dic[@"grade2"]];
     NSArray *texts=[NSArray arrayWithObjects:dic[@"name"], dic[@"grade2"],nil];
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
+        if([texts count]>1){
     [string addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:[msg rangeOfString:texts[1]]];
         [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:[msg rangeOfString:texts[1]]];
+        }
            [lblName setAttributedText:string];
     }
     
@@ -2986,11 +3090,64 @@
     //    size = [lblPosition.text sizeWithFont:lblPosition.font];
     
     
-    if([dic[@"newfield4"] isKindOfClass:[NSArray class]]){
+#ifdef BearTalk
+    
+    if([dic[@"newfield4"]count]>0){
         NSString *positionstring = @"";
         
         for(NSDictionary *pdic in dic[@"newfield4"]){
             
+            
+            
+                positionstring = [positionstring stringByAppendingFormat:@" %@/%@",pdic[@"POS_NAME"],pdic[@"DUTY_NAME"]];
+            
+            if([pdic[@"DEPT_NAME"]length]>0)
+                positionstring = [positionstring stringByAppendingFormat:@" | %@",pdic[@"DEPT_NAME"]];
+            
+            if([pdic[@"COMPANY_NAME"]length]>0)
+                positionstring = [positionstring stringByAppendingFormat:@" | %@",pdic[@"COMPANY_NAME"]];
+            
+            
+            positionstring = [positionstring stringByAppendingString:@"\n"];
+            
+            
+            
+
+        }
+        
+        if([positionstring hasSuffix:@"\n"]){
+            positionstring = [positionstring substringWithRange:NSMakeRange(0,[positionstring length]-2)];
+        }
+        
+        NSLog(@"positionstring %@",positionstring);
+        lblPosition.text = positionstring;
+    }
+    else{
+        
+        
+        NSString *positionstring = @"";
+        if([dic[@"grade2"]length]>0)
+            positionstring = [positionstring stringByAppendingFormat:@" %@",dic[@"grade2"]];
+        
+        if([dic[@"team"]length]>0)
+            positionstring = [positionstring stringByAppendingFormat:@"| %@",dic[@"team"]];
+        
+        if([dic[@"newfield7"]length]>0)
+            positionstring = [positionstring stringByAppendingFormat:@"| %@",dic[@"newfield7"]];
+        
+        
+        NSLog(@"positionstring %@",positionstring);
+        lblPosition.text = positionstring;
+        
+        
+        
+    }
+#else
+    if([dic[@"newfield4"] isKindOfClass:[NSArray class]]){
+        NSString *positionstring = @"";
+        
+        for(NSDictionary *pdic in dic[@"newfield4"]){
+   
             NSString *dcode = pdic[@"deptcode"];
             NSString *pcode = [[ResourceLoader sharedInstance] searchParentCode:dcode];
             
@@ -3011,6 +3168,7 @@
             
             
             
+
         }
         
         if([positionstring hasSuffix:@"\n"]){
@@ -3021,6 +3179,7 @@
         lblPosition.text = positionstring;
     }
     else{
+        
         NSString *pcode = [[ResourceLoader sharedInstance] searchParentCode:dic[@"deptcode"]];
         
         NSString *positionstring = @"";
@@ -3042,7 +3201,7 @@
      
         
     }
-    
+#endif
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
     paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
     NSDictionary *attributes = @{NSFontAttributeName:lblPosition.font, NSParagraphStyleAttributeName:paragraphStyle};
@@ -3251,13 +3410,15 @@
     }
 #endif
     
-    [SharedAppDelegate.root getCoverImage:self.uniqueid view:coverImageView ifnil:@""];
     
 #ifdef BearTalk
     
     [SharedAppDelegate.root getProfileImageWithURL:self.uniqueid ifNil:nil view:coverImageView scale:0];
     
     
+#else
+    
+    [SharedAppDelegate.root getCoverImage:self.uniqueid view:coverImageView ifnil:@""];
     
 #endif
     

@@ -142,8 +142,15 @@
 }
 
 - (void)initNotice:(NSString *)del{
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
@@ -211,6 +218,7 @@
         NSDictionary *resultDic = [operation.responseString objectFromJSONString];
         NSLog(@"resultDic %@",resultDic);
         [SVProgressHUD dismiss];
+        [SharedAppDelegate.root.main setNewNoticeBadge:0];
 #else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
@@ -531,7 +539,8 @@
             
             if(!IS_NULL(dic[@"ALARM_MSG"])){
                 
-                NSString *decoded = [dic[@"ALARM_MSG"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSString *beforedecoded = [dic[@"ALARM_MSG"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+                NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             titleLabel.text = decoded;
             }
         
@@ -1161,7 +1170,8 @@ else //if(section == 1)
 #ifdef BearTalk
     NSLog(@"idx %@ snskey %@ snsname %@",idx,snskey,snsname);
     
-    NSString *decoded = [snsname stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *beforedecoded = [snsname stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+    NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"decoded %@",decoded);
     DetailViewController *contentsViewCon = [[DetailViewController alloc] init];//WithViewCon:self]autorelease];
     SharedAppDelegate.root.home.title = decoded;
@@ -1198,8 +1208,15 @@ else //if(section == 1)
     
     NSLog(@"loadDetail");
     
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 	didRequest = YES;
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;

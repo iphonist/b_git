@@ -227,7 +227,7 @@
 //        [[UITabBar appearance] setSelectedImageTintColor:RGB(255, 112, 58)];
 //        [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:RGB(255, 112, 58), NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
         
-        communicate.viewControllers = @[self.chatList, self.recent];
+//        communicate.viewControllers = @[self.chatList, self.recent];
    
 #elif Hicare
         
@@ -502,7 +502,7 @@
     mainTabBar.viewControllers = @[[mainTabBar setViewController:ecmdmain],
                                    [mainTabBar setViewController:main],
                                    [mainTabBar setViewController:allContact],
-                                   [mainTabBar setViewController:communicate]];
+                                   [mainTabBar setViewController:chatList]];
     
     
     NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"]; // [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
@@ -520,7 +520,7 @@
         [main.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_social_urusa_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [allContact.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_adress_urusa_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         
-        [communicate.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_chat_urusa_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [chatList.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_chat_urusa_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         
     }
     else if([colorNumber isEqualToString:@"3"]){
@@ -531,7 +531,7 @@
         [main.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_social_ezn6_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [allContact.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_adress_ezn6_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         
-        [communicate.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_chat_ezn6_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [chatList.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_chat_ezn6_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         
     }else if([colorNumber isEqualToString:@"4"]){
         
@@ -541,7 +541,7 @@
         [main.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_social_impactamin_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [allContact.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_adress_impactamin_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         
-        [communicate.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_chat_impactamin_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [chatList.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_chat_impactamin_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         
     }
     else {
@@ -551,13 +551,13 @@
         [main.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_social_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [allContact.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_adress_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         
-        [communicate.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_chat_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        [chatList.navigationController.tabBarItem setSelectedImage:[[UIImage imageNamed:@"menubar_btn_chat_on.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         
     }
     
     [main.navigationController.tabBarItem setImage:[[UIImage imageNamed:@"menubar_btn_social_off.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     [allContact.navigationController.tabBarItem setImage:[[UIImage imageNamed:@"menubar_btn_adress_off.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-    [communicate.navigationController.tabBarItem setImage:[[UIImage imageNamed:@"menubar_btn_chat_off.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    [chatList.navigationController.tabBarItem setImage:[[UIImage imageNamed:@"menubar_btn_chat_off.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
     
     
@@ -582,7 +582,9 @@
     pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
     pan.cancelsTouchesInView = YES;
     [main.view addGestureRecognizer:pan];
-
+    
+    [main refreshTimeline];
+    
     
 #else
     mainTabBar.viewControllers = @[[mainTabBar setViewController:person],
@@ -1032,10 +1034,13 @@
 //}
 
 
-- (void)settingJoinGroup:(NSDictionary *)dic add:(BOOL)add{
+- (void)settingJoinGroup:(NSDictionary *)dic add:(BOOL)add con:(UIViewController *)con{
     
+    if(con == nil)
+        con = main;
     NSLog(@"dic %@",dic);
     NSLog(@"self.home %@",self.home);
+    NSLog(@"con %@",con);
     [self.home.timeLineCells removeAllObjects];
     self.home.timeLineCells = nil;
     [self.home.myTable reloadData];
@@ -1164,6 +1169,13 @@
     
     
 #if defined(GreenTalk) || defined(GreenTalkCustomer)
+#elif BearTalk
+    if(add){
+        
+    }
+    else{
+    [self getGroupInfo:dic[@"groupnumber"] regi:dic[@"accept"] add:NO];
+    }
 #else
     if(add){
 //        [home getTimeline:@"" target:@"" type:@"2" groupnum:[dicobjectForKey:@"groupnumber"]];
@@ -1260,10 +1272,10 @@
                 NSLog(@"home");
             [self.home setGroup:dic regi:dic[@"accept"]];
             }
-            NSLog(@"main.navigationController.topViewController %@",main.navigationController.topViewController);
+            NSLog(@"main.navigationController.topViewController %@",con.navigationController.topViewController);
             dispatch_async(dispatch_get_main_queue(), ^{
-            if(![main.navigationController.topViewController isKindOfClass:[self.home class]])
-            [main.navigationController pushViewController:self.home animated:YES];
+            if(![con.navigationController.topViewController isKindOfClass:[self.home class]])
+            [con.navigationController pushViewController:self.home animated:YES];
             });
         }
         else{
@@ -1300,7 +1312,7 @@
                 greenBoard.title = self.home.title;
                 [greenBoard setSelectedIndex:0];
                 
-                NSLog(@"main.navigationController.topViewController %@",main.navigationController.topViewController);
+                NSLog(@"con.navigationController.topViewController %@",con.navigationController.topViewController);
                 
                 
          
@@ -1310,18 +1322,18 @@
 #ifdef Batong
                 NSLog(@"self.home %@",self.home);
                 dispatch_async(dispatch_get_main_queue(), ^{
-                if(![main.navigationController.topViewController isKindOfClass:[self.home class]]){
+                if(![con.navigationController.topViewController isKindOfClass:[self.home class]]){
                     NSLog(@"self.home push %@",self.home);
-                    NSLog(@"push main %@",main);
-                [main.navigationController pushViewController:self.home animated:YES];
+                    NSLog(@"push con %@",con);
+                [con.navigationController pushViewController:self.home animated:YES];
                 }
                 });
 #else
                 dispatch_async(dispatch_get_main_queue(), ^{
-                if(![main.navigationController.topViewController isKindOfClass:[greenBoard class]]){
+                if(![con.navigationController.topViewController isKindOfClass:[greenBoard class]]){
 //                    greenBoard.hidesBottomBarWhenPushed = YES;
 
-                    [main.navigationController pushViewController:greenBoard animated:YES];
+                    [con.navigationController pushViewController:greenBoard animated:YES];
                 }
                 });
 #endif
@@ -1329,18 +1341,18 @@
             else if([dic[@"grouptype"] isEqualToString:@"0"]){
                 NSLog(@"home");
                 
-                [self cmdParentViewController:main];
+                [self cmdParentViewController:con];
                 NSLog(@"0 greenBoard %@ %@",greenBoard,self.home);
                 
                 if(!add){
                 [self.home setGroup:dic regi:dic[@"accept"]];
                 }
                 
-                NSLog(@"main.navigationController.topViewController %@",main.navigationController.topViewController);
+                NSLog(@"con.navigationController.topViewController %@",con.navigationController.topViewController);
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                if(![main.navigationController.topViewController isKindOfClass:[self.home class]])
-                [main.navigationController pushViewController:self.home animated:YES];
+                if(![con.navigationController.topViewController isKindOfClass:[self.home class]])
+                [con.navigationController pushViewController:self.home animated:YES];
                 });
 
             }
@@ -1352,8 +1364,8 @@
   
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(![main.navigationController.topViewController isKindOfClass:[self.home class]])
-            [main.navigationController pushViewController:self.home animated:YES];
+        if(![con.navigationController.topViewController isKindOfClass:[self.home class]])
+            [con.navigationController pushViewController:self.home animated:YES];
     });
 
 #endif
@@ -1975,13 +1987,13 @@
     //    [_leftController addUnJoinGroup:dic];
     //    [_rightController setGroup:dic regi:@"N"];
 }
-- (void)fromUnjoinToJoin:(NSDictionary *)dic{
+- (void)fromUnjoinToJoin:(NSDictionary *)dic con:(UIViewController *)con{
     //    [_leftController removeJoinGroup:dic];
     NSLog(@"fromUnjoinToJoin dic %@",dic);
 //    [(MenuViewController*)_leftController fromUnjoinToJoin:dic];
     [member setRegi:@"Y"];
     [self setGroupDic:dic regi:@"Y"];
-    [self settingJoinGroup:dic add:YES];
+    [self settingJoinGroup:dic add:YES con:con];
     //    [_leftController addJoinGroup:dic];
     //    [_rightController setGroup:dic regi:@"Y"];
 }

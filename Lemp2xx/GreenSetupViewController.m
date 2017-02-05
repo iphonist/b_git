@@ -349,7 +349,7 @@ return self;
     
 #ifdef BearTalk
     // from server, 3:2 scale
-    [self tempShowDmview];
+    [self tempShowDmviewUI];
     
 #elif Batong
     
@@ -369,26 +369,91 @@ return self;
 }
 
 
+- (void)tempShowDmviewUI{
+    NSLog(@"tempShowDmviewUI");
+    
+    
+    
+    
+    scrollView = [[UIScrollView alloc]init];
+    scrollView.backgroundColor = [UIColor clearColor];
+    scrollView.pagingEnabled = YES;
+    scrollView.delegate = self;
+    scrollView.pagingEnabled = YES;
+    
+    
+    
+    [self.view addSubview:scrollView];
+    
+    paging = [[UIPageControl alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-VIEWY-16, self.view.frame.size.width, 6)];
+    //    paging.backgroundColor = [UIColor grayColor];
+    
+    paging.currentPage = 0;
+    
+    NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"]; // [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+    UIColor *themeColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+    
+    paging.pageIndicatorTintColor = RGB(239, 239, 239);//[UIColor lightGrayColor];
+    paging.currentPageIndicatorTintColor = themeColor;
+    
+    paging.transform = CGAffineTransformMakeScale(0.85, 0.85);
+    //    [paging setCurrentPage:0];
+    
+    [self.view addSubview:paging];
+    //    [paging release];
+    
+    [self tempShowDmview];
+
+}
 - (void)tempShowDmview{
     
-        
-        
-        NSLog(@"showTestWithDM");
+    NSLog(@"showDmview");
+    
+
+    
+    //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/adimage",BearTalkBaseUrl];
+    NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
-    float sizeWidth = self.view.frame.size.width - [SharedFunctions scaleFromWidth:32];
+    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    client.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    
+    
+    NSDictionary *parameters = nil;
+    
+    
+    
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:nil];
+    
+    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        NSLog(@"resultDic %@",[operation.responseString objectFromJSONString]);
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            
+            if(imageArray){
+                //        [imageArray release];
+                imageArray = nil;
+            }
+            
+            imageArray = [[NSMutableArray alloc]initWithArray:[operation.responseString objectFromJSONString]];
+            
+        float sizeWidth = self.view.frame.size.width - [SharedFunctions scaleFromWidth:32];
         float sizeHeight = sizeWidth/3*2;
-    
-    NSLog(@"sizeWidth %f height %f",sizeWidth,sizeHeight);
-        int page = 3;
-    
-        scrollView = [[UIScrollView alloc]init];
-        scrollView.backgroundColor = [UIColor clearColor];
-        scrollView.frame = CGRectMake(0, self.view.frame.size.height - sizeHeight - 26 - VIEWY, self.view.frame.size.width, sizeHeight);
-        scrollView.contentSize = CGSizeMake(scrollView.frame.size.width*page, scrollView.frame.size.height);
-        scrollView.pagingEnabled = YES;
-        scrollView.delegate = self;
         
+        NSLog(@"sizeWidth %f height %f",sizeWidth,sizeHeight);
+        
+            scrollView.frame = CGRectMake(0, self.view.frame.size.height - sizeHeight - 26, self.view.frame.size.width, sizeHeight);
+            
+            int page = (int)[[operation.responseString objectFromJSONString]count];
+            NSLog(@"page %d",page);
+            scrollView.contentSize = CGSizeMake(scrollView.frame.size.width*page, scrollView.frame.size.height);
+        paging.numberOfPages = page;
         
         for(int i = 0; i < page; i++){
             
@@ -398,13 +463,10 @@ return self;
             inImageView = [[UIImageView alloc]init];
             inImageView.userInteractionEnabled = YES;
             inImageView.frame = CGRectMake(self.view.frame.size.width*i+[SharedFunctions scaleFromWidth:16], 0, sizeWidth, sizeHeight);
-            NSString *commercial_string = [SharedAppDelegate readPlist:@"commercial_image"];
-            NSURL *saved_imgURL = [ResourceLoader resourceURLfromJSONString:commercial_string num:0 thumbnail:NO];
-            
-            NSDictionary *dict = [commercial_string objectFromJSONString];
-            NSArray *dict_filename = dict[@"filename"];
-            
-            NSString *filePath = [NSString stringWithFormat:@"%@/Library/Caches/%@.JPG",NSHomeDirectory(),dict_filename[0]];
+            NSString *commercial_string = [operation.responseString objectFromJSONString][i];
+            NSURL *saved_imgURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BearTalkBaseUrl,commercial_string]];
+            NSLog(@"saved_imgURL %@",saved_imgURL);
+            NSString *filePath = [NSString stringWithFormat:@"%@/Library/Caches/%@.JPG",NSHomeDirectory(),commercial_string];
             NSLog(@"filePath %@",filePath);
             
             
@@ -424,21 +486,21 @@ return self;
                 NSLog(@"file NOT Exists %@",saved_imgURL);
                 
                 [inImageView sd_setImageWithPreviousCachedImageWithURL:saved_imgURL andPlaceholderImage:nil options:SDWebImageRetryFailed|SDWebImageLowPriority|SDWebImageCacheMemoryOnly
-                                                       progress:^(NSInteger a, NSInteger b) {
-                                                       } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl) {
-                                                           NSLog(@"setImage Error %@",[error description]);
-                                                           if (image != nil) {
-                                                               
-                                                               [inImageView setImage:image];
-                                                           }
-                                                           
-                                                           
-                                                           [HTTPExceptionHandler handlingByError:error];
-                                                           
-                                                       }];
+                                                              progress:^(NSInteger a, NSInteger b) {
+                                                              } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl) {
+                                                                  NSLog(@"setImage Error %@",[error description]);
+                                                                  if (image != nil) {
+                                                                      
+                                                                      [inImageView setImage:image];
+                                                                  }
+                                                                  
+                                                                  
+                                                                  [HTTPExceptionHandler handlingByError:error];
+                                                                  
+                                                              }];
                 
             }
-
+            
             
             inImageView.userInteractionEnabled = YES;
             
@@ -453,28 +515,21 @@ return self;
             [scrollView addSubview:inImageView];
             //        [inImageView release];
         }
+        }
         
         
-        [self.view addSubview:scrollView];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        paging = [[UIPageControl alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height-VIEWY-16, self.view.frame.size.width, 6)];
-        //    paging.backgroundColor = [UIColor grayColor];
+        NSLog(@"FAIL : %@",operation.error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [HTTPExceptionHandler handlingByError:error];
         
-        paging.numberOfPages = page;
-        paging.currentPage = 0;
+    }];
     
-    NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"]; // [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-    UIColor *themeColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-    
-    paging.pageIndicatorTintColor = RGB(239, 239, 239);//[UIColor lightGrayColor];
-    paging.currentPageIndicatorTintColor = themeColor;
-    
-        paging.transform = CGAffineTransformMakeScale(0.85, 0.85);
-        //    [paging setCurrentPage:0];
+    [operation start];
+
         
-        [self.view addSubview:paging];
-        //    [paging release];
-        
+    
     
     
         
@@ -518,8 +573,14 @@ return self;
     
     NSLog(@"showDmview");
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/pulmuone_dm.lemp",[SharedAppDelegate readPlist:@"was"]];

@@ -384,6 +384,7 @@
 	}
     
 #endif
+    NSLog(@"contactList %d",[[ResourceLoader sharedInstance].contactList count]);
     NSLog(@"subpeoplelist %d",[subPeopleList count]);
     
     [myTable reloadData];

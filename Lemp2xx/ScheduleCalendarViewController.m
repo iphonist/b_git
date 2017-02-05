@@ -729,8 +729,15 @@
 {
     NSLog(@"getTimelineFromTimeline");
     
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     needsRefresh = NO;
     
     //    if([time isEqualToString:@"0"])
@@ -823,8 +830,14 @@
 {
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
 	if ([month length] < 1) {
 		needsRefresh = NO;

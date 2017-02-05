@@ -1212,12 +1212,8 @@ const char paramNumber;
             
             [self cancel];
             NSLog(@"operation.responseString  %@",operation.responseString );
-            //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
+         
             
-            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
-                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
-                
-            }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self.navigationItem.rightBarButtonItem setEnabled:YES];
@@ -1272,11 +1268,8 @@ const char paramNumber;
             [self cancel];
             NSLog(@"operation.responseString  %@",operation.responseString );
             //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
-            
-            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
-                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
-                
-            }
+        
+               
             
            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                [self.navigationItem.rightBarButtonItem setEnabled:YES];
@@ -1320,10 +1313,8 @@ const char paramNumber;
              NSLog(@"operation.responseString  %@",operation.responseString );
              //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
              
-             if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
-                 NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
-                 
-             }
+          
+            
              
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self.navigationItem.rightBarButtonItem setEnabled:YES];
@@ -1354,8 +1345,14 @@ const char paramNumber;
     
 #endif
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     [self.navigationItem.rightBarButtonItem setEnabled:NO];
 //    NSString *newString = [contentsTextView.text stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -1548,8 +1545,15 @@ const char paramNumber;
 
 
 - (void)modifyPost:(NSString *)idx modify:(int)type msg:(NSString *)msg{
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/write/modifytimeline.lemp",[SharedAppDelegate readPlist:@"was"]];

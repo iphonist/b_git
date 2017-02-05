@@ -406,7 +406,34 @@
         
         scrollView.contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(imageBackgroundView.frame)+10);
       
-            NSURL *imageUrl = [ResourceLoader resourceURLfromJSONString:rk num:0 thumbnail:NO];
+  
+#ifdef BearTalk
+       
+        
+           if(viewTag == kModifyGroupAll){
+               
+               for(NSDictionary *adic in SharedAppDelegate.root.main.myList){
+                   if([adic[@"groupnumber"]isEqualToString:groupnum]){
+                       NSLog(@"adic %@",adic);
+                       NSString *urlString = [NSString stringWithFormat:@"%@%@",BearTalkBaseUrl,adic[@"groupimage"]];
+                       NSURL *imageUrl = [NSURL URLWithString:urlString];
+                       NSLog(@"imageUrl %@",imageUrl);
+                       [coverImage sd_setImageWithPreviousCachedImageWithURL:imageUrl andPlaceholderImage:nil options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b)  {
+                           
+                           
+                       } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl) {
+                           NSLog(@"fail %@",[error localizedDescription]);
+                           [HTTPExceptionHandler handlingByError:error];
+                           
+                       }];
+                   }
+               }
+           }
+        
+#else
+        NSURL *imageUrl = [ResourceLoader resourceURLfromJSONString:rk num:0 thumbnail:NO];
+        NSLog(@"rk %@",rk);
+        NSLog(@"imageUrl %@",imageUrl);
         
         if(imageUrl != nil){
             NSLog(@"imageUrl %@",imageUrl);
@@ -420,6 +447,12 @@
                 
             }];
         }
+        
+#endif
+        
+        
+        
+        
         
         int page = 50;
 #ifdef BearTalk
@@ -456,9 +489,19 @@
                 //        [imageArray addObject:@{@"image" : img, @"index" : [NSString stringWithFormat:@"%d",index]}];
                 //        imageView.image = img;
                 imgView.image = img;
+#ifdef BearTalk
+                
+                if(i == 1){
+                    if(viewTag != kModifyGroupAll){
+                        coverImage.image = img;
+                    }
+                }
+#else
                 if(i == 1 && imageUrl == nil){
                     coverImage.image = img;
                 }
+#endif
+                
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 
@@ -1808,8 +1851,15 @@ else
 }
 
 - (void)setGroupInfo:(NSString *)num{
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
 //    [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
     
@@ -4184,7 +4234,7 @@ else
         }
         else
         {
-            [SharedAppDelegate.root createGroupTimeline:members name:tf.text sub:subtf.text image:selectedImageData imagenumber:0 manage:@""];
+            [SharedAppDelegate.root createGroupTimeline:members name:tf.text sub:subtf.text image:selectedImageData imagenumber:0 manage:@"" con:nil];
             [self dismissViewControllerAnimated:YES completion:nil];
         }
         
@@ -4331,8 +4381,14 @@ else
 - (void)setGroupInfo:(NSString *)num{
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
 //    [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
     

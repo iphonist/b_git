@@ -271,7 +271,8 @@
         NSLog(@"operation.responseString  %@",operation.responseString );
         //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
         
-        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
             NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             
             if(imageString)
@@ -311,8 +312,15 @@
     [self directMsgWithBeartalk:idx];
     return;
 #endif
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
     
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
@@ -380,7 +388,8 @@
     
     
 #ifdef BearTalk
-    NSString *decoded = [dic[@"MSG"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *beforedecoded = [dic[@"MSG"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+    NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     contentsTextView.text = decoded;
     [time performSelectorOnMainThread:@selector(setText:) withObject:[NSString formattingDate:[NSString stringWithFormat:@"%lli",[dic[@"WRITE_DATE"]longLongValue]/1000] withFormat:@"yyyy.MM.dd HH:mm:ss"] waitUntilDone:NO];
 #else
@@ -441,7 +450,7 @@
                  width = 140;
                  height = 140;
             }
-            NSString *imgUrl= [NSString stringWithFormat:@"%@/api/file/%@/thumb",BearTalkBaseUrl,imageArray[i][@"FILE_KEY"]];
+            NSString *imgUrl= [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,imageArray[i][@"FILE_KEY"]];
             
             NSLog(@"sizeDic %f %f",width,height);
             CGFloat imageScale = 0.0f;
@@ -1005,7 +1014,9 @@
         NSLog(@"operation.responseString  %@",operation.responseString );
         //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
         
-        if([[operation.responseString objectFromJSONString] count]>0){
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             
             
@@ -1116,14 +1127,24 @@
     
     NSLog(@"dic %@",dic);
     
+#ifdef BearTalk
+        [SharedAppDelegate.root.chatView socketConnect];
+#endif
     [SharedAppDelegate.root.chatList setMemoValue:contentsTextView.text];
     
     [SharedAppDelegate.root pushChatView];//:self];
     if([dic[@"rtype"] isEqualToString:@"3"] || [dic[@"rtype"] isEqualToString:@"4"]){
         [SharedAppDelegate.root.chatView settingRoomWithName:dic[@"names"] uid:dic[@"uids"] type:dic[@"rtype"] number:dic[@"newfield"]];
         [SharedAppDelegate.root.chatView settingRk:dic[@"roomkey"] sendMemo:contentsTextView.text];
+        
+        
+#ifdef BearTalk
+        
+        [SharedAppDelegate.root getRoomWithRk:dic[@"roomkey"] number:@"" sendMemo:contentsTextView.text modal:NO];
+#endif
     }
     else if([dic[@"rtype"] isEqualToString:@"1"]){
+     
         NSMutableArray *memberArray = (NSMutableArray *)[dic[@"uids"] componentsSeparatedByString:@","];
         NSLog(@"memberarray %@",memberArray);
         for(int i = 0; i < [memberArray count]; i++){
@@ -1145,8 +1166,14 @@
             nameStr = @"대화상대없음";
         [SharedAppDelegate.root.chatView settingRoomWithName:nameStr uid:dic[@"uids"] type:dic[@"rtype"] number:dic[@"newfield"]];
         [SharedAppDelegate.root.chatView settingRk:dic[@"roomkey"] sendMemo:contentsTextView.text];
+        
+        
+#ifdef BearTalk
+        
+        [SharedAppDelegate.root getRoomWithRk:dic[@"roomkey"] number:@"" sendMemo:contentsTextView.text modal:NO];
+#endif
     }
-    else if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"5"]){
+    else if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"5"] || [dic[@"rtype"]isEqualToString:@"S"]){
         
         
         NSString *grouproomname = dic[@"names"];

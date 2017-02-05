@@ -293,7 +293,14 @@ const char paramNumber;
     
         if(indexPath.row == 0){
             onOffSwitch.hidden = YES;
+#ifdef BearTalk
+            
+            NSString *beforedecoded = [dic[@"SNS_NAME"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+            NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            titleLabel.text = decoded;
+#else
         titleLabel.text = dic[@"groupname"];
+#endif
         newContentLabel.text = @"";
         newReplyLabel.text = @"";
         newContentButton.hidden = YES;
@@ -304,7 +311,9 @@ const char paramNumber;
             
         }
         else{
-        
+            
+            NSString *notice_new;
+            NSString *notice_reply;
 #ifdef BearTalk
         
         onOffSwitch.hidden = NO;
@@ -318,7 +327,16 @@ const char paramNumber;
             newContentOnOffLabel.hidden = YES;
             newReplyOnOffLabel.hidden = YES;
             
-            if([dic[@"notice_new"]isEqualToString:@"0"]){
+            notice_new = @"1";
+            
+            for(NSString *ruid in dic[@"SNS_CONTS_ALARM_EXCEPT_MEMBER"]){
+                if([ruid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+                    notice_new = @"0";
+                    break;
+                }
+            }
+            
+            if([notice_new isEqualToString:@"0"]){
                 
                 [onOffSwitch setOn:NO];
             }
@@ -340,7 +358,18 @@ const char paramNumber;
             newReplyOnOffLabel.hidden = NO;
          
             
-            if([dic[@"notice_reply"]isEqualToString:@"0"]){
+            notice_reply = @"1";
+            
+            for(NSString *cuid in dic[@"SNS_REPLY_ALARM_EXCEPT_MEMBER"]){
+                if([cuid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+                    notice_reply = @"0";
+                    break;
+                }
+                
+            }
+            
+            
+            if([notice_reply isEqualToString:@"0"]){
                 
                 [onOffSwitch setOn:NO];
             }
@@ -354,6 +383,9 @@ const char paramNumber;
             onOffSwitch.hidden = NO;
             
 #else
+            notice_new = dic[@"notice_new"];
+            notice_reply = dic[@"notice_reply"];
+            
         onOffSwitch.hidden = YES;
         titleLabel.text = @"";
         newContentLabel.text = NSLocalizedString(@"newpost_alert", @"newpost_alert");
@@ -365,40 +397,28 @@ const char paramNumber;
         newContentButton.titleLabel.text = [NSString stringWithFormat:@"%d",(int)indexPath.section];
         newReplyButton.titleLabel.text = [NSString stringWithFormat:@"%d",(int)indexPath.section];
             
-            NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"]; // [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-        if([dic[@"notice_new"]isEqualToString:@"0"]){
+//            NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"]; // [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+        if([notice_new isEqualToString:@"0"]){
             newContentOnOffLabel.text = @"OFF";
             [newContentButton setBackgroundImage:[[UIImage imageNamed:@"imageview_roundingbox_gray.png"]stretchableImageWithLeftCapWidth:20 topCapHeight:10] forState:UIControlStateNormal];
-#ifdef BearTalk
-            [newContentButton setBackgroundImage:nil forState:UIControlStateNormal];
-            newContentButton.backgroundColor = [UIColor lightGrayColor];
-#endif
+
             
         }
         else{
             newContentOnOffLabel.text = @"ON";
             [newContentButton setBackgroundImage:[[UIImage imageNamed:@"imageview_roundingbox_green.png"]stretchableImageWithLeftCapWidth:20 topCapHeight:10] forState:UIControlStateNormal];
-#ifdef BearTalk
-            [newContentButton setBackgroundImage:nil forState:UIControlStateNormal];
-            newContentButton.backgroundColor =  [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-#endif
+
             
         }
-        if([dic[@"notice_reply"]isEqualToString:@"0"]){
+        if([notice_reply isEqualToString:@"0"]){
             newReplyOnOffLabel.text = @"OFF";
             [newReplyButton setBackgroundImage:[[UIImage imageNamed:@"imageview_roundingbox_gray.png"]stretchableImageWithLeftCapWidth:20 topCapHeight:10] forState:UIControlStateNormal];
-#ifdef BearTalk
-            [newContentButton setBackgroundImage:nil forState:UIControlStateNormal];
-            newReplyButton.backgroundColor = [UIColor lightGrayColor];
-#endif
+
         }
         else{
             newReplyOnOffLabel.text = @"ON";
             [newReplyButton setBackgroundImage:[[UIImage imageNamed:@"imageview_roundingbox_green.png"]stretchableImageWithLeftCapWidth:20 topCapHeight:10] forState:UIControlStateNormal];
-#ifdef BearTalk
-            [newReplyButton setBackgroundImage:nil forState:UIControlStateNormal];
-            newReplyButton.backgroundColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-#endif
+
             
         }
 #endif
@@ -454,7 +474,13 @@ const char paramNumber;
         
         NSDictionary *dic = myList[indexPath.section];
         NSLog(@"newonoff %@",dic);
-        
+    NSString *number;
+#ifdef BearTalk
+    number = dic[@"SNS_KEY"];
+#else
+    
+    number = dic[@"groupnumber"];
+#endif
         NSString *new_onoff = @"";
         NSString *reply_onoff = @"";
         
@@ -463,7 +489,7 @@ const char paramNumber;
                 new_onoff = @"1";
             else
                 new_onoff = @"0";
-            [self modifyGroupWithNumber:dic[@"groupnumber"] onoff:new_onoff reply:reply_onoff];
+            [self modifyGroupWithNumber:number onoff:new_onoff reply:reply_onoff];
         }
         else if(indexPath.row == 2){
             
@@ -471,7 +497,7 @@ const char paramNumber;
                 reply_onoff = @"1";
             else
                 reply_onoff = @"0";
-            [self modifyGroupWithNumber:dic[@"groupnumber"] onoff:new_onoff reply:reply_onoff];
+            [self modifyGroupWithNumber:number onoff:new_onoff reply:reply_onoff];
         }
 //    }
 }
@@ -539,10 +565,140 @@ const char paramNumber;
     [self getPushInfo:YES];
 }
 
-
-- (void)modifyGroupWithNumber:(NSString *)num onoff:(NSString *)new_onoff reply:(NSString *)reply_onoff{
+- (void)modifyGroupWithBearTalk:(NSString *)num onoff:(NSString *)new_onoff reply:(NSString *)reply_onoff{
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+    
+    NSLog(@"new on %@ reply on %@",new_onoff,reply_onoff);
+    //    if(publicGroup)
+    //        grouptype = @"0";
+    //        else
+    //            grouptype = @"1";
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
+    //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
+    
+    NSString *urlString;
+    
+    
+    NSString *type;
+    if([new_onoff length]>0){
+        if([new_onoff isEqualToString:@"0"]){
+            type = @"i";
+        }
+        else{
+            
+            type = @"d";
+        }
+        urlString = [NSString stringWithFormat:@"%@/api/sns/except/conts/",BearTalkBaseUrl];
+    }
+    else{
+        if([reply_onoff isEqualToString:@"0"]){
+            type = @"i";
+        }
+        else{
+            
+            type = @"d";
+        }
+        
+        urlString = [NSString stringWithFormat:@"%@/api/sns/except/reply/",BearTalkBaseUrl];
+    }
+
+    
+    NSURL *baseUrl = [NSURL URLWithString:urlString];
+    
+    
+    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    client.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    
+    NSDictionary *parameters;
+    NSString *method;
+    
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",
+                  num,@"snskey",type,@"type",nil];
+    
+    method = @"PUT";
+
+    
+    
+    NSLog(@"parameters %@",parameters);
+    
+    
+    //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/group/modifygroup.lemp?" parameters:parameters];
+    
+    NSError *serializationError = nil;
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:method URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //          [MBProgressHUD hideHUDForView:SharedAppDelegate.window animated:YES];
+        [SVProgressHUD dismiss];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+
+        
+        
+        
+        NSString *msg = @"";
+        if([new_onoff isEqualToString:@"1"] || [reply_onoff isEqualToString:@"1"]){
+            msg = @"알림을 켰습니다.";
+            
+        }
+        else if([new_onoff isEqualToString:@"0"] || [reply_onoff isEqualToString:@"0"]){
+            msg = @"알림을 껐습니다.";
+        }
+        
+        
+        
+        OLGhostAlertView *toast = [[OLGhostAlertView alloc] initWithTitle:msg];
+        
+        toast.position = OLGhostAlertViewPositionCenter;
+        
+        toast.style = OLGhostAlertViewStyleDark;
+        toast.timeout = 1.0;
+        toast.dismissible = YES;
+        [toast show];
+        //                [toast release];
+        
+        [self getPushInfo:NO];
+
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        //          [MBProgressHUD hideHUDForView:SharedAppDelegate.window animated:YES];
+        [SVProgressHUD dismiss];
+        NSLog(@"FAIL : %@",operation.error);
+        [HTTPExceptionHandler handlingByError:error];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        [alert show];
+        
+    }];
+    
+    [operation start];
+    
+}
+
+- (void)modifyGroupWithNumber:(NSString *)num onoff:(NSString *)new_onoff reply:(NSString *)reply_onoff{
+    
+#ifdef BearTalk
+    [self modifyGroupWithBearTalk:num onoff:new_onoff reply:reply_onoff];
+    return;
+#endif
+    
+#ifdef BearTalk
+#else
+    if([[SharedAppDelegate readPlist:@"was"]length]<1)
+        return;
+#endif
+    
+    
 //    [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
     
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
@@ -634,8 +790,14 @@ const char paramNumber;
     
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
         
 //        [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
     
@@ -644,7 +806,12 @@ const char paramNumber;
 
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/group/grouppushinfo.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString;
+#ifdef BearTalk
+    urlString = [NSString stringWithFormat:@"%@/api/sns/alllist",BearTalkBaseUrl];
+#else
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/group/grouppushinfo.lemp",[SharedAppDelegate readPlist:@"was"]];
+#endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -655,6 +822,18 @@ const char paramNumber;
     
 //        AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
+#ifdef BearTalk
+    
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                //                                [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
+                                [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
+    NSLog(@"parameters %@",parameters);
+    
+    
+    NSError *serializationError = nil;
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    
+#else
         NSDictionary *param = [NSDictionary dictionaryWithObjectsAndKeys:[ResourceLoader sharedInstance].myUID,@"uid",
                                [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
                                nil];
@@ -665,7 +844,7 @@ const char paramNumber;
         
     
     NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parametersJson:param key:@"param"];
-//        NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/group/grouppushinfo.lemp" parametersJson:param key:@"param"];
+#endif
         NSLog(@"request %@",request);
         AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             //            [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -673,14 +852,22 @@ const char paramNumber;
             [SVProgressHUD dismiss];
             NSLog(@"svprogress %@",[SVProgressHUD isVisible]?@"YES":@"NO");
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+#ifdef BearTalk
+            
+            NSLog(@"resultDic %@",[operation.responseString objectFromJSONString]);
+            if([[operation.responseString objectFromJSONString] isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString] count]>0){
+                [myList setArray:[operation.responseString objectFromJSONString]];
+            }
+            
+            [myTable reloadData];
+#else
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
             NSLog(@"resultDic %@",resultDic);
             NSString *isSuccess = resultDic[@"result"];
             if ([isSuccess isEqualToString:@"0"]) {
                 [myList setArray:resultDic[@"groupinfo"]];
                 
-#ifdef BearTalk
-#else
+
                 BOOL allNew = NO;
                 BOOL allNewReply = NO;
                 for(NSDictionary *dic in myList) {
@@ -734,7 +921,7 @@ const char paramNumber;
 //#endif
                     
                 }
-#endif
+
                 [myTable reloadData];
             }
             else {
@@ -747,7 +934,7 @@ const char paramNumber;
             
             
             
-            
+          #endif
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             

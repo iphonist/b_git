@@ -39,6 +39,7 @@ typedef enum {
 - (CGPoint)centerForItemCenter:(CGPoint)itemCenter;
 
 - (void)setTitleColor:(UIColor*)color;
+- (void)setAnothertitle:(NSString *)t;
 
 @end
 

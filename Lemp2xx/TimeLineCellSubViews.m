@@ -888,10 +888,10 @@
     
 #ifdef BearTalk
     
-    NSDictionary *adic = [SharedAppDelegate.root searchContactDictionary:self.profileImage];
+    NSDictionary *adic = IS_NULL(dic)?[SharedAppDelegate.root searchContactDictionary:self.profileImage]:dic;
     [nameLabel setText:adic[@"name"]];
-    [positionLabel setText:adic[@"grade2"]];
-//    [positionLabel setText:[NSString stringWithFormat:@"%@ | %@",adic[@"position"],adic[@"deptname"]]];
+//    [positionLabel setText:adic[@"grade2"]];
+    [positionLabel setText:[NSString stringWithFormat:@"%@ | %@",adic[@"grade2"],adic[@"team"]]];
 
     
     [SharedAppDelegate.root getProfileImageWithURL:self.profileImage ifNil:@"profile_photo.png" view:profileImageView scale:24];
@@ -2952,99 +2952,8 @@
     
     
 }
-- (void)regiGroup:(id)sender{//:(NSString *)member name:(NSString *)name sub:(NSString *)sub image:(NSString *)img public:(BOOL)publicGroup{
-    
-    if([[SharedAppDelegate readPlist:@"was"]length]<1)
-        return;
-    [accept setEnabled:NO];
-    [deny setEnabled:NO];
-    
-    NSString *pathString = [NSString stringWithFormat:@"%@%@",self.contentDic[@"apidir"],self.contentDic[@"apiname"]];
-    NSString *urlString = [NSString stringWithFormat:@"https://%@%@",[SharedAppDelegate readPlist:@"was"],pathString];
-    NSURL *baseUrl = [NSURL URLWithString:urlString];
-    
-    
-    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
-    client.responseSerializer = [AFHTTPResponseSerializer serializer];
-    
 
-//    AFHTTPClient *client = [[[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]]autorelease];
-    NSArray *dicArray = self.contentDic[@"answerinfo"];
-    NSLog(@"dicArray %@",dicArray);
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];// = [NSDictionary dictionaryWithObjectsAndKeys:
-    //                                [NSString stringWithFormat:@"%d",[sender tag]],@"answer",[ResourceLoader sharedInstance].myUID,@"uid",
-    //                                [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
-    //                                [[dicArrayobjectatindex:0]objectForKey:@"value"],[[dicArrayobjectatindex:0]objectForKey:@"key"],
-    //                                [[dicArrayobjectatindex:1]objectForKey:@"value"],[[dicArrayobjectatindex:1]objectForKey:@"key"],
-    //                                nil];
-    [parameters setObject:[NSString stringWithFormat:@"%d",(int)[sender tag]] forKey:@"answer"];
-    [parameters setObject:[ResourceLoader sharedInstance].myUID forKey:@"uid"];
-    [parameters setObject:[ResourceLoader sharedInstance].mySessionkey forKey:@"sessionkey"];
-    
-    NSString *number = @"";
-    
-    for(NSDictionary *dic in dicArray){
-        [parameters setObject:dic[@"value"] forKey:dic[@"key"]];
-        if([dic[@"key"]isEqualToString:@"groupnumber"])
-            number = dic[@"value"];
-    }
-    
-    
-    NSLog(@"parameters %@",parameters);
-    
-    NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
-    
-    
-//    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:pathString parameters:parameters];
-    
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
-        NSLog(@"resultDic %@",resultDic);
-        NSString *isSuccess = resultDic[@"result"];
-        if ([isSuccess isEqualToString:@"0"]) {
-            
-            if([self.contentDic[@"apiname"]isEqualToString:@"join.lemp"]){
-                if([sender tag] == 0){
-                    [CustomUIKit popupSimpleAlertViewOK:nil msg:@"완료!" con:SharedAppDelegate.window.rootViewController];
-                    [SharedAppDelegate.root getGroupInfo:number regi:@"Y" add:YES];
-                }
-                else{
-                    [CustomUIKit popupSimpleAlertViewOK:nil msg:@"완료!" con:SharedAppDelegate.window.rootViewController];
-                    [SharedAppDelegate.root.home getTimeline:@"" target:SharedAppDelegate.root.home.targetuid type:SharedAppDelegate.root.home.category groupnum:SharedAppDelegate.root.home.groupnum];
-                }
-            }
-            else if([self.contentDic[@"apiname"]isEqualToString:@"schedulecheck.lemp"]){
-                
-            }
-            //              [SharedAppDelegate.root.home getTimeline:@"" target:@"" type:@"2" groupnum:number];
-        }
-        else {
-            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-            [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:SharedAppDelegate.window.rootViewController];
-            NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
-            
-        }
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        [accept setEnabled:YES];
-        [deny setEnabled:YES];
-        NSLog(@"FAIL : %@",operation.error);
-        [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
-        //        [alert show];
-        
-    }];
-    
-    [operation start];
-    
-}
-
-
-
 //- (void)join{
 //    NSLog(@"join");
 //
@@ -3229,9 +3138,15 @@
 }
 
 - (void)addOrClear:(id)sender
-{
-    if([[SharedAppDelegate readPlist:@"was"]length]<1)
-        return;
+        {
+            
+#ifdef BearTalk
+#else
+            if([[SharedAppDelegate readPlist:@"was"]length]<1)
+                return;
+#endif
+            
+            
 #if defined(GreenTalk) || defined(GreenTalkCustomer)
     if([self.contentType isEqualToString:@"1"])
         [self share:sender];
@@ -3300,6 +3215,7 @@
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
 #ifdef BearTalk
+        
         NSDictionary *resultDic = [operation.responseString objectFromJSONString];
         NSLog(@"ResulstDic %@",resultDic);
         

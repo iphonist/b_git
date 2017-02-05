@@ -334,17 +334,18 @@
 		[SharedFunctions saveDeviceToken:nil status:NO];
 		deviceToken = @"dummydeviceid";
 	}
-	
+	NSLog(@"deviceToken %@",deviceToken);
 	return deviceToken;
 }
 
 + (void)saveDeviceToken:(NSString*)token status:(BOOL)status
 {
+    NSLog(@"saveDeviceToken %@ %@",token,status?@"YES":@"NO");
 	NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
 
 	if (token == nil || [token length] < 1) {
 		if ([def objectForKey:@"PushAlertLastToken"] == nil) {
-			[def setObject:@"dummydeviceid" forKey:@"PushAlertLastToken"];
+			[def setObject:nil forKey:@"PushAlertLastToken"];
 		}
 		[def setBool:NO forKey:@"PushAlertLastStatus"];
 	} else {

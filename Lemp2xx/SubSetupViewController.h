@@ -17,7 +17,8 @@
     UISwitch *change;
     UISwitch *allLocationSwitch;
     UISwitch *aLocationSwitch;
-	NSMutableArray *myList;
+    NSMutableArray *myList;
+    NSMutableArray *areaList;
 	NSInteger preSelect;
 	NSInteger bellPreSelect;
 	UIImageView *profileView;

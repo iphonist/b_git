@@ -183,7 +183,7 @@
 - (void)settingPresent;
 //- (void)setNewChatlist:(NSArray *)array;
 - (void)addJoinGroupTimeline:(NSDictionary *)dic;
-- (void)settingJoinGroup:(NSDictionary *)dic add:(BOOL)add;
+- (void)settingJoinGroup:(NSDictionary *)dic add:(BOOL)add con:(UIViewController *)con;
 - (void)setGroupDic:(NSDictionary *)dic regi:(NSString *)yn;
 - (void)settingMain;
 
@@ -202,7 +202,7 @@
 - (void)settingMemoList;
 - (void)settingScheduleList;
 - (void)settingNotiList;
-- (void)fromUnjoinToJoin:(NSDictionary *)dic;
+- (void)fromUnjoinToJoin:(NSDictionary *)dic con:(UIViewController *)con;
 - (void)setNotiZero;
 - (void)checkSnsPush:(NSDictionary *)aps;
 - (void)refreshSearchFavorite:(NSString *)uid fav:(NSString *)fav;

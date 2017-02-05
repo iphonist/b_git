@@ -94,28 +94,11 @@
     
     UIBarButtonItem *btnNaviNotice;
     
-    NSString *colorNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColorNumber"];
-    if([colorNumber isEqualToString:@"2"]){
-        
-    noticebutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(settingNotiList) frame:CGRectMake(0, 0, 25, 25)
-                               imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_alarm_urusa.png" imageNamedPressed:nil];
-    
-    }
-    else if([colorNumber isEqualToString:@"4"]){
-        
-        noticebutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(settingNotiList) frame:CGRectMake(0, 0, 25, 25)
-                                   imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_alarm_impactamin.png" imageNamedPressed:nil];
-    }
-    else if([colorNumber isEqualToString:@"3"]){
-        
-        noticebutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(settingNotiList) frame:CGRectMake(0, 0, 25, 25)
-                                   imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_alarm_ezn6.png" imageNamedPressed:nil];
-    }
-    else{
+  
         
         noticebutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(settingNotiList) frame:CGRectMake(0, 0, 25, 25)
                                    imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_alarm.png" imageNamedPressed:nil];
-    }
+    
     
     btnNaviNotice = [[UIBarButtonItem alloc]initWithCustomView:noticebutton];
     
@@ -952,88 +935,91 @@
     dic = myList[indexPath.row];
 #ifdef BearTalk
     NSLog(@"dic %@",dic);
-    [SharedAppDelegate.root.home.timeLineCells removeAllObjects];
-    SharedAppDelegate.root.home.timeLineCells = nil;
-    [SharedAppDelegate.root.home.myTable reloadData];
-    SharedAppDelegate.root.home.title = dic[@"groupname"];
-    SharedAppDelegate.root.home.titleString = dic[@"groupname"];
-    NSMutableArray *array = [NSMutableArray array];
-    for (int i = 0; i < [dic[@"groupattribute"] length]; i++) {
-        [array addObject:[NSString stringWithFormat:@"%C", [dic[@"groupattribute"] characterAtIndex:i]]];
-    }
-    NSLog(@"array %@",array);
     
-    NSString *attribute2 = dic[@"groupattribute2"];
-    if([attribute2 length]<1)
-        attribute2 = @"00";
+    [SharedAppDelegate.root settingJoinGroup:dic add:NO con:self];
     
-    NSMutableArray *array2 = [NSMutableArray array];
-    for (int i = 0; i < [attribute2 length]; i++) {
-        
-        [array2 addObject:[NSString stringWithFormat:@"%C", [attribute2 characterAtIndex:i]]];
-        
-    }
-    NSLog(@"array2 %@",array2);
-            [SharedAppDelegate.root.home setGroup:dic regi:dic[@"accept"]];
-    
-//    NSString *lastcontentindex = [NSString stringWithFormat:@"%@",dic[@"lastcontentindex"]];
-//    if(IS_NULL(lastcontentindex) || [lastcontentindex length] == 0)
-//        [SharedAppDelegate writeToPlist:dic[@"groupnumber"] value:@"0"];
-//    else
-//    {
-//        [SharedAppDelegate writeToPlist:dic[@"groupnumber"] value:dic[@"lastcontentindex"]];
+//    [SharedAppDelegate.root.home.timeLineCells removeAllObjects];
+//    SharedAppDelegate.root.home.timeLineCells = nil;
+//    [SharedAppDelegate.root.home.myTable reloadData];
+//    SharedAppDelegate.root.home.title = dic[@"groupname"];
+//    SharedAppDelegate.root.home.titleString = dic[@"groupname"];
+//    NSMutableArray *array = [NSMutableArray array];
+//    for (int i = 0; i < [dic[@"groupattribute"] length]; i++) {
+//        [array addObject:[NSString stringWithFormat:@"%C", [dic[@"groupattribute"] characterAtIndex:i]]];
 //    }
-    
-
-    SharedAppDelegate.root.home.targetuid = @"";
-    SharedAppDelegate.root.home.category = dic[@"category"];
-    SharedAppDelegate.root.home.groupnum = dic[@"groupnumber"];
-    SharedAppDelegate.root.needsRefresh = YES;
-    
-    UIBarButtonItem *btnNaviSetup = nil;
-    UIBarButtonItem *btnNaviSearch = nil;
-    
-    
-    if([dic[@"category"]isEqualToString:@"1"]){
-        
-        
-        UIButton *searchButton = [CustomUIKit buttonWithTitle:SharedAppDelegate.root.home.titleString fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(loadSocialSearch) frame:CGRectMake(0, 0, 25, 25) imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_search.png" imageNamedPressed:nil];
-        btnNaviSearch = [[UIBarButtonItem alloc]initWithCustomView:searchButton];
-        
-        
-        
-        SharedAppDelegate.root.home.navigationItem.rightBarButtonItems = nil;
-        SharedAppDelegate.root.home.navigationItem.rightBarButtonItem = btnNaviSearch;
-    }
-    else if([dic[@"category"]isEqualToString:@"3"] || [dic[@"category"]isEqualToString:@"10"]){
-        
-        SharedAppDelegate.root.home.navigationItem.rightBarButtonItem = nil;
-        SharedAppDelegate.root.home.navigationItem.rightBarButtonItems = nil;
-    }
-    else{
-        
-        UIButton *button = [CustomUIKit buttonWithTitle:SharedAppDelegate.root.home.titleString fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(loadSocialSetup) frame:CGRectMake(0, 0, 25, 25) imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_setting.png" imageNamedPressed:nil];
-        btnNaviSetup  = [[UIBarButtonItem alloc]initWithCustomView:button];
-        
-        
-        UIButton *searchButton = [CustomUIKit buttonWithTitle:SharedAppDelegate.root.home.titleString fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(loadSocialSearch) frame:CGRectMake(0, 0, 25, 25) imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_search.png" imageNamedPressed:nil];
-        btnNaviSearch = [[UIBarButtonItem alloc]initWithCustomView:searchButton];
-        
-        
-        NSLog(@"navi setup %@ search %@",btnNaviSetup,btnNaviSearch);
-        NSArray *arrBtns;
-        arrBtns = [[NSArray alloc]initWithObjects:btnNaviSetup, btnNaviSearch, nil]; // 순서는 거꾸로
-        
-        
-        SharedAppDelegate.root.home.navigationItem.rightBarButtonItem = nil;
-        SharedAppDelegate.root.home.navigationItem.rightBarButtonItems = arrBtns;
-    }
-    
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if(![self.navigationController.topViewController isKindOfClass:[SharedAppDelegate.root.home class]])
-        [self.navigationController pushViewController:SharedAppDelegate.root.home animated:YES];
-    });
+//    NSLog(@"array %@",array);
+//    
+//    NSString *attribute2 = dic[@"groupattribute2"];
+//    if([attribute2 length]<1)
+//        attribute2 = @"00";
+//    
+//    NSMutableArray *array2 = [NSMutableArray array];
+//    for (int i = 0; i < [attribute2 length]; i++) {
+//        
+//        [array2 addObject:[NSString stringWithFormat:@"%C", [attribute2 characterAtIndex:i]]];
+//        
+//    }
+//    NSLog(@"array2 %@",array2);
+//            [SharedAppDelegate.root.home setGroup:dic regi:dic[@"accept"]];
+//    
+////    NSString *lastcontentindex = [NSString stringWithFormat:@"%@",dic[@"lastcontentindex"]];
+////    if(IS_NULL(lastcontentindex) || [lastcontentindex length] == 0)
+////        [SharedAppDelegate writeToPlist:dic[@"groupnumber"] value:@"0"];
+////    else
+////    {
+////        [SharedAppDelegate writeToPlist:dic[@"groupnumber"] value:dic[@"lastcontentindex"]];
+////    }
+//    
+//
+//    SharedAppDelegate.root.home.targetuid = @"";
+//    SharedAppDelegate.root.home.category = dic[@"category"];
+//    SharedAppDelegate.root.home.groupnum = dic[@"groupnumber"];
+//    SharedAppDelegate.root.needsRefresh = YES;
+//    
+//    UIBarButtonItem *btnNaviSetup = nil;
+//    UIBarButtonItem *btnNaviSearch = nil;
+//    
+//    
+//    if([dic[@"category"]isEqualToString:@"1"]){
+//        
+//        
+//        UIButton *searchButton = [CustomUIKit buttonWithTitle:SharedAppDelegate.root.home.titleString fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(loadSocialSearch) frame:CGRectMake(0, 0, 25, 25) imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_search.png" imageNamedPressed:nil];
+//        btnNaviSearch = [[UIBarButtonItem alloc]initWithCustomView:searchButton];
+//        
+//        
+//        
+//        SharedAppDelegate.root.home.navigationItem.rightBarButtonItems = nil;
+//        SharedAppDelegate.root.home.navigationItem.rightBarButtonItem = btnNaviSearch;
+//    }
+//    else if([dic[@"category"]isEqualToString:@"3"] || [dic[@"category"]isEqualToString:@"10"]){
+//        
+//        SharedAppDelegate.root.home.navigationItem.rightBarButtonItem = nil;
+//        SharedAppDelegate.root.home.navigationItem.rightBarButtonItems = nil;
+//    }
+//    else{
+//        
+//        UIButton *button = [CustomUIKit buttonWithTitle:SharedAppDelegate.root.home.titleString fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(loadSocialSetup) frame:CGRectMake(0, 0, 25, 25) imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_setting.png" imageNamedPressed:nil];
+//        btnNaviSetup  = [[UIBarButtonItem alloc]initWithCustomView:button];
+//        
+//        
+//        UIButton *searchButton = [CustomUIKit buttonWithTitle:SharedAppDelegate.root.home.titleString fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(loadSocialSearch) frame:CGRectMake(0, 0, 25, 25) imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_search.png" imageNamedPressed:nil];
+//        btnNaviSearch = [[UIBarButtonItem alloc]initWithCustomView:searchButton];
+//        
+//        
+//        NSLog(@"navi setup %@ search %@",btnNaviSetup,btnNaviSearch);
+//        NSArray *arrBtns;
+//        arrBtns = [[NSArray alloc]initWithObjects:btnNaviSetup, btnNaviSearch, nil]; // 순서는 거꾸로
+//        
+//        
+//        SharedAppDelegate.root.home.navigationItem.rightBarButtonItem = nil;
+//        SharedAppDelegate.root.home.navigationItem.rightBarButtonItems = arrBtns;
+//    }
+//    
+//    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        if(![self.navigationController.topViewController isKindOfClass:[SharedAppDelegate.root.home class]])
+//        [self.navigationController pushViewController:SharedAppDelegate.root.home animated:YES];
+//    });
     
 
 #else
@@ -1189,8 +1175,13 @@
 
 - (void)getCS119List:(NSDictionary *)dic time:(NSString *)time table:(UITableView *)table{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -1436,7 +1427,7 @@
                 for(int i = 0; i < [myList count]; i++){
                     if([myList[i][@"groupnumber"]isEqualToString:groupnum])
                     {
-                        [SharedAppDelegate.root fromUnjoinToJoin:myList[i]];
+                        [SharedAppDelegate.root fromUnjoinToJoin:myList[i] con:self];
                         
                         [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:myList[i] object:@"N" key:@"INVITE_YN"]];
                         [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:myList[i] object:@"Y" key:@"MEMBER_YN"]];
@@ -1481,8 +1472,14 @@
     return;
     
 #endif
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     
     
@@ -1524,7 +1521,7 @@
                 for(int i = 0; i < [myList count]; i++){
                     if([myList[i][@"groupnumber"]isEqualToString:groupnum])
                     {
-                        [SharedAppDelegate.root fromUnjoinToJoin:myList[i]];
+                        [SharedAppDelegate.root fromUnjoinToJoin:myList[i] con:self];
                         
                         [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:myList[i] object:@"Y" key:@"accept"]];
                     }

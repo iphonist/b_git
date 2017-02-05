@@ -12,6 +12,7 @@
 #import "UIImage+GIF.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "DetailViewController.h"
+#import "GreenSetupViewController.h"
 @interface PhotoTableViewController ()
 
 @end
@@ -349,7 +350,40 @@
             if(viewTag == kGuide){
                 inScrollView.frame = CGRectMake(self.view.frame.size.width*i,0,
                                                 SharedAppDelegate.window.frame.size.width,SharedAppDelegate.window.frame.size.height);
-                [inScrollView displayImage:myList[i]];
+//                [inScrollView displayImage:myList[i]];
+                
+                NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:myList[i]] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
+                AFHTTPRequestOperation *operation =   [[AFHTTPRequestOperation alloc] initWithRequest:request];
+                
+                [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead)
+                 {
+                     NSLog(@"progress %f",(float)totalBytesRead / totalBytesExpectedToRead);
+                     
+                 }];
+                [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    //        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
+                    
+                    
+                    
+                    //         [downloadProgress release];
+                    
+                    UIImage *img = [UIImage sd_animatedGIFWithData:operation.responseData];//[UIImage imageWithData:operation.responseData];
+                    //        [imageArray addObject:@{@"image" : img, @"index" : [NSString stringWithFormat:@"%d",index]}];
+                    //        imageView.image = img;
+                    [inScrollView displayImage:img];
+                    willSaveImage = operation.responseData;
+                    [self.navigationItem.rightBarButtonItem setEnabled:YES];
+                    
+                    
+                    
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    
+                    NSLog(@"failed %@",error);
+                    [HTTPExceptionHandler handlingByError:error];
+                    
+                }];
+                [operation start];
+                
             }
             UITapGestureRecognizer *doubleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
             [doubleTapGesture setNumberOfTapsRequired:2];
@@ -613,7 +647,12 @@
     
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        if([[operation.responseString objectFromJSONString]count]>0){
+      
+            
+        
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             
             
             
@@ -621,7 +660,14 @@
             NSLog(@"resultDic %@",dic);
             
             NSUserDefaults *defaultManager = [NSUserDefaults standardUserDefaults];
-            [defaultManager setObject:dic forKey:myList[index][@"message"]];
+            
+            NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionary];
+            [mutableDictionary setObject:dic[@"FILE_INFO"] forKey:@"FILE_INFO"];
+            [mutableDictionary setObject:dic[@"FILE_KEY"] forKey:@"FILE_KEY"];
+            [mutableDictionary setObject:dic[@"FILE_TYPE"] forKey:@"FILE_TYPE"];
+            [mutableDictionary setObject:dic[@"FILE_NAME"] forKey:@"FILE_NAME"];
+//            [mutableDictionary setObject:dic[@"ROOM_KEY"] forKey:@"ROOM_KEY"];
+            [defaultManager setObject:mutableDictionary forKey:myList[index][@"message"]];
             
             
             NSString *imgUrl = [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,myList[index][@"message"]];
@@ -684,9 +730,9 @@
                 willSaveImage = operation.responseData;
                 [self.navigationItem.rightBarButtonItem setEnabled:YES];
                 
-#ifdef BearTalk
+#ifdef BearTalk // beartalk에만 선언
                     [SharedAppDelegate.root.chatView lastReadMsg:myList[index][@"msgindex"]];
-#endif 
+#endif
                 
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 
@@ -698,6 +744,7 @@
             
 
         }
+        
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"failed %@",error);
@@ -853,19 +900,31 @@
     NSDictionary *contentDic;
     
     
-    NSDictionary *msgDic = myList[index];
-    NSLog(@"msgDic %@",msgDic);
 
 #ifdef BearTalk
     
     if([parentVC isKindOfClass:[DetailViewController class]]){
         
-        imgUrl = [NSString stringWithFormat:@"BearTalkBaseUrl/api/file/%@",BearTalkBaseUrl,msgDic[@"FILE_KEY"]];
+        NSDictionary *msgDic = myList[index];
+        NSLog(@"msgDic %@",msgDic);
+        imgUrl = [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,msgDic[@"FILE_KEY"]];
         NSLog(@"imgUrl %@",imgUrl);
         NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
         cachefilePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",msgDic[@"FILE_KEY"]]];
     }
+    else if([parentVC isKindOfClass:[GreenSetupViewController class]]){
+        
+        NSString *msgDic = myList[index];
+        NSLog(@"msgDic %@",msgDic);
+        imgUrl = [NSString stringWithFormat:@"%@%@",BearTalkBaseUrl,msgDic];
+        NSLog(@"imgUrl %@",imgUrl);
+        NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+        cachefilePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",msgDic]];
+    }
     else{
+        
+        NSDictionary *msgDic = myList[index];
+        NSLog(@"msgDic %@",msgDic);
         contentDic = [msgDic[@"content"]objectFromJSONString];
         NSLog(@"contentDic %@",contentDic);
         NSDictionary *aDic = [contentDic[@"image"]objectFromJSONString];
@@ -876,6 +935,9 @@
         
     }
 #else
+    NSDictionary *msgDic = myList[index];
+    NSLog(@"msgDic %@",msgDic);
+    
         contentDic = [msgDic[@"content"]objectFromJSONString];
         NSLog(@"contentDic %@",contentDic);
         NSDictionary *aDic = [contentDic[@"image"]objectFromJSONString];
@@ -942,7 +1004,7 @@
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         //        NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         
-        
+
         NSLog(@"cachefilepath %@",cachefilePath);
         [operation.responseData writeToFile:cachefilePath atomically:YES];
         
@@ -960,6 +1022,7 @@
         willSaveImage = operation.responseData;
         [self.navigationItem.rightBarButtonItem setEnabled:YES];
         
+
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

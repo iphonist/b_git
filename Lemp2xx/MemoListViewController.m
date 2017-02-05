@@ -284,30 +284,16 @@
             NSLog(@"operation.responseString  %@",operation.responseString );
 //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
         
-        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
             NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
-            /*
-             {
-             FILES =         (
-             );
-             "MEMO_KEY" = "e9a883ce-66b1-454c-8e41-1b2ae2a7edaa";
-             MSG = test;
-             "WRITE_DATE" = "2017-01-13T02:14:47.487Z";
-             "_id" = "ObjectId:(\"e9a883ce-66b1-454c-8e41-1b2ae2a7edaa\")";
-             }
-
-             */
-            if([[operation.responseString objectFromJSONString]count]>0){
             [self performSelectorOnMainThread:@selector(setResultArray:) withObject:[operation.responseString objectFromJSONString] waitUntilDone:NO];
             }
             else{
                 [myTable reloadData];
                 
             }
-        }
-        else{
-            [myTable reloadData];
-        }
+       
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -363,7 +349,8 @@
         NSLog(@"operation.responseString  %@",operation.responseString );
         //            NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
         
-        if([[operation.responseString objectFromJSONString] count]>0){
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
             NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
        
             
@@ -399,8 +386,14 @@
     return;
     
 #endif
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //         [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
     
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
@@ -735,7 +728,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
 
     NSLog(@"dic %@",dic);
     
-    NSString *decoded = [dic[@"MSG"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *beforedecoded = [dic[@"MSG"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+    NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         title.text = decoded;//]msgDic[@"msg"];
     time.text = [NSString formattingDate:[NSString stringWithFormat:@"%lli",[dic[@"WRITE_DATE"]longLongValue]/1000] withFormat:@"yyyy.MM.dd HH:mm:ss"];
         

@@ -880,8 +880,14 @@ static int g_textSizeHeight[MAX_MESSAGEEND_LINE] = {31, 50, 69};//, 88, 107, 126
 
 - (void)done
 {
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 //    [formatter setDateFormat:@"시작 yyyy. M. d. (EE) a h:mm"];//@"시작 yyyy.M.d (EEEE) a h:mm"];
 //    NSString *startString = [startDateLabel.text stringByAppendingFormat:@" %@",startTimeLabel.text];

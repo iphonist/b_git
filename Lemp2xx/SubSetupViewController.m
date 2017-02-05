@@ -103,16 +103,7 @@ const char paramDic;
 }
 
 
-- (void)done:(id)sender{
-    if(allLocationSwitch.on){
-        [SharedAppDelegate writeToPlist:@"kLocation" value:@"전체"];
-    }
-    else{
-        [SharedAppDelegate writeToPlist:@"kLocation" value:savedLocation];
-        
-    }
-      [self backTo];
-}
+
 - (void)refreshSetupButton
 {
     NSLog(@"subsetp refresh");
@@ -231,7 +222,7 @@ const char paramDic;
         leftButton = [CustomUIKit backButtonWithTitle:@"" target:self selector:@selector(backTo)];
         
         
-        myList = [[NSMutableArray alloc]initWithObjects:@"전체 보기",@"대웅생활",@"My소셜",@"주소록",@"대화",@"기타",nil];
+        myList = [[NSMutableArray alloc]initWithObjects:@"전체 보기",@"대웅생활",@"My소셜",@"주소록",@"채팅",@"기타",nil];
         myTable.frame = CGRectMake(0, 0, 320, self.view.frame.size.height - viewY);
         
         myTable.rowHeight = 53;
@@ -246,11 +237,13 @@ const char paramDic;
         
         UIButton *button;
         UIBarButtonItem *btnNavi;
-        button = [CustomUIKit emptyButtonWithTitle:@"barbutton_done.png" target:self selector:@selector(done:)];
-        btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
-        self.navigationItem.rightBarButtonItem = btnNavi;
         
         leftButton = [CustomUIKit backButtonWithTitle:@"" target:self selector:@selector(backTo)];
+               myTable.frame = CGRectMake(0, 0, 320, self.view.frame.size.height - viewY);
+        
+        myTable.rowHeight = 53;
+        //		}
+        
         
         if(savedLocation){
             savedLocation = nil;
@@ -258,16 +251,17 @@ const char paramDic;
         savedLocation = [[NSString alloc]initWithFormat:@"%@",[SharedAppDelegate readPlist:@"kLocation"]];
         
         if([savedLocation isEqualToString:@"전체"]){
-        myList = [[NSMutableArray alloc]initWithObjects:@"전체 지역 선택",@"근무 지역 선택",nil];
+            myList = [[NSMutableArray alloc]initWithObjects:@"전체 지역 선택",@"근무 지역 선택",nil];
         }
         else{
             myList = [[NSMutableArray alloc]initWithObjects:@"전체 지역 선택",@"근무 지역 선택",@"근무 지역",nil];
         }
         
-        myTable.frame = CGRectMake(0, 0, 320, self.view.frame.size.height - viewY);
+        if(areaList){
+            areaList = nil;
+        }
         
-        myTable.rowHeight = 53;
-        //		}
+        
         self.title = @"근무 지역 설정";
         //        [SharedAppDelegate.root returnTitle:self.title viewcon:self noti:NO alarm:NO];
         [self.view addSubview:myTable];
@@ -1226,8 +1220,14 @@ const char paramDic;
     [activityImageView addSubview:replyCount];
    
     
-        if([[SharedAppDelegate readPlist:@"was"]length]<1)
-            return;
+    
+#ifdef BearTalk
+#else
+    if([[SharedAppDelegate readPlist:@"was"]length]<1)
+        return;
+#endif
+    
+    
         //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
         
         NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/writeinfo.lemp",[SharedAppDelegate readPlist:@"was"]];
@@ -1690,8 +1690,14 @@ const char paramDic;
 
 - (void)logout{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    NSString *url = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:url]];
     
@@ -2269,7 +2275,12 @@ const char paramDic;
 }
 
 - (void)backTo{
+    
+    if (self.presentingViewController) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
     [(CBNavigationController *)self.navigationController popViewControllerWithBlockGestureAnimated:YES];
+    }
 }
 
 - (void)cancel
@@ -2291,6 +2302,71 @@ const char paramDic;
 }
 
 
+
+- (void)getAreas
+{
+    
+ 
+    
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
+    //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
+    
+    NSString *urlString;
+    
+    urlString = [NSString stringWithFormat:@"%@/api/area/list",BearTalkBaseUrl];
+
+    NSURL *baseUrl = [NSURL URLWithString:urlString];
+    
+    
+    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    client.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    
+    
+    NSDictionary *parameters = nil;
+    
+    
+//    
+//    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+//                  [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
+//    
+    NSLog(@"parameters %@",parameters);
+    
+    //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/read/notice.lemp" parameters:parameters];
+    
+    NSError *serializationError = nil;
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    
+    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        //        NSLog(@"1");
+                NSLog(@"operation %@",[operation.responseString objectFromJSONString]);
+        //        NSLog(@"2");
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+ 
+        areaList = [[NSMutableArray alloc]initWithArray:[operation.responseString objectFromJSONString]];
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"FAIL : %@",operation.error);
+        [HTTPExceptionHandler handlingByError:error];
+        //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        [alert show];
+        
+    }];
+    [operation start];
+    
+    
+}
 
 
 
@@ -2354,6 +2430,15 @@ const char paramDic;
             }
 //
 //            savedLocation = [SharedAppDelegate readPlist:@"kLocation"];
+        }
+        
+        if(allLocationSwitch.on == YES){
+            for(NSDictionary *dic in areaList){
+            if([dic[@"AREA_NAME"]isEqualToString:@"전체"]){
+                
+                [self saveLocation:dic[@"AREA_KEY"] str:dic[@"AREA_NAME"]];
+            }
+            }
         }
     }
    else if (myTable.tag == kSubPassword) {
@@ -2521,6 +2606,8 @@ const char paramDic;
         [view addAction:actionButton];
         
         
+#ifdef BearTalk
+#else
         if(image != nil){
         actionButton = [UIAlertAction
                         actionWithTitle:@"사진 삭제"
@@ -2547,6 +2634,7 @@ const char paramDic;
                         }];
         [view addAction:actionButton];
         }
+#endif
         
         UIAlertAction* cancel = [UIAlertAction
                                  actionWithTitle:@"취소"
@@ -3321,29 +3409,22 @@ const char paramDic;
     NSLog(@"didSelect %d",(int)tableView.tag);
 	
     if(tableView.tag == kSubGuide){
-        NSString *hString = @"";
+//        NSString *hString = @"";
         
-        if((int)SharedAppDelegate.window.frame.size.height > 480)
-        hString = [NSString stringWithFormat:@"%d",(int)SharedAppDelegate.window.frame.size.height];
         
-        NSLog(@"hstring %@",hString);
         
-        if([hString isEqualToString:@"568"])
-            hString = @"568h@2x";
-       else if([hString isEqualToString:@"667"])
-            hString = @"667h@2x";
-       else if([hString isEqualToString:@"736"])
-            hString = @"736h@3x";
+        NSString *image1 = [NSString stringWithFormat:@"https://daewoong1.lemp.co.kr/file/guideimage/guide01.png"];
+        NSString *image2 = [NSString stringWithFormat:@"https://daewoong1.lemp.co.kr/file/guideimage/guide02.png"];
+        NSString *image3 = [NSString stringWithFormat:@"https://daewoong1.lemp.co.kr/file/guideimage/guide03.png"];
+        NSString *image4 = [NSString stringWithFormat:@"https://daewoong1.lemp.co.kr/file/guideimage/guide04.png"];
+        NSString *image5 = [NSString stringWithFormat:@"https://daewoong1.lemp.co.kr/file/guideimage/guide05.png"];
+        NSString *image6 = [NSString stringWithFormat:@"https://daewoong1.lemp.co.kr/file/guideimage/guide06.png"];
+        NSString *image7 = [NSString stringWithFormat:@"https://daewoong1.lemp.co.kr/file/guideimage/guide07.png"];
+        NSString *image8 = [NSString stringWithFormat:@"https://daewoong1.lemp.co.kr/file/guideimage/guide08.png"];
         
-        UIImage *image1 = [CustomUIKit customImageNamed:[NSString stringWithFormat:@"manual_01-%@.png",hString]];
-        UIImage *image2 = [CustomUIKit customImageNamed:[NSString stringWithFormat:@"manual_02-%@.png",hString]];
-        UIImage *image3 = [CustomUIKit customImageNamed:[NSString stringWithFormat:@"manual_03-%@.png",hString]];
-        UIImage *image4 = [CustomUIKit customImageNamed:[NSString stringWithFormat:@"manual_04-%@.png",hString]];
-        UIImage *image5 = [CustomUIKit customImageNamed:[NSString stringWithFormat:@"manual_05-%@.png",hString]];
-        UIImage *image6 = [CustomUIKit customImageNamed:[NSString stringWithFormat:@"manual_06-%@.png",hString]];
-        UIImage *image7 = [CustomUIKit customImageNamed:[NSString stringWithFormat:@"manual_07-%@.png",hString]];
-        UIImage *image8 = [CustomUIKit customImageNamed:[NSString stringWithFormat:@"manual_08-%@.png",hString]];
-        UIImage *image9 = [CustomUIKit customImageNamed:[NSString stringWithFormat:@"manual_09-%@.png",hString]];
+        
+//        UIImage *image8 = [CustomUIKit customImageNamed:[NSString stringWithFormat:@"manual_08-%@.png",hString]];
+        
         NSMutableArray *images = [NSMutableArray array];
         [images removeAllObjects];
         if(indexPath.row == 0){
@@ -3355,7 +3436,7 @@ const char paramDic;
             [images addObject:image6];
             [images addObject:image7];
             [images addObject:image8];
-            [images addObject:image9];
+//            [images addObject:image9];
         }
        else if(indexPath.row == 1){
             [images addObject:image1];
@@ -3371,10 +3452,10 @@ const char paramDic;
            else if(indexPath.row == 4){
         [images addObject:image6];
         [images addObject:image7];
-        [images addObject:image8];
+//        [images addObject:image8];
         }
    else if(indexPath.row == 5){
-        [images addObject:image9];
+        [images addObject:image8];
         }
         PhotoTableViewController *photoTable = [[PhotoTableViewController alloc] initWithImages:images parent:self];
         
@@ -3605,6 +3686,12 @@ const char paramDic;
 
     if(myTable.tag == kSubPassword)
         [myTable reloadData];
+    
+#ifdef BearTalk
+    if(myTable.tag == kSubLocation){
+        [self getAreas];
+    }
+#endif
 }
 
 - (void)didReceiveMemoryWarning {
@@ -3705,14 +3792,81 @@ const char paramDic;
 }
 
 
-- (void)saveLocation:(NSString *)str{
+- (void)saveLocation:(NSString *)key str:(NSString*)str{
     
-    [myList removeAllObjects];
-    [myList addObject:@"전체 지역 선택"];
-    [myList addObject:@"근무 지역 선택"];
-    [myList addObject:@"근무 지역"];
-    savedLocation = str;
-    [myTable reloadData];
+    
+    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
+    //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
+    
+    NSString *urlString;
+    
+    urlString = [NSString stringWithFormat:@"%@/api/area/emp/set",BearTalkBaseUrl];
+    
+    NSURL *baseUrl = [NSURL URLWithString:urlString];
+    
+    
+    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    client.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    
+    
+    NSDictionary *parameters;
+    
+    
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                  key,@"areakey",
+                  @"i",@"type",
+                  [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
+    
+    NSLog(@"parameters %@",parameters);
+    
+    //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/read/notice.lemp" parameters:parameters];
+    
+    NSError *serializationError = nil;
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"PUT" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    
+    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        [SVProgressHUD dismiss];
+               NSLog(@"operation %@",[operation.responseString objectFromJSONString]);
+       
+        
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+            [SharedAppDelegate writeToPlist:@"kLocation" value:str];
+       
+        
+        if(allLocationSwitch.on){
+        }else{
+        [myList removeAllObjects];
+        [myList addObject:@"전체 지역 선택"];
+        [myList addObject:@"근무 지역 선택"];
+        [myList addObject:@"근무 지역"];
+        }
+        savedLocation = str;
+        [myTable reloadData];
+        
+        [SharedAppDelegate.root.main refreshTimeline];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        [SVProgressHUD dismiss];
+        NSLog(@"FAIL : %@",operation.error);
+        [HTTPExceptionHandler handlingByError:error];
+        //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        [alert show];
+        
+    }];
+    [operation start];
+    
+    
+
     
 }
 - (void)selectLoctaion
@@ -3726,80 +3880,22 @@ const char paramDic;
         
         UIAlertAction *actionButton;
         
+    for(NSDictionary *dic in areaList){
         
+        if(![dic[@"AREA_NAME"]isEqualToString:@"전체"]){
         actionButton = [UIAlertAction
-                        actionWithTitle:@"서울 본사"
+                        actionWithTitle:dic[@"AREA_NAME"]
                         style:UIAlertActionStyleDefault
                         handler:^(UIAlertAction * action)
                         {
-                            [self saveLocation:@"서울 본사"];
+                            [self saveLocation:dic[@"AREA_KEY"] str:dic[@"AREA_NAME"]];
                         }];
         [view addAction:actionButton];
-        
+        }
+    }
     
-    actionButton = [UIAlertAction
-                    actionWithTitle:@"용인"
-                    style:UIAlertActionStyleDefault
-                    handler:^(UIAlertAction * action)
-                    {
-                        [self saveLocation:@"용인"];
-                        
-                    }];
-    [view addAction:actionButton];
-    
-    actionButton = [UIAlertAction
-                    actionWithTitle:@"향남"
-                    style:UIAlertActionStyleDefault
-                    handler:^(UIAlertAction * action)
-                    {
-                        [self saveLocation:@"향남"];
-                        
-                    }];
-    [view addAction:actionButton];
-    
-    actionButton = [UIAlertAction
-                    actionWithTitle:@"성남"
-                    style:UIAlertActionStyleDefault
-                    handler:^(UIAlertAction * action)
-                    {
-                        [self saveLocation:@"성남"];
-                        
-                    }];
-    [view addAction:actionButton];
-    
-    actionButton = [UIAlertAction
-                    actionWithTitle:@"오송"
-                    style:UIAlertActionStyleDefault
-                    handler:^(UIAlertAction * action)
-                    {
-                        [self saveLocation:@"오송"];
-                        
-                    }];
-    [view addAction:actionButton];
-    
-    actionButton = [UIAlertAction
-                    actionWithTitle:@"기타 지역"
-                    style:UIAlertActionStyleDefault
-                    handler:^(UIAlertAction * action)
-                    {
-                        [self saveLocation:@"기타 지역"];
-                        
-                    }];
-    [view addAction:actionButton];
-    
-    
-    
-//        UIAlertAction* cancel = [UIAlertAction
-//                                 actionWithTitle:@"취소"
-//                                 style:UIAlertActionStyleDefault
-//                                 handler:^(UIAlertAction * action)
-//                                 {
-//                                     [view dismissViewControllerAnimated:YES completion:nil];
-//                                     
-//                                 }];
-//        
-//        [view addAction:cancel];
-        [self presentViewController:view animated:YES completion:nil];
+  
+    [self presentViewController:view animated:YES completion:nil];
         
     
 }
