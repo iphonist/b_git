@@ -155,9 +155,10 @@ const char paramNumber;
 #ifdef BearTalk
     
     
+    search.frame =CGRectMake(0,0, self.view.frame.size.width, 45);
     NSLog(@"SharedAppDelegate.window.frame.size.height %f",SharedAppDelegate.window.frame.size.height);
     NSLog(@"myTable.frame.size.height %f",myTable.frame.size.height);
-    myTable.frame = CGRectMake(0, CGRectGetMaxY(search.frame),self.view.frame.size.width, SharedAppDelegate.window.frame.size.height - VIEWY - 49 - 49 - CGRectGetMaxY(search.frame));
+    myTable.frame = CGRectMake(0, CGRectGetMaxY(search.frame),self.view.frame.size.width, SharedAppDelegate.window.frame.size.height - VIEWY - 49 - CGRectGetMaxY(search.frame));
     
     
     NSLog(@"SharedAppDelegate.window.frame.size.height %f",SharedAppDelegate.window.frame.size.height);
@@ -200,17 +201,17 @@ const char paramNumber;
     
     NSString *colorNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColorNumber"];
     if([colorNumber isEqualToString:@"2"]){
-    newbutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(newChat:) frame:CGRectMake(self.view.frame.size.width - 60-16, self.view.frame.size.height - VIEWY - 16 - 60 - 49 - 49, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_urusa_enable.png" imageNamedPressed:nil];
+    newbutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(newChat:) frame:CGRectMake(self.view.frame.size.width - 60-16, self.view.frame.size.height - VIEWY - 16 - 60 - 49, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_urusa_enable.png" imageNamedPressed:nil];
         
     }
     else if([colorNumber isEqualToString:@"3"]){
-        newbutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(newChat:) frame:CGRectMake(self.view.frame.size.width - 60-16, self.view.frame.size.height - VIEWY - 16 - 60 - 49 - 49, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_ezn6_enable.png" imageNamedPressed:nil];
+        newbutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(newChat:) frame:CGRectMake(self.view.frame.size.width - 60-16, self.view.frame.size.height - VIEWY - 16 - 60 - 49, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_ezn6_enable.png" imageNamedPressed:nil];
     }
     else if([colorNumber isEqualToString:@"4"]){
-        newbutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(newChat:) frame:CGRectMake(self.view.frame.size.width - 60-16, self.view.frame.size.height - VIEWY - 16 - 60 - 49 - 49, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_impactamin_enable.png" imageNamedPressed:nil];
+        newbutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(newChat:) frame:CGRectMake(self.view.frame.size.width - 60-16, self.view.frame.size.height - VIEWY - 16 - 60 - 49, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_impactamin_enable.png" imageNamedPressed:nil];
     }
     else{
-        newbutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(newChat:) frame:CGRectMake(self.view.frame.size.width - 60-16, self.view.frame.size.height - VIEWY - 16 - 60 - 49 - 49, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_enable.png" imageNamedPressed:nil];
+        newbutton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(newChat:) frame:CGRectMake(self.view.frame.size.width - 60-16, self.view.frame.size.height - VIEWY - 16 - 60 - 49, 60, 60) imageNamedBullet:nil imageNamedNormal:@"btn_add_enable.png" imageNamedPressed:nil];
         
     }
     
@@ -391,7 +392,7 @@ const char paramNumber;
 #ifdef BearTalk
     
     
-    if(myTable.frame.size.height > SharedAppDelegate.window.frame.size.height - VIEWY - 49 - 49 - CGRectGetMaxY(search.frame)){
+    if(myTable.frame.size.height > SharedAppDelegate.window.frame.size.height - VIEWY - 49 - CGRectGetMaxY(search.frame)){
         
         myTable.frame = CGRectMake(0, CGRectGetMaxY(search.frame),self.view.frame.size.width, myTable.frame.size.height - CGRectGetMaxY(search.frame));
     }
@@ -467,14 +468,33 @@ const char paramNumber;
         NSString *nameStr = dic[@"names"];
         NSLog(@"nameStr %@",nameStr);
     if ([nameStr length] < 1) {
-        if([dic[@"rtype"]isEqualToString:@"2"]){
+//#ifdef BearTalk
+//        if([dic[@"rtype"]isEqualToString:@"S"]){
+//            for(int i = 0; i < [SharedAppDelegate.root.main.myList count]; i++){
+//                NSString *groupnumber = SharedAppDelegate.root.main.myList[i][@"groupnumber"];
+//                if([groupnumber isEqualToString:dic[@"newfield"]]){
+//                    
+//                    nameStr = SharedAppDelegate.root.main.myList[i][@"groupname"];
+//                }
+//                
+//            }
+//        }
+//        else
+//#endif
+        if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"S"]){
             
             if([tempArray count] == 0){
                 nameStr = @"대화상대없음";
             }
             else{
                 
-                if([dic[@"newfield"]length]>0 && [dic[@"newfield"]intValue]>0){
+                if([dic[@"newfield"]length]>0
+#ifdef BearTalk
+                   )
+#else
+                    && [dic[@"newfield"]intValue]>0)
+#endif
+                {
                     for(int i = 0; i < [SharedAppDelegate.root.main.myList count]; i++){
                         NSString *groupnumber = SharedAppDelegate.root.main.myList[i][@"groupnumber"];
                         if([groupnumber isEqualToString:dic[@"newfield"]]){
@@ -658,7 +678,13 @@ const char paramNumber;
     
     for(NSDictionary *dic in self.myList){
         
-        if([dic[@"newfield"]length]>0 && [dic[@"newfield"]intValue]>0){
+        if([dic[@"newfield"]length]>0
+#ifdef BearTalk
+           )
+#else
+            && [dic[@"newfield"]intValue]>0)
+#endif
+        {
             listCount--;
         }
     }
@@ -694,7 +720,13 @@ const char paramNumber;
   
     
     for (NSDictionary *dic in self.myList) {
-        if([dic[@"newfield"]length]>0 && [dic[@"newfield"]intValue]>0){
+        if([dic[@"newfield"]length]>0
+#ifdef BearTalk
+           )
+#else
+            )&& [dic[@"newfield"]intValue]>0)
+#endif
+        {
             [discardedItems addIndex:index];
         }
         index++;
@@ -986,7 +1018,13 @@ const char paramNumber;
     {
         NSDictionary *dic = self.myList[indexPath.row];
     NSLog(@"dic %@",dic);
-    if([dic[@"newfield"]length]>0 && [dic[@"newfield"]intValue]>0){
+    if([dic[@"newfield"]length]>0
+#ifdef BearTalk
+       )
+#else
+        && [dic[@"newfield"]intValue]>0)
+#endif
+    {
         return UITableViewCellEditingStyleNone;
     }
    else
@@ -1166,7 +1204,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         
     }
     
-    
+    if(![dic[@"rtype"]isEqualToString:@"S"])
       [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(255, 67, 59) title:@"나가기"];
     
     return rightUtilityButtons;
@@ -1393,7 +1431,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
             break;
         case 1:
         {
-            [SharedAppDelegate.root.chatView alarmSwitch:kChatList roomkey:dic[@"roomkey"]];
+            
+            if([[NSUserDefaults standardUserDefaults] boolForKey:dic[@"roomkey"]] == YES){
+                // alarm off
+                
+                [SharedAppDelegate.root.chatView alarmSwitchWithSocket:@"Y" roomkey:dic[@"roomkey"] name:dic[@"names"] tag:kChatList];
+         
+            }
+            else{
+                [SharedAppDelegate.root.chatView alarmSwitchWithSocket:@"N" roomkey:dic[@"roomkey"] name:dic[@"names"] tag:kChatList];
+               
+                
+            }
             break;
         }
         default:
@@ -2027,18 +2076,46 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     NSLog(@"badgeSize.width %f",badgeSize.width);
     badgeLabel.frame = CGRectMake(cell.contentView.frame.size.width - 16 - badgeSize.width - 20, 13+32, badgeSize.width + 20, 15);
 #endif
-    
-    NSLog(@"tempArray %@ rtype %d",tempArray,dic[@"rtype"]);
+    NSLog(@"dic %@",dic);
+    NSLog(@"tempArray %@ rtype %@",tempArray,dic[@"rtype"]);
     
     logoImageView.hidden = YES;
     
-    
-    if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"5"])
+//#ifdef BearTalk
+//    
+//     if([dic[@"rtype"]isEqualToString:@"S"]){
+//         
+//         inImageView.hidden = NO;
+//         profileView.hidden = YES;
+//         profileView.image = nil;
+//         socialLabel.text = @"소셜\n채팅";
+//
+//         inImageView.backgroundColor = RGB(252, 178, 46);
+//  
+//    inImageView.frame = profileView.frame;
+//    socialLabel.frame = CGRectMake(0, 0, inImageView.frame.size.width, inImageView.frame.size.height);
+//    //            [SharedAppDelegate.root getProfileImageWithURL:nil ifNil:@"profile_photo.png" view:inImageView scale:0];
+//    inImageView.hidden = NO;
+//    inImageView2.hidden = YES;
+//    inImageView3.hidden = YES;
+//    inImageView4.hidden = YES;
+//    roundingView.image = [UIImage imageNamed:@"imageview_profile_rounding_1.png"];
+//     }
+//    else
+//#endif
+    if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"5"] || [dic[@"rtype"]isEqualToString:@"S"])
     {
-        
-        if([dic[@"newfield"]length]>0 && [dic[@"newfield"]intValue]>0){
-            
-            if([dic[@"rtype"]isEqualToString:@"2"]){
+        NSLog(@"rtype 2 5 S %@");
+        if([dic[@"newfield"]length]>0
+#ifdef BearTalk
+           )
+#else
+           && [dic[@"newfield"]intValue]>0)
+#endif
+        {
+            NSLog(@"newfield length");
+            if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"S"]){
+                NSLog(@"2 S");
                 inImageView.hidden = NO;
                 profileView.hidden = YES;
                 profileView.image = nil;
@@ -2057,6 +2134,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                 inImageView.backgroundColor = RGB(135, 212, 228);
 
             }
+            inImageView.image = nil;
             inImageView.frame = profileView.frame;
             socialLabel.frame = CGRectMake(0, 0, inImageView.frame.size.width, inImageView.frame.size.height);
             //            [SharedAppDelegate.root getProfileImageWithURL:nil ifNil:@"profile_photo.png" view:inImageView scale:0];
@@ -2067,6 +2145,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
             roundingView.image = [UIImage imageNamed:@"imageview_profile_rounding_1.png"];
         }
         else{
+            NSLog(@"newfield not");
             socialLabel.text = @"";
             inImageView.backgroundColor = [UIColor clearColor];
         if([tempArray count] == 0){
@@ -2146,6 +2225,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     }
 	else if ([dic[@"rtype"]isEqualToString:@"3"])
     {
+        NSLog(@"rtype 3");
         socialLabel.text = @"";
         
         inImageView.backgroundColor = [UIColor clearColor];
@@ -2159,6 +2239,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 	}
 	else if ([dic[@"rtype"]isEqualToString:@"4"])
     {
+        NSLog(@"rtype 4");
         socialLabel.text = @"";
         
         
@@ -2174,6 +2255,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 	}
     else
     {
+        NSLog(@"rtype else");
         socialLabel.text = @"";
         
         inImageView.backgroundColor = [UIColor clearColor];
@@ -2206,7 +2288,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     
     
     CGSize nameSize = [name.text sizeWithAttributes:@{NSFontAttributeName:name.font}];
-    if([dic[@"rtype"]isEqualToString:@"2"]){
+    if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"S"]){
         
         memberCountView.hidden = NO;
         memberCountView_icon.hidden = NO;
@@ -2336,6 +2418,16 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 			NSLog(@"dic %@",dic);
 			[SharedAppDelegate.root pushChatView];//:self];
+            
+//#ifdef BearTalk
+//            
+//            if([dic[@"rtype"]isEqualToString:@"S"]){
+//           
+//                        [SharedAppDelegate.root getRoomWithRk:@"" number:dic[@"newfield"] sendMemo:@"" modal:NO];
+//               
+//            }
+//            else
+//#endif
 			if([dic[@"rtype"] isEqualToString:@"3"] || [dic[@"rtype"] isEqualToString:@"4"]){
                 [SharedAppDelegate.root.chatView settingRoomWithName:dic[@"names"] uid:dic[@"uids"] type:dic[@"rtype"] number:dic[@"newfield"]];
 #ifdef BearTalk
@@ -2358,7 +2450,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                 	[SharedAppDelegate.root.chatView settingRk:dic[@"roomkey"] sendMemo:@""];
 #endif
             }
-			else if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"5"]){
+			else if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"5"] || [dic[@"rtype"]isEqualToString:@"S"]){
                 
                 
                 

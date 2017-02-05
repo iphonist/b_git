@@ -51,7 +51,7 @@ AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIGestureRecognizerDelegate, UIA
 //	NSString *cidNum;
     NSString *yourUid;
     NSString *roomMaster;
-    NSInteger roomType;
+    NSString *roomType;
 //	NSString *imageName;
 //	NSInteger rType;
 //	NSString *sendMessage;
@@ -259,6 +259,9 @@ AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIGestureRecognizerDelegate, UIA
 - (void)commandHomeButton;
 - (void)alarmSwitch:(int)tag roomkey:(NSString*)rk;
 
+- (void)alarmSwitchWithSocket:(NSString *)yn roomkey:(NSString *)rk name:(NSString *)name tag:(int)tag;
+
+
 #ifdef BearTalk
 - (void)socketChatDisconnect;
 - (void)socketDisconnect;
@@ -272,7 +275,7 @@ AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIGestureRecognizerDelegate, UIA
 @property (nonatomic, copy) NSString *dropboxLastPath;
 @property(nonatomic, retain) NSString *roomKey;
 @property(nonatomic, retain) NSString *roomName;
-@property (nonatomic, assign) NSInteger roomType;
+@property (nonatomic, retain) NSString *roomType;
 @property (nonatomic, retain) NSString *roomnumber;
 //@property(nonatomic, assign) BOOL messageLeft;
 //@property (nonatomic, assign) NSInteger *yourTag;

@@ -689,8 +689,14 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
 
 - (void)getEmoticon
 {
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     NSString *urlString;
@@ -708,11 +714,17 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
     
     
     
-    NSDictionary *param = @{
+    NSDictionary *param;
+#ifdef BearTalk
+    param = @{
+              @"uid" : [ResourceLoader sharedInstance].myUID,
+              };
+#else
+    param = @{
                                  @"sessionkey" : [ResourceLoader sharedInstance].mySessionkey,
                                  @"uid" : [ResourceLoader sharedInstance].myUID,
                                  };
-    
+#endif
 //    NSString *jsonString = [NSString stringWithFormat:@"param=%@",[parameters JSONString]];
 //    NSLog(@"jsonString %@",jsonString);
     
@@ -722,9 +734,12 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
 //    NSError *serializationError = nil;
 //    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
     
+#ifdef BearTalk
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:param error:nil];
+    
+#else
     NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parametersJson:param key:@"param"];
-    
-    
+#endif
     
 
     
@@ -1701,7 +1716,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
                         handler:^(UIAlertAction * action)
                         {
 #ifdef BearTalk
-                            [self alarmSwitchWithSocket:willalarmStatus roomkey:self.roomKey];
+                            [self alarmSwitchWithSocket:willalarmStatus roomkey:self.roomKey name:nameLabel.text tag:kChat];
 #else
                             [self alarmSwitch:kChat roomkey:self.roomKey];
 #endif
@@ -1712,8 +1727,14 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
         [view addAction:actionButton];
         
         
-        if(self.roomType == 2) {
-            if([self.roomnumber length]>0 && [self.roomnumber intValue]>0){
+        if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"]) {
+            if([self.roomnumber length]>0
+#ifdef BearTalk
+               )
+#else
+                && [self.roomnumber intValue]>0)
+#endif
+            {
                 
                 actionButton = [UIAlertAction
                                                actionWithTitle:@"채팅 멤버 보기"
@@ -1862,7 +1883,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
             
             //        [actionSheet release];
         }
-        else if(self.roomType == 1) {
+        else if([self.roomType isEqualToString:@"1"]) {
             
             actionButton = [UIAlertAction
                             actionWithTitle:@"채팅 대상 추가"
@@ -1959,8 +1980,14 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
     
 	UIActionSheet *actionSheet;
 
-    if(self.roomType == 2) {
-        if([self.roomnumber length]>0 && [self.roomnumber intValue]>0){
+    if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"]) {
+        if([self.roomnumber length]>0
+#ifdef BearTalk
+           )
+#else 
+            && [self.roomnumber intValue]>0)
+#endif
+        {
             
             actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
                                         destructiveButtonTitle:nil otherButtonTitles:alarmText,@"채팅 멤버 보기", nil];
@@ -1982,7 +2009,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
      
 //        [actionSheet release];
     }
-    else if(self.roomType == 1) {
+    else if([self.roomType isEqualToString:@"1"]) {
 #ifdef BearTalk
         
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
@@ -2481,7 +2508,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
 - (NSString *)getMessageLastIndex
 {
     
-    NSLog(@"getmessage %d %d roomtype %d",loadCount,(int)[self.messages count],(int)self.roomType);
+    NSLog(@"getmessage %d %d roomtype %@",loadCount,(int)[self.messages count],self.roomType);
 //
 	NSString *getMessageLast = @"0";//[[[NSString alloc]init]autorelease];
     
@@ -2493,7 +2520,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
     }
 
 #else
-    if(self.roomType == 2)
+    if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"])
     {
         for(int i = (int)[self.messages count]-1 ; i>=0 ; --i)
                 getMessageLast = self.messages[i][@"msgindex"];
@@ -2750,7 +2777,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
 #ifdef BearTalk
     return; // ##############
 #endif
-    NSLog(@"self.messages %d",(int)self.roomType);
+    
 
 //            if(self.roomType != 2){
 //            
@@ -2987,7 +3014,12 @@ try {
             if([messageStatus[@"uid"] isEqualToString:[ResourceLoader sharedInstance].myUID]){
                 // send
                 
-                NSString *decoded = [messageStatus[@"msg"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSString *beforedecoded = [messageStatus[@"msg"]stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+                NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSLog(@"decoded %@",decoded);
+                
+                
+                
                 [self performSelectorOnMainThread:@selector(addSendMessageDic:) withObject:[NSDictionary dictionaryWithObjectsAndKeys:decoded,@"msg",messageStatus[@"chattype"],@"type",@"0",@"device",nil] waitUntilDone:NO];
             }
             else{
@@ -3029,15 +3061,17 @@ try {
                     NSString *munread;
                     NSString *unixtime = messageStatus[@"unixtime"];
                 
-                    if(self.roomType == 2){
+                    if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"]){
                         munread = [NSString stringWithFormat:@"%@",messageStatus[@"unread"]];
                         
                     }
                     else{
                         munread = @"1";
                     }
-                    
-                    NSString *decoded = [messageStatus[@"msg"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                
+                NSString *beforedecoded = [messageStatus[@"msg"]stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+                NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                NSLog(@"decoded %@",decoded);
                     mtext = decoded;
                     
                     NSLog(@"mtext %@",mtext);
@@ -3049,7 +3083,7 @@ try {
                         mread = @"0";
                     }
                     
-                    if(self.roomType == 2){
+                    if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"]){
                         
                     }
                     else{
@@ -3298,6 +3332,9 @@ try {
         NSLog(@"operation.responseString  %@",operation.responseString );
         NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
         
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSArray *unreadArray = resultDic[@"chats_arr"];
         
@@ -3309,6 +3346,7 @@ try {
         [self getMessageFromServer:self.roomKey index:@"0" memo:memo];
         else
             [self getMessageFromServer:self.roomKey index:[self getMessageLastIndex] memo:memo];
+        }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
@@ -3353,7 +3391,7 @@ try {
 
 - (void)socketConnect{
     NSLog(@"socketConnect");
-    NSURL *url = [[NSURL alloc]initWithString:@"http://sns.lemp.co.kr:3000"];
+    NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://dinside.lemp.co.kr:3000"]];
     self.socket = [[SocketIOClient alloc]initWithSocketURL:url config:@{@"log":@YES, @"forcePolling":@YES, @"forceWebsockets":@YES}];
     
     [self.socket on:@"connect" callback:^(NSArray *data, SocketAckEmitter *ack){
@@ -3381,7 +3419,7 @@ try {
 
     NSLog(@"connectSocket");
 
-    NSURL *url = [[NSURL alloc]initWithString:@"http://sns.lemp.co.kr:3000"];
+    NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://dinside.lemp.co.kr:3000"]];
     self.socket = [[SocketIOClient alloc]initWithSocketURL:url config:@{@"log":@YES, @"forcePolling":@YES, @"forceWebsockets":@YES}];
     
   
@@ -3567,8 +3605,10 @@ try {
     [operation  setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id  responseObject) {
         NSLog(@"setComplete");
         
-        if( [[operation.responseString objectFromJSONString] count]<1)
-            return;
+        
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
         
         NSLog(@"resultArray %@",[operation.responseString objectFromJSONString]);
         
@@ -3708,6 +3748,7 @@ try {
                         //				[sendImages removeObject:[sendImages lastObject]];
                         [self methodToSendFile];
                     }
+        }
     }failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"error: %@",  operation.responseString);
                          if (type == 102 && sendImages) {
@@ -3823,7 +3864,7 @@ try {
         mread = @"1";
         
         unixtime = messageStatus[@"WRITE_UNIXTIME"];
-        if(self.roomType == 2){
+        if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"]){
             
             munread = [NSString stringWithFormat:@"%@",messageStatus[@"UNREAD"]];
         }
@@ -3831,7 +3872,9 @@ try {
             munread = @"1";
         }
         
-        NSString *decoded = [messageStatus[@"MSG"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *beforedecoded = [messageStatus[@"MSG"]stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+        NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSLog(@"decoded %@",decoded);
         mtext = decoded;
         
         NSLog(@"mtext %@",decoded);
@@ -3847,7 +3890,7 @@ try {
             mread = @"0";
         }
         
-        if(self.roomType != 2){
+        if(![self.roomType isEqualToString:@"2"] && ![self.roomType isEqualToString:@"S"]){
             munread = mread;
         }
         
@@ -3954,8 +3997,15 @@ try {
     
     NSLog(@"getMessagefromserver %@ %@",rk,index);
     NSLog(@"mysession %@ uid %@",[ResourceLoader sharedInstance].mySessionkey,[ResourceLoader sharedInstance].myUID);
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     NSString *urlString;
     
@@ -3976,14 +4026,16 @@ try {
 #ifdef BearTalk
     if([strIndex isEqualToString:@"0"]){
         parameters = @{
-                       @"roomkey" : rk
+                       @"roomkey" : rk,
+                       @"uid" : [ResourceLoader sharedInstance].myUID,
                        };
     }
     else{
         
         parameters = @{
                        @"roomkey" : rk,
-                       @"writeunixtime" : strIndex
+                       @"writeunixtime" : strIndex,
+                       @"uid" : [ResourceLoader sharedInstance].myUID,
                        };
     }
 #else
@@ -4020,6 +4072,9 @@ try {
         
 #ifdef BearTalk
         
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]]){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
         messageArray = [operation.responseString objectFromJSONString];
           NSLog(@"messageArray %@",messageArray);
         if([messageArray count]>0)
@@ -4031,7 +4086,7 @@ try {
         NSString *isSuccess = resultDic[@"result"];
         if ([isSuccess isEqualToString:@"0"]) {
             
-            if((self.roomType == 5 || self.roomType == 1) && [resultDic[@"unreadcount"]isEqualToString:@"0"]){
+            if(([self.roomType isEqualToString:@"5"] || [self.roomType isEqualToString:@"1"]) && [resultDic[@"unreadcount"]isEqualToString:@"0"]){
                 [self updateReadAtRoom];
                 // 다 읽음
             }
@@ -4118,10 +4173,12 @@ try {
                          munread = [NSString stringWithFormat:@"%@",messageStatus[@"UNREAD"]];
                           mread = [munread intValue]==0?@"0":@"1";
                         
-                        NSString *decoded = [messageStatus[@"MSG"] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                        NSString *beforedecoded = [messageStatus[@"MSG"]stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+                        NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                        NSLog(@"decoded %@",decoded);
                         mtext = decoded;
                         
-                        NSLog(@"mtext %@",mtext);
+                        
                         
                         mnick = [NSString stringWithFormat:@"%@",messageStatus[@"USER_NAME"]];
                         
@@ -4147,7 +4204,7 @@ try {
                         mread = @"1";
                         unixtime = @"";
                         
-                        if(self.roomType == 2){
+                        if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"]){
                             
                             munread = [NSString stringWithFormat:@"%@",messageStatus[@"unread"]];
                         }
@@ -4166,11 +4223,11 @@ try {
                         
                         NSLog(@"mtext %@",mtext);
                         
-                             if(self.roomType == 2){
+                             if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"]){
                         mnick = [NSString stringWithFormat:@"%@",[[ResourceLoader sharedInstance] getUserName:muser]];//[SharedAppDelegate.root searchContactDictionary:muser][@"name"]];
                              }
                              else{
-                                 if (self.roomType == 3 || self.roomType == 4) {
+                                 if ([self.roomType isEqualToString:@"3"] || [self.roomType isEqualToString:@"4"]) {
                                      mnick = nameLabel.text;
                                  } else {
                                      mnick = [NSString stringWithFormat:@"%@",[[ResourceLoader sharedInstance] getUserName:muser]];//[SharedAppDelegate.root searchContactDictionary:muser][@"name"]];
@@ -4186,7 +4243,7 @@ try {
                             mread = @"0";
                         }
                         
-                        if(self.roomType != 2){
+                        if(![self.roomType isEqualToString:@"2"] && ![self.roomType isEqualToString:@"S"]){
                             munread = mread;
                         }
 #endif
@@ -4263,7 +4320,7 @@ try {
             }
             
 #ifdef BearTalk
-            
+        }
 #else
         }
         
@@ -4321,7 +4378,7 @@ try {
     
     
 #ifdef GreenTalk
-    if(self.roomType == 5){
+    if([self.roomType isEqualToString:@"5"]){
         
         NSDictionary *dic = [SharedAppDelegate.root searchContactDictionary:yourUid];
         if([dic[@"name"]length]<1)
@@ -4349,9 +4406,7 @@ try {
 }
 - (void)settingRoomWithName:(NSString *)name uid:(NSString *)uid type:(NSString *)type number:(NSString *)number{
     
-//    [self performSelectorOnMainThread:@selector(changeImage:) withObject:@"n03_01_thinkchat_state_02_01.png" waitUntilDone:NO];
-//    NSLog(@"setting %@ %@ %@",name,uid,type);
-//    [self initLoadCount];
+    
       nameLabel.text = name;
     
     NSLog(@"name %@ uid %@ type %@ num %@",name,uid,type,number);
@@ -4442,7 +4497,7 @@ try {
         nameSize.width = 160;
     yourUid = [[NSString alloc]initWithFormat:@"%@",uid];
     if([type length]>0)
-    roomType = [type intValue];
+    roomType = type;
     
     
     if(roomName){
@@ -4457,8 +4512,13 @@ try {
         roomnumber = nil;
     }
     
-    if([number length]>0 && [number intValue]>0){
-        
+    if([number length]>0
+#ifdef BearTalk
+       )
+#else
+        && [number intValue]>0)
+#endif
+            {
         roomnumber = [[NSString alloc]initWithFormat:@"%@",number];
   
     }
@@ -4471,7 +4531,7 @@ try {
     
 
     
-    if(self.roomType == 2){
+    if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"]){
 //        [alarmButton setTitle:@"그룹" forState:UIControlStateNormal & UIControlStateHighlighted & UIControlStateSelected];
         nameLabel.frame = CGRectMake(110-nameSize.width/2 - 15, 12, nameSize.width, 22);
 //        roomMember.frame = CGRectMake(nameLabel.frame.origin.x + nameSize.width + 5, nameLabel.frame.origin.y + 5, 60, 20);
@@ -4503,7 +4563,7 @@ try {
         
 #endif
         
-	} else if(self.roomType == 1 || self.roomType == 5) {
+	} else if([self.roomType isEqualToString:@"1"] || [self.roomType isEqualToString:@"5"]) {
 //        [alarmButton setTitle:@"1:1" forState:UIControlStateNormal & UIControlStateHighlighted & UIControlStateSelected];
         
 
@@ -4546,7 +4606,7 @@ try {
 //        
 #endif
         
-    } else if (self.roomType == 3 || self.roomType == 4) {
+    } else if ([self.roomType isEqualToString:@"3"] || [self.roomType isEqualToString:@"4"]) {
         
         
         memberCountView.hidden = YES;
@@ -4596,7 +4656,7 @@ try {
 
 
 
-- (void)alarmSwitchWithSocket:(NSString *)yn roomkey:(NSString *)rk{
+- (void)alarmSwitchWithSocket:(NSString *)yn roomkey:(NSString *)rk name:(NSString *)name tag:(int)tag{
     NSLog(@"alarmSwitchWithSocket %@",yn);
     
     
@@ -4618,7 +4678,7 @@ try {
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                                 [ResourceLoader sharedInstance].myUID,@"uid",
                                 rk,@"roomkey",
-                                nameLabel.text,@"roomname",
+                                name,@"roomname",
                                 yn,@"roomalarmyn",nil];
     NSLog(@"parameters %@",parameters);
     
@@ -4631,18 +4691,23 @@ try {
         NSLog(@"operation.responseString  %@",operation.responseString );
         NSLog(@"jsonstring %@",[operation.responseString objectFromJSONString]);
         
+        BOOL alarm = YES;
         if ([[operation.responseString objectFromJSONString][@"roomalarmyn"] isEqualToString:@"N"]) {
             // mute
+            alarm = YES;
             alarmButton.selected = YES;
         } else {
             // unmute
+            alarm = NO;
             alarmButton.selected = NO;
         }
         //			[SQLiteDBManager updateAlarmIsMute:alarmButton.selected roomkey:self.roomKey];
-        NSLog(@"setBool %@ forkey %@",alarmButton.selected?@"YES":@"NO",rk);
-        [[NSUserDefaults standardUserDefaults] setBool:alarmButton.selected forKey:rk];
+        NSLog(@"setBool %@ forkey %@",alarm?@"YES":@"NO",rk);
+        [[NSUserDefaults standardUserDefaults] setBool:alarm forKey:rk];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
+        if(tag == kChatList)
+        [SharedAppDelegate.root.chatList refreshContents:YES];
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -4662,8 +4727,14 @@ try {
 {
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //	AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/chat/info/setroom.lemp",[SharedAppDelegate readPlist:@"was"]];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
@@ -5839,7 +5910,13 @@ try {
 	{
 //        NSString *urId = [SharedFunctions minusMe:yourUid];
         
-        if([self.roomnumber length]>0 && [self.roomnumber intValue]>0){
+        if([self.roomnumber length]>0
+#ifdef BearTalk
+           )
+#else
+            && [self.roomnumber intValue]>0)
+#endif
+        {
             
             switch (buttonIndex)
             {
@@ -6083,7 +6160,7 @@ try {
                 members = [members stringByAppendingString:@","];
             }
             NSLog(@"members %@",members);
-            if(self.roomType == 1 || self.roomType == 5){
+            if([self.roomType isEqualToString:@"1"] || [self.roomType isEqualToString:@"5"]){
                     NSString *urId = [SharedFunctions minusMe:yourUid];
                 members = [members stringByAppendingString:urId];
                 if(![members hasSuffix:@","]){
@@ -6305,8 +6382,14 @@ if([message length]<1)
 - (void)sendFile:(int)sel sendData:(NSData*)data Rk:(NSString *)rk filename:(NSString*)filename index:(NSString *)index
 {
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     NSLog(@"self.roomkey // %@",self.roomKey);
     //    if(self.roomKey){
@@ -7835,11 +7918,11 @@ if([message length]<1)
             balloon = [[UIImage imageNamed:@"imageview_chat_balloon_you.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15.0, 10.0, 6.0, 6.0)];
 #endif
 
-			if (self.roomType == 3) {
+			if ([self.roomType isEqualToString:@"3"]) {
                   [profileView performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"mail_profile.png"] waitUntilDone:NO];
 
 			}
-			else if (self.roomType == 4) {
+			else if ([self.roomType isEqualToString:@"4"]) {
                 [profileView performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"approval_profile.png"] waitUntilDone:NO];
 			} else {
                 [SharedAppDelegate.root getProfileImageWithURL:uid ifNil:@"chprfile_nophoto.png" view:profileView scale:0];
@@ -7946,7 +8029,7 @@ if([message length]<1)
 				readLabel.hidden = YES;
 			}
 			
-            if(self.roomType == 2){
+            if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"]){
                 readLabel.hidden = YES;
             }
             
@@ -8034,11 +8117,11 @@ if([message length]<1)
             
             
             
-            if (self.roomType == 3) {
+            if ([self.roomType isEqualToString:@"3"]) {
                 
                 [profileView performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"mail_profile.png"] waitUntilDone:NO];
             }
-            else if (self.roomType == 4) {
+            else if ([self.roomType isEqualToString:@"4"]) {
                 [profileView performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"approval_profile.png"] waitUntilDone:NO];
             } else {
                 [SharedAppDelegate.root getProfileImageWithURL:uid ifNil:@"chprfile_nophoto.png" view:profileView scale:0];
@@ -8217,7 +8300,7 @@ if([message length]<1)
             }
             
             
-            if(self.roomType == 2)
+            if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"])
                 readLabel.hidden = YES;
             
             
@@ -8376,12 +8459,12 @@ if([message length]<1)
 			readLabel.text = read;
             NSLog(@"Read %@",read);
             
-			if (self.roomType == 3) {
+			if ([self.roomType isEqualToString:@"3"]) {
                 
                 [profileView performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"mail_profile.png"] waitUntilDone:NO];
 
 			}
-			else if (self.roomType == 4) {
+			else if ([self.roomType isEqualToString:@"4"]) {
                 
                 [profileView performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"approval_profile.png"] waitUntilDone:NO];
                 
@@ -8516,14 +8599,23 @@ if([message length]<1)
                     
                     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         
-                        if([[operation.responseString objectFromJSONString]count]>0){
+                        
+                        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+                            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
                             
                             
                             NSDictionary *dic = [operation.responseString objectFromJSONString][0];
                             NSLog(@"resultDic %@",dic);
                             
                             NSUserDefaults *defaultManager = [NSUserDefaults standardUserDefaults];
-                            [defaultManager setObject:dic forKey:text];
+                            
+                            NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionary];
+                            [mutableDictionary setObject:dic[@"FILE_INFO"] forKey:@"FILE_INFO"];
+                            [mutableDictionary setObject:dic[@"FILE_KEY"] forKey:@"FILE_KEY"];
+                            [mutableDictionary setObject:dic[@"FILE_TYPE"] forKey:@"FILE_TYPE"];
+                            [mutableDictionary setObject:dic[@"FILE_NAME"] forKey:@"FILE_NAME"];
+//                            [mutableDictionary setObject:dic[@"ROOM_KEY"] forKey:@"ROOM_KEY"];
+                            [defaultManager setObject:mutableDictionary forKey:text];
                             
                             
                             
@@ -8648,7 +8740,7 @@ if([message length]<1)
                 
                 NSString *imgUrl;
                 
-                imgUrl= [NSString stringWithFormat:@"%@/api/file/%@/thumb",BearTalkBaseUrl,text];
+                imgUrl= [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,text];
                     [mediaButton setTitle:text forState:UIControlStateSelected];
                     [downloadButton setTitle:text forState:UIControlStateSelected];
                 
@@ -9090,13 +9182,25 @@ if([message length]<1)
                     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         
                         
-                        if([[operation.responseString objectFromJSONString]count]>0){
+                        
+                        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+                            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
                             
                             NSDictionary *dic = [operation.responseString objectFromJSONString][0];
                             NSLog(@"resultDic %@",dic);
                             
                             NSUserDefaults *defaultManager = [NSUserDefaults standardUserDefaults];
-                            [defaultManager setObject:dic forKey:text];
+                           
+                            
+                            
+                            NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionary];
+                            [mutableDictionary setObject:dic[@"FILE_INFO"] forKey:@"FILE_INFO"];
+                            [mutableDictionary setObject:dic[@"FILE_KEY"] forKey:@"FILE_KEY"];
+                            [mutableDictionary setObject:dic[@"FILE_TYPE"] forKey:@"FILE_TYPE"];
+                            [mutableDictionary setObject:dic[@"FILE_NAME"] forKey:@"FILE_NAME"];
+//                            [mutableDictionary setObject:dic[@"ROOM_KEY"] forKey:@"ROOM_KEY"];
+                            
+                            [defaultManager setObject:mutableDictionary forKey:text];
                             
                             
                             [mediaButton setTitle:text forState:UIControlStateDisabled];
@@ -9347,7 +9451,7 @@ if([message length]<1)
 			}
             
             
-            if(self.roomType == 2)
+            if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"])
                 readLabel.hidden = YES;
             
             
@@ -9451,14 +9555,24 @@ if([message length]<1)
                 
                 AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     
-                    if([[operation.responseString objectFromJSONString]count]>0){
+                    
+                    if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+                        NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
                         
                         
                         NSDictionary *dic = [operation.responseString objectFromJSONString][0];
                         NSLog(@"resultDic %@",dic);
                         
                         NSUserDefaults *defaultManager = [NSUserDefaults standardUserDefaults];
-                        [defaultManager setObject:dic forKey:text];
+                        
+                        NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionary];
+                        [mutableDictionary setObject:dic[@"FILE_INFO"] forKey:@"FILE_INFO"];
+                        [mutableDictionary setObject:dic[@"FILE_KEY"] forKey:@"FILE_KEY"];
+                        [mutableDictionary setObject:dic[@"FILE_TYPE"] forKey:@"FILE_TYPE"];
+                        [mutableDictionary setObject:dic[@"FILE_NAME"] forKey:@"FILE_NAME"];
+//                        [mutableDictionary setObject:dic[@"ROOM_KEY"] forKey:@"ROOM_KEY"];
+                        
+                        [defaultManager setObject:mutableDictionary forKey:text];
                         
                         
                         
@@ -9573,7 +9687,7 @@ if([message length]<1)
                 
                 NSString *imgUrl;
                 
-                imgUrl= [NSString stringWithFormat:@"%@/api/file/%@/thumb",BearTalkBaseUrl,text];
+                imgUrl= [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,text];
                 
                     
                 
@@ -9877,12 +9991,22 @@ if([message length]<1)
                         
                         AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
                             
-                            if([[operation.responseString objectFromJSONString]count]>0){
+                            
+                            if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+                                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
                                 
                                 NSDictionary *dic = [operation.responseString objectFromJSONString][0];
                                 NSLog(@"resultDic %@",dic);
                                 NSUserDefaults *defaultManager = [NSUserDefaults standardUserDefaults];
-                                [defaultManager setObject:dic forKey:text];
+                                
+                                NSMutableDictionary *mutableDictionary = [NSMutableDictionary dictionary];
+                                [mutableDictionary setObject:dic[@"FILE_INFO"] forKey:@"FILE_INFO"];
+                                [mutableDictionary setObject:dic[@"FILE_KEY"] forKey:@"FILE_KEY"];
+                                [mutableDictionary setObject:dic[@"FILE_TYPE"] forKey:@"FILE_TYPE"];
+                                [mutableDictionary setObject:dic[@"FILE_NAME"] forKey:@"FILE_NAME"];
+//                                [mutableDictionary setObject:dic[@"ROOM_KEY"] forKey:@"ROOM_KEY"];
+                                
+                                [defaultManager setObject:mutableDictionary forKey:text];
                             
                                 
                                 [mediaButton setTitle:text forState:UIControlStateDisabled];
@@ -10039,7 +10163,7 @@ if([message length]<1)
     
     
     NSLog(@"unreadLabel %@",unreadLabel.text);
-    if(self.roomType == 1 || self.roomType == 5){
+    if([self.roomType isEqualToString:@"1"] || [self.roomType isEqualToString:@"5"]){
         unreadLabel.hidden = YES;
     }
     else{
@@ -10710,7 +10834,7 @@ if([message length]<1)
      작업내용 : 채팅창 안에서 상대방의 프로필 이미지를 눌렀을 때 정보가 나오도록 한다. 이는 상세정보를 눌렀을 때와 같다.
      연관화면 : 채팅
      ****************************************************************/
-	if (self.roomType == 3 || self.roomType == 4) {
+	if ([self.roomType isEqualToString:@"3"] || [self.roomType isEqualToString:@"4"]) {
 		return;
 	}
     
@@ -12382,8 +12506,14 @@ else{
     return;
 #endif
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     /****************************************************************
      작업자 : 김혜민
@@ -12643,8 +12773,14 @@ else{
     // https://dev.lemp.co.kr/lemp/chat/info/getreadstatus.lemp?uid=1010003000000382&sessionkey=ddn75itp1h5lffgu6oapnl0nt4&chatindex=
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     
