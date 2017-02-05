@@ -71,6 +71,9 @@
         viewTag = t;
         
         if(t == kFavorite){
+            if(key)
+                key = nil;
+            key = [[NSString alloc]initWithFormat:@"favorite"];
             [addArray removeAllObjects];
             [addArray setArray:array];
             [alreadyArray removeAllObjects];
@@ -79,6 +82,11 @@
 //            [alreadyArray addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
 //            }
 //            }
+        }
+        else{
+            if(key)
+                key = nil;
+            key = [[NSString alloc]initWithFormat:@"newfield2"];
         }
         NSLog(@"addArray %@",addArray);
         NSLog(@"alreadyArray %@",alreadyArray);
@@ -309,9 +317,9 @@
                                 catch = 1;
                         }
                         if(catch == 1)
-                        [searchDic setObject:[NSString stringWithFormat:@"%d",catch] forKey:@"favorite"];
+                        [searchDic setObject:[NSString stringWithFormat:@"%d",catch] forKey:key];
                         else
-                            [searchDic setObject:[NSString stringWithFormat:@"%d",0] forKey:@"favorite"];
+                            [searchDic setObject:[NSString stringWithFormat:@"%d",0] forKey:key];
                     }
                     else{
                     int catch = 0;
@@ -328,7 +336,7 @@
                             catch = 2;
                     }
                     
-                    [searchDic setObject:[NSString stringWithFormat:@"%d",catch] forKey:@"newfield2"];
+                    [searchDic setObject:[NSString stringWithFormat:@"%d",catch] forKey:key];
                     }
                     
                     [copyList addObject:searchDic];
@@ -362,10 +370,10 @@
                             if([searchDic[@"uniqueid"] isEqualToString:addArray[j][@"uniqueid"]])
                                 catch = 1;
                             else
-                                [searchDic setObject:[NSString stringWithFormat:@"%d",0] forKey:@"favorite"];
+                                [searchDic setObject:[NSString stringWithFormat:@"%d",0] forKey:key];
                         }
                         
-                        [searchDic setObject:[NSString stringWithFormat:@"%d",catch] forKey:@"favorite"];
+                        [searchDic setObject:[NSString stringWithFormat:@"%d",catch] forKey:key];
                     }
                     else{
                         
@@ -384,7 +392,7 @@
                             catch = 2;
                     }
                     
-                    [searchDic setObject:[NSString stringWithFormat:@"%d",catch] forKey:@"newfield2"];
+                    [searchDic setObject:[NSString stringWithFormat:@"%d",catch] forKey:key];
                     
                     }
                     [copyList addObject:searchDic];
@@ -467,7 +475,7 @@
 //        NSString *aUid = copyList[j][@"uniqueid"];
         if([uid isEqualToString:copyList[j][@"uniqueid"]])
         {
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:copyList[j] object:@"1" key:@"newfield2"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:copyList[j] object:@"1" key:key];
             [copyList replaceObjectAtIndex:j withObject:newDic];
             NSLog(@"copyList got it");
         }
@@ -481,7 +489,7 @@
 //        NSString *aUid = aDic[@"uniqueid"];
         if([uid isEqualToString:favList[j][@"uniqueid"]])
         {
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:favList[j] object:@"1" key:@"newfield2"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:favList[j] object:@"1" key:key];
             [favList replaceObjectAtIndex:j withObject:newDic];
             NSLog(@"favList got it");
         }
@@ -494,7 +502,7 @@
 //        NSString *aUid = aDic[@"uniqueid"];
         if([uid isEqualToString:deptList[j][@"uniqueid"]])
         {
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:deptList[j] object:@"1" key:@"newfield2"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:deptList[j] object:@"1" key:key];
             [deptList replaceObjectAtIndex:j withObject:newDic];
             NSLog(@"deptList got it");
         }
@@ -507,7 +515,7 @@
 //        NSString *aUid = aDic[@"uniqueid"];
         if([uid isEqualToString:addRestList[j][@"uniqueid"]])
         {
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:addRestList[j] object:@"1" key:@"newfield2"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:addRestList[j] object:@"1" key:key];
             [addRestList replaceObjectAtIndex:j withObject:newDic];
 //            NSLog(@"addRestList got it");
         }
@@ -528,7 +536,7 @@
         if([copyList[i][@"uniqueid"] isEqualToString:uid])
         {
             NSLog(@"there copy");
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:copyList[i] object:@"0" key:@"newfield2"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:copyList[i] object:@"0" key:key];
             [copyList replaceObjectAtIndex:i withObject:newDic];
         }
         
@@ -542,7 +550,7 @@
         if([favList[i][@"uniqueid"] isEqualToString:uid])
         {
             NSLog(@"there fav");
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:favList[i] object:@"0" key:@"newfield2"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:favList[i] object:@"0" key:key];
             [favList replaceObjectAtIndex:i withObject:newDic];
         }
         
@@ -555,7 +563,7 @@
         if([deptList[i][@"uniqueid"] isEqualToString:uid])
         {
             NSLog(@"there dept");
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:deptList[i] object:@"0" key:@"newfield2"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:deptList[i] object:@"0" key:key];
             [deptList replaceObjectAtIndex:i withObject:newDic];
         }
         
@@ -568,7 +576,7 @@
         if([addRestList[i][@"uniqueid"] isEqualToString:uid])
         {
             NSLog(@"there addrest");
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:addRestList[i] object:@"0" key:@"newfield2"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:addRestList[i] object:@"0" key:key];
             [addRestList replaceObjectAtIndex:i withObject:newDic];
         }
         
@@ -583,7 +591,7 @@
             if([deptContactList[i][@"uniqueid"] isEqualToString:uid])
             {
                 NSLog(@"there addrest");
-                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:@"0" key:@"newfield2"];
+                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:@"0" key:key];
                 [deptContactList replaceObjectAtIndex:i withObject:newDic];
             }
             
@@ -1299,7 +1307,7 @@
     NSString *mydeptcode = [SharedAppDelegate readPlist:@"myinfo"][@"deptcode"];
 //    
 //    for(NSDictionary *dic in myList){
-//        NSString *favorite = dic[@"favorite"];
+//        NSString *favorite = dic[key];
 //        NSString *uniqueid = dic[@"uniqueid"];
 //        if([favorite isEqualToString:@"1"] && ![uniqueid isEqualToString:[ResourceLoader sharedInstance].myUID]){
 //            NSLog(@"fav! %@",dic[@"name"]);
@@ -1338,9 +1346,9 @@
     
     copyList = [[NSMutableArray alloc]init];
     
-    NSLog(@"favlist %@",favList);
-    NSLog(@"favlist %@",alreadyArray);
-    NSLog(@"favlist %@",addArray);
+    NSLog(@"favlist1 %@",favList);
+    NSLog(@"favlist2 %@",alreadyArray);
+    NSLog(@"favlist3 %@",addArray);
     
     for(int i = 0; i < [favList count]; i++)
     {
@@ -1362,13 +1370,14 @@
                 catch = 1;
         }
         
-        NSDictionary *newDic = [SharedFunctions fromOldToNew:favList[i] object:[NSString stringWithFormat:@"%d",catch] key:@"newfield2"];
+        NSLog(@"catch %d %@",catch,favList[i]);
+        NSDictionary *newDic = [SharedFunctions fromOldToNew:favList[i] object:[NSString stringWithFormat:@"%d",catch] key:key];
         [favList replaceObjectAtIndex:i withObject:newDic];
         
     }
     
-    NSLog(@"favlist %@",favList);
-    NSLog(@"favlist %@",deptList);
+    NSLog(@"favlist4 %@",favList);
+    NSLog(@"favlist5 %@",deptList);
     for(int i = 0; i < [deptList count]; i++)
     {
         int catch = 0;
@@ -1389,15 +1398,16 @@
                 catch = 1;
         }
         //        if(catch)
-        NSDictionary *newDic = [SharedFunctions fromOldToNew:deptList[i] object:[NSString stringWithFormat:@"%d",catch] key:@"newfield2"];
+        NSLog(@"catch %d %@",catch,deptList[i]);
+        NSDictionary *newDic = [SharedFunctions fromOldToNew:deptList[i] object:[NSString stringWithFormat:@"%d",catch] key:key];
         [deptList replaceObjectAtIndex:i withObject:newDic];
         
         //        else
-        //            [deptList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:[deptListobjectatindex:i] object:@"0" key:@"newfield2"]];
+        //            [deptList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:[deptListobjectatindex:i] object:@"0" key:key]];
         
     }
     
-    NSLog(@"favlist %@",deptList);
+    NSLog(@"favlist6 %@",deptList);
     [self setRestList];
     
 #ifdef BearTalk
@@ -1660,7 +1670,7 @@
                 catch = 1;
         }
         
-        NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:[NSString stringWithFormat:@"%d",catch] key:@"newfield2"];
+        NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:[NSString stringWithFormat:@"%d",catch] key:key];
         [deptContactList replaceObjectAtIndex:i withObject:newDic];
         
     }
@@ -1698,10 +1708,10 @@
     //                    catch = YES;
     //            }
     //            if(catch) {
-    //                [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:[myListobjectatindex:i] object:@"1" key:@"favorite"]];
+    //                [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:[myListobjectatindex:i] object:@"1" key:key]];
     //				[addArray addObject:[myListobjectatindex:i]];
     //			} else {
-    //                [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:[myListobjectatindex:i] object:@"0" key:@"favorite"]];
+    //                [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:[myListobjectatindex:i] object:@"0" key:key]];
     //			}
     //        }
     //		[self reloadCheck];
@@ -1719,10 +1729,10 @@
     //                catch = YES;
     //        }
     //        if(catch)
-    //            [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:[myListobjectatindex:i] object:@"2" key:@"newfield2"]];
+    //            [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:[myListobjectatindex:i] object:@"2" key:key]];
     //
     //        else
-    //            [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:[myListobjectatindex:i] object:@"0" key:@"newfield2"]];
+    //            [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:[myListobjectatindex:i] object:@"0" key:key]];
     //
     //    }
     //	[copyList setArray:myList];
@@ -1837,7 +1847,7 @@
                         catch = 1;
                 }
                 
-                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:[NSString stringWithFormat:@"%d",catch] key:@"newfield2"];
+                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:[NSString stringWithFormat:@"%d",catch] key:key];
                 [deptContactList replaceObjectAtIndex:i withObject:newDic];
                 
             }
@@ -1885,7 +1895,7 @@
                         catch = 1;
                 }
                 
-                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:[NSString stringWithFormat:@"%d",catch] key:@"newfield2"];
+                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:[NSString stringWithFormat:@"%d",catch] key:key];
                 [deptContactList replaceObjectAtIndex:i withObject:newDic];
                 
             }
@@ -1928,7 +1938,7 @@
         
         BOOL allSelected = YES;
         for(NSDictionary *dic in deptContactList){
-            if([dic[@"newfield2"] isEqualToString:@"0"])
+            if([dic[key] isEqualToString:@"0"])
             {
                 allSelected = NO;
                 
@@ -1990,7 +2000,7 @@
                         catch = 1;
                 }
                 
-                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:[NSString stringWithFormat:@"%d",catch] key:@"newfield2"];
+                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:[NSString stringWithFormat:@"%d",catch] key:key];
                 [deptContactList replaceObjectAtIndex:i withObject:newDic];
                 
             }
@@ -2038,7 +2048,7 @@
                         catch = 1;
                 }
                 
-                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:[NSString stringWithFormat:@"%d",catch] key:@"newfield2"];
+                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:[NSString stringWithFormat:@"%d",catch] key:key];
                 [deptContactList replaceObjectAtIndex:i withObject:newDic];
                 
             }
@@ -2058,7 +2068,7 @@
         
         BOOL allSelected = YES;
         for(NSDictionary *dic in deptContactList){
-            if([dic[@"newfield2"] isEqualToString:@"0"])
+            if([dic[key] isEqualToString:@"0"])
             {
                 allSelected = NO;
                 
@@ -2149,7 +2159,7 @@
     
     for(int i = 0; i < [deptContactList count]; i++){
         
-    if([deptContactList[i][@"newfield2"] isEqualToString:@"0"])
+    if([deptContactList[i][key] isEqualToString:@"0"])
     {
         allSelected = NO;
         
@@ -2176,7 +2186,7 @@
                     [addArray removeObjectAtIndex:j];
             }
             
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:@"0" key:@"newfield2"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:@"0" key:key];
             [deptContactList replaceObjectAtIndex:i withObject:newDic];
           
         
@@ -2195,7 +2205,7 @@
         for(int i = 0; i < [deptContactList count]; i++){
             NSString *contactuid = deptContactList[i][@"uniqueid"];
         
-        NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:@"1" key:@"newfield2"];
+        NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:@"1" key:key];
         [deptContactList replaceObjectAtIndex:i withObject:newDic];
         //                NSLog(@"addRestList got it");
             BOOL existAddArray = NO;
@@ -2254,12 +2264,13 @@
 - (void)confirmArray:(NSMutableArray *)list{
     
     NSLog(@"list %d",(int)[list count]);
+    NSLog(@"list %@",list);
     if(viewTag == kFavorite){
         
         [addArray removeAllObjects];
         
         for(NSDictionary *dic in list){
-            NSString *favorite = dic[@"favorite"];
+            NSString *favorite = dic[key];
             if([favorite isEqualToString:@"1"])
                 [addArray addObject:dic];
         }
@@ -2353,7 +2364,7 @@
     [addArray removeAllObjects];
     
     for(NSDictionary *dic in list){
-        NSString *newfield2 = dic[@"newfield2"];
+        NSString *newfield2 = dic[key];
         if([newfield2 isEqualToString:@"1"])
             [addArray addObject:dic];
     }
@@ -2432,7 +2443,7 @@
     
     if(selectMode == kDeptSelect){
     for(NSDictionary *dic in deptContactList){
-        if([dic[@"newfield2"] isEqualToString:@"0"])
+        if([dic[key] isEqualToString:@"0"])
         {
             allSelected = NO;
             
@@ -2490,7 +2501,7 @@
     for(int i = 0; i < [favList count]; i++)
     {
         
-        NSDictionary *newDic = [SharedFunctions fromOldToNew:favList[i] object:@"0" key:@"newfield2"];
+        NSDictionary *newDic = [SharedFunctions fromOldToNew:favList[i] object:@"0" key:key];
         [favList replaceObjectAtIndex:i withObject:newDic];
         
     }
@@ -2499,7 +2510,7 @@
     for(int i = 0; i < [deptList count]; i++)
     {
         
-        NSDictionary *newDic = [SharedFunctions fromOldToNew:deptList[i] object:@"0" key:@"newfield2"];
+        NSDictionary *newDic = [SharedFunctions fromOldToNew:deptList[i] object:@"0" key:key];
         [deptList replaceObjectAtIndex:i withObject:newDic];
         
     }
@@ -2508,7 +2519,7 @@
     for(int i = 0; i < [addRestList count]; i++)
     {
         
-        NSDictionary *newDic = [SharedFunctions fromOldToNew:addRestList[i] object:@"0" key:@"newfield2"];
+        NSDictionary *newDic = [SharedFunctions fromOldToNew:addRestList[i] object:@"0" key:key];
         [addRestList replaceObjectAtIndex:i withObject:newDic];
         
     }
@@ -2612,7 +2623,7 @@
     for(int i = 0; i < [deptContactList count]; i++)
     {
         
-        NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:@"0" key:@"newfield2"];
+        NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[i] object:@"0" key:key];
         [deptContactList replaceObjectAtIndex:i withObject:newDic];
         
     }
@@ -2697,18 +2708,18 @@
                 if([selectMembers[i][@"uniqueid"] isEqualToString:alreadyArray[j][@"uniqueid"]])
                     catch = 2;
             }
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:selectMembers[i] object:[NSString stringWithFormat:@"%d",catch] key:@"newfield2"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:selectMembers[i] object:[NSString stringWithFormat:@"%d",catch] key:key];
             [selectMembers replaceObjectAtIndex:i withObject:newDic];
         }
         
         for(int i = 0; i < [selectMembers count]; i++){
-            NSString *newfield2 = selectMembers[i][@"newfield2"];
+            NSString *newfield2 = selectMembers[i][key];
             if([newfield2 isEqualToString:@"2"])
                 [selectMembers removeObjectAtIndex:i];
         }
         
         for(NSDictionary *dic in selectMembers){
-            //            if(![dic[@"newfield2"]isEqualToString:@"2"])
+            //            if(![dic[key]isEqualToString:@"2"])
             [self checkAdd:dic[@"uniqueid"]];
         }
         
@@ -3144,7 +3155,7 @@
     
     NSLog(@"dic %@",dic);
     
-    if([dic[@"newfield2"]isEqualToString:@"2"])
+    if([dic[key]isEqualToString:@"2"])
         return;
     
     
@@ -3152,7 +3163,7 @@
     NSString *uid = dic[@"uniqueid"];
     NSLog(@"uid %@",uid);
     
-    if([dic[@"newfield2"] isEqualToString:@"0"])
+    if([dic[key] isEqualToString:@"0"])
     {
         NSDictionary *catchDic;
         
@@ -3164,7 +3175,7 @@
 //            NSString *aUid = copyList[j][@"uniqueid"];
             if([uid isEqualToString:copyList[j][@"uniqueid"]])
             {
-                NSDictionary *newDic = [SharedFunctions fromOldToNew:copyList[j] object:@"1" key:@"newfield2"];
+                NSDictionary *newDic = [SharedFunctions fromOldToNew:copyList[j] object:@"1" key:key];
                 [copyList replaceObjectAtIndex:j withObject:newDic];
                 NSLog(@"copyList got it");
                 catchDic = copyList[j];
@@ -3179,7 +3190,7 @@
 //            NSString *aUid = favList[j][@"uniqueid"];
             if([uid isEqualToString:favList[j][@"uniqueid"]])
             {
-                NSDictionary *newDic = [SharedFunctions fromOldToNew:favList[j] object:@"1" key:@"newfield2"];
+                NSDictionary *newDic = [SharedFunctions fromOldToNew:favList[j] object:@"1" key:key];
                 [favList replaceObjectAtIndex:j withObject:newDic];
                 NSLog(@"favList got it");
                 catchDic = favList[j];
@@ -3194,7 +3205,7 @@
 //            NSString *aUid = deptList[j][@"uniqueid"];
             if([uid isEqualToString:deptList[j][@"uniqueid"]])
             {
-                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptList[j] object:@"1" key:@"newfield2"];
+                NSDictionary *newDic = [SharedFunctions fromOldToNew:deptList[j] object:@"1" key:key];
                 [deptList replaceObjectAtIndex:j withObject:newDic];
                 NSLog(@"deptList got it");
                 catchDic = deptList[j];
@@ -3209,7 +3220,7 @@
 //            NSString *aUid = addRestList[j][@"uniqueid"];
             if([uid isEqualToString:addRestList[j][@"uniqueid"]])
             {
-                NSDictionary *newDic = [SharedFunctions fromOldToNew:addRestList[j] object:@"1" key:@"newfield2"];
+                NSDictionary *newDic = [SharedFunctions fromOldToNew:addRestList[j] object:@"1" key:key];
                 [addRestList replaceObjectAtIndex:j withObject:newDic];
 //                NSLog(@"addRestList got it");
                 catchDic = addRestList[j];
@@ -3228,7 +3239,7 @@
                 //            NSString *aUid = addRestList[j][@"uniqueid"];
                 if([uid isEqualToString:deptContactList[j][@"uniqueid"]])
                 {
-                    NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[j] object:@"1" key:@"newfield2"];
+                    NSDictionary *newDic = [SharedFunctions fromOldToNew:deptContactList[j] object:@"1" key:key];
                     [deptContactList replaceObjectAtIndex:j withObject:newDic];
                     //                NSLog(@"addRestList got it");
                     catchDic = deptContactList[j];
@@ -3246,7 +3257,7 @@
         
         BOOL allSelected = YES;
         for(NSDictionary *dic in deptContactList){
-            if([dic[@"newfield2"] isEqualToString:@"0"])
+            if([dic[key] isEqualToString:@"0"])
             {
                 allSelected = NO;
                 
@@ -3369,7 +3380,7 @@
                 catch = 1;
         }
         
-        NSDictionary *newDic = [SharedFunctions fromOldToNew:addRestList[i] object:[NSString stringWithFormat:@"%d",catch] key:@"newfield2"];
+        NSDictionary *newDic = [SharedFunctions fromOldToNew:addRestList[i] object:[NSString stringWithFormat:@"%d",catch] key:key];
         [addRestList replaceObjectAtIndex:i withObject:newDic];
     }
     
@@ -4798,7 +4809,7 @@
         if(viewTag == kFavorite){
             checkAddView.frame = CGRectMake(checkView.frame.size.width/2-30/2, checkView.frame.size.height/2-30/2-1, 30, 30);
             
-            if([dic[@"favorite"]isEqualToString:@"1"]){
+            if([dic[key]isEqualToString:@"1"]){
                 checkView.backgroundColor = RGB(249,249,249);
                 checkView.layer.borderColor = [RGB(223, 223, 223)CGColor];
                 checkAddView.image = [CustomUIKit customImageNamed:@"btn_bookmark_on.png"];
@@ -4812,7 +4823,7 @@
         }
         else{
             checkAddView.frame = CGRectMake(checkView.frame.size.width/2-16/2, checkView.frame.size.height/2-13/2, 16, 13);
-        if([dic[@"newfield2"]isEqualToString:@"1"]){
+        if([dic[key]isEqualToString:@"1"]){
             
 //            NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"]; // [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
             checkView.backgroundColor = BearTalkColor;//[NSKeyedUnarchiver unarchiveObjectWithData:colorData];
@@ -4820,7 +4831,7 @@
             
             checkAddView.image = [CustomUIKit customImageNamed:@"select_check_white.png"];
         }
-        else if([dic[@"newfield2"]isEqualToString:@"2"]){
+        else if([dic[key]isEqualToString:@"2"]){
             checkView.backgroundColor = RGB(235,235,235);
             checkView.layer.borderColor = [RGB(223, 223, 223)CGColor];
 
@@ -4835,9 +4846,9 @@
         
         
 #else
-        if([dic[@"newfield2"]isEqualToString:@"1"])
+        if([dic[key]isEqualToString:@"1"])
             checkView.image = [CustomUIKit customImageNamed:@"button_check.png"];
-        else if([dic[@"newfield2"]isEqualToString:@"2"])
+        else if([dic[key]isEqualToString:@"2"])
             checkView.image = [CustomUIKit customImageNamed:@"button_checked.png"];
         else
             checkView.image = [CustomUIKit customImageNamed:@"button_nocheck.png"];
@@ -4854,8 +4865,14 @@
 - (void)addOrClear:(NSDictionary *)d
 {
     NSLog(@"addOrClear %@",d);
+   
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
     
@@ -4866,7 +4883,7 @@
     NSString *type = @"";
     
     //            }
-    if([dic[@"favorite"]isEqualToString:@"0"]){
+    if([dic[key]isEqualToString:@"0"]){
         //        [SharedAppDelegate.root updateFavorite:@"1" uniqueid:[dicobjectForKey:@"uniqueid"]];
         [self reloadList:dic[@"uniqueid"] fav:@"1"];
         type = @"1";
@@ -4876,12 +4893,23 @@
         //        [SharedAppDelegate.root updateFavorite:@"0" uniqueid:[dicobjectForKey:@"uniqueid"]];
         [self reloadList:dic[@"uniqueid"] fav:@"0"];
         type = @"2";
+#ifdef BearTalk
+        type = @"0";
+#endif
         
     }
     
     
-    
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString;
+    NSString *method;
+#ifdef BearTalk
+    urlString = [NSString stringWithFormat:@"%@/api/emps/favorite/",BearTalkBaseUrl];
+    method = @"PUT";
+#else
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];
+    method = @"POST";
+
+#endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -4890,17 +4918,28 @@
     
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
-    NSDictionary *parameters = @{
+    NSDictionary *parameters;
+#ifdef BearTalk
+    
+    parameters = @{
+                   @"act" : type,
+                   @"uid" : [ResourceLoader sharedInstance].myUID,
+                   @"favuid" : dic[@"uniqueid"],
+                   };
+#else
+    
+    parameters = @{
                                  @"type" : type,
                                  @"uid" : [ResourceLoader sharedInstance].myUID,
                                  @"member" : dic[@"uniqueid"],
                                  @"category" : @"1",
                                  @"sessionkey" : [ResourceLoader sharedInstance].mySessionkey
                                  };
+#endif
     NSLog(@"parameter %@",parameters);
     
     NSError *serializationError = nil;
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:method URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
     //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/info/setfavorite.lemp" parameters:parameters];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
@@ -4908,16 +4947,39 @@
         
         [SVProgressHUD dismiss];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+#ifdef BearTalk
+        
+        NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+        
+        if([dic[key]isEqualToString:@"0"]){
+            [addArray addObject:dic];
+            [[ResourceLoader sharedInstance].favoriteList addObject:dic[@"uniqueid"]];
+        }
+        else {//if([[dicobjectForKey:key]isEqualToString:@"1"]){
+            [addArray removeObject:dic];
+            [[ResourceLoader sharedInstance].favoriteList removeObject:dic[@"uniqueid"]];
+            
+        }
+        
+        [self reloadCheck];
+        
+        [SharedAppDelegate.root setFavoriteList];
+        
+#else
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+            
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"resultDic %@",resultDic);
         NSString *isSuccess = resultDic[@"result"];
         if ([isSuccess isEqualToString:@"0"]) {
             
-            if([dic[@"favorite"]isEqualToString:@"0"]){
+            if([dic[key]isEqualToString:@"0"]){
                 [SQLiteDBManager updateFavorite:@"1" uniqueid:dic[@"uniqueid"]];
                 [addArray addObject:dic];
             }
-            else {//if([[dicobjectForKey:@"favorite"]isEqualToString:@"1"]){
+            else {//if([[dicobjectForKey:key]isEqualToString:@"1"]){
                 [SQLiteDBManager updateFavorite:@"0" uniqueid:dic[@"uniqueid"]];
                 [addArray removeObject:dic];
                 
@@ -4928,21 +4990,24 @@
         else {
             
             
-            //            [SharedAppDelegate.root updateFavorite:[dicobjectForKey:@"favorite"] uniqueid:[dicobjectForKey:@"uniqueid"]];
-            [self reloadList:dic[@"uniqueid"] fav:dic[@"favorite"]];
+            //            [SharedAppDelegate.root updateFavorite:[dicobjectForKey:key] uniqueid:[dicobjectForKey:@"uniqueid"]];
+            [self reloadList:dic[@"uniqueid"] fav:dic[key]];
             
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
             NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
             
         }
+        }
+        
+#endif
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [SVProgressHUD dismiss];
        
         
-        //        [SharedAppDelegate.root updateFavorite:[dicobjectForKey:@"favorite"] uniqueid:[dicobjectForKey:@"uniqueid"]];
-        [self reloadList:dic[@"uniqueid"] fav:dic[@"favorite"]];
+        //        [SharedAppDelegate.root updateFavorite:[dicobjectForKey:key] uniqueid:[dicobjectForKey:@"uniqueid"]];
+        [self reloadList:dic[@"uniqueid"] fav:dic[key]];
         
         NSLog(@"FAIL : %@",operation.error);
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -4970,7 +5035,7 @@
         if([uid isEqualToString:aUid])
         {
             NSLog(@"searching %@",fav);
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:aDic object:fav key:@"favorite"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:aDic object:fav key:key];
             [copyList replaceObjectAtIndex:j withObject:newDic];
         }
     }
@@ -4982,7 +5047,7 @@
         if([uid isEqualToString:deptList[j][@"uniqueid"]])
         {
             NSLog(@"deptList %@",fav);
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:aDic object:fav key:@"favorite"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:aDic object:fav key:key];
             [deptList replaceObjectAtIndex:j withObject:newDic];
         }
     }
@@ -4994,7 +5059,7 @@
         if([uid isEqualToString:aUid])
         {
             NSLog(@"addRestList %@",fav);
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:aDic object:fav key:@"favorite"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:aDic object:fav key:key];
             [addRestList replaceObjectAtIndex:j withObject:newDic];
         }
     }
@@ -5009,7 +5074,7 @@
         if([uid isEqualToString:aUid])
         {
             NSLog(@"myList %@",fav);
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:aDic object:fav key:@"favorite"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:aDic object:fav key:key];
             [myList replaceObjectAtIndex:j withObject:newDic];
         }
     }
@@ -5021,7 +5086,7 @@
         if([uid isEqualToString:aUid])
         {
             NSLog(@"myList %@",fav);
-            NSDictionary *newDic = [SharedFunctions fromOldToNew:aDic object:fav key:@"favorite"];
+            NSDictionary *newDic = [SharedFunctions fromOldToNew:aDic object:fav key:key];
             [deptContactList replaceObjectAtIndex:j withObject:newDic];
         }
     }

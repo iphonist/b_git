@@ -26,7 +26,7 @@
 		NSMutableArray *copyList;
 		
 		UISearchBar *search;
-		
+    NSString *key;
 		BOOL searching;
 //		UIImageView *disableViewOverlay;
 //		BOOL willCheck;
