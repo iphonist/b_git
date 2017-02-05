@@ -40,5 +40,6 @@
 - (void)setChatIconBadge:(NSInteger)num;
 - (BOOL)checkRemoteNotificationActivate;
 - (void)resetNavigationBar;
+- (void)killApplication;
 
 @end

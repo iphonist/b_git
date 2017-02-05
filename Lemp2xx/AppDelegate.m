@@ -155,17 +155,9 @@
 //    }
     
 	// 디바이스 토큰을 plist에 저장했던 기존 사용자를 위한 migration code
-	NSString *deviceID = [self readPlist:@"deviceid"];
 	
-    NSLog(@"deviceID %@",deviceID);
-	if ([deviceID length] > 0) {
-		BOOL status = YES;
-		if ([deviceID isEqualToString:@"dummydeviceid"]) {
-			status = NO;
-		}
-		[SharedFunctions saveDeviceToken:deviceID status:status];
-		[self writeToPlist:@"deviceid" value:@""];
-	}
+  
+    
 	
 	// checkRemote...와 겹치지 않도록 처리
 	// 최초설치 or 푸시현재상태와 마지막상태가 같을때만 호출
@@ -270,6 +262,12 @@
         [[UINavigationBar appearance] setTitleTextAttributes:titleState];
     
 #elif BearTalk
+    
+    
+    
+    
+    
+    
     NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"];
     NSLog(@"themeColor1 %d",(int)[colorData length]);
     
@@ -441,11 +439,36 @@
     [root resetTabBar];
     
 }
+
 #ifdef __IPHONE_8_0
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
-    NSLog(@"didRegisterUserNotificationSettings");
+    NSLog(@"didRegisterUserNotificationSettings %@",notificationSettings);
     //register to receive notifications
+    
+    
+#ifdef BearTalk
+    
+    NSLog(@"[SharedFunctions getDeviceIDForParameter] %@",[SharedFunctions getDeviceIDForParameter]);
+    if (notificationSettings.types == UIUserNotificationTypeNone) {
+        NSLog(@"Permission not Granted by user");
+      
+        if ([[self readPlist:@"lastdate"]length] > 0
+            && ![[self readPlist:@"lastdate"]isEqualToString:@"0"]
+            && root.login == nil) {
+            if([[SharedFunctions getDeviceIDForParameter]length]>0 || ![[SharedFunctions getDeviceIDForParameter]isEqualToString:@"dummydeviceid"]){
+                [root registDeviceWithSocket:@"dummydeviceid"];
+            [SharedFunctions saveDeviceToken:nil status:NO];
+            }
+        }
+        
+        
+    }
+    else{
+        NSLog(@"Permission Granted");
+    }
+    
+#endif
     [application registerForRemoteNotifications];
 }
 
@@ -494,13 +517,15 @@
 
 -(void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-	NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken");
+	NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken %@",deviceToken);
 
+    
+    
 	NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
-	if ([application applicationState] != UIApplicationStateActive && [def objectForKey:@"PushAlertLastToken"] != nil) {
-		NSLog(@"cancel");
-		return;
-	}
+//	if ([application applicationState] != UIApplicationStateActive && [def objectForKey:@"PushAlertLastToken"] != nil) {
+//		NSLog(@"cancel");
+//		return;
+//	}
     NSMutableString *deviceId = [NSMutableString string];
     const unsigned char *ptr = (const unsigned char *)[deviceToken bytes];
     for(int i =0; i <32; i++)
@@ -510,34 +535,41 @@
     NSLog(@"DeviceID %@",deviceId);
 	
 	NSLog(@"OLD %@ NEW %@",[def objectForKey:@"PushAlertLastToken"],deviceId);
-//	if ([def boolForKey:@"PushAlertLastStatus"] == NO && ([def objectForKey:@"PushAlertLastToken"] == nil || [[def objectForKey:@"PushAlertLastToken"] length] < 1)) {
-//		// 최초 실행
-//		[SharedFunctions saveDeviceToken:deviceId status:YES];
-//	} else if (![[def objectForKey:@"PushAlertLastToken"] isEqualToString:deviceId]){
-//		// 저장된 토큰과 현재 토큰이 다름.
-//		// 디바이스토큰 등록 API호출, API 통신 성공 후 UserDef에 저장
-//		// ...
-//		if([[self readPlist:@"lastdate"]length] > 0 && ![[self readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"] && root.login == nil) {
-//			// 로그인이 되어있을때만 처리
-//			[self setProfileForDeviceToken:deviceId];
-//		} else {
-//			[SharedFunctions saveDeviceToken:deviceId status:YES];
-//		}
-//	}
-	if ([def boolForKey:@"PushAlertLastStatus"] == NO
-		&& [[self readPlist:@"lastdate"]length] > 0
+
+    
+
+    
 #ifdef BearTalk
-        
+    
+    NSLog(@"[SharedFunctions getDeviceIDForParameter] %@",[SharedFunctions getDeviceIDForParameter]);
+    if ([[self readPlist:@"lastdate"]length] > 0
         && ![[self readPlist:@"lastdate"]isEqualToString:@"0"]
+        && root.login == nil) {
+        NSLog(@"NOT login deviceid %@",deviceId);
+        if([[SharedFunctions getDeviceIDForParameter]length]==0 || [[SharedFunctions getDeviceIDForParameter]isEqualToString:@"dummydeviceid"]){
+            [root registDeviceWithSocket:deviceId];
+            [SharedFunctions saveDeviceToken:deviceId status:NO];
+        }
+    
+    }
+    
+    
 #else
-		&& ![[self readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"]
+    if ([def boolForKey:@"PushAlertLastStatus"] == NO
+        && [[self readPlist:@"lastdate"]length] > 0
+        
+        && ![[self readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"]
+        
+        && root.login == nil) {
+        // 마지막 푸시 상태가 OFF, 로그인 상태
+        [self setProfileForDeviceToken:deviceId];
+    } else {
+        
+        [SharedFunctions saveDeviceToken:deviceId status:YES];
+    }
+    
 #endif
-		&& root.login == nil) {
-		// 마지막 푸시 상태가 OFF, 로그인 상태
-		[self setProfileForDeviceToken:deviceId];
-	} else {
-		[SharedFunctions saveDeviceToken:deviceId status:YES];
-	}
+    
 }
 
 
@@ -549,7 +581,6 @@
     
     
     NSDictionary *aps = [userInfo valueForKey:@"aps"];
-    
     NSLog(@"aps %@",aps);
     NSLog(@"userInfo alert : %@\n", [aps valueForKey:@"alert"]);
     NSLog(@"userInfo badge : %@\n", [aps valueForKey:@"badge"]);
@@ -560,6 +591,7 @@
 //    NSLog(@"userInfo uniqueid : %@\n", [aps valueForKey:@"uniqueid"]);
     NSLog(@"userInfo rkey : %@\n", [aps valueForKey:@"rkey"]);
     NSLog(@"userInfo cidx : %@\n", [aps valueForKey:@"cidx"]);
+
     
 	if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"ViewType"] isEqualToString:@"Driver"]) {
 		return;
@@ -571,6 +603,8 @@
         aps = userInfo;
         kindOfPush = [aps valueForKey:@"ptype"];
     }
+    
+    
     
     
     NSLog(@"aps %@",aps);
@@ -616,7 +650,7 @@
 				NSLog(@"already chatview");
 #ifdef BearTalk
                 
-                [root getRoomWithSocket:[aps valueForKey:@"rkey"]];
+                [root getRoomWithSocket:[aps valueForKey:@"rkey"] num:@""];
 #else
 				[root.chatView settingRk:[aps valueForKey:@"rkey"] sendMemo:@""];
 #endif
@@ -734,9 +768,33 @@
     return currentStatus;
     
 }
-
+- (void)killApplication {
+    // Try to run a system call for kill
+    NSLog(@"killall SpringBoard");
+    
+    // SIGKILL
+    [[UIApplication sharedApplication] sendAction:SIGKILL to:[UIApplication sharedApplication] from:self forEvent:nil];
+    
+    // Try an infinite while loop to gobble up memory
+    int x = 0;
+    NSMutableArray *haha = [[NSMutableArray alloc] init];
+    while (1) {
+        [haha addObject:@"42"];
+        x++;
+    }
+    
+    // If all else fails, close the app
+    close(0);
+}
 - (void)setProfileForDeviceToken:(NSString*)newToken
 {
+    
+#ifdef BearTalk
+    
+    [SharedFunctions saveDeviceToken:nil status:NO];
+    
+    return;
+#endif
 	if ([[self readPlist:@"was"] length] < 1) {
 		return;
 	}
@@ -1018,7 +1076,23 @@
 #ifdef BearTalk
         [root.chatView socketConnect];
 
+    if([self checkRemoteNotificationActivate] == NO){
+        // push off
+        
+        if([[SharedFunctions getDeviceIDForParameter]length]>0 || ![[SharedFunctions getDeviceIDForParameter]isEqualToString:@"dummydeviceid"]){
+            [root registDeviceWithSocket:@"dummydeviceid"];
+            [SharedFunctions saveDeviceToken:nil status:NO];
+        }
+        
+    }
+    else{
+        // push on
+        
+    
+     
+    }
 #endif
+    
     
     if([[self readPlist:@"pwsaved"]isEqualToString:@"1"] && [[self readPlist:@"pw"]length]==4 && firstLaunch == YES)
     {
@@ -1032,7 +1106,7 @@
 			
 			if([root checkVisible:root.chatView]){
 #ifdef BearTalk
-                [root getRoomWithSocket:[self readPlist:@"lastroomkey"]];
+                [root getRoomWithSocket:[self readPlist:@"lastroomkey"] num:@""];
 #else
 				[root.chatView settingRk:[self readPlist:@"lastroomkey"] sendMemo:@""];
 #endif
@@ -1056,24 +1130,38 @@
 	   && root.login == nil)
     {
         
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
-        
-        
             
         dispatch_async(dispatch_get_main_queue(), ^{
             // 로그인 되어있는가?
 #ifdef BearTalk
             
+            NSLog(@"[SharedFunctions getDeviceIDForParameter] %@",[SharedFunctions getDeviceIDForParameter]);
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshPushAlertStatus" object:nil];
-#endif
+            
+            if(![[SharedAppDelegate readPlist:@"initContact"]isEqualToString:@"3.0.0"]){
+                NSLog(@"not 3.0.0 lastdate 0");
+                [SharedAppDelegate.root installWithPw:@""];
+            }
+            else{
+                
+             
+                
+                [root startup];
+                [root getPushCount];//:nil];
+                [root reloadPersonal];
+                if([root checkVisible:root.home])
+                    [root.home refreshTimeline];//getTimeline:@"" target:root.home.targetuid type:root.home.category groupnum:root.home.groupnum];
+            }
+#else
             [root startup];
             [root getPushCount];//:nil];
             [root reloadPersonal];
             if([root checkVisible:root.home])
                 [root.home refreshTimeline];//getTimeline:@"" target:root.home.targetuid type:root.home.category groupnum:root.home.groupnum];
 
+#endif
             
-                
             });
 //        });
         
