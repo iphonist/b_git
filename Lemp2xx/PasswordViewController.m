@@ -261,7 +261,7 @@
                 NSLog(@"push chatview");
 #ifdef BearTalk
                 
-                [SharedAppDelegate.root getRoomWithSocket:[pushDic valueForKey:@"rkey"]];
+                [SharedAppDelegate.root getRoomWithSocket:[pushDic valueForKey:@"rkey"] num:@""];
 #else
                 [SharedAppDelegate.root.chatView settingRk:[pushDic valueForKey:@"rkey"] sendMemo:@""];
 #endif

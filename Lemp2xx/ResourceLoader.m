@@ -29,7 +29,13 @@
 				resourceLoader.favoriteList = [[[NSMutableArray alloc] init]autorelease];
                 resourceLoader.csList = [[[NSMutableArray alloc]init]autorelease];
                 resourceLoader.myUID = [ResourceLoader sharedInstance].myUID;
+#ifdef BearTalk
+                
+                resourceLoader.mySessionkey = @"";
+#else
+                
                 resourceLoader.mySessionkey = [ResourceLoader sharedInstance].mySessionkey;
+#endif
 			}
 		}
 	}
@@ -79,6 +85,14 @@
     if(IS_NULL(jsonString) || [jsonString length] < 1){
         return nil;
     }
+    
+#ifdef BearTalk
+    
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@",BearTalkBaseUrl,jsonString];
+    
+#else
+    
+    
     NSDictionary *dict = [jsonString objectFromJSONString];
     NSLog(@"dict %@ %@",dict,thumb?@"YES":@"NO");
     NSString *filename;
@@ -120,9 +134,13 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@://%@%@%@",IS_NULL([dict objectForKey:@"protocol"])?@"":[dict objectForKey:@"protocol"],IS_NULL(serverAddress)?@"":serverAddress,IS_NULL([dict objectForKey:@"dir"])?@"":[dict objectForKey:@"dir"],IS_NULL(filename)?@"":filename];
     NSLog(@"urlString %@",urlStr);
     urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+#endif
     NSLog(@"urlString %@",urlStr);
     NSURL *URL = [NSURL URLWithString:urlStr];
     return URL;
+    
+    
 }
 
 
@@ -281,6 +299,10 @@
 {
 	NSLog(@"init Contacts");
     
+#ifdef BearTalk
+    if(![[SharedAppDelegate readPlist:@"initContact"]isEqualToString:@"3.0.0"])
+        return;
+#endif
 
     NSMutableArray *contactArray = [NSMutableArray array];
     
@@ -315,7 +337,7 @@
     
 #else
     contactArray  = [SQLiteDBManager getList];
-//    NSLog(@"contactArray %@",contactArray);
+    NSLog(@"contactArray count %d",[contactArray count]);
 #endif
     
     [self.customerContactList removeAllObjects];
@@ -431,23 +453,23 @@
     NSMutableArray *bearArray = [NSMutableArray array];
     
     for(NSMutableDictionary *beartalkdic in contactArray) {
-        if(![beartalkdic[@"newfield4"] isKindOfClass:[NSArray class]])
-        {
-//            NSLog(@"beartalkdic %@",beartalkdic);
-            [bearArray addObject:beartalkdic];
-            
-        }
-        else{
+      
+        
             
             NSArray *deptarray = beartalkdic[@"newfield4"];
-//            NSLog(@"beartalkdic %@",beartalkdic);
+            //            NSLog(@"beartalkdic %@",beartalkdic);
+        if([deptarray count]==0){
+            
+            [bearArray addObject:beartalkdic];
+        }
+        else{
             for(NSMutableDictionary *pdic in deptarray){
                 
                 NSMutableDictionary *newDic = [NSMutableDictionary dictionary];
                 [newDic setObject:beartalkdic[@"available"] forKey:@"available"];
                 [newDic setObject:beartalkdic[@"cellphone"] forKey:@"cellphone"];
                 [newDic setObject:beartalkdic[@"companyphone"] forKey:@"companyphone"];
-                [newDic setObject:pdic[@"deptcode"] forKey:@"deptcode"];
+                [newDic setObject:pdic[@"DEPT_CODE"] forKey:@"deptcode"];
                 [newDic setObject:beartalkdic[@"email"] forKey:@"email"];
                 [newDic setObject:beartalkdic[@"favorite"] forKey:@"favorite"];
                 [newDic setObject:beartalkdic[@"position"] forKey:@"position"];
@@ -458,20 +480,22 @@
                 [newDic setObject:beartalkdic[@"newfield3"] forKey:@"newfield3"];
                 [newDic setObject:beartalkdic[@"newfield4"] forKey:@"newfield4"];
                 [newDic setObject:beartalkdic[@"newfield5"] forKey:@"newfield5"];
-                [newDic setObject:pdic[@"position"] forKey:@"grade2"];
+                [newDic setObject:[NSString stringWithFormat:@"%@/%@",pdic[@"POS_NAME"],pdic[@"DUTY_NAME"]] forKey:@"grade2"];
                 [newDic setObject:beartalkdic[@"profileimage"] forKey:@"profileimage"];
-//                NSLog(@"pdic deptcode %@",pdic[@"deptcode"]);
-                [newDic setObject:[self searchCode:pdic[@"deptcode"]] forKey:@"team"];
+                //                NSLog(@"pdic deptcode %@",pdic[@"deptcode"]);
+                [newDic setObject:pdic[@"DEPT_NAME"] forKey:@"team"];
                 [newDic setObject:beartalkdic[@"uniqueid"] forKey:@"uniqueid"];
-//               NSLog(@"newdic %@",newDic);
+                //               NSLog(@"newdic %@",newDic);
                 
                 [bearArray addObject:newDic];
                 
                 
             }
             
-            
         }
+            
+        
+            
     }
     
     
@@ -486,7 +510,7 @@
         
         NSString *aDeptcode = aDic[@"deptcode"];
         if([aDic[@"team"]length]>0){
-        if(![aDeptcode isEqualToString:@"0"] && ![aDeptcode isEqualToString:@"10"]){
+        if(![aDeptcode isEqualToString:@"00000"]){
           
                 NSString *grade2 = aDic[@"grade2"];
             
@@ -513,7 +537,7 @@
                        [gradeArray[1]isEqualToString:@"고문"]){
                         NSString *pickedCode = aDeptcode;
 //                        NSLog(@"aDeptcode %@",aDeptcode);
-                        while (![aDeptcode isEqualToString:@"10"]) {
+                        while (![aDeptcode isEqualToString:@"00000"]) {
                             pickedCode = aDeptcode;
                             aDeptcode = [self searchParentCode:aDeptcode];
                             if([aDeptcode length]<1)
@@ -529,6 +553,7 @@
 //                        NSLog(@"newDic %@",newDic);
                         NSString *sequence = [self searchSequence:pickedCode];
 //                                                NSLog(@"sequence %@",sequence);
+                        if([deptname length]>0)
                         [myDeptArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:deptname,@"name",sequence,@"newfield1",nil]];
                     }
                     
@@ -540,6 +565,7 @@
 
         
     }
+    NSLog(@"myDeptArray %@",myDeptArray);
     NSSortDescriptor *sortseq = [NSSortDescriptor sortDescriptorWithKey:@"newfield1" ascending:YES selector:@selector(localizedStandardCompare:)];
     [myDeptArray sortUsingDescriptors:[NSArray arrayWithObjects:sortseq, nil]];
     
@@ -618,6 +644,11 @@
 - (void)settingDeptList
 {
     NSLog(@"init DeptList");
+    
+#ifdef BearTalk
+     if(![[SharedAppDelegate readPlist:@"initContact"]isEqualToString:@"3.0.0"])
+         return;
+#endif
 //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
     NSMutableArray *deptArray = [NSMutableArray array];
     

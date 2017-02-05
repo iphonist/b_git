@@ -1859,8 +1859,15 @@ const char paramNumber;
 
 - (void)modifyBatongPostImage:(NSString *)index modify:(int)type msg:(NSString *)msg sub:(NSString *)sub dept:(NSString *)deptcode viewcon:(UIViewController *)viewcon{
    
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     
     
@@ -2035,8 +2042,15 @@ const char paramNumber;
 }
 - (void)modifyPostImage:(NSString *)index modify:(int)type msg:(NSString *)msg{
     
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     
     
@@ -2495,11 +2509,7 @@ const char paramNumber;
     
 #ifdef BearTalk
     
-    if([ResourceLoader sharedInstance].myUID == nil || [[ResourceLoader sharedInstance].myUID length]<1){
-        NSLog(@"userindex null");
-        return;
-    }
-    
+  
 #else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;

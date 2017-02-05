@@ -89,8 +89,15 @@
     return;
 #endif
     
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/myinfo.lemp",[SharedAppDelegate readPlist:@"was"]];

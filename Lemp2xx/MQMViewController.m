@@ -404,8 +404,15 @@
     
     
     // 여기서 바코드값을 가지고 통신한다.
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/mqm_product.lemp",[SharedAppDelegate readPlist:@"was"]];
@@ -640,8 +647,15 @@
 }
 - (void)sendFailResult:(NSDictionary *)testDic{
     
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
 //    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
@@ -819,8 +833,15 @@
 
 - (void)sendResult:(NSDictionary *)testDic{
     
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/mqm_product_result.lemp",[SharedAppDelegate readPlist:@"was"]];

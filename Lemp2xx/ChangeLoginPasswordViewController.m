@@ -549,8 +549,14 @@
 
 - (void)changePasswordAtSetup:(NSString *)pw{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     //    NSString *url = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"ipaddress"]];
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:url]];

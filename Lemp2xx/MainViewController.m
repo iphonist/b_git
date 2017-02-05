@@ -388,8 +388,14 @@
 {
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
@@ -1083,7 +1089,7 @@
             //                    [SharedAppDelegate.root settingPublicGroup:[myListobjectatindex:indexPath.row]];
             //                }
             //                else
-            [SharedAppDelegate.root settingJoinGroup:myList[indexPath.row] add:NO];
+            [SharedAppDelegate.root settingJoinGroup:myList[indexPath.row] add:NO con:nil];
             
             
         }
@@ -1213,7 +1219,7 @@
 				//                    [SharedAppDelegate.root settingPublicGroup:[myListobjectatindex:indexPath.row]];
 				//                }
 				//                else
-                [SharedAppDelegate.root settingJoinGroup:myList[indexPath.row] add:NO];
+                [SharedAppDelegate.root settingJoinGroup:myList[indexPath.row] add:NO con:nil];
                 
                 
             }
@@ -1343,8 +1349,14 @@
 
 - (void)regiGroup:(NSString *)groupnum answer:(NSString *)yn{
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     
@@ -1384,7 +1396,7 @@
                 for(int i = 0; i < [myList count]; i++){
                     if([myList[i][@"groupnumber"]isEqualToString:groupnum])
                     {
-                        [SharedAppDelegate.root fromUnjoinToJoin:myList[i]];
+                        [SharedAppDelegate.root fromUnjoinToJoin:myList[i] con:self];
                         
                         [myList replaceObjectAtIndex:i withObject:[SharedFunctions fromOldToNew:myList[i] object:@"Y" key:@"accept"]];
                     }

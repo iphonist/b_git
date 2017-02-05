@@ -96,8 +96,13 @@
     
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
     
     
 //    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
@@ -185,8 +190,14 @@
     
     
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     
 //    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];

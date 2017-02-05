@@ -732,8 +732,11 @@ else
 - (void)addOrClear:(NSDictionary *)d
 {
     NSLog(@"addOrClear %@",d);
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
     
     if(progressing)
         return;

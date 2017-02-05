@@ -40,8 +40,15 @@
 
 - (void)getMQMTestedResult:(NSDictionary *)dic{
     
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     requested = NO;
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];

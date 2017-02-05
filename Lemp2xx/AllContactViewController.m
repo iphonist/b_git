@@ -229,7 +229,8 @@
     
     [favList removeAllObjects];
 
-
+    
+    NSLog(@"favList %d",[favList count]);
     NSLog(@"[ResourceLoader sharedInstance].favoriteList %@",[ResourceLoader sharedInstance].favoriteList);
     for(NSString *uid in [ResourceLoader sharedInstance].favoriteList){
         if(![uid isEqualToString:[ResourceLoader sharedInstance].myUID]){
@@ -237,6 +238,7 @@
         [favList addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
         }
      }
+    NSLog(@"favList %@",favList);
     [myTable reloadData];
 }
 
@@ -471,8 +473,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
 {
     NSLog(@"removeFavorite %@",uid);
     
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/info/setfavorite.lemp",[SharedAppDelegate readPlist:@"was"]];

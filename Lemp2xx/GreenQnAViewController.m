@@ -104,8 +104,14 @@
 
 - (void)getTimeline:(NSString *)idx
 {
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     
     if(didRequest){
         if ([idx length] > 0) {

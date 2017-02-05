@@ -796,8 +796,15 @@
 
 - (void)getTimeline:(NSString *)idx send:(NSString *)send
 {
+    
+    
+#ifdef BearTalk
+#else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
+#endif
+    
+    
     didFetch = NO;
 //	from = [[NSString alloc]initWithFormat:@"%@",send];
     
