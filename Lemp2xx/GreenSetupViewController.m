@@ -150,6 +150,12 @@ return self;
     
 #ifdef BearTalk
     
+    UIButton *oneAppButton;
+    oneAppButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadOneApp:) frame:CGRectMake(16, CGRectGetMaxY(buttonView.frame)+10, 48, 48)
+                              imageNamedBullet:nil imageNamedNormal:@"oneapp_icon.png" imageNamedPressed:nil];
+    [self.view addSubview:oneAppButton];
+    
+    
     buttonView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:buttonView];
     
@@ -365,6 +371,21 @@ return self;
     }
     
 #endif
+    
+}
+
+- (void)loadOneApp:(id)sender{
+    
+    
+    BOOL isInstalled = [[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"lineworks://default?version=1"]]; // PorlarisOffice = db-76y0qkvvslf5i4d
+    NSLog(@"isInstalled %@",isInstalled?@"YES":@"NO");
+    if(isInstalled){
+        
+    }
+    else{
+        
+        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:@"https://itunes.apple.com/kr/app/line-works/id1012129122?mt=8"]];
+    }
     
 }
 
