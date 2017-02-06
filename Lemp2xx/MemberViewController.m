@@ -1154,9 +1154,9 @@ const char paramNumber;
 
         }
         else if(section == kOut){
-            if([groupDic[@"groupmaster"] isEqualToString:[ResourceLoader sharedInstance].myUID])
-                return 2;
-            else
+//            if([groupDic[@"groupmaster"] isEqualToString:[ResourceLoader sharedInstance].myUID])
+//                return 2;
+//            else
                 return 1;
 
         }
