@@ -547,7 +547,13 @@
             NSLog(@"mTarget %@",mTarget);
             NSLog(@"myListDic %@",myList[indexPath.row]);
             if (mTarget && mSelector) {
-                [mTarget performSelector:mSelector withObject:myList[indexPath.row]];
+                if(searching){
+                [mTarget performSelector:mSelector withObject:copyList[indexPath.row]];
+                }
+                else{
+                    [mTarget performSelector:mSelector withObject:myList[indexPath.row]];
+                    
+                }
             }
             [self dismissViewControllerAnimated:YES completion:nil];
         }
