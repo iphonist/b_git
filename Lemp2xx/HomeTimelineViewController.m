@@ -4198,15 +4198,20 @@ return height;
     
     BOOL timeLineNew = NO;
     for(NSDictionary *dic in SharedAppDelegate.root.ecmdmain.myList){
-        if([[SharedAppDelegate readPlist:dic[@"groupnumber"]]intValue] < [dic[@"lastcontentindex"]intValue])
+        if([dic[@"NEW_YN"]isEqualToString:@"Y"]){
             timeLineNew = YES;
+        break;
     }
+    }
+    
     [SharedAppDelegate.root.mainTabBar setCommunityBadgeCountYN:timeLineNew];
     
     timeLineNew = NO;
     for(NSDictionary *dic in SharedAppDelegate.root.main.myList){
-        if([[SharedAppDelegate readPlist:dic[@"groupnumber"]]intValue] < [dic[@"lastcontentindex"]intValue])
+        if([dic[@"NEW_YN"]isEqualToString:@"Y"]){
             timeLineNew = YES;
+            break;
+        }
     }
     [SharedAppDelegate.root.mainTabBar setContentsBadgeCountYN:timeLineNew];
     

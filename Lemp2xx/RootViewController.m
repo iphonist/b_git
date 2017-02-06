@@ -1197,6 +1197,9 @@
 #endif
     
     
+    
+#ifdef BearTalk
+#else
     if([dic[@"lastcontentindex"]length]<1 || dic[@"lastcontentindex"]==nil)
         [SharedAppDelegate writeToPlist:dic[@"groupnumber"] value:@"0"];
     else
@@ -1204,7 +1207,7 @@
         [SharedAppDelegate writeToPlist:dic[@"groupnumber"] value:dic[@"lastcontentindex"]];
     }
   
-    
+#endif
     
 //    [home getTimeline:@"" target:@"" type:dic[@"category"] groupnum:dic[@"groupnumber"]];
     
