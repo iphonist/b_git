@@ -1,4 +1,4 @@
-//
+
 //  ChatViewC.m
 //  bSampler
 //
@@ -766,8 +766,8 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
         //            collectionView.contentSize = CGSizeMake(320*paging.numberOfPages,collectionView.frame.size.height);
         
         
-        NSLog(@"collectionview %@",aCollectionView);
-        [aCollectionView reloadData];
+//        NSLog(@"collectionview %@",aCollectionView);
+//        [aCollectionView reloadData];
         
         
 #else
@@ -841,7 +841,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
         showEmoticonView = YES;
         [btnEmoticon setBackgroundImage:[CustomUIKit customImageNamed:@"button_addemoticon_selected.png"] forState:UIControlStateNormal];
 #ifdef BearTalk
-        
+          [aCollectionView reloadData];
         [btnEmoticon setBackgroundImage:[UIImage imageNamed:@"btn_emoticon_on.png"] forState:UIControlStateNormal];
         
 #endif
@@ -2481,8 +2481,12 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
     
     NSString *lastmsg = [SharedAppDelegate readPlist:self.roomKey];
     NSLog(@"lastmsg %@",lastmsg);
-    if(lastmsg == nil)
+    if(IS_NULL(lastmsg)){
+        
+        messageTextView.text = @"";
+        [self textViewDidChange:messageTextView];
         return;
+    }
     
     NSString *temp_lastmsg = [lastmsg stringByReplacingOccurrencesOfString:@" " withString:@""];
     NSLog(@"temp_lastmsg %@",temp_lastmsg);
@@ -8074,11 +8078,11 @@ if([message length]<1)
 											balloonView.frame.origin.y + 11,
                                             size.width+extraFrame,
 											size.height);
-			timeLabel.frame = CGRectMake(balloonView.frame.origin.x,
+			timeLabel.frame = CGRectMake(self.view.frame.size.width - 16 - 60,
 										 balloonView.frame.origin.y - 16 + 2.0,
 										 60,
 										 14.0);
-//			timeLabel.textAlignment = NSTextAlignmentRight;
+			timeLabel.textAlignment = NSTextAlignmentRight;
 			readLabel.frame = CGRectMake(messageLabel.frame.origin.x - 32 - 30,//+ 40 + 2.0,
 										 messageLabel.frame.origin.y + messageLabel.frame.size.height - 7.0,// + 5.0,
 										 45,
@@ -8430,11 +8434,11 @@ if([message length]<1)
             
             unreadLabel.frame = readLabel.frame;
             
-            timeLabel.frame = CGRectMake(balloonView.frame.origin.x,
+            timeLabel.frame = CGRectMake(self.view.frame.size.width - 16 - 60,
                                          balloonView.frame.origin.y - 16 + 2.0,
                                          60,
                                          14.0);
-//            timeLabel.textAlignment = NSTextAlignmentRight;
+            timeLabel.textAlignment = NSTextAlignmentRight;
            
             
             
@@ -9655,12 +9659,12 @@ if([message length]<1)
                     
                     gifLabel.frame = CGRectMake(mediaButton.frame.size.width - 37, mediaButton.frame.size.height - 20, 32, 15);
                     
-                    timeLabel.frame = CGRectMake(balloonView.frame.origin.x,
+                    timeLabel.frame = CGRectMake(self.view.frame.size.width - 16 - 60,
                                                  balloonView.frame.origin.y - 16 + 2.0,
                                                  60,
                                                  14.0);
                     
-                    
+                    timeLabel.textAlignment = NSTextAlignmentRight;
                     
                     readLabel.frame = CGRectMake(mediaButton.frame.origin.x - 32 - 30,//+ 40 + 2.0,
                                                  mediaButton.frame.origin.y + mediaButton.frame.size.height - 7.0,// + 5.0,
@@ -9755,12 +9759,12 @@ if([message length]<1)
                                                    imageSize.height);
                     
                     gifLabel.frame = CGRectMake(mediaButton.frame.size.width - 37, mediaButton.frame.size.height - 20, 32, 15);
-                    timeLabel.frame = CGRectMake(balloonView.frame.origin.x,
+                    timeLabel.frame = CGRectMake(self.view.frame.size.width - 16 - 60,
                                                  balloonView.frame.origin.y - 16 + 2.0,
                                                  60,
                                                  14.0);
                     
-                    
+                    timeLabel.textAlignment = NSTextAlignmentRight;
                     
                     readLabel.frame = CGRectMake(mediaButton.frame.origin.x - 32 - 30,//+ 40 + 2.0,
                                                  mediaButton.frame.origin.y + mediaButton.frame.size.height - 7.0,// + 5.0,
@@ -9798,12 +9802,12 @@ if([message length]<1)
                     
                     gifLabel.frame = CGRectMake(mediaButton.frame.size.width - 37, mediaButton.frame.size.height - 20, 32, 15);
                     
-                    timeLabel.frame = CGRectMake(balloonView.frame.origin.x,
+                    timeLabel.frame = CGRectMake(self.view.frame.size.width - 16 - 60,
                                                  balloonView.frame.origin.y - 16 + 2.0,
                                                  60,
                                                  14.0);
                     
-                    
+                    timeLabel.textAlignment = NSTextAlignmentRight;
                     
                     readLabel.frame = CGRectMake(mediaButton.frame.origin.x - 32 - 30,//+ 40 + 2.0,
                                                  mediaButton.frame.origin.y + mediaButton.frame.size.height - 7.0,// + 5.0,
@@ -10101,7 +10105,7 @@ if([message length]<1)
                     balloonView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - CGRectGetMaxX(contactLabel.frame) - 12 - 20,
                                                    yBound + 16.0 + 5.0,
                                                    CGRectGetMaxX(contactLabel.frame)+20,
-                                                   contactLabel.frame.size.height+15);
+                                                   contactLabel.frame.size.height+20);
                     
 #else
                     balloonView.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - (25+40) - 12 - 35,
@@ -10141,11 +10145,11 @@ if([message length]<1)
 			
             unreadLabel.frame = readLabel.frame;
 			
-			timeLabel.frame = CGRectMake(balloonView.frame.origin.x,
+			timeLabel.frame = CGRectMake(self.view.frame.size.width - 16 - 60,
 										 balloonView.frame.origin.y - 16 + 2.0,
 										 60,
 										 14.0);
-//			timeLabel.textAlignment = NSTextAlignmentRight;
+			timeLabel.textAlignment = NSTextAlignmentRight;
             
             
             readLabel.textAlignment = NSTextAlignmentRight;
@@ -10796,6 +10800,11 @@ if([message length]<1)
 		if(direction == 2) // 오른쪽
 		{
             
+#ifdef BearTalk
+            NSLog(@"contact!!!! type %d",type);
+//            if(type == 8)
+//                contentPadding += 5;
+#endif
 			if(indexPath.row == 0)
 				return dateHeight + cellGap + mediaIconHeight + contentPadding;
 			else

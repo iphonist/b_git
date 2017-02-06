@@ -724,7 +724,7 @@ const char paramNumber;
 #ifdef BearTalk
            )
 #else
-            )&& [dic[@"newfield"]intValue]>0)
+            && [dic[@"newfield"]intValue]>0)
 #endif
         {
             [discardedItems addIndex:index];
@@ -1320,6 +1320,76 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //}
 
 
+- (void)setFavRoom:(NSString *)roomnum yn:(NSString *)yn{
+    //  //    // put
+    
+    
+        
+        
+        [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        
+        //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
+        //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
+        
+        NSString *urlString;
+        
+        urlString = [NSString stringWithFormat:@"%@/api/emps/favroom",BearTalkBaseUrl];
+        
+        NSURL *baseUrl = [NSURL URLWithString:urlString];
+        
+        
+        AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+        client.responseSerializer = [AFHTTPResponseSerializer serializer];
+        
+        
+        
+        NSDictionary *parameters;
+        
+        
+        parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                      roomnum,@"roomkey",
+                      yn,@"favroomyn",
+                      [ResourceLoader sharedInstance].myUID,@"uid",nil];//@{ @"uniqueid" : @"c110256" };
+        
+        NSLog(@"parameters %@",parameters);
+        
+        //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/read/notice.lemp" parameters:parameters];
+        
+        NSError *serializationError = nil;
+        NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"PUT" URLString:[baseUrl absoluteString] parameters:parameters error:&serializationError];
+        
+        AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            [SVProgressHUD dismiss];
+            NSLog(@"operation %@",[operation.responseString objectFromJSONString]);
+            
+            
+            
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            
+            
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            
+            [SVProgressHUD dismiss];
+            NSLog(@"FAIL : %@",operation.error);
+            [HTTPExceptionHandler handlingByError:error];
+            //            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        [alert show];
+            
+        }];
+        [operation start];
+        
+        
+        
+        
+    
+
+}
+
 - (void)swipeToDelete:(int)row
 {
     NSDictionary *dic;
@@ -1344,6 +1414,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     if([[SharedAppDelegate readPlist:@"favchatlist"]isEqualToString:[myList objectAtIndex:row][@"roomkey"]]){
         //  해제
         [SharedAppDelegate writeToPlist:@"favchatlist" value:@""];
+        [self setFavRoom:[myList objectAtIndex:row][@"roomkey"] yn:@"N"];
     }
 #ifdef BearTalk  
     [SharedAppDelegate.root modifyRoomWithRoomkey:[myList objectAtIndex:row][@"roomkey"]    modify:2 members:@"" name:@"" con:self];
@@ -1375,11 +1446,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
             if([[SharedAppDelegate readPlist:@"favchatlist"]isEqualToString:dic[@"roomkey"]]){
                 //  해제
                 [SharedAppDelegate writeToPlist:@"favchatlist" value:@""];
+                [self setFavRoom:dic[@"roomkey"] yn:@"N"];
                 [self refreshContents:YES];
             }
             else{
                 
                 [SharedAppDelegate writeToPlist:@"favchatlist" value:dic[@"roomkey"]];
+                [self setFavRoom:dic[@"roomkey"] yn:@"Y"];
                 [self refreshContents:YES];
             }
         }

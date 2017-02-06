@@ -8072,6 +8072,10 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 [self getAreas];
             }
                     
+                    if(!IS_NULL(resultDic[@"favroom"]) && [resultDic[@"favroom"]length]>0){
+                        
+                        [SharedAppDelegate writeToPlist:@"favchatlist" value:resultDic[@"favroom"]];
+                    }
                     
                     [SharedAppDelegate.root getNotice:@"0" viewcon:SharedAppDelegate.root.main];
         }
