@@ -62,5 +62,8 @@
 - (void)enterPassword:(NSString *)email;
 
 - (void)setProgressInteger2:(NSString *)p;
+- (BOOL)validLetters:(NSString *)text;
+- (void)fetchGreenVariCode:(int)tag;
+- (BOOL)validEmail:(NSString*)emailString;
 
 @end

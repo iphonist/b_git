@@ -164,7 +164,7 @@
 //-(void)showRightStaticView:(BOOL)animated;
 
 
-- (BOOL)isCellNetwork;
+//- (BOOL)isCellNetwork;
 - (void)loadRecent;
 - (void)loadRecentWithAnimation;
 - (void)loadChatList;

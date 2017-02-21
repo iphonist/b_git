@@ -91,7 +91,7 @@
     
 #endif
     
-#if defined(LempMobile)
+#if defined(LempMobile) || defined(LempMobileNowon)
     MainViewController *main;
 #else
     MainCollectionViewController *main;
@@ -147,7 +147,7 @@
 
 #endif
 
-#if defined(LempMobile)
+#if defined(LempMobile) || defined(LempMobileNowon)
 @property (nonatomic, retain) MainViewController *main;
 #else
 @property (nonatomic, retain) MainCollectionViewController *main;

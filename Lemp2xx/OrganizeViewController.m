@@ -735,19 +735,20 @@
 
 - (void)warp:(id)sender
 {
-    NSLog(@"warp %d",[sender tag]);
-#if defined(LempMobileNowon)
-#else
+    NSLog(@"warp %d",(int)[sender tag]);
+
+    
     if([sender tag]==100)
     {
         [self backTo];
         return;
     }
-#endif
+    
+    NSLog(@"here");
 //    UIButton *button = (UIButton *)sender;
-    NSLog(@"warp tag %d %@ %@",(int)[sender tag],self.addArray[(int)[sender tag]],selectCodeList[(int)[sender tag]]);
     int temp;
     temp = (int)[self.addArray count]-((int)[sender tag]+1);
+    NSLog(@"warp temp %d",temp);
     for(int i = 0; i < temp; i++)
     {
         [self upTo];
@@ -1275,6 +1276,7 @@
 //        bgView.backgroundColor = [UIColor whiteColor];
         
         [SharedAppDelegate.root getProfileImageWithURL:dic[@"uniqueid"] ifNil:@"profile_photo.png" view:profileView scale:0];
+        profileView.hidden = NO;
         name.frame = CGRectMake(profileView.frame.origin.x+profileView.frame.size.width+5, profileView.frame.origin.y, 155, 20);
         
         name.text = [NSString stringWithFormat:@"%@",dic[@"name"]];
@@ -1479,6 +1481,7 @@
         
         NSString *leave_type = dic[@"newfield5"];
         if([leave_type length]>0){
+            NSLog(@"leave_type %@",leave_type);
             if([leave_type isEqualToString:@"출산"])
                 holiday.image = [CustomUIKit customImageNamed:@"imageview_profile_popup_baby.png"];
             else if([leave_type isEqualToString:@"육아"])
@@ -1511,6 +1514,7 @@
         //            profileView.frame = CGRectMake(10, 12, 34, 23);
         //            profileView.image = [CustomUIKit customImageNamed:@"grp_icon.png"];
         profileView.image = nil;
+        profileView.hidden = YES;
         department.text = @"";
         team.text = @"";
         invite.hidden = YES;

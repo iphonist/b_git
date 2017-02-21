@@ -499,6 +499,8 @@
 //}
 
 
+- (void)setNewNoticeBadge:(int)count{
+}
 - (void)setGroupList:(NSMutableArray *)group{
     
     NSLog(@"setGroupList");

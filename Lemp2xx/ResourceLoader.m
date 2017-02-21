@@ -565,7 +565,7 @@
 
         
     }
-    NSLog(@"myDeptArray %@",myDeptArray);
+//    NSLog(@"myDeptArray %@",myDeptArray);
     NSSortDescriptor *sortseq = [NSSortDescriptor sortDescriptorWithKey:@"newfield1" ascending:YES selector:@selector(localizedStandardCompare:)];
     [myDeptArray sortUsingDescriptors:[NSArray arrayWithObjects:sortseq, nil]];
     

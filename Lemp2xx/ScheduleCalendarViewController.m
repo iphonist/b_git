@@ -103,7 +103,7 @@
         }
         NSLog(@"1");
         NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-        [formatter setDateFormat:@"yyyy년 MM월"];
+        [formatter setDateFormat:@"yyyy.M"];
         titleLabel.text = [formatter stringFromDate:self.calendarPicker.highlightedDate];
 //        [formatter release];
         NSLog(@"2");
@@ -154,7 +154,7 @@
     
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"yyyy년 MM월"];
+    [formatter setDateFormat:@"yyyy.M"];
     titleLabel.text = [formatter stringFromDate:[NSDate date]];
 //    [formatter release];
 }
@@ -237,8 +237,8 @@
     
     NSDate *now = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy년 MM월"];
-    titleLabel = [CustomUIKit labelWithText:[formatter stringFromDate:now] fontSize:18 fontColor:[UIColor blackColor] frame:CGRectMake(30, 8.5, 320-60, 22) numberOfLines:1 alignText:NSTextAlignmentCenter];
+    [formatter setDateFormat:@"yyyy.M"];
+    titleLabel = [CustomUIKit labelWithText:[formatter stringFromDate:now] fontSize:25 fontColor:[UIColor blackColor] frame:CGRectMake(123, 20, self.view.frame.size.width - 100, 28) numberOfLines:1 alignText:NSTextAlignmentLeft];
     [titleView addSubview:titleLabel];
 //    titleView.hidden = YES;
     
@@ -502,7 +502,7 @@
         [self.calendarPicker leftButtonClicked:sender];
         
         NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-        [formatter setDateFormat:@"yyyy년 MM월"];
+        [formatter setDateFormat:@"yyyy.M"];
         titleLabel.text = [formatter stringFromDate:self.calendarPicker.highlightedDate];
 //        [formatter release];
     }                        
@@ -554,7 +554,7 @@
         if([self.calendarPicker respondsToSelector:@selector(rightButtonClicked:)])
         [self.calendarPicker rightButtonClicked:sender];
         NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-        [formatter setDateFormat:@"yyyy년 MM월"];
+        [formatter setDateFormat:@"yyyy.M"];
         titleLabel.text = [formatter stringFromDate:self.calendarPicker.highlightedDate];
 //        [formatter release];
     }
@@ -575,7 +575,7 @@
     NSString *operatingtime = myList[firstVisibleIndexPath.row][@"operatingtime"];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"yyyy년 MM월"];
+    [formatter setDateFormat:@"yyyy.M"];
     titleLabel.text = [formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:[operatingtime intValue]]];
 //    [formatter release];
 }
@@ -1810,7 +1810,7 @@
 			}
             NSLog(@"1");
             NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-            [formatter setDateFormat:@"yyyy년 MM월"];
+            [formatter setDateFormat:@"yyyy.M"];
             titleLabel.text = [formatter stringFromDate:self.calendarPicker.highlightedDate];
 //            [formatter release];
                         NSLog(@"2");
@@ -2122,9 +2122,13 @@
 		cell.selectionStyle = UITableViewCellSelectionStyleGray;
 
 		boundaryView = [[UIImageView alloc]init];
+#ifdef BearTalk
 		boundaryView.frame = CGRectMake(0, 0, self.view.frame.size.width, 19+28+16);
-//		boundaryView.image = [CustomUIKit customImageNamed:@"imageview_schedule_header.png"];
-       
+#else
+        
+        boundaryView.frame = CGRectMake(0, 0, self.view.frame.size.width, 33);
+		boundaryView.image = [CustomUIKit customImageNamed:@"imageview_schedule_header.png"];
+#endif
 		boundaryView.tag = 5;
 		[cell.contentView addSubview:boundaryView];
 //		[boundaryView release];
@@ -2401,7 +2405,7 @@
         //		imageView.image = [CustomUIKit customImageNamed:@"icon_calendar_wd.png"];
 
 		NSDictionary *dic = [aRowDic[@"content"][@"msg"]objectFromJSONString];
-		yearNmonth.text = [NSString formattingDate:aRowDic[@"operatingtime"] withFormat:@"yyyy년 MM월"];
+		yearNmonth.text = [NSString formattingDate:aRowDic[@"operatingtime"] withFormat:@"yyyy.M"];
 		NSString *dateString = [NSString stringWithFormat:@"%@\n%@",[NSString formattingDate:aRowDic[@"operatingtime"] withFormat:@"dd"],[NSString formattingDate:aRowDic[@"operatingtime"] withFormat:@"EE"]];
 		NSDate *Linuxdate = [NSDate dateWithTimeIntervalSince1970:[aRowDic[@"operatingtime"]intValue]];
 		NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;

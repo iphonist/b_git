@@ -473,8 +473,12 @@ else
     if([[ResourceLoader sharedInstance].favoriteList count]==0)
         return;
     
-    
-    EmptyListViewController *controller = [[EmptyListViewController alloc]initWithList:[ResourceLoader sharedInstance].favoriteList from:kFavoriteMember];
+    NSMutableArray *favArray = [NSMutableArray array];
+    for(NSString *uid in [ResourceLoader sharedInstance].favoriteList)
+    {
+        [favArray addObject:[SharedAppDelegate.root searchContactDictionary:uid]];
+    }
+    EmptyListViewController *controller = [[EmptyListViewController alloc]initWithList:favArray from:kFavoriteMember];
     
     [controller setDelegate:self selector:@selector(confirmArray:)];
     UINavigationController *nc = [[CBNavigationController alloc]initWithRootViewController:controller];

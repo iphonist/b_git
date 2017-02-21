@@ -92,7 +92,8 @@
 #elif defined(GreenTalk) || defined(GreenTalkCustomer)
 #elif BearTalk
 #else
-	UIButton *rightButton = [CustomUIKit buttonWithTitle:@"모두읽음" fontSize:16 fontColor:RGB(255, 255, 255) target:self selector:@selector(confirmInit) frame:CGRectMake(0, 0, 70, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    NSLog(@"all_read_button");
+	UIButton *rightButton = [CustomUIKit buttonWithTitle:@"모두읽음" fontSize:14 fontColor:[UIColor blackColor] target:self selector:@selector(confirmInit) frame:CGRectMake(0, 0, 70, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
 	btnNavi = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
     self.navigationItem.rightBarButtonItem = btnNavi;
 //    [btnNavi release];

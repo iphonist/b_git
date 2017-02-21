@@ -53,7 +53,7 @@
     editB = [CustomUIKit buttonWithTitle:@"" fontSize:0 fontColor:[UIColor clearColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 26, 26) imageNamedBullet:nil imageNamedNormal:@"barbutton_delete.png" imageNamedPressed:nil];
     NSLog(@"editB");
 #else
-    editB = [CustomUIKit buttonWithTitle:@"편집" fontSize:16 fontColor:[UIColor whiteColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    editB = [CustomUIKit buttonWithTitle:@"편집" fontSize:16 fontColor:[UIColor blackColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
 #endif
     
     
@@ -62,7 +62,7 @@
 	self.navigationItem.rightBarButtonItem = editButton;
     self.navigationItem.rightBarButtonItem.tag = NO;
 	
-	UIButton *cancelB = [CustomUIKit buttonWithTitle:@"취소" fontSize:16 fontColor:[UIColor whiteColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+	UIButton *cancelB = [CustomUIKit buttonWithTitle:@"취소" fontSize:16 fontColor:[UIColor blackColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
 	cancelButton = [[UIBarButtonItem alloc] initWithCustomView:cancelB];
     
     
@@ -79,7 +79,7 @@
     stringSize = [delString sizeWithAttributes:@{NSFontAttributeName: systemFont}];
 	
     
-	UIButton *delButton = [CustomUIKit buttonWithTitle:delString fontSize:fontSize fontColor:[UIColor whiteColor] target:self selector:@selector(deleteAction) frame:CGRectMake(0, 0, stringSize.width+3.0, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+	UIButton *delButton = [CustomUIKit buttonWithTitle:delString fontSize:fontSize fontColor:[UIColor blackColor] target:self selector:@selector(deleteAction) frame:CGRectMake(0, 0, stringSize.width+3.0, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
 	deleteButton = [[UIBarButtonItem alloc] initWithCustomView:delButton];
     
     

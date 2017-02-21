@@ -90,7 +90,11 @@ static CGSize CGSizeScale(CGSize size, CGFloat scale) {
 //
     
     UIButton *button;
+#ifdef BearTalk
     button = [CustomUIKit buttonWithTitle:@"완료" fontSize:16 fontColor:RGB(255, 255, 255) target:self selector:@selector(done:) frame:CGRectMake(0, 0, 45, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+#else
+    button = [CustomUIKit buttonWithTitle:@"완료" fontSize:16 fontColor:[UIColor blackColor] target:self selector:@selector(done:) frame:CGRectMake(0, 0, 45, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+#endif
     
 //    UIBarButtonItem *btnNavi;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:button];

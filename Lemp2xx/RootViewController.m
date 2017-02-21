@@ -184,7 +184,7 @@
         home = [[HomeTimelineViewController alloc]init];
         NSLog(@"0");
         
-#if defined(LempMobile)
+#if defined(LempMobile) || defined(LempMobileNowon)
         main = [[MainViewController alloc]init];
 #else
         main = [[MainCollectionViewController alloc]init];
@@ -297,7 +297,7 @@
 
     
     [person getMyInfo];
-//    [person refreshSetupButton];
+    [person refreshSetupButton];
 
 }
 
@@ -587,10 +587,12 @@
     
     
 #else
+    
     mainTabBar.viewControllers = @[[mainTabBar setViewController:person],
                                    [mainTabBar setViewController:allContact],
                                    [mainTabBar setViewController:communicate],
                                    [mainTabBar setViewController:main]];
+    
     
     
     
@@ -636,7 +638,7 @@
     
 }
 
-
+#ifdef BearTalk
 - (void)resetTabBar{
     NSString *colorNumber = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColorNumber"];
     if([colorNumber isEqualToString:@"2"]){
@@ -691,6 +693,8 @@
 
 }
 
+#endif
+        
 #ifdef Batong
 - (void)settingBatongMain{
     
@@ -907,8 +911,8 @@
 
     [self.home.timeLineCells removeAllObjects];
     self.home.timeLineCells = nil;
+    [self.home initCategory];
     [self.home.myTable reloadData];
-    
     self.home.title = @"북마크";
     self.home.titleString = @"북마크";
     
@@ -982,6 +986,7 @@
     
     [self.home.timeLineCells removeAllObjects];
     self.home.timeLineCells = nil;
+    [self.home initCategory];
     [self.home.myTable reloadData];
     
     self.home.title = @"내가 쓴 글";
@@ -1043,6 +1048,7 @@
     NSLog(@"con %@",con);
     [self.home.timeLineCells removeAllObjects];
     self.home.timeLineCells = nil;
+    [self.home initCategory];
     [self.home.myTable reloadData];
 	
     self.home.title = dic[@"groupname"];

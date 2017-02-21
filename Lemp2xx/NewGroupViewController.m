@@ -39,6 +39,108 @@
 
 //#define kModifyTimeline 4
 
+
+
+
+#define kDelete 1
+#define kAdd 2
+#define kConfirmDelete 3
+#define kGroupConfig 4
+#define kCameraAction 5
+
+- (void)cameraActionsheet:(id)sender{
+    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
+        
+        UIAlertController * view=   [UIAlertController
+                                     alertControllerWithTitle:@""
+                                     message:@""
+                                     preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction *actionButton;
+        
+        
+        
+        actionButton = [UIAlertAction
+                        actionWithTitle:@"사진 찍기"
+                        style:UIAlertActionStyleDefault
+                        handler:^(UIAlertAction * action)
+                        {
+                            
+#ifdef BearTalk
+                            gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width*158/165);
+#else
+                            gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, [SharedFunctions scaleFromHeight:470/2]);
+#endif
+                            gkpicker.delegate = self;
+                            gkpicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+                            [self presentViewController:gkpicker.imagePickerController animated:YES completion:nil];
+                            
+                            //Do some thing here
+                            [view dismissViewControllerAnimated:YES completion:nil];
+                            
+                        }];
+        [view addAction:actionButton];
+        
+        actionButton = [UIAlertAction
+                        actionWithTitle:@"앨범에서 사진 선택"
+                        style:UIAlertActionStyleDefault
+                        handler:^(UIAlertAction * action)
+                        {
+                            
+                            
+                            //                            GKImagePicker *gkpicker = [[GKImagePicker alloc] init];
+                            
+#ifdef BearTalk
+                            gkpicker.cropSize =  gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width*158/165);
+#else
+                            gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, [SharedFunctions scaleFromHeight:470/2]);
+#endif
+                            gkpicker.delegate = self;
+                            
+                            gkpicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                            [self presentViewController:gkpicker.imagePickerController animated:YES completion:nil];
+                            //Do some thing here
+                            [view dismissViewControllerAnimated:YES completion:nil];
+                            
+                        }];
+        [view addAction:actionButton];
+        
+        UIAlertAction* cancel = [UIAlertAction
+                                 actionWithTitle:@"취소"
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     [view dismissViewControllerAnimated:YES completion:nil];
+                                     
+                                 }];
+        
+        [view addAction:cancel];
+        [self presentViewController:view animated:YES completion:nil];
+        
+    }
+    
+    else{
+        UIActionSheet *actionSheet = nil;
+        
+        
+        if(selectedImageData == nil){
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+                                        destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
+        }
+        else{
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+                                        destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
+            
+        }
+        [actionSheet showInView:SharedAppDelegate.window];
+        actionSheet.tag = kCameraAction;
+    }
+}
+
+
+
+
 #if defined(GreenTalk) || defined(GreenTalkCustomer) || defined(BearTalk)
 - (id)initWithArray:(NSArray *)array name:(NSString *)name sub:(NSString *)sub from:(NSInteger)from rk:(NSString *)roomk number:(NSString *)num master:(NSString *)gm
 {
@@ -872,12 +974,6 @@
     
 }
 
-#define kDelete 1
-#define kAdd 2
-#define kConfirmDelete 3
-#define kGroupConfig 4
-#define kCameraAction 5
-
 - (void)selectConfig:(id)sender{
 
     
@@ -1075,96 +1171,6 @@
 //    
 //}
 
-
-- (void)cameraActionsheet:(id)sender{
-    
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
-        
-        UIAlertController * view=   [UIAlertController
-                                     alertControllerWithTitle:@""
-                                     message:@""
-                                     preferredStyle:UIAlertControllerStyleActionSheet];
-        
-        UIAlertAction *actionButton;
-        
-        
-        
-        actionButton = [UIAlertAction
-                        actionWithTitle:@"사진 찍기"
-                        style:UIAlertActionStyleDefault
-                        handler:^(UIAlertAction * action)
-                        {
-                            
-#ifdef BearTalk
-                            gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width*158/165);
-#else
-                            gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, [SharedFunctions scaleFromHeight:470/2]);
-#endif
-                            gkpicker.delegate = self;
-                            gkpicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-                            [self presentViewController:gkpicker.imagePickerController animated:YES completion:nil];
-                            
-                            //Do some thing here
-                            [view dismissViewControllerAnimated:YES completion:nil];
-                            
-                        }];
-        [view addAction:actionButton];
-        
-        actionButton = [UIAlertAction
-                        actionWithTitle:@"앨범에서 사진 선택"
-                        style:UIAlertActionStyleDefault
-                        handler:^(UIAlertAction * action)
-                        {
-                            
-                            
-//                            GKImagePicker *gkpicker = [[GKImagePicker alloc] init];
-                            
-#ifdef BearTalk
-                            gkpicker.cropSize =  gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.width*158/165);
-#else
-                            gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, [SharedFunctions scaleFromHeight:470/2]);
-#endif
-                            gkpicker.delegate = self;
-                            
-                            gkpicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                            [self presentViewController:gkpicker.imagePickerController animated:YES completion:nil];
-                            //Do some thing here
-                            [view dismissViewControllerAnimated:YES completion:nil];
-                            
-                        }];
-        [view addAction:actionButton];
-        
-        UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
-                                 style:UIAlertActionStyleDefault
-                                 handler:^(UIAlertAction * action)
-                                 {
-                                     [view dismissViewControllerAnimated:YES completion:nil];
-                                     
-                                 }];
-        
-        [view addAction:cancel];
-        [self presentViewController:view animated:YES completion:nil];
-        
-    }
-
-    else{
-    UIActionSheet *actionSheet = nil;
-    
-    
-    if(selectedImageData == nil){
-    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
-    }
-    else{
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                    destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
-        
-    }
-    [actionSheet showInView:SharedAppDelegate.window];
-        actionSheet.tag = kCameraAction;
-    }
-}
 
 
 -(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -2278,6 +2284,7 @@ else
     [super viewDidLoad];
     NSLog(@"viewDidLoad");
     
+    gkpicker = [[GKImagePicker alloc] init];
     
     self.view.backgroundColor = [UIColor whiteColor];//[UIColor colorWithPatternImage:[CustomUIKit customImageNamed:@"dp_tl_background.png"]];
     
@@ -2435,7 +2442,7 @@ else
         subtf.text = originSub;
         subtf.placeholder = @"소셜 설명을 입력해 주세요.";//@"그룹에 대한 설명을 자유롭게 써보세요.";
         subtf.clearButtonMode = UITextFieldViewModeAlways;
-        [scrollView addSubview:subtf];
+        [view addSubview:subtf];
 //        [subtf release];
         
         
@@ -3611,104 +3618,6 @@ else
 //}
 
 
-- (void)cameraActionsheet:(id)sender{
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
-        
-        UIAlertController * view=   [UIAlertController
-                                     alertControllerWithTitle:@""
-                                     message:@""
-                                     preferredStyle:UIAlertControllerStyleActionSheet];
-        
-        UIAlertAction *actionButton;
-        
-        
-        
-        
-        actionButton = [UIAlertAction
-                        actionWithTitle:@"사진 찍기"
-                        style:UIAlertActionStyleDefault
-                        handler:^(UIAlertAction * action)
-                        {
-                            
-                            gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, [SharedFunctions scaleFromHeight:470/2]);
-                            gkpicker.delegate = self;
-                            gkpicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-                            [self presentViewController:gkpicker.imagePickerController animated:YES completion:nil];
-                            
-                            //Do some thing here
-                            [view dismissViewControllerAnimated:YES completion:nil];
-                            
-                        }];
-        [view addAction:actionButton];
-        
-        actionButton = [UIAlertAction
-                        actionWithTitle:@"앨범에서 사진 선택"
-                        style:UIAlertActionStyleDefault
-                        handler:^(UIAlertAction * action)
-                        {
-                            
-                            
-//                            GKImagePicker *gkpicker = [[GKImagePicker alloc] init];
-                            gkpicker.cropSize = CGSizeMake(self.view.frame.size.width, [SharedFunctions scaleFromHeight:470/2]);
-                            gkpicker.delegate = self;
-                            
-                            gkpicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-                            [self presentViewController:gkpicker.imagePickerController animated:YES completion:nil];
-                            //Do some thing here
-                            [view dismissViewControllerAnimated:YES completion:nil];
-                            
-                        }];
-        [view addAction:actionButton];
-        
-        
-        if(selectedImageData == nil){
-        
-        actionButton = [UIAlertAction
-                        actionWithTitle:@"삭제하기"
-                        style:UIAlertActionStyleDefault
-                        handler:^(UIAlertAction * action)
-                        {
-                            
-                            
-                            if(selectedImageData){
-                                [self sendPhoto:nil];
-                            }
-                            //Do some thing here
-                            [view dismissViewControllerAnimated:YES completion:nil];
-                            
-                        }];
-        [view addAction:actionButton];
-        }
-        
-        UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
-                                 style:UIAlertActionStyleDefault
-                                 handler:^(UIAlertAction * action)
-                                 {
-                                     [view dismissViewControllerAnimated:YES completion:nil];
-                                     
-                                 }];
-        
-        [view addAction:cancel];
-        [self presentViewController:view animated:YES completion:nil];
-        
-    }
-    else{
-    UIActionSheet *actionSheet = nil;
-    
-    
-    if(selectedImageData == nil){
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                    destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
-    }
-    else{
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                    destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", @"삭제하기", nil];
-        
-    }
-    [actionSheet showInView:SharedAppDelegate.window];
-    }
-}
 
 
 -(void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex

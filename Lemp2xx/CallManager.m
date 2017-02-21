@@ -741,6 +741,22 @@ const char alertNumber;
     }
     
     
+#elif LempMobileNowon
+    NSString *urlString = [NSString stringWithFormat:@"https://%@/file/%@/timelineimage_%@_.jpg",[SharedAppDelegate readPlist:@"was"],dic[@"uniqueid"],dic[@"uniqueid"]];
+    NSLog(@"urlString %@",urlString);
+    NSURL *imgURL = [NSURL URLWithString:urlString];
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:imgURL];
+    NSHTTPURLResponse* response = nil;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+    NSInteger statusCode = [response statusCode];
+    NSLog(@"statusCode %d",(int)statusCode);
+    if(statusCode == 404){
+    }
+    else{
+        UIImage *image = [UIImage imageWithData:responseData];
+        [coverImageView setImage:image];
+    }
+
 #else
 
     
@@ -754,20 +770,6 @@ const char alertNumber;
     [coverImageView setContentMode:UIViewContentModeScaleAspectFill];
     [coverImageView setClipsToBounds:YES];
     
-//        NSString *urlString = [NSString stringWithFormat:@"https://%@/file/%@/timelineimage_%@_.jpg",[SharedAppDelegate readPlist:@"was"],dic[@"uniqueid"],dic[@"uniqueid"]];
-//        NSLog(@"urlString %@",urlString);
-//        NSURL *imgURL = [NSURL URLWithString:urlString];
-//        NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:imgURL];
-//        NSHTTPURLResponse* response = nil;
-//        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-//        NSInteger statusCode = [response statusCode];
-//        NSLog(@"statusCode %d",(int)statusCode);
-//        if(statusCode == 404){
-//        }
-//        else{
-//            UIImage *image = [UIImage imageWithData:responseData];
-//            [coverImageView setImage:image];
-//        }
     
         
     
@@ -1078,32 +1080,38 @@ const char alertNumber;
     
     UIImageView *coverImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 320, 300)];
     
+    
+    NSDictionary *contactDic = [SharedAppDelegate.root searchContactDictionary:uid];
+    
+#ifdef LempMobileNowon
+    
+    NSString *urlString = [NSString stringWithFormat:@"https://%@/file/%@/timelineimage_%@_.jpg",[SharedAppDelegate readPlist:@"was"],uid,uid];
+    NSLog(@"urlString %@",urlString);
+    NSURL *imgURL = [NSURL URLWithString:urlString];
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:imgURL];
+    NSHTTPURLResponse* response = nil;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+    NSInteger statusCode = [response statusCode];
+    NSLog(@"statusCode %d",(int)statusCode);
+    if(statusCode == 404){
+    }
+    else{
+        UIImage *image = [UIImage imageWithData:responseData];
+        [coverImageView setImage:image];
+    }
+    
+#else
+    
     [coverImageView setContentMode:UIViewContentModeScaleAspectFill];
     [coverImageView setClipsToBounds:YES];
     UIImage *defaultImage = [CustomUIKit customImageNamed:@"imageview_call_cover.png"];
     
     
     [coverImageView setImage:defaultImage];
-    
-    
-    
-//    NSString *urlString = [NSString stringWithFormat:@"https://%@/file/%@/timelineimage_%@_.jpg",[SharedAppDelegate readPlist:@"was"],uid,uid];
-//    NSLog(@"urlString %@",urlString);
-//    NSURL *imgURL = [NSURL URLWithString:urlString];
-//    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:imgURL];
-//    NSHTTPURLResponse* response = nil;
-//    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-//    NSInteger statusCode = [response statusCode];
-//    NSLog(@"statusCode %d",(int)statusCode);
-//    if(statusCode == 404){
-//    }
-//    else{
-//        UIImage *image = [UIImage imageWithData:responseData];
-//        [coverImageView setImage:image];
-//    }
-    
-    NSDictionary *contactDic = [SharedAppDelegate.root searchContactDictionary:uid];
+    NSLog(@"contactDic %@",contactDic);
     [SharedAppDelegate.root getCoverImage:contactDic[@"uniqueid"] view:coverImageView ifnil:@"imageview_call_cover.png"];
+#endif
+    
     
     [fullOutgoingView addSubview:coverImageView];
     //    [imageView release];
@@ -1112,7 +1120,6 @@ const char alertNumber;
     
     
     
-    NSLog(@"contactDic %@",contactDic);
     
     UIImageView *imageView;
     
@@ -1377,6 +1384,24 @@ const char alertNumber;
     }
     
     
+#elif LempMobileNowon
+    NSString *urlString = [NSString stringWithFormat:@"https://%@/file/%@/timelineimage_%@_.jpg",[SharedAppDelegate readPlist:@"was"],uid,uid];
+    NSLog(@"urlString %@",urlString);
+    NSURL *imgURL = [NSURL URLWithString:urlString];
+    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:imgURL];
+    NSHTTPURLResponse* response = nil;
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+    NSInteger statusCode = [response statusCode];
+    NSLog(@"statusCode %d",(int)statusCode);
+    if(statusCode == 404){
+    }
+    else{
+        UIImage *image = [UIImage imageWithData:responseData];
+        [coverImageView setImage:image];
+    }
+    
+    //    [imageView release];
+    
 #else
     
     UIImage *defaultImage = [CustomUIKit customImageNamed:@"imageview_call_cover.png"];
@@ -1392,23 +1417,6 @@ const char alertNumber;
     
     
     
-    
-//    NSString *urlString = [NSString stringWithFormat:@"https://%@/file/%@/timelineimage_%@_.jpg",[SharedAppDelegate readPlist:@"was"],uid,uid];
-//    NSLog(@"urlString %@",urlString);
-//    NSURL *imgURL = [NSURL URLWithString:urlString];
-//    NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:imgURL];
-//    NSHTTPURLResponse* response = nil;
-//    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-//    NSInteger statusCode = [response statusCode];
-//    NSLog(@"statusCode %d",(int)statusCode);
-//    if(statusCode == 404){
-//    }
-//    else{
-//        UIImage *image = [UIImage imageWithData:responseData];
-//        [coverImageView setImage:image];
-//    }
-    
-    //    [imageView release];
     
     
     

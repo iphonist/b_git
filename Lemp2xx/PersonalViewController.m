@@ -76,7 +76,7 @@
     //	}
     [self setMyInfoView];
     [self getMyInfo];
-//    [self refreshSetupButton];
+    [self refreshSetupButton];
     
 }
 
@@ -1672,35 +1672,37 @@
     email.text = dic[@"email"];
     message.text = [SharedAppDelegate readPlist:@"employeinfo"];
     
+
+#ifdef LempMobileNowon
     
-//    NSString *filePath = [NSString stringWithFormat:@"%@/Library/Caches/%@_privatetimelinetemp.JPG",NSHomeDirectory(),dic[@"uid"]];
-//    NSLog(@"filePath %@",filePath);
-//    coverView.image = [UIImage imageWithContentsOfFile:filePath];
-//    //    coverView.image = [CustomUIKit customImageNamed:@"imageview_defaultcover.png"];
-//    NSLog(@"coverView image %@",coverView.image);
-    //
-//    if(coverView.image == nil){
-//        NSURL *url = [ResourceLoader resourceURLfromJSONString:[SharedAppDelegate readPlist:@"privatetimelineimage"] num:0 thumbnail:NO];
-//        UIImage *image = [CustomUIKit customImageNamed:@"imageview_defaultcover_480h.png"];
-//        
-//        if(IS_HEIGHT568){
-//            image = [CustomUIKit customImageNamed:@"imageview_defaultcover.png"];
-//        }
-//            [coverView sd_setImageWithPreviousCachedImageWithURL:url andPlaceholderImage:image options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b)  {
-//            }completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl) {
-//                NSLog(@"fail %@",[error localizedDescription]);
-//                NSData *data = UIImageJPEGRepresentation(image, 1.0);
-//                [data writeToFile:filePath atomically:YES];
-//                
-//                [HTTPExceptionHandler handlingByError:error];
-//                
-//            }];
-//    
-//        
-//    }
+    NSString *filePath = [NSString stringWithFormat:@"%@/Library/Caches/%@_privatetimelinetemp.JPG",NSHomeDirectory(),dic[@"uid"]];
+    NSLog(@"filePath %@",filePath);
+    coverView.image = [UIImage imageWithContentsOfFile:filePath];
+    //    coverView.image = [CustomUIKit customImageNamed:@"imageview_defaultcover.png"];
+    NSLog(@"coverView image %@",coverView.image);
     
+    if(coverView.image == nil){
+        NSURL *url = [ResourceLoader resourceURLfromJSONString:[SharedAppDelegate readPlist:@"privatetimelineimage"] num:0 thumbnail:NO];
+        UIImage *image = [CustomUIKit customImageNamed:@"imageview_defaultcover_480h.png"];
+        
+        if(IS_HEIGHT568){
+            image = [CustomUIKit customImageNamed:@"imageview_defaultcover.png"];
+        }
+            [coverView sd_setImageWithPreviousCachedImageWithURL:url andPlaceholderImage:image options:SDWebImageRetryFailed progress:^(NSInteger a, NSInteger b)  {
+            }completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl) {
+                NSLog(@"fail %@",[error localizedDescription]);
+                NSData *data = UIImageJPEGRepresentation(image, 1.0);
+                [data writeToFile:filePath atomically:YES];
+                
+                [HTTPExceptionHandler handlingByError:error];
+                
+            }];
+    
+        
+    }
+#else
     [SharedAppDelegate.root getCoverImage:[ResourceLoader sharedInstance].myUID view:coverView ifnil:@""];
-    
+#endif
 }
 
 - (void)dayChanged{

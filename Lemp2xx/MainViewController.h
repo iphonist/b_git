@@ -45,5 +45,6 @@
 - (void)refreshTimeline;
 - (void)addNewToChat:(int)num;
 - (void)loadNoticeWebview;
+- (void)setNewNoticeBadge:(int)count;
 
 @end

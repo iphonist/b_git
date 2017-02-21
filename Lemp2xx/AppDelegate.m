@@ -305,14 +305,14 @@
     NSLog(@"themeColor1 %d",(int)[colorData length]);
     
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"] == nil){
-        colorData = [NSKeyedArchiver archivedDataWithRootObject:RGB(255,112,58)];
+        colorData = [NSKeyedArchiver archivedDataWithRootObject:RGB(235,235,235)];
         [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"themeColor"];
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"themeColorNumber"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         NSLog(@"themeColor2 %d",(int)[colorData length]);
     }
     
-    [UINavigationBar appearance].barTintColor = BearTalkColor;//[UIColor lightGrayColor];
+    [UINavigationBar appearance].barTintColor = RGB(235,235,235);
 
 #endif
     
@@ -401,6 +401,7 @@
 //    self.window.frame = [UIScreen mainScreen].applicationFrame;
 //}
 
+#ifdef BearTalk
 
 - (void)resetNavigationBar{
     
@@ -439,7 +440,7 @@
     [root resetTabBar];
     
 }
-
+#endif
 #ifdef __IPHONE_8_0
 - (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings
 {
