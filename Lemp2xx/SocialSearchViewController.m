@@ -299,6 +299,7 @@
             
 #ifdef BearTalk
             
+            NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             
             if(searchArray){
                 //                    [searchArray release];
@@ -306,9 +307,7 @@
             }
             searchArray = [[NSMutableArray alloc]init];
             
-            
             if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
-                NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
             
             NSMutableArray *resultDic = [operation.responseString objectFromJSONString];
             NSLog(@"resultDic %@",resultDic);
@@ -382,12 +381,13 @@
                     //                        [cellData release];
                 }
             }
-            NSLog(@"searchArray %@",searchArray);
+                
             
             }
             else{
                 
             }
+            NSLog(@"searchArray %@",searchArray);
             [myTable reloadData];
             searching = NO;
 #else
@@ -491,7 +491,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    
+    NSLog(@"searching %@",searching?@"YES":@"NO");
     if(searching){
     return [searchArray count]==0?1:[searchArray count];
     }
@@ -505,10 +505,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"heightForRowAtIndexPath");
+    NSLog(@"searching %@",searching?@"YES":@"NO");
     
     CGFloat height = 0.0;
     
-   
+   if([searchArray count]==0)
+       return 100;
     
         
 #ifdef BearTalk
@@ -854,7 +856,7 @@
                     //                            //                                 [myWebView loadHTMLString:[NSString stringWithFormat:@"%@",content] baseURL: nil];
                     
                     //                        else{
-                    height += webviewHeight;
+//                    height += webviewHeight;
                     //}
                     
                 }
@@ -1251,6 +1253,7 @@
     
     
     
+    NSLog(@"searching %@",searching?@"YES":@"NO");
     if([searchArray count]==0){
         NSLog(@"here");
         

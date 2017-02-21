@@ -332,29 +332,29 @@ const char paramNumber;
 
 #pragma mark - wifi or 3g
 
-- (BOOL) isCellNetwork{
-    
-    
-    struct sockaddr_in zeroAddr;
-    bzero(&zeroAddr, sizeof(zeroAddr));
-    zeroAddr.sin_len = sizeof(zeroAddr);
-    zeroAddr.sin_family = AF_INET;
-    
-    SCNetworkReachabilityRef target = SCNetworkReachabilityCreateWithAddress(NULL, (struct sockaddr *)&zeroAddr);
-    
-    SCNetworkReachabilityFlags flag;
-    SCNetworkReachabilityGetFlags(target, &flag);
-    
-    CFRelease(target); //1.2 add
-    
-    if(flag & kSCNetworkReachabilityFlagsIsWWAN){
-        NSLog(@"isCellNetwork YES");
-        return YES;
-    } else {
-        NSLog(@"isCellNetwork NO");
-        return NO;
-    }
-}
+//- (BOOL) isCellNetwork{
+//    
+//    
+//    struct sockaddr_in zeroAddr;
+//    bzero(&zeroAddr, sizeof(zeroAddr));
+//    zeroAddr.sin_len = sizeof(zeroAddr);
+//    zeroAddr.sin_family = AF_INET;
+//    
+//    SCNetworkReachabilityRef target = SCNetworkReachabilityCreateWithAddress(NULL, (struct sockaddr *)&zeroAddr);
+//    
+//    SCNetworkReachabilityFlags flag;
+//    SCNetworkReachabilityGetFlags(target, &flag);
+//    
+//    CFRelease(target); //1.2 add
+//    
+//    if(flag & kSCNetworkReachabilityFlagsIsWWAN){
+//        NSLog(@"isCellNetwork YES");
+//        return YES;
+//    } else {
+//        NSLog(@"isCellNetwork NO");
+//        return NO;
+//    }
+//}
 
 #pragma mark - local notification
 
@@ -1681,6 +1681,7 @@ const char paramNumber;
     
     NSLog(@"getProfileImageWithURL %@ ifnil %@",uid,ifnil);
     
+    
     NSString *theUID = [[SharedFunctions minusMe:uid] componentsSeparatedByString:@","][0];
     
     NSURL *imgURL;
@@ -1917,7 +1918,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         }
     }
     //    [tempArray release];
-//    NSLog(@"uid %@ searchContactDictionary %@",uid,dic);
+   NSLog(@"uid %@ searchContactDictionary %@",uid,dic);
     return dic;
     
     
@@ -2749,7 +2750,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         alert = [[UIAlertView alloc] initWithTitle:@"설치요청" message:@"멤버의 휴대폰으로 설치요청 SMS를\n발송하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
         
 #if defined(GreenTalk) || defined(GreenTalkCustomer)
-        NSDictionary *dic = [self searchContactDictionary:[[sende ㅎ ㅎ titleLabel]text]];
+        NSDictionary *dic = [self searchContactDictionary:[[sender titleLabel]text]];
         objc_setAssociatedObject(alert, &paramNumber, [dic[@"cellphone"]length]>0?dic[@"cellphone"]:@"", OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
 #else
@@ -2813,6 +2814,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         NSLog(@"newdic %@",newdic);
         
         [newdic setObject:dic[@"SNS_KEY"] forKey:@"groupnumber"];
+        [newdic setObject:IS_NULL(dic[@"SNS_CATEGORY"])?@"":dic[@"SNS_CATEGORY"] forKey:@"SNS_CATEGORY"];
         [newdic setObject:@"" forKey:@"groupexplain"];
         [newdic setObject:dic[@"SNS_AVATAR"] forKey:@"groupimage"];
         [newdic setObject:dic[@"SNS_MEMBER"] forKey:@"member"];
@@ -2820,8 +2822,21 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         NSString *beforedecoded = [dic[@"SNS_NAME"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
                 NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         [newdic setObject:decoded forKey:@"groupname"];
-        if([dic[@"SNS_ADMIN_UID"]count]>0)
-        [newdic setObject:dic[@"SNS_ADMIN_UID"][0] forKey:@"groupmaster"];
+        
+        if([dic[@"SNS_ADMIN_UID"]count]>0){
+            BOOL included = NO;
+            for(NSString *auid in dic[@"SNS_ADMIN_UID"]){
+                if([auid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+                    included = YES;
+                    break;
+                }
+                
+            }
+            if(included)
+            [newdic setObject:[ResourceLoader sharedInstance].myUID forKey:@"groupmaster"];
+            else
+                [newdic setObject:dic[@"SNS_ADMIN_UID"][0] forKey:@"groupmaster"];
+        }
         [newdic setObject:dic[@"SNS_TYPE"] forKey:@"SNS_TYPE"];
         [newdic setObject:IS_NULL(dic[@"WRITE_AUTH"])?@"":dic[@"WRITE_AUTH"] forKey:@"WRITE_AUTH"];
         [newdic setObject:dic[@"SNS_ADMIN_UID"] forKey:@"SNS_ADMIN_UID"];
@@ -4065,11 +4080,17 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             [parameters setObject:name forKey:@"snsnameori"];
         }
         if([memberArray count]>0){
-            if([mng length]>0){
+            if([mng length]>0){ // modify
                 
+                if([SharedAppDelegate.root.home.groupDic[@"SNS_INVITE_TYPE"]isEqualToString:@"D"]){
+                    
+                    [parameters setObject:[memberArray JSONString] forKey:@"snsaddmember"];
+                }
+                else{
                 [parameters setObject:[memberArray JSONString] forKey:@"snsaddinvitemember"];
+                }
             }
-            else{
+            else{ // create
             [parameters setObject:[memberArray JSONString] forKey:@"snsinvitemember"];
             }
         }
@@ -4142,11 +4163,19 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         }
         if([memberArray count]>0){
             
-            if([mng length]>0){
+            NSLog(@"home %@",SharedAppDelegate.root.home.groupDic);
+            
+            if([mng length]>0){ // modify
                 
+                if([SharedAppDelegate.root.home.groupDic[@"SNS_INVITE_TYPE"]isEqualToString:@"D"]){
+                    
+                    [parameters setObject:[memberArray JSONString] forKey:@"snsaddmember"];
+                }
+                else{
                 [parameters setObject:[memberArray JSONString] forKey:@"snsaddinvitemember"];
+                }
             }
-            else{
+            else{ // create
                 [parameters setObject:[memberArray JSONString] forKey:@"snsinvitemember"];
             }
         }
@@ -5386,6 +5415,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                       [memberArray JSONString],@"uids",
+                      [ResourceLoader sharedInstance].myUID,@"myuid",
                       rk,@"roomkey",nil];
     }
     else if(modifytype == 2){
@@ -7376,8 +7406,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     NSLog(@"nowLinux %@, %.0f",[NSDate date],nowLinux);
 #ifdef BearTalk
     
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];//시작 yyyy.M.d (EEEE)"];
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];//시작 yyyy.M.d (EEEE)"];
     float lastLinux = [[SharedAppDelegate readPlist:@"lastdate"]floatValue];
     
     NSLog(@"lastLinux %@, %.0f",[SharedAppDelegate readPlist:@"lastdate"],lastLinux);
@@ -9339,16 +9369,19 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         NSMutableArray *unread = [NSMutableArray array];
         NSMutableArray *read = [NSMutableArray array];
         NSString *cnt = [NSString stringWithFormat:@"%@",resultDic[@"alarmcnt"]];
-        for(int i = 0; i < [cnt intValue]; i++){
+        
+        int intCnt = [cnt intValue]>20?20:[cnt intValue];
+        
+        for(int i = 0; i < intCnt; i++){
             [unread addObject:resultDic[@"data"][i]];
         }
-        for(int i = [cnt intValue]; i < [resultDic[@"data"]count]; i++){
+        for(int i = intCnt; i < [resultDic[@"data"]count]; i++){
             
             [read addObject:resultDic[@"data"][i]];
         }
         
         
-        [SharedAppDelegate.root.main setNewNoticeBadge:[cnt intValue]];
+        [SharedAppDelegate.root.main setNewNoticeBadge:intCnt];
         
         
         if ([viewcon respondsToSelector:@selector(settingReadList:unread:time:)])

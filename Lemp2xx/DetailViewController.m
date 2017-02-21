@@ -141,6 +141,8 @@ const char paramUrl;
 {
     
     NSLog(@"backTo");
+//    isPhoto = NO;
+    NSLog(@"isPhoto %@",isPhoto?@"YES":@"NO");
     //    [self dismissViewControllerAnimated:YES completion:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
@@ -350,7 +352,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                 {
                                     
                                     [self modifyPost];
-                                    
+                                    isPhoto = NO;
                                     //Do some thing here
                                     [view dismissViewControllerAnimated:YES completion:nil];
                                     
@@ -435,6 +437,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                             
                                             [self modifyPost];
                                             
+                                            isPhoto = NO;
                                             //Do some thing here
                                             [view dismissViewControllerAnimated:YES completion:nil];
                                             
@@ -471,6 +474,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                 
                                 [self modifyPost];
                                 
+                                isPhoto = NO;
                                 //Do some thing here
                                 [view dismissViewControllerAnimated:YES completion:nil];
                                 
@@ -552,6 +556,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                     
                                     [self modifyPost];
                                     
+                                    isPhoto = NO;
                                     //Do some thing here
                                     [view dismissViewControllerAnimated:YES completion:nil];
                                     
@@ -671,6 +676,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                         
                                         [self modifyReplyAction:replyArray[0]];
                                         
+                                        isPhoto = NO;
                                         //Do some thing here
                                         [view dismissViewControllerAnimated:YES completion:nil];
                                         
@@ -686,6 +692,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                         
                                         [self deleteReplyAction:replyArray[0]];
                                         
+                                        isPhoto = NO;
                                         //Do some thing here
                                         [view dismissViewControllerAnimated:YES completion:nil];
                                         
@@ -724,6 +731,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                             
                                             [self modifyPost];
                                             
+                                            isPhoto = NO;
                                             //Do some thing here
                                             [view dismissViewControllerAnimated:YES completion:nil];
                                             
@@ -738,6 +746,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                         {
                                             
                                             
+                                            isPhoto = NO;
                                             [self deletePost];
                                             //Do some thing here
                                             [view dismissViewControllerAnimated:YES completion:nil];
@@ -789,6 +798,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                 {
                                     
                                     
+                                    isPhoto = NO;
                                     [self modifyPost];
                                     //Do some thing here
                                     [view dismissViewControllerAnimated:YES completion:nil];
@@ -825,6 +835,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                 handler:^(UIAlertAction * action)
                                 {
                                     
+                                    isPhoto = NO;
                                     [self modifySchedule];
                                     
                                     //Do some thing here
@@ -840,6 +851,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                 handler:^(UIAlertAction * action)
                                 {
                                     
+                                    isPhoto = NO;
                                     
                                     [self cancelScheduleAlert];
                                     //Do some thing here
@@ -1706,10 +1718,13 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
 #ifdef BearTalk
     [SharedAppDelegate.root.home.post setModifyView:contentsData.content idx:contentsData.idx tag:kModifyPost image:hasImage images:modifyImageArray poll:contentsData.pollDic files:(NSMutableArray *)contentsData.fileArray ridx:@""];
+    [SharedAppDelegate.root.home.post setSubCategoryArray:category_data dept:categoryname];
 #else
     
     [SharedAppDelegate.root.home.post setModifyView:contentsData.contentDic[@"msg"] idx:contentsData.idx tag:kModifyPost image:hasImage images:modifyImageArray poll:contentsData.pollDic files:nil ridx:@""];
 #endif
+    
+    
 #ifdef Batong
     
     [SharedAppDelegate.root.home.post setSubCategorys:contentsData.sub_category];
@@ -1989,6 +2004,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     
     isPhoto = YES;
+    NSLog(@"isPhoto %@",isPhoto?@"YES":@"NO");
 #if defined(Batong) || defined(BearTalk)
     [self getEmoticon];
 #endif
@@ -2034,7 +2050,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     NSLog(@"viewWillDisappear");
     //    if(![contentsData.contentType isEqualToString:@"11"])
-    isPhoto = NO;
+//    isPhoto = NO;
+//    NSLog(@"isphoto %@",isPhoto?@"YES":@"NO");
     [self.view endEditing:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"arriveNewReply" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
@@ -2073,7 +2090,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 {
     [super viewDidLoad];
     self.edgesForExtendedLayout = UIRectEdgeBottom;
-    isPhoto = NO;
+//    isPhoto = NO;
+    NSLog(@"isPhoto %@",isPhoto?@"YES":@"NO");
     
     
     
@@ -2508,70 +2526,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     //    [SharedAppDelegate.root returnTitle:self.title viewcon:self noti:NO alarm:NO];
     NSLog(@"detail viewDidLoad %@ %@ %@",contentsData.profileImage,[ResourceLoader sharedInstance].myUID,contentsData.writeinfoType);
     
-    //    UIButton *button;
-    //    = [CustomUIKit backButtonWithTitle:nil target:self selector:@selector(backTo)];
-    //    UIBarButtonItem *btnNavi;
-    //    = [[UIBarButtonItem alloc]initWithCustomView:button];
-    //    self.navigationItem.leftBarButtonItem = btnNavi;
-    //    [btnNavi release];
     
-    if([contentsData.contentType isEqualToString:@"7"]){
-        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(deletePost) frame:CGRectMake(0, 0, 26, 26)
-                             imageNamedBullet:nil imageNamedNormal:@"barbutton_delete.png" imageNamedPressed:nil];
-        
-        btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
-        self.navigationItem.rightBarButtonItem = btnNavi;
-        
-        
-    }
-    else if([contentsData.contentType isEqualToString:@"11"] || [contentsData.contentType isEqualToString:@"14"]){
-        //        if([contentsData.profileImage isEqualToString:[ResourceLoader sharedInstance].myUID]){
-        //
-        //            button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(editPost) frame:CGRectMake(0, 0, 32, 32)
-        //                                 imageNamedBullet:nil imageNamedNormal:@"etcmenu_btn.png" imageNamedPressed:nil];
-        //
-        //            btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
-        //            self.navigationItem.rightBarButtonItem = btnNavi;
-        //            [btnNavi release];
-        //        }
-        //        else{
-        [self checkMaster];
-        //        }
-    }
-    else if([contentsData.profileImage isEqualToString:[ResourceLoader sharedInstance].myUID] && [contentsData.writeinfoType isEqualToString:@"1"]){
-        
-#ifdef BearTalk
-        
-        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(editPost) frame:CGRectMake(0, 0, 25, 25)
-                             imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_ect.png" imageNamedPressed:nil];
-        
-#else
-        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(editPost) frame:CGRectMake(0, 0, 26, 26)
-                             imageNamedBullet:nil imageNamedNormal:@"etcmenu_btn.png" imageNamedPressed:nil];
-#endif
-        btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
-        self.navigationItem.rightBarButtonItem = btnNavi;
-//        [btnNavi release];
-//        [button release];
-        
-    }
-    else if([groupMaster isEqualToString:[ResourceLoader sharedInstance].myUID] && [contentsData.contentType isEqualToString:@"1"]){
-        
-#ifdef BearTalk
-        
-        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(editPost) frame:CGRectMake(0, 0, 25, 25)
-                             imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_ect.png" imageNamedPressed:nil];
-        
-        
-        btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
-        self.navigationItem.rightBarButtonItem = btnNavi;
-#endif
-        
-        
-    }
-    else{
-    }
-    msgLineCount = 1;
+      msgLineCount = 1;
     isResizing = NO;
     
     
@@ -2669,8 +2625,171 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     
 }
+- (void)getGroupCategory:(NSString *)key{
+    
+    
+    
+    
+    if([contentsData.contentType isEqualToString:@"1"]) {
+        if([contentsData.profileImage isEqualToString:[ResourceLoader sharedInstance].myUID]){
+            if([contentsData.notice isEqualToString:@"1"]) {
+                return;
+            }
+            else{
+                //
+            }
+        }
+        else{
+            return;
+        }
+    }
+    else{
+        return;
+    }
+    
+    NSLog(@"getGroupcategory %@",key);
+    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
+    
+    //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
+    //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
+    
+    NSString *urlString;
+    
+    urlString = [NSString stringWithFormat:@"%@/api/sns/category",BearTalkBaseUrl];
 
+    
+    NSURL *baseUrl = [NSURL URLWithString:urlString];
+    
+    
+    AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    client.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    
+    
+    
+    NSDictionary *parameters;
+    
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                  key,@"snskey",nil];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:nil];
 
+    
+    
+    
+    NSLog(@"timeout: %f", request.timeoutInterval);
+    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+
+        
+        NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
+        if(category_data){
+            //            [category_data release];
+            category_data = nil;
+        }
+        
+        category_data = [[NSMutableArray alloc]init];
+        
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+
+            
+//            NSDictionary *tempdic = @{
+//                           @"CATEGORY_KEY" : @"",
+//                           @"CATEGORY_NAME" : @"선택 안 함",
+//                           @"USE_YN" : @"Y",
+//                           };
+//             NSLog(@"tempdic %@",tempdic);
+//            [category_data addObject:tempdic];
+            
+            for(NSDictionary *dic in [operation.responseString objectFromJSONString]){
+                if([dic[@"USE_YN"]isEqualToString:@"Y"])
+                    [category_data addObject:dic];
+            }
+        }
+        NSLog(@"category_data %@ category %@",category_data,categoryname);
+
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [HTTPExceptionHandler handlingByError:error];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"타임라인을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        [alert show];
+        
+    }];
+    
+    [operation start];
+    
+    
+}
+
+- (void)settingRightNaviItem{
+    UIButton *button;
+    UIBarButtonItem *btnNavi;
+    
+    if([contentsData.contentType isEqualToString:@"7"]){
+        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(deletePost) frame:CGRectMake(0, 0, 26, 26)
+                             imageNamedBullet:nil imageNamedNormal:@"barbutton_delete.png" imageNamedPressed:nil];
+        
+        btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
+        self.navigationItem.rightBarButtonItem = btnNavi;
+        
+        
+    }
+    else if([contentsData.contentType isEqualToString:@"11"] || [contentsData.contentType isEqualToString:@"14"]){
+        //        if([contentsData.profileImage isEqualToString:[ResourceLoader sharedInstance].myUID]){
+        //
+        //            button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(editPost) frame:CGRectMake(0, 0, 32, 32)
+        //                                 imageNamedBullet:nil imageNamedNormal:@"etcmenu_btn.png" imageNamedPressed:nil];
+        //
+        //            btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
+        //            self.navigationItem.rightBarButtonItem = btnNavi;
+        //            [btnNavi release];
+        //        }
+        //        else{
+        [self checkMaster];
+        //        }
+    }
+    else if([contentsData.profileImage isEqualToString:[ResourceLoader sharedInstance].myUID] && [contentsData.writeinfoType isEqualToString:@"1"]){
+        
+#ifdef BearTalk
+        
+        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(editPost) frame:CGRectMake(0, 0, 25, 25)
+                             imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_ect.png" imageNamedPressed:nil];
+        
+#else
+        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(editPost) frame:CGRectMake(0, 0, 26, 26)
+                             imageNamedBullet:nil imageNamedNormal:@"etcmenu_btn.png" imageNamedPressed:nil];
+#endif
+        btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
+        self.navigationItem.rightBarButtonItem = btnNavi;
+        //        [btnNavi release];
+        //        [button release];
+        
+    }
+    else if([groupMaster isEqualToString:[ResourceLoader sharedInstance].myUID] && [contentsData.contentType isEqualToString:@"1"]){
+        
+#ifdef BearTalk
+        
+        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(editPost) frame:CGRectMake(0, 0, 25, 25)
+                             imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_ect.png" imageNamedPressed:nil];
+        
+        
+        btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
+        self.navigationItem.rightBarButtonItem = btnNavi;
+#endif
+        
+        
+    }
+    else{
+    }
+
+}
 - (void)setDetailGroupMaster{
     
     NSLog(@"groupnum %@",SharedAppDelegate.root.home.groupDic);
@@ -2690,6 +2809,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     
 #ifdef BearTalk
+    return;
 #else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
@@ -2703,7 +2823,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 //            [groupMaster release];
             groupMaster = nil;
         }
-        groupMaster = [[NSString alloc]initWithString:@""];
+        groupMaster = [[NSString alloc]init];
         return;
         
     }
@@ -3613,7 +3733,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                 
 #ifdef BearTalk
-                NSString *content = contentsData.content;
+                NSString *content = [categoryname length]>0?[NSString stringWithFormat:@"[%@]\n\n%@",categoryname,contentsData.content]:contentsData.content;
 #else
                 NSString *content = contentsData.contentDic[@"msg"];
 #endif
@@ -3655,7 +3775,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
 #ifdef BearTalk
                 
-                NSString *content = contentsData.content;
+                NSString *content = [categoryname length]>0?[NSString stringWithFormat:@"[%@]\n\n%@",categoryname,contentsData.content]:contentsData.content;
                 NSString *where = @"";
                 
 #else
@@ -4075,14 +4195,15 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     NSString *emoticonString = IS_NULL(replyArray[indexPath.row-1][@"REPLY_EMO"])?@"":replyArray[indexPath.row-1][@"REPLY_EMO"];
                     if([emoticonString length]>0){
                         height += 100+7;
+                    }
 #elif Batong
                         NSString *emoticonString = [replyArray[indexPath.row-1][@"replymsg"]objectFromJSONString][@"emoticon"];
                         if([emoticonString length]>0){
-                        height += 100-12;
+                            height += 100-12;
+                        }
 #endif
                         
                         
-                    }
 
                 }
             }
@@ -4502,13 +4623,14 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         NSString *emoticonString = IS_NULL(replyArray[row][@"REPLY_EMO"])?@"":replyArray[row][@"REPLY_EMO"];
                         NSLog(@"emoticonstring %@",emoticonString);
                         if([emoticonString length]>0){
-                                height += 7+100;
+                            height += 7+100;
+                        }
 #elif Batong
                             NSString *emoticonString = [replyArray[row][@"replymsg"]objectFromJSONString][@"emoticon"];
                             if([emoticonString length]>0){
                                 height += 100-12;
+                            }
 #endif
-                        }
 
                             
                     }
@@ -4904,15 +5026,16 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             [nameLabel setText:yourDic[@"name"]];
             CGSize size = [nameLabel.text sizeWithAttributes:@{NSFontAttributeName:nameLabel.font}];
             positionLabel.frame = CGRectMake(nameLabel.frame.origin.x + (size.width+5>90?90:size.width+5), nameLabel.frame.origin.y, 170, 16);
+            [SharedAppDelegate.root getProfileImageWithURL:contentsData.profileImage ifNil:@"profile_photo.png" view:profileImageView scale:0];
 #else
             [nameLabel setText:contentsData.personInfo[@"name"]];
             CGSize size = [nameLabel.text sizeWithAttributes:@{NSFontAttributeName:nameLabel.font}];
             [nameLabel setTextColor:RGB(87, 107, 149)];
             positionLabel.frame = CGRectMake(nameLabel.frame.origin.x + (size.width+5>80?80:size.width+5), nameLabel.frame.origin.y, 170, 16);
+            [SharedAppDelegate.root getProfileImageWithURL:contentsData.profileImage ifNil:@"profile_photo.png" view:profileImageView scale:24];
 #endif
             
             
-            [SharedAppDelegate.root getProfileImageWithURL:contentsData.profileImage ifNil:@"profile_photo.png" view:profileImageView scale:24];
             
 #ifdef Batong
             if([contentsData.personInfo[@"position"]length]>0)
@@ -4924,7 +5047,12 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             positionLabel.text = [NSString stringWithFormat:@"%@ | %@",yourDic[@"grade2"],yourDic[@"team"]];
 #else
             
-            positionLabel.text = [NSString stringWithFormat:@"%@ | %@",contentsData.personInfo[@"position"],contentsData.personInfo[@"deptname"]];
+            if([contentsData.personInfo[@"position"]length]>0)
+                positionLabel.text = [NSString stringWithFormat:@"%@ | %@",contentsData.personInfo[@"position"],contentsData.personInfo[@"deptname"]];
+            else
+                positionLabel.text = [NSString stringWithFormat:@"%@",contentsData.personInfo[@"deptname"]];
+            
+            
             
 #endif
             
@@ -6007,7 +6135,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 NSString *imageString;
 #ifdef BearTalk
                 
-                content = contentsData.content;
+                content = [categoryname length]>0?[NSString stringWithFormat:@"[%@]\n\n%@",categoryname,contentsData.content]:contentsData.content;
                 where = @"";
                 imageString = @"";
 #else
@@ -6554,7 +6682,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     subtitle = [subtitle stringByAppendingString:@" - "];
                     UILabel *subLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, 15, pollView.frame.size.width - 30, 20)];
                     [subLabel setTextAlignment:NSTextAlignmentLeft];
-                    [subLabel setFont:[UIFont systemFontOfSize:15]];
+                    [subLabel setFont:[UIFont systemFontOfSize:14]];
                     CGSize size = [subtitle sizeWithAttributes:@{NSFontAttributeName:subLabel.font}];
                     [subLabel setBackgroundColor:[UIColor clearColor]];
                     [subLabel setTextColor:RGB(55, 158, 216)];
@@ -6564,7 +6692,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     
                     UILabel *countLabel = [[UILabel alloc]initWithFrame:CGRectMake(subLabel.frame.origin.x + size.width, subLabel.frame.origin.y, pollView.frame.size.width - size.width - 10, 20)];
                     [countLabel setTextAlignment:NSTextAlignmentLeft];
-                    [countLabel setFont:[UIFont systemFontOfSize:15]];
+                    [countLabel setFont:[UIFont systemFontOfSize:14]];
                     [countLabel setBackgroundColor:[UIColor clearColor]];
                     [countLabel setTextColor:RGB(53, 140, 24)];
                     [pollView addSubview:countLabel];
@@ -6574,10 +6702,10 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     
                     NSString *title = pollDic[@"title"];
                     NSLog(@"title %@",title);
-                    CGSize titleSize = [title sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:CGSizeMake(pollView.frame.size.width - 10, 150) lineBreakMode:NSLineBreakByWordWrapping];
+                    CGSize titleSize = [title sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(pollView.frame.size.width - 10, 150) lineBreakMode:NSLineBreakByWordWrapping];
                     UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(subLabel.frame.origin.x, subLabel.frame.origin.y + subLabel.frame.size.height + 5, subLabel.frame.size.width, titleSize.height)];
                     [titleLabel setTextAlignment:NSTextAlignmentLeft];
-                    [titleLabel setFont:[UIFont systemFontOfSize:15]];
+                    [titleLabel setFont:[UIFont systemFontOfSize:14]];
                     [titleLabel setNumberOfLines:0];
                     [titleLabel setBackgroundColor:[UIColor clearColor]];
                     [titleLabel setTextColor:[UIColor blackColor]];//RGB(142,136,134)];
@@ -6604,12 +6732,12 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         
                         NSString *opt = optArray[i][@"name"];
                         opt = [opt stringByAppendingString:@""];
-                        CGSize optSize = [opt sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:CGSizeMake(pollView.frame.size.width - 15 - 15 - 35 - 10 - 40, 150) lineBreakMode:NSLineBreakByWordWrapping];
+                        CGSize optSize = [opt sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(pollView.frame.size.width - 15 - 15 - 35 - 10 - 40, 150) lineBreakMode:NSLineBreakByWordWrapping];
                         UILabel *optLabel = [[UILabel alloc]initWithFrame:CGRectMake(line.frame.origin.x, optHeight, pollView.frame.size.width - 15 - 15 - 35 - 10 - 40, optSize.height)];
                         optHeight += optSize.height;
                         eachHeight += optSize.height;
                         [optLabel setTextAlignment:NSTextAlignmentLeft];
-                        [optLabel setFont:[UIFont systemFontOfSize:15]];
+                        [optLabel setFont:[UIFont systemFontOfSize:14]];
                         [optLabel setNumberOfLines:0];
                         [optLabel setBackgroundColor:[UIColor clearColor]];
                         [optLabel setTextColor:RGB(108, 123, 160)];//RGB(142,136,134)];
@@ -6619,7 +6747,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         //                        CGSize size = [opt sizeWithFont:optLabel.font];
                         UILabel *countLabel = [[UILabel alloc]initWithFrame:CGRectMake(optLabel.frame.origin.x + optSize.width + 5, optLabel.frame.origin.y + optSize.height/2 - 10, 50, 20)];
                         [countLabel setTextAlignment:NSTextAlignmentLeft];
-                        [countLabel setFont:[UIFont systemFontOfSize:15]];
+                        [countLabel setFont:[UIFont systemFontOfSize:14]];
                         [countLabel setBackgroundColor:[UIColor clearColor]];
                         [countLabel setTextColor:RGB(111, 139, 27)];
                         [pollView addSubview:countLabel];
@@ -6639,11 +6767,11 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                            [pollDic[@"is_visible_dstatus"]isEqualToString:@"0"])
                         {
                             NSLog(@"optHeight4 %.0f",optHeight);
-                            CGSize nameSize = [name sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:CGSizeMake(pollView.frame.size.width - 15 - 15 - 35 - 10 - 30, 100) lineBreakMode:NSLineBreakByWordWrapping];
+                            CGSize nameSize = [name sizeWithFont:[UIFont systemFontOfSize:14] constrainedToSize:CGSizeMake(pollView.frame.size.width - 15 - 15 - 35 - 10 - 30, 100) lineBreakMode:NSLineBreakByWordWrapping];
                             nameLabel.frame = CGRectMake(optLabel.frame.origin.x, optHeight, nameSize.width, nameSize.height);
                             [nameLabel setTextAlignment:NSTextAlignmentLeft];
                             [nameLabel setNumberOfLines:0];
-                            [nameLabel setFont:[UIFont systemFontOfSize:15]];
+                            [nameLabel setFont:[UIFont systemFontOfSize:14]];
                             [nameLabel setBackgroundColor:[UIColor clearColor]];
                             [nameLabel setTextColor:[UIColor blackColor]];//RGB(142,136,134)];
                             [pollView addSubview:nameLabel];
@@ -7011,10 +7139,10 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         
                         UIButton *viewFileButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,bgView.frame.size.width,bgView.frame.size.height)];
                         //                        [viewImageButton setBackgroundImage:[UIImage imageNamed:@"datview_bg.png"] forState:UIControlStateNormal];
-                        if([fileExt hasPrefix:@"hwp"]){
-                            [viewFileButton addTarget:self action:@selector(viewHWPFile:) forControlEvents:UIControlEventTouchUpInside];
-                        }
-                        else
+//                        if([fileExt hasPrefix:@"hwp"]){
+//                            [viewFileButton addTarget:self action:@selector(viewHWPFile:) forControlEvents:UIControlEventTouchUpInside];
+//                        }
+//                        else
                             [viewFileButton addTarget:self action:@selector(viewFile:) forControlEvents:UIControlEventTouchUpInside];
                         viewFileButton.tag = i;
                         [bgView addSubview:viewFileButton];
@@ -7195,7 +7323,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         
                         likeLabel.textColor = [UIColor whiteColor];
                         likeLabel.backgroundColor = RGB(167, 204, 69);
-#ifdef LempMobile
+                        
+#if defined(LempMobile) || defined(LempMobileNowon)
                         likeLabel.backgroundColor = RGB(39, 128, 248);
                         
 #endif
@@ -8626,7 +8755,10 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 
 #else
                     
-                    [positionLabel setText:[NSString stringWithFormat:@"%@ | %@",infoDic[@"position"],infoDic[@"deptname"]]];
+                    if([infoDic[@"position"]length]>0)
+                        positionLabel.text = [NSString stringWithFormat:@"%@ | %@",infoDic[@"position"],infoDic[@"deptname"]];
+                    else
+                        positionLabel.text = [NSString stringWithFormat:@"%@",infoDic[@"deptname"]];
 #endif
 //                    [teamLabel setText:infoDic[@"deptname"]];
                     
@@ -9101,7 +9233,11 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     }
                     else{
                         
+#ifdef BearTalk
+                        [SharedAppDelegate.root getProfileImageWithURL:reuid ifNil:@"profile_photo.png" view:replyProfileImageView scale:0];
+#else
                         [SharedAppDelegate.root getProfileImageWithURL:reuid ifNil:@"profile_photo.png" view:replyProfileImageView scale:24];
+#endif
                     }
                     [cell.contentView addSubview:replyContentsTextView];
 //                    [replyContentsTextView release];
@@ -9196,6 +9332,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         handler:^(UIAlertAction * action)
                         {
                             
+                            isPhoto = NO;
                             [self modifyReplyAction:dic];
                             //Do some thing here
                             [view dismissViewControllerAnimated:YES completion:nil];
@@ -9209,6 +9346,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         handler:^(UIAlertAction * action)
                         {
                             
+                            isPhoto = NO;
                             [self deleteReplyAction:dic];
                             
                             //Do some thing here
@@ -9933,7 +10071,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     
         NSDictionary *dic = contentsData.fileArray[[sender tag]];
-//        NSLog(@"viewHWPFile %@",dic);
+       NSLog(@"viewHWPFile %@",dic);
 //        NSString *fileUrlString = dic[@"url"];
 //        NSLog(@"fileUrlString %@",fileUrlString);
 //        fileUrlString = [fileUrlString substringToIndex:[fileUrlString length]-[dic[@"filename"]length]];
@@ -9945,11 +10083,15 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 //        NSURL *fileURL = [NSURL URLWithString:fileUrlString];
 //        NSLog(@"qqqqq.....%@",fileURL);
 //        NSData *fileData = nil;
-        NSString *saveFileName = [NSString stringWithFormat:@"%@_%@",contentsData.idx,dic[@"filename"]];
+#ifdef BearTalk
+    NSString *saveFileName = [NSString stringWithFormat:@"%@_%@",contentsData.idx,dic[@"FILE_NAME"]];
+#else
+    NSString *saveFileName = [NSString stringWithFormat:@"%@_%@",contentsData.idx,dic[@"filename"]];
+#endif
 //        NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/%@",NSHomeDirectory(),saveFileName];
 //        //        NSString *encodeCachePath = [cachefilePath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 //        fileData = [NSData dataWithContentsOfURL:fileURL];
-//        NSLog(@"fileData length.....%d",(int)[fileData length]);
+        NSLog(@"saveFileName....%@",saveFileName);
 //        
 //        //        NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/%@",NSHomeDirectory(),saveFileName];
 //        [fileData writeToFile:cachefilePath atomically:YES];
@@ -10113,6 +10255,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     UIViewController *photoCon;
     
+    isPhoto = YES;
+    NSLog(@"isPhoto %@",isPhoto?@"YES":@"NO");
 #ifdef BearTalk
     
     
@@ -10156,6 +10300,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     //    UIButton *button = (UIButton *)sender;
     
+    isPhoto = YES;
+    NSLog(@"isPhoto %@",isPhoto?@"YES":@"NO");
     NSString *imageString = [[sender titleLabel]text];//[contentsData.contentDicobjectForKey:@"image"];
     UIViewController *photoCon;
 #ifdef BearTalk
@@ -10238,7 +10384,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     NSString *urlString;
     
 #ifdef BearTalk
-    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/one",BearTalkBaseUrl];
+    urlString = [NSString stringWithFormat:@"%@/api/sns/conts/detail",BearTalkBaseUrl];
 #else
     urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/read/directmsg.lemp",[SharedAppDelegate readPlist:@"was"]];
 #endif
@@ -10260,6 +10406,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                   contentsData.idx,@"contskey",
+                  [ResourceLoader sharedInstance].myUID,@"uid",
 //                  SharedAppDelegate.root.home.groupnum,@"snskey",
                   nil];//@{ @"uniqueid" : @"c110256" };
 #else
@@ -10280,7 +10427,6 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         NSLog(@"2");
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         [MBProgressHUD hideHUDForView:myTable animated:YES];
-        
 #ifdef BearTalk
         
         NSLog(@"operation.responseString %@",operation.responseString);
@@ -10325,9 +10471,24 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 //        NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
         contentsData.contentDic = nil;//contentDic;
         
-            
-            NSString *beforedecoded = [messagesDic[@"CONTENTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+        if(categoryname){
+            categoryname = nil;
+        }
+        categoryname = [[NSString alloc]init];
+        
+        if(!IS_NULL(messagesDic[@"CATEGORY"]) && [messagesDic[@"CATEGORY"]length]>0){
+            for(NSDictionary *dic in SharedAppDelegate.root.home.groupDic[@"SNS_CATEGORY"]){
+                if([messagesDic[@"CATEGORY"]isEqualToString:dic[@"CATEGORY_KEY"]]){
+                    categoryname = dic[@"CATEGORY_NAME"];
+                }
+            }
+        }
+        
+        NSLog(@"categoryname %@",categoryname);
+        
+        NSString *beforedecoded = [messagesDic[@"CONTENTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
         NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
         contentsData.content = decoded;//decoded;
         
         contentsData.imageArray = messagesDic[@"IMAGES"];
@@ -10356,7 +10517,14 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             }
             noticeyn = [[NSString alloc]initWithFormat:@"%@",messagesDic[@"NOTICE_YN"]];
         }
-            
+        [self getGroupCategory:messagesDic[@"SNS_KEY"]];
+        
+        for(NSDictionary *dic in SharedAppDelegate.root.main.myList){
+            if([dic[@"groupnumber"]isEqualToString:messagesDic[@"SNS_KEY"]]){
+                
+                SharedAppDelegate.root.home.title = dic[@"groupname"];
+            }
+        }
 #else
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSString *isSuccess = resultDic[@"result"];
@@ -10414,6 +10582,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             }
             
 #endif
+            
+            [self settingRightNaviItem];
             
 #ifdef Batong
             if(![contentsData.sub_category isKindOfClass:[NSNull class]] && [contentsData.sub_category length]>1){

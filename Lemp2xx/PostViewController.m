@@ -323,13 +323,15 @@ const char paramNumber;
     profileImageView.frame = CGRectMake(5,5,0,0);
 #elif BearTalk
     profileImageView.frame = CGRectMake(0,0,0,0);
+    [SharedAppDelegate.root getProfileImageWithURL:[ResourceLoader sharedInstance].myUID ifNil:@"profile_photo.png" view:profileImageView scale:0];
 #else
     profileImageView.frame = CGRectMake(5, 5, 35, 35);
     [profileImageView setContentMode:UIViewContentModeScaleAspectFit];
     
     [self.view addSubview:profileImageView];
-    //    [profileImageView release];
+
     [SharedAppDelegate.root getProfileImageWithURL:[ResourceLoader sharedInstance].myUID ifNil:@"profile_photo.png" view:profileImageView scale:24];
+    
     
 #endif
     
@@ -347,21 +349,6 @@ const char paramNumber;
     
     
     
-//#ifdef MQM
-//    
-//    
-//    contentView = [[UIImageView alloc]init];
-//    //    contentView.backgroundColor = [UIColor blueColor];
-//    contentView.frame = CGRectMake(5, CGRectGetMaxY(infoView.frame)+5,
-//                                   self.view.frame.size.width - 10,
-//                                   self.view.frame.size.height - viewY - 216 - 40 - CGRectGetMaxY(infoView.frame) - 5);
-//    
-//    contentView.userInteractionEnabled = YES;
-//    [self.view addSubview:contentView];
-//    //    contentView.backgroundColor = [UIColor redColor];
-//    NSLog(@"contentView %@",NSStringFromCGRect(contentView.frame));
-//    
-//#elif
     
     if(infoView){
         [infoView removeFromSuperview];
@@ -375,8 +362,9 @@ const char paramNumber;
 #ifdef Batong
 
     
-#ifdef MQM
-#else
+    #ifdef MQM
+    
+    #else
     
     NSString *attribute2 = SharedAppDelegate.root.home.groupDic[@"groupattribute2"];
     if([attribute2 length]<1)
@@ -544,7 +532,7 @@ const char paramNumber;
         
         
     }
-#endif
+    #endif
     
     if(contentView)
     {
@@ -565,8 +553,70 @@ const char paramNumber;
 #elif BearTalk
     
     
-//    NSLog(@"category %@",category);
-//    NSLog(@"category2 %@",SharedAppDelegate.root.home.category);'
+    
+    if(filterView)
+    {
+        [filterView removeFromSuperview];
+        filterView = nil;
+    }
+    filterView = [[UIView alloc]init];
+    [self.view addSubview:filterView];
+    filterView.hidden = YES;
+    filterView.frame = CGRectMake(0,0,self.view.frame.size.width,0);
+    filterView.tag = 2;
+    NSLog(@"sns_category %@",SharedAppDelegate.root.home.groupDic[@"SNS_CATEGORY"]);
+    
+    if(SharedAppDelegate.root.home.groupDic[@"SNS_CATEGORY"]!=nil && [SharedAppDelegate.root.home.groupDic[@"SNS_CATEGORY"]isKindOfClass:[NSArray class]] && [SharedAppDelegate.root.home.groupDic[@"SNS_CATEGORY"]count]>0){
+        filterView.hidden = NO;
+
+        if(category_data){
+            category_data = nil;
+        }
+        category_data = [[NSMutableArray alloc]init];
+        
+        
+//            if(categoryname){
+//                categoryname = nil;
+//            }
+//            categoryname = [[NSString alloc]initWithFormat:@"%@",@""];
+        
+            for(NSDictionary *dic in SharedAppDelegate.root.home.groupDic[@"SNS_CATEGORY"]){
+                if([dic[@"USE_YN"]isEqualToString:@"Y"])
+                    [category_data addObject:dic];
+            }
+        
+        
+            filterView.frame = CGRectMake(0,0,self.view.frame.size.width,48);
+            filterView.backgroundColor = RGB(238, 242, 245);
+        
+                UIImageView *afilterImageView;
+     
+        
+        afilterImageView = [[UIImageView alloc]init];
+        afilterImageView.frame = CGRectMake(12, 9, self.view.frame.size.width - 24, 30);
+        afilterImageView.layer.borderColor = RGB(203,208,209).CGColor;
+        afilterImageView.layer.borderWidth = 1.0f;
+        afilterImageView.layer.cornerRadius = 4.0;
+        afilterImageView.clipsToBounds = YES;
+        afilterImageView.backgroundColor = [UIColor whiteColor];
+        [filterView addSubview:afilterImageView];
+        
+        
+        afilterImageView.userInteractionEnabled = YES;
+        filterLabel = [CustomUIKit labelWithText:category_data[0][@"CATEGORY_NAME"] fontSize:14 fontColor:RGB(91, 103, 114) frame:CGRectMake(10, 5, 320-30, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
+        [afilterImageView addSubview:filterLabel];
+//        filterLabel.text = categoryname;
+        
+        UIImageView *arrowImage = [[UIImageView alloc]initWithFrame:CGRectMake(afilterImageView.frame.size.width - 10 - 12, 9, 12, 12)];
+        arrowImage.image = [UIImage imageNamed:@"selectbox_arrow.png"];
+        [afilterImageView addSubview:arrowImage];
+        
+            
+            UIButton *viewButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,filterView.frame.size.width,filterView.frame.size.height)];
+            
+            [viewButton addTarget:self action:@selector(showFilterActionSheet) forControlEvents:UIControlEventTouchUpInside];
+            [filterView addSubview:viewButton];
+    }
     
     if(contentView)
     {
@@ -575,10 +625,11 @@ const char paramNumber;
     }
     contentView = [[UIImageView alloc]init];
     contentView.backgroundColor = [UIColor clearColor];
-    contentView.frame = CGRectMake(16, 16, self.view.frame.size.width - 16 - 16,
-                                   self.view.frame.size.height - viewY - 216 - 50);
+    contentView.frame = CGRectMake(16, CGRectGetMaxY(filterView.frame)+16, self.view.frame.size.width - 16 - 16,
+                                   self.view.frame.size.height - 216 - 10 - CGRectGetMaxY(filterView.frame) - 50); // option
     //    contentView.image = [[CustomUIKit customImageNamed:@"csectionwhite_center.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
     contentView.userInteractionEnabled = YES;
+    NSLog(@"contentview.frame %@",NSStringFromCGRect(contentView.frame));
     [self.view addSubview:contentView];
     
 #else
@@ -612,6 +663,7 @@ const char paramNumber;
                                    320 - (profileImageView.frame.origin.x + profileImageView.frame.size.width + 5),
                                    self.view.frame.size.height - viewY - 216 - 40);
     //    contentView.image = [[CustomUIKit customImageNamed:@"csectionwhite_center.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+    NSLog(@"contentview.frame %@",NSStringFromCGRect(contentView.frame));
     contentView.userInteractionEnabled = YES;
     [self.view addSubview:contentView];
     NSLog(@"else contentView %@",NSStringFromCGRect(contentView.frame));
@@ -893,13 +945,15 @@ const char paramNumber;
     addPollBadge.layer.cornerRadius = 18/2;
     addPollBadge.hidden = YES;
     
-    
+    contentView.frame = CGRectMake(contentView.frame.origin.x, contentView.frame.origin.y, contentView.frame.size.width, optionView.frame.origin.y - contentView.frame.origin.y - 15); // countlabel gap
 #endif
     
     
     
 #if defined (BearTalk) || defined (GreenTalk) || defined(GreenTalkCustomer)
 #else
+    [self deleteLocation];
+    [self deletePhotos];
     if(addLocation)
     {
         [addLocation removeFromSuperview];
@@ -1128,8 +1182,6 @@ const char paramNumber;
     
     
     button = [CustomUIKit emptyButtonWithTitle:@"barbutton_done.png" target:self selector:@selector(tryPost)];
-    
-    
     btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = btnNavi;
 //    [btnNavi release];
@@ -1302,6 +1354,57 @@ const char paramNumber;
     
 #endif
 }
+
+#ifdef BearTalk
+- (void)showFilterActionSheet{
+    NSLog(@"showFilterActionSheet");
+    
+    
+    UIAlertController * view=   [UIAlertController
+                                 alertControllerWithTitle:@""
+                                 message:@""
+                                 preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *actionButton;
+    
+    
+    
+    for(NSDictionary *dic in category_data){
+        if([dic[@"CATEGORY_KEY"]length]>0){
+        actionButton = [UIAlertAction
+                        actionWithTitle:dic[@"CATEGORY_NAME"]
+                        style:UIAlertActionStyleDefault
+                        handler:^(UIAlertAction * action)
+                        {
+                            
+//                            if(categoryname){
+//                                categoryname = nil;
+//                            }
+//                            categoryname = [[NSString alloc]initWithFormat:@"%@",dic[@"CATEGORY_NAME"]];
+                            
+                            filterLabel.text = dic[@"CATEGORY_NAME"];
+                            
+                            [view dismissViewControllerAnimated:YES completion:nil];
+                            
+                        }];
+        [view addAction:actionButton];
+        }
+    }
+    
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"취소"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [view dismissViewControllerAnimated:YES completion:nil];
+                                 
+                             }];
+    
+    [view addAction:cancel];
+    [self presentViewController:view animated:YES completion:nil];
+}
+
+#else
 - (void)showFilterActionSheet{
     
     
@@ -1393,7 +1496,7 @@ const char paramNumber;
     
 }
 
-
+#endif
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     NSLog(@"gestureRecognizer");
     if ([touch.view isKindOfClass:[UIButton class]]){
@@ -1492,6 +1595,34 @@ const char paramNumber;
     filterLabel.hidden = YES;
 #endif
 }
+
+- (void)setSubCategoryArray:(NSArray *)array dept:(NSString *)name{
+    NSLog(@"array %@ name %@",array,name);
+    if([array count]>0){
+        
+        if(category_data){
+            category_data = nil;
+        }
+        category_data = [[NSMutableArray alloc]initWithArray:array];
+        
+        filterLabel.text = ([name length]>0)?name:@"선택 안 함";
+        filterView.hidden = NO;
+        
+        contentView.frame = CGRectMake(contentView.frame.origin.x, CGRectGetMaxY(filterView.frame)+16, contentView.frame.size.width, optionView.frame.origin.y - (CGRectGetMaxY(filterView.frame)+16) - 15); // countlabel gap
+        
+        NSLog(@"contentview.frame %@",NSStringFromCGRect(contentView.frame));
+    }
+    else{
+        filterView.hidden = YES;
+        
+        contentView.frame = CGRectMake(contentView.frame.origin.x, 16, contentView.frame.size.width, optionView.frame.origin.y - 16 - 15); // countlabel gap
+//        contentView.frame = CGRectMake(16, 16, self.view.frame.size.width - 16 - 16,
+//                                       self.view.frame.size.height - currentKeyboardHeight - 10 - optionView.frame.size.height - 10);
+        NSLog(@"contentview.frame %@",NSStringFromCGRect(contentView.frame));
+        
+    }
+    
+}
 - (void)setModifyView:(NSString *)t idx:(NSString *)idx tag:(int)tag image:(BOOL)hasImage images:(NSMutableArray *)array poll:(NSDictionary *)pdic files:(NSMutableArray *)farray ridx:(NSString *)ridx{
     
     NSLog(@"t %@",t);
@@ -1502,6 +1633,7 @@ const char paramNumber;
     NSLog(@"array %@",array);
     NSLog(@"pdic %@",pdic);
     NSLog(@"farray %@",farray);
+    NSLog(@"filterLabel %@",filterLabel.text);
     
 //    if(hasImage){
 //        [dataArray addObject:@"temp"];
@@ -1528,10 +1660,11 @@ const char paramNumber;
         filterView.frame = CGRectMake(0,0,infoView.frame.size.width, 0);
         
         if(infoView)
-        contentView.frame = CGRectMake(5, CGRectGetMaxY(infoView.frame)+5,
+        contentView.frame = CGRectMake(contentView.frame.origin.x, CGRectGetMaxY(infoView.frame)+5,
                                        self.view.frame.size.width - 10,
                                        self.view.frame.size.height - 0 - 216 -  CGRectGetMaxY(infoView.frame) - 5);
         
+        NSLog(@"contentview.frame %@",NSStringFromCGRect(contentView.frame));
     }
     else{
         if(countLabel)
@@ -1582,12 +1715,17 @@ const char paramNumber;
     else{
         if(optionView){
         optionView.hidden = YES;
-        CGRect contentFrame = contentView.frame;
-        contentFrame.size.height += optionView.frame.size.height;
-        contentView.frame = contentFrame;
+//        CGRect contentFrame = contentView.frame;
+//        contentFrame.size.height += optionView.frame.size.height;
+//        contentView.frame = contentFrame;
+            
+            contentView.frame = CGRectMake(16, 16, self.view.frame.size.width - 16 - 16,
+                                           self.view.frame.size.height - 216 - 10);
+            
         CGRect optionFrame = optionView.frame;
         optionFrame.size.height = 0;
-        optionView.frame = optionFrame;
+            optionView.frame = optionFrame;
+            NSLog(@"contentview.frame %@",NSStringFromCGRect(contentView.frame));
         }
     }
     bottomView.frame = CGRectMake(0, CGRectGetMaxY(optionView.frame), self.view.frame.size.width, self.view.frame.size.height - CGRectGetMaxY(optionView.frame));
@@ -1653,6 +1791,7 @@ const char paramNumber;
 //    }
 
     
+    
 #else
     
     if([array count]>0){
@@ -1687,23 +1826,28 @@ const char paramNumber;
     [button setTitle:idx forState:UIControlStateDisabled];
     [button setTitle:ridx forState:UIControlStateSelected];
     NSLog(@"ridx %@ idx %@",ridx,idx);
+    [button setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+    [button setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
     btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = btnNavi;
 //    [btnNavi release];
     
     
-    [SharedAppDelegate.root getProfileImageWithURL:[ResourceLoader sharedInstance].myUID ifNil:@"profile_photo.png" view:profileImageView scale:24];
-    profileImageView.hidden = YES;
     
 #ifdef BearTalk
     
-    contentView.frame = CGRectMake(16, 16, self.view.frame.size.width - 16 - 16,
-                                   self.view.frame.size.height - VIEWY - 216 - 50);
+    [SharedAppDelegate.root getProfileImageWithURL:[ResourceLoader sharedInstance].myUID ifNil:@"profile_photo.png" view:profileImageView scale:0];
+//    contentView.frame = CGRectMake(16, 16, self.view.frame.size.width - 16 - 16,
+//                                   self.view.frame.size.height - 216 - 10 - optionView.frame.size.height);
+//    NSLog(@"contentview.frame %@",NSStringFromCGRect(contentView.frame));
+    profileImageView.hidden = YES;
 #else
-    contentView.frame = CGRectMake(0 + 5,
+    [SharedAppDelegate.root getProfileImageWithURL:[ResourceLoader sharedInstance].myUID ifNil:@"profile_photo.png" view:profileImageView scale:24];
+    contentView.frame = CGRectMake(contentView.frame.origin.x,
                                    contentView.frame.origin.y,
                                    320 - (5 + 5),
                                    contentView.frame.size.height);
+    profileImageView.hidden = NO;
     
 #endif
     
@@ -2061,6 +2205,13 @@ const char paramNumber;
     NSLog(@"numberArray %@",numberArray);
     NSLog(@"dataArray %d",[dataArray count]);
     NSLog(@"addDataArray %d",[addDataArray count]);
+    
+//    if([filterLabel.text isEqualToString:@"선택 안 함"]){
+//        
+//        [CustomUIKit popupSimpleAlertViewOK:nil msg:@"카테고리를 선택하셔야 합니다." con:self];
+//        return;
+//    }
+    
 #else
     NSLog(@"numberArray %@",numberArray);
     NSLog(@"pollDic %@",pollDic);
@@ -2092,10 +2243,18 @@ const char paramNumber;
 #ifdef BearTalk
     NSString *category;
     
-    category = SharedAppDelegate.root.home.category;
+    category = @"";
     
-    if([category isEqualToString:@"0"])
-        category = @"1";
+    
+    //    NSLog(@"categoryname %@",categoryname);
+  
+    if(filterLabel.text != nil && [filterLabel.text length]>0){
+        for(NSDictionary *dic in category_data){
+            if([filterLabel.text isEqualToString:dic[@"CATEGORY_NAME"]])
+                category = dic[@"CATEGORY_KEY"];
+        }
+    }
+    
     
     
     urlString = [NSString stringWithFormat:@"%@/api/sns/conts/create/app",BearTalkBaseUrl];
@@ -2508,8 +2667,12 @@ const char paramNumber;
     
     
 #ifdef BearTalk
-    
-  
+//    if([filterLabel.text isEqualToString:@"선택 안 함"]){
+//        
+//        [CustomUIKit popupSimpleAlertViewOK:nil msg:@"카테고리를 선택하셔야 합니다." con:self];
+//        return;
+//    }
+//  
 #else
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
@@ -2553,10 +2716,17 @@ const char paramNumber;
 #ifdef BearTalk
     
     //    if(postType == kText)
-    category = SharedAppDelegate.root.home.category;
+    category = @"";
     
-    if([category isEqualToString:@"0"])
-        category = @"1";
+    
+//    NSLog(@"categoryname %@",categoryname);
+    
+    if(filterLabel.text != nil && [filterLabel.text length]>0){
+        for(NSDictionary *dic in category_data){
+            if([filterLabel.text isEqualToString:dic[@"CATEGORY_NAME"]])
+                category = dic[@"CATEGORY_KEY"];
+        }
+    }
     
     
     NSLog(@"category %@",category);
@@ -2573,6 +2743,9 @@ const char paramNumber;
                                                                                                     NULL,
                                                                                                     (__bridge CFStringRef)@"!*'();:@&=+$,/?%#[]",
                                                                                                     kCFStringEncodingUTF8 );
+    
+  
+    
     
     parameters = [NSDictionary dictionaryWithObjectsAndKeys:encodedString,@"contents",
                   contentsTextView.text,@"contentsori",
@@ -3104,7 +3277,12 @@ const char paramNumber;
         countFrame.origin.y = optionView.frame.origin.y - 20;
         countLabel.frame = countFrame;
         
-        NSLog(@"acollection %@",NSStringFromCGRect(photoCollectionView.frame));
+        CGRect conFrame = contentsTextView.frame;
+        conFrame.size.height = countLabel.frame.origin.y - CGRectGetMaxY(filterView.frame) - 10;
+        contentsTextView.frame = conFrame;
+        
+        
+        NSLog(@"contentsTextView %@",NSStringFromCGRect(contentsTextView.frame));
         
 #else
         
@@ -3414,12 +3592,11 @@ const char paramNumber;
     countLabel.frame = countFrame;
     
     
-//    if(preView){
-//        [preView removeFromSuperview];
-//        //        [preView release];
-//        preView = nil;
-//    }
+    CGRect conFrame = contentsTextView.frame;
+    conFrame.size.height = countLabel.frame.origin.y - CGRectGetMaxY(filterView.frame) - 10;
+    contentsTextView.frame = conFrame;
     
+    NSLog(@"contentsTextView %@",NSStringFromCGRect(contentsTextView.frame));
     [addPhoto setBackgroundImage:[UIImage imageNamed:@"btn_camera_off.png"] forState:UIControlStateNormal];
     
     
@@ -3441,7 +3618,6 @@ const char paramNumber;
     NSLog(@"countLabel %@",NSStringFromCGRect(countLabel.frame));
     NSLog(@"contentsTextView %@",NSStringFromCGRect(contentsTextView.frame));
     CGRect conFrame = contentsTextView.frame;
-    //    CGRect bottomFrame = bottomRoundImage.frame;
     conFrame.size.height = countLabel.frame.origin.y + 3 - infoView.frame.size.height;
     contentsTextView.frame = conFrame;
     NSLog(@"contentsTextView %@",NSStringFromCGRect(contentsTextView.frame));
@@ -3498,7 +3674,8 @@ const char paramNumber;
     //                              [UIView commitAnimations];
 }
 
--(void)textViewDidChange:(UITextView *)_textView {
+                   -(void)textViewDidChange:(UITextView *)_textView {
+                       
     if(postTag == kModifyPost){
 		[placeHolderLabel setHidden:YES];
         
@@ -3507,16 +3684,19 @@ const char paramNumber;
                 
                 UIBarButtonItem *rightButton = [self.navigationItem.rightBarButtonItems lastObject];
                 [rightButton setEnabled:NO];
+                
             }
             else{
                 
                 UIBarButtonItem *rightButton = [self.navigationItem.rightBarButtonItems lastObject];
                 [rightButton setEnabled:YES];
+                
             }
         }
         else{
             UIBarButtonItem *rightButton = [self.navigationItem.rightBarButtonItems lastObject];
             [rightButton setEnabled:YES];
+            
             
         }
     }

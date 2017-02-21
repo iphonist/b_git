@@ -12,6 +12,7 @@
 #import "UPStackMenu.h"
 #import "PostViewController.h"
 #import "GKImagePicker.h"
+//#import "DropDownListView.h"
 
 @interface HomeTimelineViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UIWebViewDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UITabBarDelegate, UPStackMenuDelegate>
 {
@@ -87,7 +88,9 @@
     PostViewController *post;
     NSMutableArray *noticeArray;
     UIImageView *icon;
-        UIButton *favButton;
+    UIButton *favButton;
+//    DropDownListView *dropObj;
+    NSString *categoryname;
 }
 
 
@@ -141,5 +144,6 @@
 
 - (void)setChangeCoverImage:(NSData *)img groupnum:(NSString *)number;
 - (void)setGroupTitle:(NSString *)name;
+- (void)initCategory;
 
 @end

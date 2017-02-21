@@ -620,7 +620,9 @@
 //		[SVProgressHUD showErrorWithStatus:@"최하위 부서입니다!"];
 		UIButton *button = [[UIButton alloc] init];
 		[button setTitle:[NSString stringWithFormat:@"%i",(int)indexPath.section] forState:UIControlStateApplication];
-		[button setTitle:[NSString stringWithFormat:@"%i",(int)indexPath.row] forState:UIControlStateDisabled];
+        [button setTitle:[NSString stringWithFormat:@"%i",(int)indexPath.row] forState:UIControlStateDisabled];
+        [button setTitleColor:[UIColor clearColor] forState:UIControlStateApplication];
+        [button setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
 		
 		[self addSelectList:button];
 //		[button release];
@@ -1073,7 +1075,9 @@
 
     profileView.image = [CustomUIKit customImageNamed:@"grp_icon.png"];
 	[checkButton setTitle:[NSString stringWithFormat:@"%i",(int)indexPath.section] forState:UIControlStateApplication];
-	[checkButton setTitle:[NSString stringWithFormat:@"%i",(int)indexPath.row] forState:UIControlStateDisabled];
+    [checkButton setTitle:[NSString stringWithFormat:@"%i",(int)indexPath.row] forState:UIControlStateDisabled];
+    [checkButton setTitleColor:[UIColor clearColor] forState:UIControlStateApplication];
+    [checkButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
 	[checkButton setSelected:NO];
     
 #ifdef BearTalk

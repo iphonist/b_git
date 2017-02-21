@@ -39,7 +39,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1522</string>
+	<string>1690</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -66,8 +66,20 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>NowonDiary needs access to Media Library.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>NowonDiary needs access to Camera.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>NowonDiary needs access to Contacts.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>NowonDiary needs access to Location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>NowonDiary needs access to Microphone.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>NowonDiary needs access to Photo Library.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

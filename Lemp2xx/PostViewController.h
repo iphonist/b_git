@@ -90,7 +90,8 @@
     int optionTag;
     
     UIView *bottomView;
-    
+    NSMutableArray *category_data;
+    UIView *categoryfilterView;
 }
 //@property (nonatomic, strong) HomeTimelineViewController *parentViewCon;
 @property (nonatomic, copy) NSString *dropboxLastPath;
@@ -105,4 +106,5 @@
 - (void)initData:(int)style;
 - (void)setDeptName:(NSString *)deptname;
 - (void)setSubCategorys:(NSString *)sub;
+- (void)setSubCategoryArray:(NSArray *)array dept:(NSString *)name;
 @end

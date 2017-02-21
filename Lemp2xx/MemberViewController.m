@@ -821,6 +821,7 @@ const char paramNumber;
         
         NSLog(@"newdic %@",newdic);
         
+        [newdic setObject:IS_NULL(resultDic[@"SNS_INVITE_TYPE"])?@"":resultDic[@"SNS_INVITE_TYPE"] forKey:@"SNS_INVITE_TYPE"];
         [newdic setObject:resultDic[@"SNS_REPLY_ALARM_EXCEPT_MEMBER"] forKey:@"SNS_REPLY_ALARM_EXCEPT_MEMBER"];
         [newdic setObject:resultDic[@"SNS_CONTS_ALARM_EXCEPT_MEMBER"] forKey:@"SNS_CONTS_ALARM_EXCEPT_MEMBER"];
         [newdic setObject:resultDic[@"SNS_KEY"] forKey:@"groupnumber"];
@@ -830,8 +831,22 @@ const char paramNumber;
         [newdic setObject:resultDic[@"SNS_TYPE"] forKey:@"SNS_TYPE"];
         [newdic setObject:IS_NULL(resultDic[@"WRITE_AUTH"])?@"":resultDic[@"WRITE_AUTH"] forKey:@"WRITE_AUTH"];
         [newdic setObject:resultDic[@"SNS_ADMIN_UID"] forKey:@"SNS_ADMIN_UID"];
-        if([resultDic[@"SNS_ADMIN_UID"]count]>0)
-            [newdic setObject:resultDic[@"SNS_ADMIN_UID"][0] forKey:@"groupmaster"];
+     
+        if([resultDic[@"SNS_ADMIN_UID"]count]>0){
+            BOOL included = NO;
+            for(NSString *auid in resultDic[@"SNS_ADMIN_UID"]){
+                if([auid isEqualToString:[ResourceLoader sharedInstance].myUID]){
+                    included = YES;
+                    break;
+                }
+                
+            }
+            if(included)
+                [newdic setObject:[ResourceLoader sharedInstance].myUID forKey:@"groupmaster"];
+            else
+                [newdic setObject:resultDic[@"SNS_ADMIN_UID"][0] forKey:@"groupmaster"];
+        }
+        
         NSString *beforedecoded = [resultDic[@"SNS_NAME"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
         NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         [newdic setObject:decoded forKey:@"groupname"];
@@ -842,7 +857,6 @@ const char paramNumber;
         
         [newdic setObject:@"" forKey:@"groupexplain"];
         
-        [newdic setObject:resultDic[@"SNS_ADMIN_UID"] forKey:@"SNS_ADMIN_UID"];
         
         
         if([resultDic[@"SNS_TYPE"]isEqualToString:@"C"]) {

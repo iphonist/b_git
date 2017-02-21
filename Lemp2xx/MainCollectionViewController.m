@@ -980,6 +980,7 @@ const char paramNumber;
             NSLog(@"for in");
             NSMutableDictionary *newdic = [NSMutableDictionary dictionary];
             
+            [newdic setObject:dic[@"CATEGORY_YN"] forKey:@"CATEGORY_YN"];
             [newdic setObject:dic[@"FAV_YN"] forKey:@"favorite"];
             [newdic setObject:dic[@"SNS_KEY"] forKey:@"groupnumber"];
             [newdic setObject:dic[@"SNS_AVATAR"] forKey:@"groupimage"];
@@ -1765,7 +1766,7 @@ const char paramNumber;
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
         paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
         NSDictionary *attributes = @{NSFontAttributeName:name.font, NSParagraphStyleAttributeName:paragraphStyle};
-        CGSize nameSize = [content boundingRectWithSize:CGSizeMake(124-20, 45) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+        CGSize nameSize = [name.text boundingRectWithSize:CGSizeMake(124-20, 45) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
         
         
         //    CGSize nameSize = [name.text sizeWithFont:name.font constrainedToSize:CGSizeMake(124-20, 45) lineBreakMode:NSLineBreakByWordWrapping];
@@ -1864,14 +1865,14 @@ const char paramNumber;
         if([dic[@"favorite"]isEqualToString:@"Y"]){
 //            checkView.hidden = NO;
 //            checkButton.hidden = NO;
-            checkButton.titleLabel.text = [NSString stringWithFormat:@"%d",indexPath.row];
+            checkButton.titleLabel.text = [NSString stringWithFormat:@"%d",(int)indexPath.row];
             [checkButton setBackgroundImage:[UIImage imageNamed:@"btn_bookmark_on.png"] forState:UIControlStateNormal];
             
         }
         else if([dic[@"favorite"]isEqualToString:@"N"]){
 //            checkView.hidden = NO;
 //            checkButton.hidden = NO;
-            checkButton.titleLabel.text = [NSString stringWithFormat:@"%d",indexPath.row];
+            checkButton.titleLabel.text = [NSString stringWithFormat:@"%d",(int)indexPath.row];
             [checkButton setBackgroundImage:[UIImage imageNamed:@"btn_bookmark_off.png"] forState:UIControlStateNormal];
         }
         else{
@@ -1880,6 +1881,7 @@ const char paramNumber;
             checkButton.titleLabel.text = nil;
             
         }
+            coverImage.hidden = NO;
 #endif
         
         
@@ -1910,13 +1912,13 @@ const char paramNumber;
 #elif BearTalk
         bg.image = [UIImage imageNamed:@"social_new.png"];
         name.text = @"";
+        coverImage.hidden = YES;
 #endif
         name.font = [UIFont systemFontOfSize:15];
         name.textAlignment = NSTextAlignmentCenter;
         explain.textAlignment = NSTextAlignmentCenter;
         explain.text = @"";
         coverImage.image = nil;
-        
         invitationImage.hidden = YES;
         accept.hidden = YES;
         deny.hidden = YES;

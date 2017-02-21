@@ -37,6 +37,7 @@ const char paramDic;
 #define kSelectedMember 6
 #define kFavoriteMember 7
 #define kGroupChat 8
+#define kSocialGroupChat 81
 //#define kCdr 9
 #define kCustomer 10
 #define kCouponCustomer 11
@@ -423,7 +424,7 @@ const char paramDic;
                 
             }
             else if(tag == kFavoriteMember){
-                
+                NSLog(@"favorite %@",array);
                 myTable.bounces = YES;
                 
                 resultArray = [[NSMutableArray alloc]init];
@@ -468,7 +469,7 @@ const char paramDic;
                 self.title = [NSString stringWithFormat:@"%@ %d",NSLocalizedString(@"favorite_member", @"favorite_member"),(int)[myList count]];
                 
             }
-            else if(tag == kGroupChat){
+            else if(tag == kGroupChat || tag == kSocialGroupChat){
 
                 button = [CustomUIKit emptyButtonWithTitle:@"barbutton_close.png" target:self selector:@selector(cancel)];
 
@@ -1202,7 +1203,7 @@ const char paramDic;
         else
             return 50;
     }
-    else if(tableView.tag == kGroupChat){
+    else if(tableView.tag == kGroupChat || tableView.tag == kSocialGroupChat){
         return 10+42+10;
     }
     else if(tableView.tag == kPassMaster || tableView.tag == kControlMemberWithTwoList || tableView.tag == kNotControlMemberWithTwoList){
@@ -2541,7 +2542,7 @@ if(tag0 >= 0)
         }
         
     }
-    else if(tableView.tag == kGroupChat){
+    else if(tableView.tag == kGroupChat || tableView.tag == kSocialGroupChat){
         UIImageView *profileView;
          UILabel *name, *team;
                UIButton *chat;
@@ -2722,19 +2723,29 @@ if(tag0 >= 0)
             [chat setTitle:@"" forState:UIControlStateDisabled];
 #ifdef BearTalk            
             [outButton setTitle:@"" forState:UIControlStateDisabled];
+            [outButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
             outButton.hidden = leave.hidden;
 #endif
         }
         else{
             isMe.text = @"";
-            leave.hidden = NO;
             [leave setTitle:[dic[@"uniqueid"]length]>0?dic[@"uniqueid"]:@"" forState:UIControlStateDisabled];
             chat.hidden = NO;
 			[chat setTitle:[dic[@"uniqueid"]length]>0?dic[@"uniqueid"]:@"" forState:UIControlStateDisabled];
 #ifdef BearTalk
-            
-            [outButton setTitle:[dic[@"uniqueid"]length]>0?dic[@"uniqueid"]:@"" forState:UIControlStateDisabled];
+            if(tableView.tag == kSocialGroupChat){
+                
+                leave.hidden = YES;
+                [outButton setTitle:@"" forState:UIControlStateDisabled];
+                [outButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+                outButton.hidden = leave.hidden;
+            }
+            else{
+                leave.hidden = NO;
+                [outButton setTitle:[dic[@"uniqueid"]length]>0?dic[@"uniqueid"]:@"" forState:UIControlStateDisabled];
+                [outButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
             outButton.hidden = leave.hidden;
+            }
 #endif
         }
         
@@ -3774,6 +3785,7 @@ if(tag0 >= 0)
                         
                         [outButton setTitle:@"강제탈퇴" forState:UIControlStateNormal];
                         [outButton setTitle:dic[@"uniqueid"] forState:UIControlStateDisabled];
+                        [outButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
 //                        outLabel.hidden = NO;
                         outButton.hidden = NO;
 //                        outButton.titleLabel.text = dic[@"uniqueid"];
@@ -3792,6 +3804,7 @@ if(tag0 >= 0)
 //                        outLabel.hidden = NO;
                         outButton.hidden = NO;
                         [outButton setTitle:dic[@"uniqueid"] forState:UIControlStateDisabled];
+                        [outButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
 //                        outButton.titleLabel.text = dic[@"uniqueid"];
 //                        [outButton setBackgroundImage:[CustomUIKit customImageNamed:@"invcancel_btn.png"] forState:UIControlStateNormal];
                         [outButton addTarget:self action:@selector(cancelInvite:) forControlEvents:UIControlEventTouchUpInside];
@@ -4408,6 +4421,7 @@ if(tag0 >= 0)
         
         NSString *leave_type = dic[@"newfield5"];
         if([leave_type length]>0){
+            NSLog(@"leave_type %@",leave_type);
             if([leave_type isEqualToString:@"출산"])
                 holiday.image = [CustomUIKit customImageNamed:@"imageview_profile_popup_baby.png"];
             else if([leave_type isEqualToString:@"육아"])
@@ -5005,7 +5019,7 @@ if(tag0 >= 0)
 //        
 //        [myTable reloadData];
     }
-    else if(tableView.tag == kGroupChat || tableView.tag == kCustomer){
+    else if(tableView.tag == kGroupChat || tableView.tag == kCustomer || tableView.tag == kSocialGroupChat){
         [SharedAppDelegate.root settingYours:myList[indexPath.row][@"uniqueid"] view:self.view];
     }
 //    else if(tableView.tag == kControlMember || tableView.tag == kNotControlMember){

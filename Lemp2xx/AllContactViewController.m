@@ -905,8 +905,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
             
             NSString *leave_type = dic[@"newfield5"];
             if([leave_type length]>0){
+                NSLog(@"leave_type %@",leave_type);
                 if([leave_type isEqualToString:@"출산"])
-                    holiday.image = [CustomUIKit customImageNamed:@"imageview_profile_popup_baby"];
+                    holiday.image = [CustomUIKit customImageNamed:@"imageview_profile_popup_baby.png"];
                 else if([leave_type isEqualToString:@"육아"])
                     holiday.image = [CustomUIKit customImageNamed:@"imageview_profile_popup_feed.png"];
                 else if([leave_type isEqualToString:@"개인질병"])

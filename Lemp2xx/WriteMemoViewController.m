@@ -277,8 +277,10 @@ const char paramNumber;
     
     optionView.frame = CGRectMake(0, self.view.frame.size.height - currentKeyboardHeight - optionView.frame.size.height, 320, optionView.frame.size.height);
     
+#ifdef BearTalk
     contentsTextView.frame = CGRectMake(16, 16, self.view.frame.size.width - 16 - 16,
                                         self.view.frame.size.height - VIEWY - currentKeyboardHeight - optionView.frame.size.height);
+#endif
     [self refreshPreView];
     
 }

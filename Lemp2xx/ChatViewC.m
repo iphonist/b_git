@@ -132,7 +132,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
         nameLabel.textAlignment = NSTextAlignmentCenter;
 
         
-        nameLabel.textColor = [UIColor whiteColor];
+        nameLabel.textColor = [UIColor blackColor];
         nameLabel.font = [UIFont boldSystemFontOfSize:18];
         
         nameLabel.backgroundColor = [UIColor clearColor];
@@ -4411,7 +4411,6 @@ try {
 - (void)settingRoomWithName:(NSString *)name uid:(NSString *)uid type:(NSString *)type number:(NSString *)number{
     
     
-      nameLabel.text = name;
     
     NSLog(@"name %@ uid %@ type %@ num %@",name,uid,type,number);
 	if ([name length] < 1) {
@@ -6192,6 +6191,7 @@ try {
 }
 
 #define kGroupChat 8
+#define kSocialGroupChat 81
 - (void)showMember:(BOOL)rnumber{
     
     NSLog(@"youruid %@",yourUid);
@@ -6201,7 +6201,31 @@ try {
     
     NSMutableArray *uidArray = (NSMutableArray *)[yourUid componentsSeparatedByString:@","];
     
+#ifdef BearTalk
+    
+    EmptyListViewController *controller;
+    
+    
+    if([self.roomType isEqualToString:@"2"] || [self.roomType isEqualToString:@"S"]) {
+        if([self.roomnumber length]>0){
+            
+            controller = [[EmptyListViewController alloc]initWithList:uidArray from:kSocialGroupChat];
+        }
+        else{
+            controller = [[EmptyListViewController alloc]initWithList:uidArray from:kGroupChat];
+            
+        }
+    }
+    else{
+        controller = [[EmptyListViewController alloc]initWithList:uidArray from:kGroupChat];
+        
+    }
+
+    
+#else
+    
     EmptyListViewController *controller = [[EmptyListViewController alloc]initWithList:uidArray from:kGroupChat];
+#endif
     if(rnumber)
         controller.title = @"채팅 멤버 보기";
     else
@@ -8518,11 +8542,15 @@ if([message length]<1)
             
             [mediaButton setTitle:text forState:UIControlStateDisabled];
             [mediaButton setTitle:text forState:UIControlStateSelected];
+            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
             [mediaButton setTag:type];
             
             
             [downloadButton setTitle:text forState:UIControlStateSelected];
             [downloadButton setTitle:text forState:UIControlStateDisabled];
+            [downloadButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
+            [downloadButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
             [downloadButton setTag:type];
             
 #else
@@ -8531,12 +8559,16 @@ if([message length]<1)
             
             [mediaButton setTitle:text forState:UIControlStateDisabled];
             [mediaButton setTitle:idxTime forState:UIControlStateSelected];
+            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
             [mediaButton setTag:type];
             
             
             [downloadButton setTag:type];
             [downloadButton setTitle:idxTime forState:UIControlStateSelected];
             [downloadButton setTitle:text forState:UIControlStateDisabled];
+            [downloadButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
+            [downloadButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
             
 #endif
             
@@ -8747,6 +8779,8 @@ if([message length]<1)
                 imgUrl= [NSString stringWithFormat:@"%@/api/file/%@",BearTalkBaseUrl,text];
                     [mediaButton setTitle:text forState:UIControlStateSelected];
                     [downloadButton setTitle:text forState:UIControlStateSelected];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
+                    [downloadButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
                 
                 NSLog(@"thum imgUrl %@",imgUrl);
                 
@@ -9055,6 +9089,7 @@ if([message length]<1)
                     NSDictionary *dic = [text objectFromJSONString];
                     NSString *location = [NSString stringWithFormat:@"%@,%@",dic[@"latitude"],dic[@"longitude"]];
                     [mediaButton setTitle:location forState:UIControlStateDisabled];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
                     
                     
                     [mediaImage performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"imageview_chat_location.png"] waitUntilDone:NO];
@@ -9208,6 +9243,7 @@ if([message length]<1)
                             
                             
                             [mediaButton setTitle:text forState:UIControlStateDisabled];
+                            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
                             mediaImage.frame = CGRectMake(22, 13, 27, 27);
                             [mediaImage performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"img_chat_file.png"] waitUntilDone:NO];
                             
@@ -9227,12 +9263,17 @@ if([message length]<1)
                             
                             
                             
-                                                                                                                   [mediaButton setTitle:fileExt forState:UIControlStateSelected];
-                                                                                                                   [mediaButton setTitle:dic[@"FILE_NAME"] forState:UIControlStateHighlighted];
+                            [mediaButton setTitle:fileExt forState:UIControlStateSelected];
+                            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
+                            [mediaButton setTitle:dic[@"FILE_NAME"] forState:UIControlStateHighlighted];
+                            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateHighlighted];
                             
                             [downloadButton setTitle:text forState:UIControlStateDisabled];
+                            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
                             [downloadButton setTitle:fileExt forState:UIControlStateSelected];
+                            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
                             [downloadButton setTitle:dic[@"FILE_NAME"] forState:UIControlStateHighlighted];
+                            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateHighlighted];
                                                                                                                    contactLabel.text = dic[@"FILE_NAME"];
                             
                                                                                                                    
@@ -9282,6 +9323,7 @@ if([message length]<1)
                 else{
                     
                     [mediaButton setTitle:text forState:UIControlStateDisabled];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
                     mediaImage.frame = CGRectMake(22, 13, 27, 27);
                     [mediaImage performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"img_chat_file.png"] waitUntilDone:NO];
                     
@@ -9289,9 +9331,14 @@ if([message length]<1)
                     
                     [mediaButton setTitle:fileExt forState:UIControlStateSelected];
                     [mediaButton setTitle:name forState:UIControlStateHighlighted];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateHighlighted];
                     [downloadButton setTitle:text forState:UIControlStateDisabled];
                     [downloadButton setTitle:fileExt forState:UIControlStateSelected];
                     [downloadButton setTitle:name forState:UIControlStateHighlighted];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateHighlighted];
                     
                     
                     
@@ -9340,6 +9387,8 @@ if([message length]<1)
                 {
                     [mediaButton setTitle:[text objectFromJSONString][@"name"] forState:UIControlStateDisabled];
                     [mediaButton setTitle:[text objectFromJSONString][@"number"] forState:UIControlStateSelected];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
                    
                     
                     downloadButton.hidden = YES;
@@ -9497,11 +9546,15 @@ if([message length]<1)
             balloon = [[UIImage imageNamed:@"bg_chatbubble_yellow.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(30, 11, 4, 28)];
             [mediaButton setTitle:text forState:UIControlStateDisabled];
             [mediaButton setTitle:text forState:UIControlStateSelected];
+            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
 #else
             
             balloon = [[UIImage imageNamed:@"imageview_chat_balloon_me.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(15.0, 5.0, 6.0, 12.0)];
             [mediaButton setTitle:text forState:UIControlStateDisabled];
             [mediaButton setTitle:idxTime forState:UIControlStateSelected];
+            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+            [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
 #endif
 
 			if(type == 2) // image
@@ -9695,7 +9748,8 @@ if([message length]<1)
                 
                     
                 
-                [mediaButton setTitle:text forState:UIControlStateSelected];
+                    [mediaButton setTitle:text forState:UIControlStateSelected];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
                 
                 NSLog(@"thum imgUrl %@",imgUrl);
                 
@@ -10014,6 +10068,7 @@ if([message length]<1)
                             
                                 
                                 [mediaButton setTitle:text forState:UIControlStateDisabled];
+                                [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
                                 
                                 mediaImage.frame = CGRectMake(15, 13, 27, 27);
                                 [mediaImage performSelectorOnMainThread:@selector(setImage:) withObject:[UIImage imageNamed:@"img_chat_file.png"] waitUntilDone:NO];
@@ -10031,6 +10086,8 @@ if([message length]<1)
                                 fileExt = [fileExt lowercaseString];
                                 [mediaButton setTitle:fileExt forState:UIControlStateSelected];
                                 [mediaButton setTitle:dic[@"FILE_NAME"] forState:UIControlStateHighlighted];
+                                [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
+                                [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateHighlighted];
                                 
                                 
                                 contactLabel.text = dic[@"FILE_NAME"];
@@ -10093,6 +10150,8 @@ if([message length]<1)
                     
                     [mediaButton setTitle:[text objectFromJSONString][@"name"] forState:UIControlStateDisabled];
                     [mediaButton setTitle:[text objectFromJSONString][@"number"] forState:UIControlStateSelected];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+                    [mediaButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
                     
 #ifdef BearTalk
                     mediaImage.frame = CGRectMake(15, 13, 27, 27);

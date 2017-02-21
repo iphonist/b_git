@@ -743,7 +743,7 @@
         
         positionScrollView = [[UIScrollView alloc]init];
         positionScrollView.frame = CGRectMake(lblName.frame.origin.x,CGRectGetMaxY(infoBackgroundView.frame)+8,lblName.frame.size.width,25);
-        
+        NSLog(@" positionScrollView.fr %@",NSStringFromCGRect( positionScrollView.frame));
         lblPosition = [[UILabel alloc]init];
         [lblPosition setBackgroundColor:[UIColor clearColor]];
         lblPosition.textColor = [UIColor grayColor];
@@ -843,6 +843,7 @@
         
         positionScrollView.frame = CGRectMake(lblName.frame.origin.x,CGRectGetMaxY(lblName.frame)+6,lblName.frame.size.width,buttonView.frame.origin.y - [SharedFunctions scaleFromHeight:20] - (CGRectGetMaxY(lblName.frame)+6));
         
+        NSLog(@" positionScrollView.fr2 %@",NSStringFromCGRect( positionScrollView.frame));
         NSLog(@"restView %@",NSStringFromCGRect(restView.frame));
         
         
@@ -2419,6 +2420,8 @@
     
     [saveButton setTitle:lblName.text forState:UIControlStateDisabled];
     [saveButton setTitle:lblPhoneString forState:UIControlStateSelected];
+    [saveButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+    [saveButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
     
     CGSize infosize;
     
@@ -2506,6 +2509,7 @@
     NSLog(@"position size %@",NSStringFromCGSize(size));
     lblPosition.frame = CGRectMake(0, 0, positionScrollView.frame.size.width, size.height);
     
+    NSLog(@" positionScrollView.fr3 %@",NSStringFromCGRect( positionScrollView.frame));
     positionScrollView.contentSize = CGSizeMake(positionScrollView.frame.size.width,size.height);
     
     if(size.height>42)
@@ -2514,6 +2518,7 @@
         positionScrollView.frame = CGRectMake(lblName.frame.origin.x,CGRectGetMaxY(lblInfo.frame)+5,lblName.frame.size.width,size.height);
     
     
+    NSLog(@" positionScrollView.fr4 %@",NSStringFromCGRect( positionScrollView.frame));
     
     
     self.uniqueid = dic[@"uniqueid"];
@@ -2712,6 +2717,8 @@
     }
     [saveButton setTitle:lblName.text forState:UIControlStateDisabled];
     [saveButton setTitle:lblPhoneString forState:UIControlStateSelected];
+    [saveButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+    [saveButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
     
     lblOffice.text = [SharedAppDelegate.root dashCheck:dic[@"companyphone"]];
 #ifdef SbTalk
@@ -3071,6 +3078,8 @@
     
     [saveButton setTitle:lblName.text forState:UIControlStateDisabled];
     [saveButton setTitle:lblPhoneString forState:UIControlStateSelected];
+    [saveButton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+    [saveButton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
     
     
     size = [lblInfo.text sizeWithAttributes:@{NSFontAttributeName:lblInfo.font}];
@@ -3111,15 +3120,17 @@
             positionstring = [positionstring stringByAppendingString:@"\n"];
             
             
+            NSLog(@"positionstring0 %@",positionstring);
             
 
         }
         
+        NSLog(@"positionstring1 %@",positionstring);
         if([positionstring hasSuffix:@"\n"]){
-            positionstring = [positionstring substringWithRange:NSMakeRange(0,[positionstring length]-2)];
+            positionstring = [positionstring substringWithRange:NSMakeRange(0,[positionstring length]-1)];
         }
         
-        NSLog(@"positionstring %@",positionstring);
+        NSLog(@"positionstring2 %@",positionstring);
         lblPosition.text = positionstring;
     }
     else{
@@ -3127,16 +3138,20 @@
         
         NSString *positionstring = @"";
         if([dic[@"grade2"]length]>0)
-            positionstring = [positionstring stringByAppendingFormat:@" %@",dic[@"grade2"]];
+            positionstring = [positionstring stringByAppendingFormat:@" %@ |",dic[@"grade2"]];
         
         if([dic[@"team"]length]>0)
-            positionstring = [positionstring stringByAppendingFormat:@"| %@",dic[@"team"]];
+            positionstring = [positionstring stringByAppendingFormat:@" %@ |",dic[@"team"]];
         
         if([dic[@"newfield7"]length]>0)
-            positionstring = [positionstring stringByAppendingFormat:@"| %@",dic[@"newfield7"]];
+            positionstring = [positionstring stringByAppendingFormat:@" %@ |",dic[@"newfield7"]];
         
         
-        NSLog(@"positionstring %@",positionstring);
+        NSLog(@"positionstring3 %@",positionstring);
+        if([positionstring hasSuffix:@"|"]){
+            positionstring = [positionstring substringWithRange:NSMakeRange(0,[positionstring length]-1)];
+        }
+        NSLog(@"positionstring4 %@",positionstring);
         lblPosition.text = positionstring;
         
         
@@ -3168,11 +3183,12 @@
             
             
             
+            NSLog(@"positionstring %@",positionstring);
 
         }
         
         if([positionstring hasSuffix:@"\n"]){
-            positionstring = [positionstring substringWithRange:NSMakeRange(0,[positionstring length]-2)];
+            positionstring = [positionstring substringWithRange:NSMakeRange(0,[positionstring length]-1)];
         }
         
         NSLog(@"positionstring %@",positionstring);
@@ -3215,6 +3231,7 @@
     lblPosition.frame = CGRectMake(0, 0, positionScrollView.frame.size.width, size.height);
     positionScrollView.contentSize = CGSizeMake(positionScrollView.frame.size.width,size.height+5);
     
+    NSLog(@" positionScrollView.fr5 %@",NSStringFromCGRect( positionScrollView.frame));
 #ifdef BearTalk
 #else
     if(size.height>25)
@@ -3334,7 +3351,6 @@
     
     self.uniqueid = dic[@"uniqueid"];
     //        available = [dicobjectForKey:@"available"];
-    [SharedAppDelegate.root getProfileImageWithURL:self.uniqueid ifNil:@"imageview_profilepopup_defaultprofile.png" view:profile scale:24];
 
     //[AppID getImage:uniqueid];
     
@@ -3394,6 +3410,7 @@
     holidayLabel.text = leave_type;
     
     if([leave_type length]>0){
+        NSLog(@"leave_type %@",leave_type);
         if([leave_type isEqualToString:@"출산"])
             holidayView.image = [CustomUIKit customImageNamed:@"imageview_profile_popup_baby.png"];
         else if([leave_type isEqualToString:@"육아"])
@@ -3413,54 +3430,55 @@
     
 #ifdef BearTalk
     
-    [SharedAppDelegate.root getProfileImageWithURL:self.uniqueid ifNil:nil view:coverImageView scale:0];
+    [SharedAppDelegate.root getProfileImageWithURL:self.uniqueid ifNil:nil view:coverImageView scale:1];
+    [SharedAppDelegate.root getProfileImageWithURL:self.uniqueid ifNil:@"imageview_profilepopup_defaultprofile.png" view:profile scale:0];
+    
+#elif LempMobileNowon
+    UIImage *defaultImage = [CustomUIKit customImageNamed:@"imageview_defaultcover.png"];//withMask:[UIImage
+    //    if(IS_HEIGHT568){
+    //        defaultImage = [CustomUIKit customImageNamed:@"imageview_defaultcover.png"];// withMask:[UIImage
+    //    }
+    
+    [coverImageView setImage:defaultImage];
     
     
+    NSString *imageFilePath = [NSString stringWithFormat:@"%@/Library/Caches/Covers/timelineimage_%@.jpg",NSHomeDirectory(),self.uniqueid];
+    UIImage *savedImage = [UIImage imageWithContentsOfFile:imageFilePath];
+    NSLog(@"image %@",savedImage);
+    if(savedImage == nil){
+        NSString *urlString = [NSString stringWithFormat:@"https://%@/file/%@/timelineimage_%@_.jpg",[SharedAppDelegate readPlist:@"was"],self.uniqueid,self.uniqueid];
+        NSLog(@"urlString %@",urlString);
+        NSURL *imgURL = [NSURL URLWithString:urlString];
+        NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:imgURL];
+        NSHTTPURLResponse* response = nil;
+        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+        
+        NSInteger statusCode = [response statusCode];
+        NSLog(@"statusCode %d",(int)statusCode);
+        
+        
+        if(statusCode == 404){
+        }
+        else{
+            
+            [responseData writeToFile:imageFilePath atomically:YES];
+            UIImage *image = [UIImage imageWithData:responseData];
+            [coverImageView setImage:image];
+        }
+    }
+    else{
+        [coverImageView setImage:savedImage];
+        
+    }
+    
+    [SharedAppDelegate.root getProfileImageWithURL:self.uniqueid ifNil:@"imageview_profilepopup_defaultprofile.png" view:profile scale:24];
 #else
-    
+    [SharedAppDelegate.root getProfileImageWithURL:self.uniqueid ifNil:@"imageview_profilepopup_defaultprofile.png" view:profile scale:24];
     [SharedAppDelegate.root getCoverImage:self.uniqueid view:coverImageView ifnil:@""];
     
 #endif
     
-    
-//    UIImage *defaultImage = [CustomUIKit customImageNamed:@"imageview_defaultcover.png"];//withMask:[UIImage
-//    //    if(IS_HEIGHT568){
-//    //        defaultImage = [CustomUIKit customImageNamed:@"imageview_defaultcover.png"];// withMask:[UIImage
-//    //    }
-//    
-//    [coverImageView setImage:defaultImage];
-//    
-//    
-//    NSString *imageFilePath = [NSString stringWithFormat:@"%@/Library/Caches/Covers/timelineimage_%@.jpg",NSHomeDirectory(),self.uniqueid];
-//    UIImage *savedImage = [UIImage imageWithContentsOfFile:imageFilePath];
-//    NSLog(@"image %@",savedImage);
-//    if(savedImage == nil){
-//        NSString *urlString = [NSString stringWithFormat:@"https://%@/file/%@/timelineimage_%@_.jpg",[SharedAppDelegate readPlist:@"was"],self.uniqueid,self.uniqueid];
-//        NSLog(@"urlString %@",urlString);
-//        NSURL *imgURL = [NSURL URLWithString:urlString];
-//        NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:imgURL];
-//        NSHTTPURLResponse* response = nil;
-//        NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-//        
-//        NSInteger statusCode = [response statusCode];
-//        NSLog(@"statusCode %d",(int)statusCode);
-//        
-//        
-//        if(statusCode == 404){
-//        }
-//        else{
-//            
-//            [responseData writeToFile:imageFilePath atomically:YES];
-//            UIImage *image = [UIImage imageWithData:responseData];
-//            [coverImageView setImage:image];
-//        }
-//    }
-//    else{
-//        [coverImageView setImage:savedImage];
-//        
-//    }
-    
-    
+
     
 }
 #endif

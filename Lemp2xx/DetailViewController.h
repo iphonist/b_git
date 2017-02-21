@@ -99,6 +99,8 @@
     UILabel *labelSend;
     NSString *noticeyn;
     UIDocumentInteractionController* docController;
+    NSString *categoryname;
+    NSMutableArray *category_data;
 }
 //- (id)initWithViewCon:(UIViewController *)viewcon;
 

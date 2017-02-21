@@ -171,7 +171,7 @@ const char paramDic;
 //        leftButton = [CustomUIKit closeButtonWithTarget:self selector:@selector(cancel)];
 
         
-        leftButton = [CustomUIKit emptyButtonWithTitle:@"barbutton_close.png" target:self selector:@selector(cancel)];
+        leftButton = [CustomUIKit emptyButtonWithTitle:@"barbutton_close.png" target:self selector:@selector(backTo)];
 
         
         [self setMyInfo];
@@ -526,7 +526,7 @@ const char paramDic;
 //        leftButton = [CustomUIKit closeButtonWithTarget:self selector:@selector(cancel)];
 
         
-        leftButton = [CustomUIKit emptyButtonWithTitle:@"barbutton_close.png" target:self selector:@selector(cancel)];
+        leftButton = [CustomUIKit emptyButtonWithTitle:@"barbutton_close.png" target:self selector:@selector(backTo)];
 
         
     }
@@ -2276,6 +2276,7 @@ const char paramDic;
 
 - (void)backTo{
     
+    NSLog(@"backto %@",self.presentingViewController);
     if (self.presentingViewController) {
         [self dismissViewControllerAnimated:YES completion:nil];
     } else {
@@ -3880,17 +3881,30 @@ const char paramDic;
         
         UIAlertAction *actionButton;
         
-    for(NSDictionary *dic in areaList){
+  
+    if([areaList count] == 0){
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+                                                          style:UIAlertActionStyleDefault
+                                                        handler:^(UIAlertAction * action){
+                                                            [view dismissViewControllerAnimated:YES completion:nil];
+                                                        }];
         
-        if(![dic[@"AREA_NAME"]isEqualToString:@"전체"]){
-        actionButton = [UIAlertAction
-                        actionWithTitle:dic[@"AREA_NAME"]
-                        style:UIAlertActionStyleDefault
-                        handler:^(UIAlertAction * action)
-                        {
-                            [self saveLocation:dic[@"AREA_KEY"] str:dic[@"AREA_NAME"]];
-                        }];
-        [view addAction:actionButton];
+        
+        [view addAction:cancelb];
+    }
+    else{
+        for(NSDictionary *dic in areaList){
+            
+            if(![dic[@"AREA_NAME"]isEqualToString:@"전체"]){
+                actionButton = [UIAlertAction
+                                actionWithTitle:dic[@"AREA_NAME"]
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    [self saveLocation:dic[@"AREA_KEY"] str:dic[@"AREA_NAME"]];
+                                }];
+                [view addAction:actionButton];
+            }
         }
     }
     

@@ -218,7 +218,7 @@ const char paramIndex;
         NSLog(@"self.tabBarController.tabBar.frame.size.height %f",self.tabBarController.tabBar.frame.size.height);
         CGRect tableFrame;
         
-        float viewY = 64;
+        
         
         tableFrame = CGRectMake(0, 0, 320, self.view.frame.size.height);
         
@@ -294,17 +294,52 @@ const char paramIndex;
         
         
         
+        [self.view addSubview:myTable];
         
 #if defined(GreenTalk) || defined(GreenTalkCustomer)
         
-        [self.view addSubview:myTable];
-//        [myTable release];
         
+        
+#elif LempMobileNowon
+        
+        myTable.frame = CGRectMake(0, 0,self.view.frame.size.width, SharedAppDelegate.window.frame.size.height - VIEWY);
+        
+        coverImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 160)];//(0, -80, 320, 320)];
+        
+        
+        coverImageView.backgroundColor = [UIColor blackColor];
+        coverImageView.contentMode = UIViewContentModeScaleAspectFill;
+        coverImageView.userInteractionEnabled = YES;
+        coverImageView.image = [UIImage imageNamed:@"flowers.jpg"];
+        coverImageView.clipsToBounds = YES;
+        //	[self.view addSubview:coverImageView];
+        [myTable addSubview:coverImageView];
+        //        [coverImageView release];
+        
+        UIImageView *gradationView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 160-45, self.view.frame.size.width, 45)];
+        gradationView.image = [UIImage imageNamed:@"pic_backline.png"];
+        [coverImageView addSubview:gradationView];
+        //        [gradationView release];
+        
+        
+        nowLabel = [[UILabel alloc]init];//CGRectMake(295 - 16 - 120, 135, 110, 14)];
+        nowLabel.font = [UIFont systemFontOfSize:14];
+        nowLabel.textAlignment = NSTextAlignmentLeft;
+        nowLabel.backgroundColor = [UIColor clearColor];
+        nowLabel.textColor = RGB(186,185,185);
+        [myTable addSubview:nowLabel];
+        //        [nowLabel release];
+        
+        //        [myTable release];
+        
+        
+        
+        UIButton *changeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(changeCover) frame:CGRectMake(0, 0, self.view.frame.size.width, 160) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+        [myTable addSubview:changeButton];
 #else
-          [self.view addSubview:myTable];
         coverImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, [SharedFunctions scaleFromHeight:470/2])];//(0, -80, 320, 320)];
         
-        
+
         coverImageView.backgroundColor = [UIColor blackColor];
         coverImageView.contentMode = UIViewContentModeScaleAspectFill;
         coverImageView.userInteractionEnabled = YES;
@@ -330,8 +365,8 @@ const char paramIndex;
         [coverImageView addSubview:groupIconImage];
         groupIconImage.image = [UIImage imageNamed:@"Ic_social_member.png"];
         
-        UIButton *changeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(changeCover) frame:CGRectMake(0, 0, coverImageView.frame.size.width, coverImageView.frame.size.height) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
-        [coverImageView addSubview:changeButton];
+//        UIButton *changeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(changeCover) frame:CGRectMake(0, 0, coverImageView.frame.size.width, coverImageView.frame.size.height) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+//        [coverImageView addSubview:changeButton];
         
         
 #endif
@@ -748,15 +783,15 @@ const char paramIndex;
                 else{// if([self.groupDic[@"WRITE_AUTH"]isEqualToString:@"ADM"]){
                     
                     if([self.groupnum  isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"] || [self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
-                        BOOL excluded = NO;
+                        BOOL included = NO;
                         for(NSString *uid in self.groupDic[@"SNS_ADMIN_UID"]){
                             if([uid isEqualToString:[ResourceLoader sharedInstance].myUID]){
-                                excluded = YES;
+                                included = YES;
                                 break;
                             }
                         }
                         
-                        if(excluded){
+                        if(included){
                             
                             [self writePost];
                         }
@@ -1241,7 +1276,69 @@ const char paramIndex;
     //    actionSheet. = index;
 }
 
-
+#ifdef BearTalk
+- (void)showFilterActionSheet{
+    NSLog(@"showFilterActionSheet");
+    didRequest = NO;
+    
+    UIAlertController * view=   [UIAlertController
+                                 alertControllerWithTitle:@""
+                                 message:@""
+                                 preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *actionButton;
+    
+    
+    
+    actionButton = [UIAlertAction
+                    actionWithTitle:@"전체"
+                    style:UIAlertActionStyleDefault
+                    handler:^(UIAlertAction * action)
+    {
+        
+        if(categoryname){
+            categoryname = nil;
+        }
+        categoryname = [[NSString alloc]initWithFormat:@"%@",@"전체"];
+        [self refreshTimeline];
+                    [view dismissViewControllerAnimated:YES completion:nil];
+                    
+    }];
+    [view addAction:actionButton];
+    
+    for(NSDictionary *dic in category_data){
+        
+        actionButton = [UIAlertAction
+                        actionWithTitle:dic[@"CATEGORY_NAME"]
+                        style:UIAlertActionStyleDefault
+                        handler:^(UIAlertAction * action)
+                        {
+                            
+                            if(categoryname){
+                                categoryname = nil;
+                            }
+                            categoryname = [[NSString alloc]initWithFormat:@"%@",dic[@"CATEGORY_NAME"]];
+                            [self refreshTimeline];
+                            [view dismissViewControllerAnimated:YES completion:nil];
+                            
+                        }];
+        [view addAction:actionButton];
+        
+    }
+    
+    UIAlertAction* cancel = [UIAlertAction
+                             actionWithTitle:@"취소"
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [view dismissViewControllerAnimated:YES completion:nil];
+                                 
+                             }];
+    
+    [view addAction:cancel];
+    [self presentViewController:view animated:YES completion:nil];
+}
+#else
 - (void)showFilterActionSheet{
     
     
@@ -1475,6 +1572,7 @@ const char paramIndex;
     }
     
 }
+#endif
 - (void)changeCover{
     NSLog(@"changeCover");
     
@@ -2233,6 +2331,7 @@ const char paramIndex;
 {
     //    [self getTimeline:nil];
     NSLog(@"refresh target %@ type %@ group %@",self.targetuid,self.category,self.groupnum);
+    NSLog(@"categoryname %@",categoryname);
     refreshing = YES;
     [SharedAppDelegate.root setNeedsRefresh:NO];
     NSLog(@"greenCode %@",greenCode);
@@ -2444,8 +2543,11 @@ else{
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    NSLog(@"numberofsection");
+    {
+        NSLog(@"numberofsection");
+#ifdef LempMobileNowon
+    return 1;
+#endif
 //    if([self.timeLineCells count]>0)
 //    {
 ////        if([self.groupDic[@"category"]isEqualToString:@"2"] && [self.groupDic[@"grouptype"]isEqualToString:@"1"])
@@ -2463,6 +2565,19 @@ else{
     NSLog(@"numberOfRowsInSection");
     NSLog(@"timelinecells count %d",(int)[timeLineCells count]);
     
+#ifdef LempMobileNowon
+    if([self.timeLineCells count]>0)
+    {
+        if([self.groupDic[@"category"]isEqualToString:@"2"] && [self.groupDic[@"grouptype"]isEqualToString:@"1"])
+            return [self.timeLineCells count]+2;
+        else
+            return [self.timeLineCells count]+1;
+    }
+    else
+        return 2;
+#endif
+    
+    
 #if defined(GreenTalk) || defined(GreenTalkCustomer)
     if(section == 1)
     return [self.timeLineCells count];
@@ -2474,10 +2589,18 @@ else{
     
     if(section == 1){
 #ifdef BearTalk
+        int timelinecount;
+        timelinecount = (int)[self.timeLineCells count];
+        NSLog(@"timelinecount %d",timelinecount);
+        
         if([noticeArray count]>0)
-            return [self.timeLineCells count]+1;
-        else
-                return [self.timeLineCells count];
+            timelinecount += 1;
+        NSLog(@"timelinecount %d",timelinecount);
+        if([category_data count]>0)// || [self.groupDic[@"CATEGORY_YN"]isEqualToString:@"Y"])
+            timelinecount += 1;
+        
+        NSLog(@"timelinecount %d",timelinecount);
+        return timelinecount;
 #else
         
         return [self.timeLineCells count];
@@ -2506,7 +2629,245 @@ else{
 }
 
 
+#ifdef LempMobileNowon
+    
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"heightfor");
+        float height = 0.0f;
+    
+    if([timeLineCells count] == 0)
+    {
+        if(indexPath.row == 0)
+            height = 160.0;
+        else{
+            
+            height = 100.0;
+        }
+    }
+    else{
+        if(indexPath.row == 0)
+            height = 160.0;
+        else if([self.groupDic[@"category"]isEqualToString:@"2"] && [self.groupDic[@"grouptype"]isEqualToString:@"1"] && indexPath.row == 1){
+            height= 48.0;
+            
+        }
+        else
+        {
+            NSInteger fontSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"GlobalFontSize"];
+            
+            
+            TimeLineCell *dataItem = nil;
+            if([self.groupDic[@"category"]isEqualToString:@"2"] && [self.groupDic[@"grouptype"]isEqualToString:@"1"])
+                dataItem = self.timeLineCells[indexPath.row-2];
+            else
+                dataItem = self.timeLineCells[indexPath.row-1];
+            
+            NSString *imageString = dataItem.contentDic[@"image"];
+            NSString *content = dataItem.contentDic[@"msg"];
+            
+            if([dataItem.contentType intValue] != 12){
+                if ([content length] > 500) {
+                    content = [content substringToIndex:500];
+                }
+            }
+            NSString *where = dataItem.contentDic[@"jlocation"];
+            NSDictionary *dic = [where objectFromJSONString];
+            //			NSString *invite = dataItem.contentDic[@"question"];
+            //			NSString *regiStatus = dataItem.contentDic[@"result"];
+            NSDictionary *pollDic = dataItem.pollDic;
+            NSArray *fileArray = dataItem.fileArray;
+            
+            
+            if([dataItem.contentType intValue]>17 || [dataItem.type intValue]>7 || ([dataItem.writeinfoType intValue]>4 && [dataItem.writeinfoType intValue]!=10)){
+                height += 15+40; // gap + defaultview
+                height += 10 + 25; // gap 업그레이드가 필요합니다.
+            }
+            else
+            {
+                
+                if([dataItem.writeinfoType intValue]==0){
+                    height += 15;
+                }
+                else{
+                    height += 15+40; // gap + defaultview
+                }
+                
+                height += 10; // gap
+                if(imageString != nil && [imageString length]>0)
+                {
+                    height += 5; // gap
+                    
+                    if([dataItem.contentType intValue] == 10)
+                        height += 434-35;
+                    else
+                        height += 137;
+                    //                else
+                    //                    height += (imgCount+1)/2*75;
+                    
+                    
+                    CGFloat moreLabelHeight = 0.0;
+                    CGSize contentSize;
+                    if([dataItem.contentType intValue] == 12){
+                        
+                        
+                        
+                        //                        contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(290, 1500) lineBreakMode:NSLineBreakByWordWrapping];
+                        //
+                        //
+                        //                        height += contentSize.height;
+                        //                        if(webviewHeight == 0){
+                        //                            height += 0;
+                        //
+                        //                            //                                 [myWebView loadHTMLString:[NSString stringWithFormat:@"%@",content] baseURL: nil];
+                        //
+                        //                            //                                 NSData *htmlDATA = [content dataUsingEncoding:NSUTF8StringEncoding];
+                        //                            //                                 NSLog(@"htmldata1 %d",htmlDATA.length);
+                        //                            //                                 [myWebView loadData:htmlDATA MIMEType: @"text/html" textEncodingName: @"UTF-8" baseURL:nil];
+                        //
+                        //                        }
+                        //                        else{
+                        height += webviewHeight;
+                        //                        }
+                        
+                    }
+                    else{
+                        
+                        
+                        contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*6) lineBreakMode:NSLineBreakByWordWrapping];
+                        
+                        CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+                        
+                        if (realSize.height > contentSize.height) {
+                            moreLabelHeight = 17.0;
+                        }
+                        
+                        height += contentSize.height + moreLabelHeight;
+                        NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+                    }
+                    
+                    
+                }
+                else{
+                    
+                    if([dataItem.contentType intValue] != 10){
+                        
+                        CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
+                        
+                        CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+                        CGFloat moreLabelHeight = 0.0;
+                        if (realSize.height > contentSize.height) {
+                            moreLabelHeight = 17.0;
+                        }
+                        
+                        height += contentSize.height + moreLabelHeight;
+                        NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+                    }
+                    
+                }
+                height += 10; // contentslabel gap
+                
+                if(pollDic != nil){
+                    height += 78;
+                }
+                if([fileArray count]>0){
+                    height += 78; // gap+
+                }
+                if(dic[@"text"] != nil && [dic[@"text"] length]>0)
+                {
+                    height += 22; // location
+                }
+                
+                
+                
+                
+                if([dataItem.type isEqualToString:@"5"] || [dataItem.type isEqualToString:@"6"]){
+                    
+                }
+                else{
+                    height += 10 + 30; // optionView;
+                    
+                    
+                    
+                    if(dataItem.replyCount>0)
+                    {
+                        height += 5; // optionview gap;
+                        
+                        if(dataItem.replyCount < 3)
+                        {
+                            height += (dataItem.replyCount)*35; // gap name time line gap
+                            for(NSDictionary *dic in dataItem.replyArray)
+                            {
+                                if([dic[@"writeinfotype"]intValue]>4 && [dic[@"writeinfotype"]intValue]!=10){
+                                    height +=25;
+                                }
+                                else{
+                                    NSString *replyCon = [dic[@"replymsg"]objectFromJSONString][@"msg"];
+                                    if ([replyCon length] > 90) {
+                                        replyCon = [replyCon substringToIndex:90];
+                                    }
+                                    CGSize replySize = [replyCon sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(250, fontSize*2) lineBreakMode:NSLineBreakByWordWrapping];
+                                    NSString *replyPhotoUrl = [dic[@"replymsg"]objectFromJSONString][@"image"];
+                                    NSLog(@"replyphotourl %@",replyPhotoUrl);
+                                    if([replyPhotoUrl length]>0){
+                                        replySize = [replyCon sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(250-24-10, fontSize*2) lineBreakMode:NSLineBreakByWordWrapping];
+                                    }
+                                    NSLog(@"replySize.height %.0f",replySize.height);
+                                    float replyHeight = replySize.height<20?20:replySize.height;
+                                    height += replyHeight;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            height += 2*35; // gap name time line gap
+                            
+                            for(int i = (int)[dataItem.replyArray count]-2; i < (int)[dataItem.replyArray count]; i++)//NSDictionary *dic in dataItem.replyArray)
+                            {
+                                if([dataItem.replyArray[i][@"writeinfotype"]intValue]>4 && [dataItem.replyArray[i][@"writeinfotype"]intValue]!=10){
+                                    height += 25;
+                                }
+                                else{
+                                    NSString *replyCon = [dataItem.replyArray[i][@"replymsg"]objectFromJSONString][@"msg"];
+                                    if ([replyCon length] > 90) {
+                                        replyCon = [replyCon substringToIndex:90];
+                                    }
+                                    CGSize replySize = [replyCon sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(250, fontSize*2) lineBreakMode:NSLineBreakByWordWrapping];
+                                    NSString *replyPhotoUrl = [dataItem.replyArray[i][@"replymsg"]objectFromJSONString][@"image"];
+                                    NSLog(@"replyphotourl %@",replyPhotoUrl);
+                                    if([replyPhotoUrl length]>0){
+                                        replySize = [replyCon sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(250-24-10, fontSize*2) lineBreakMode:NSLineBreakByWordWrapping];
+                                    }
+                                    NSLog(@"replySize.height %.0f",replySize.height);
+                                    float replyHeight = replySize.height<20?20:replySize.height;
+                                    height += replyHeight;
+                                }
+                                
+                            }
+                            height += 28; // moreLabel
+                            
+                        }
+                    }
+                    
+                    
+                }
+            }
+            
+            
+            
+            
+            if ([timeLineCells count] == 1 && height < 80) {
+                height = 80;
+            }
+            
+            height += 10; // gap
+            
+        }
+        
+    }
 
+    return height;
+}
+#else
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"heightForRowAtIndexPath");
@@ -2523,18 +2884,47 @@ else{
         
         
         TimeLineCell *dataItem = nil;
+        int row = (int)indexPath.row;
+        NSLog(@"row %d",row);
+        if([noticeArray count]>0)
+        {
+            NSLog(@"notice exist");
+            row -= 1;
+        }
+        
+        if([category_data count]>0){// || [self.groupDic[@"CATEGORY_YN"]isEqualToString:@"Y"]){
+            row -= 1;
+        }
+            NSLog(@"row1 %d",row);
+        
         if([noticeArray count]>0)
         {
             if(indexPath.row == 0)
                 return 80;
-            else
-                dataItem = self.timeLineCells[indexPath.row-1];
+            
+            if([category_data count]>0){// || [self.groupDic[@"CATEGORY_YN"]isEqualToString:@"Y"]){
+                NSLog(@"category_data exist");
+                if(indexPath.row == 1){
+                    NSLog(@"row2 %d",row);
+                    return 48;
+                }
+            }
 
         }
         else{
-            dataItem = self.timeLineCells[indexPath.row];
-
+            
+            if([category_data count]>0){// || [self.groupDic[@"CATEGORY_YN"]isEqualToString:@"Y"]){
+                NSLog(@"category_data exist");
+                if(indexPath.row == 0){
+                    NSLog(@"row3 %d",row);
+                    return 48;
+                }
+            }
         }
+        NSLog(@"row4 %d",row);
+            dataItem = self.timeLineCells[row];
+
+        
         
         NSLog(@"dataItem.contentDic %@",dataItem.contentDic);
 //        NSString *imageString = dataItem.contentDic[@"image"];
@@ -3087,7 +3477,7 @@ else{
 
 return height;
 }
-
+#endif
 //-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 //{
 //    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
@@ -3220,14 +3610,20 @@ return height;
     static NSString *CellIdentifier = @"TimeLineCell";
     //    static NSString *PlaceholderCellIdentifier = @"PlaceholderCell";
 //        UIImageView *coverView;//, *bgView;
-////    UIButton *schedule, *member;
+#ifdef LempMobileNowon
+    UIButton *schedule, *member;
+#else
 //    UILabel *label;
 //    UILabel *titleLabel;
 //    UILabel *countLabel;
     UILabel *noticeLabel;
     UILabel *noticeExplainLabel;
     UIView *whiteBGView;
-    
+    UIView *categoryfilterView;
+    UIImageView *afilterImageView;
+    UILabel *afilterLabel;
+    UIView *lineview;
+#endif
     
     //    static NSString *CellIdentifier = @"TimeLineCell";
     TimeLineCell *cell = (TimeLineCell*)[tableView1 dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -3243,22 +3639,61 @@ return height;
 #else
         cell.backgroundColor = [UIColor clearColor];
 #endif
-//                coverView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, [SharedFunctions scaleFromHeight:470/2])];
-//                coverView.tag = 1000;
-//                [cell.contentView addSubview:coverView];
-//        NSLog(@"coverview frame %@",NSStringFromCGRect(coverView.frame));
-
         
-//        label = [CustomUIKit labelWithText:@"" fontSize:25 fontColor:[UIColor redColor] frame:CGRectMake(0, 0, 320, 30) numberOfLines:1 alignText:NSTextAlignmentCenter];
-//        label.tag = 5000;
-//        [cell.contentView addSubview:label];
+#ifdef LempMobileNowon
+        
+        schedule = [[UIButton alloc]initWithFrame:CGRectMake(0,0,160,48)];
+        schedule.tag = 3000;
+        [schedule setBackgroundImage:[CustomUIKit customImageNamed:@"snsleftbtn.png"] forState:UIControlStateNormal];
+        [schedule addTarget:self action:@selector(loadSchedule) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:schedule];
+        //        [schedule release];
+        schedule.hidden = YES;
+        
+        member = [[UIButton alloc]initWithFrame:CGRectMake(160,0,160,48)];
+        member.tag = 4000;
+        [member setBackgroundImage:[CustomUIKit customImageNamed:@"snsrightbtn.png"] forState:UIControlStateNormal];
+        [member addTarget:self action:@selector(loadMember:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:member];
+        //        [member release];
+        member.hidden = YES;
+#else
+        
+        categoryfilterView = [[UIView alloc]initWithFrame:CGRectMake(0,0,self.view.frame.size.width,48)];
+        categoryfilterView.backgroundColor = RGB(238, 242, 245);
+        [cell.contentView addSubview:categoryfilterView];
+        categoryfilterView.tag = 2;
+        
+        afilterImageView = [[UIImageView alloc]init];
+        afilterImageView.frame = CGRectMake(12, 9, self.view.frame.size.width - 24, 30);
+        afilterImageView.layer.borderColor = RGB(203,208,209).CGColor;
+        afilterImageView.layer.borderWidth = 1.0f;
+        afilterImageView.layer.cornerRadius = 4.0;
+        afilterImageView.clipsToBounds = YES;
+        afilterImageView.backgroundColor = [UIColor whiteColor];
+        [categoryfilterView addSubview:afilterImageView];
+        
+        
+        afilterImageView.userInteractionEnabled = YES;
+        afilterLabel = [CustomUIKit labelWithText:@"" fontSize:14 fontColor:RGB(91, 103, 114) frame:CGRectMake(10, 5, 320-30, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
+        [afilterImageView addSubview:afilterLabel];
+        
+        
+        
+        
+        UIImageView *arrowImage = [[UIImageView alloc]initWithFrame:CGRectMake(afilterImageView.frame.size.width - 10 - 12, 9, 12, 12)];
+        arrowImage.image = [UIImage imageNamed:@"selectbox_arrow.png"];
+        [afilterImageView addSubview:arrowImage];
+        
+        
+        
         whiteBGView = [[UIView alloc]init];
-        whiteBGView.frame = CGRectMake(0, 8, self.view.frame.size.width, 80-8*2);
+        whiteBGView.frame = CGRectMake(0, 10, self.view.frame.size.width, 80-10*2);
         whiteBGView.tag = 1;
         whiteBGView.backgroundColor = [UIColor whiteColor];
         [cell.contentView addSubview:whiteBGView];
         
-        noticeLabel = [[UILabel alloc]initWithFrame:CGRectMake(16, 14, self.view.frame.size.width - 32, 20)];
+        noticeLabel = [[UILabel alloc]initWithFrame:CGRectMake(16, 9, self.view.frame.size.width - 32, 20)];
         noticeLabel.textColor = RGB(32,32,32);
         noticeLabel.backgroundColor = [UIColor clearColor];
         noticeLabel.font = [UIFont boldSystemFontOfSize:15];
@@ -3273,6 +3708,13 @@ return height;
         [whiteBGView addSubview:noticeExplainLabel];
         noticeExplainLabel.tag = 2000;
         
+        
+        lineview = [[UIImageView alloc]init];
+        lineview.tag = 3000;
+        lineview.backgroundColor = RGB(215, 218, 219);
+        lineview.hidden = YES;
+        [cell.contentView addSubview:lineview];
+#endif
         
         progressLabel = [[UILabel alloc]initWithFrame:CGRectMake(50, 70, 260, 20)];
         progressLabel.text = @"타임라인을 가져오고 있습니다.";
@@ -3295,15 +3737,20 @@ return height;
 //                coverView = (UIImageView *)[cell viewWithTag:1000];
         //        lineView = (UIImageView *)[cell viewWithTag:2000];
         //        gradationView = (UIImageView *)[cell viewWithTag:1000];
-        //        schedule = (UIButton *)[cell viewWithTag:3000];
-        //        member = (UIButton *)[cell viewWithTag:4000];
+#ifdef LempMobileNowon
+                schedule = (UIButton *)[cell viewWithTag:3000];
+                member = (UIButton *)[cell viewWithTag:4000];
+#else
         noticeLabel = (UILabel *)[cell viewWithTag:1000];
-          noticeExplainLabel = (UILabel *)[cell viewWithTag:2000];
+        noticeExplainLabel = (UILabel *)[cell viewWithTag:2000];
+        whiteBGView = (UIView *)[cell viewWithTag:1];
+        categoryfilterView = (UIView *)[cell viewWithTag:2];
+        lineview = (UIView *)[cell viewWithTag:3000];
+#endif
         progressLabel = (UILabel *)[cell viewWithTag:6000];
         activity = (UIActivityIndicatorView *)[cell viewWithTag:7000];
 //        countLabel = (UILabel *)[cell viewWithTag:1];
 //        titleLabel = (UILabel *)[cell viewWithTag:2];
-        whiteBGView = (UIView *)[cell viewWithTag:1];
         
     }
     
@@ -3314,6 +3761,112 @@ return height;
     //        gradationView.hidden = YES;
     
     
+    
+#ifdef LempMobileNowon
+    if(indexPath.row == 0)
+    {
+        NSLog(@"test 0");
+        //        coverImageView.image = [UIImage imageNamed:@"flowers_bg_01.jpg"];
+        //
+        [activity stopAnimating];
+        progressLabel.hidden = YES;
+        schedule.hidden = YES;
+        member.hidden = YES;
+        //        gradationView.hidden = NO;
+        cell.backgroundView = nil;
+//        label.text = @"";
+        
+        //        cell.backgroundColor = [UIColor cle arColor];
+        //        ((UIView *)cell.backgroundView).backgroundColor = [UIColor clearColor];
+        //        cell.backgroundColor.
+    }
+    else if([self.groupDic[@"category"]isEqualToString:@"2"] && [self.groupDic[@"grouptype"]isEqualToString:@"1"] && indexPath.row == 1
+            && [timeLineCells count] > 0){
+        
+        NSLog(@"test 1");
+        progressLabel.hidden = YES;
+        schedule.hidden = NO;
+        member.hidden = NO;
+        //        gradationView.hidden = YES;
+        cell.backgroundColor = RGB(246,246,246);
+//        label.text = @"";
+        [activity stopAnimating];
+        
+    }
+    else{
+        
+        NSLog(@"test 2");
+        schedule.hidden = YES;
+        member.hidden = YES;
+        //        gradationView.hidden = YES;
+        
+        
+        if([self.timeLineCells count]==0){
+            NSLog(@"here");
+            NSLog(@"test 3");
+            
+            progressLabel.hidden = NO;
+            [activity startAnimating];
+            
+            
+            
+        }
+        else
+        {
+            NSLog(@"test 4");
+//            label.text = @"";
+            progressLabel.hidden = YES;
+            [activity stopAnimating];
+            
+            TimeLineCell *dataItem = nil;
+            if([self.groupDic[@"category"]isEqualToString:@"2"] && [self.groupDic[@"grouptype"]isEqualToString:@"1"])
+                dataItem = self.timeLineCells[indexPath.row-2];
+            else
+                dataItem = self.timeLineCells[indexPath.row-1];
+            NSLog(@"dataItem %@",dataItem);
+            
+            cell.idx = dataItem.idx;
+            
+            cell.profileImage = dataItem.profileImage;
+            cell.favorite = dataItem.favorite;
+            //            cell.deletePermission = dataItem.deletePermission;
+            cell.writeinfoType = dataItem.writeinfoType;
+            cell.personInfo = dataItem.personInfo;
+            cell.currentTime = dataItem.currentTime;
+            cell.time = dataItem.time;
+            cell.writetime = dataItem.writetime;
+            cell.contentDic = dataItem.contentDic;
+            cell.pollDic = dataItem.pollDic;
+            cell.fileArray = dataItem.fileArray;
+            //            cell.imageString = dataItem.imageString;
+            //            cell.content = dataItem.content;
+            //            [cell setImageString:dataItem.imageString content:dataItem.content wh:dataItem.where];
+            //            cell.where = dataItem.where;
+            cell.readArray = dataItem.readArray;
+            
+            //            cell.group = dataItem.group;
+            //            cell.company = dataItem.company;
+            //            cell.targetname = dataItem.targetname;
+            cell.notice = dataItem.notice;
+            cell.targetdic = dataItem.targetdic;
+            
+            cell.contentType = dataItem.contentType;
+            
+            cell.type = dataItem.type;
+            cell.categoryType = dataItem.categoryType;
+            cell.sub_category = dataItem.sub_category;//dic[@"sub_category"];
+            cell.likeCount = dataItem.likeCount;//
+            cell.likeArray = dataItem.likeArray;
+            cell.replyCount = dataItem.replyCount;
+            cell.replyArray = dataItem.replyArray;
+            
+            NSLog(@"cell.replyArray %@",cell.replyArray);
+            //ContentImage:dataItem.imageContent
+            //            cell.likeImage = dataItem.likeImage;
+        }
+    }
+
+#else
     if(indexPath.section == 0){
         
         
@@ -3324,7 +3877,8 @@ return height;
         whiteBGView.hidden = YES;
         noticeLabel.text = @"";
         noticeExplainLabel.text = @"";
-        
+        categoryfilterView.hidden = YES;
+        lineview.hidden = YES;
         return cell;
     }
     else{
@@ -3335,11 +3889,27 @@ return height;
         TimeLineCell *dataItem = nil;
         
 #ifdef BearTalk
+        
+        int row = (int)indexPath.row;
+        
         if([noticeArray count]>0)
         {
-            if(indexPath.row == 0)
-            {
+            NSLog(@"notice exist");
+            row -= 1;
+        }
+        
+        
+        if([category_data count]>0){// || [self.groupDic[@"CATEGORY_YN"]isEqualToString:@"Y"]){
+            row -= 1;
+            
+        }
+        
+        
+        if([noticeArray count]>0)
+        {
+            if(indexPath.row == 0){
                 
+                categoryfilterView.hidden = YES;
                 whiteBGView.hidden = NO;
                 noticeLabel.text = @"공지사항";
                 
@@ -3348,18 +3918,77 @@ return height;
                 noticeExplainLabel.text = decoded;
                 progressLabel.hidden = YES;
                 [activity stopAnimating];
-                
-                
+                lineview.hidden = NO;
+                lineview.frame = CGRectMake(0,80-1,whiteBGView.frame.size.width,1);
                 return cell;
             }
-            else
-                dataItem = self.timeLineCells[indexPath.row-1];
+            
+            if([category_data count]>0){// || [self.groupDic[@"CATEGORY_YN"]isEqualToString:@"Y"]){
+                NSLog(@"category_data exist");
+                if(indexPath.row == 1){
+                    
+                    categoryfilterView.hidden = NO;
+                    afilterLabel.text = categoryname;
+                    whiteBGView.hidden = YES;
+                    noticeLabel.text = @"";
+                    progressLabel.hidden = YES;
+                    [activity stopAnimating];
+                    lineview.hidden = NO;
+                    lineview.frame = CGRectMake(0,categoryfilterView.frame.size.height-1,categoryfilterView.frame.size.width,1);
+                    return cell;
+                    
+                }
+            }
             
         }
         else{
-            dataItem = self.timeLineCells[indexPath.row];
             
+            if([category_data count]>0){// || [self.groupDic[@"CATEGORY_YN"]isEqualToString:@"Y"]){
+                NSLog(@"category_data exist");
+                if(indexPath.row == 0){
+                    
+                    categoryfilterView.hidden = NO;
+                    afilterLabel.text = categoryname;
+
+                    whiteBGView.hidden = YES;
+                    noticeLabel.text = @"";
+                    progressLabel.hidden = YES;
+                    [activity stopAnimating];
+                    lineview.hidden = NO;
+                    lineview.frame = CGRectMake(0,categoryfilterView.frame.size.height-1,categoryfilterView.frame.size.width,1);
+                    return cell;
+                    
+                }
+            }
         }
+        NSLog(@"row %d",row);
+        
+        
+//        if([noticeArray count]>0)
+//        {
+//            if(indexPath.row == 0)
+//            {
+//                
+//                whiteBGView.hidden = NO;
+//                noticeLabel.text = @"공지사항";
+//                
+//                NSString *beforedecoded = [noticeArray[0][@"CONTENTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
+//                NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//                noticeExplainLabel.text = decoded;
+//                progressLabel.hidden = YES;
+//                [activity stopAnimating];
+//                
+//                
+//                return cell;
+//            }
+//            else
+//                dataItem = self.timeLineCells[indexPath.row-1];
+//            
+//        }
+//        else{
+            dataItem = self.timeLineCells[row];
+            
+//        }
 #else
             dataItem = self.timeLineCells[indexPath.row];
 #endif
@@ -3371,7 +4000,8 @@ return height;
             noticeExplainLabel.text = @"";
             progressLabel.hidden = NO;
             [activity startAnimating];
-            
+            categoryfilterView.hidden = YES;
+            lineview.hidden = YES;
             
             
         }
@@ -3385,7 +4015,8 @@ return height;
             noticeLabel.text = @"";
             noticeExplainLabel.text = @"";
             NSLog(@"dataItem %@",dataItem);
-            
+            categoryfilterView.hidden = YES;
+            lineview.hidden = YES;
             
 #ifdef BearTalk
             
@@ -3461,112 +4092,8 @@ return height;
 
         
     }
-    //#else
-    //
-    //    NSLog(@"self.groupDic %@",self.groupDic);
-    //    if(indexPath.row == 0)
-    //    {
-    //        NSLog(@"test 0");
-    //        //        coverImageView.image = [UIImage imageNamed:@"flowers_bg_01.jpg"];
-    //        //
-    //        [activity stopAnimating];
-    //        progressLabel.hidden = YES;
-    //        schedule.hidden = YES;
-    //        member.hidden = YES;
-    //        //        gradationView.hidden = NO;
-    //        cell.backgroundView = nil;
-    //        label.text = @"";
-    //
-    //        //        cell.backgroundColor = [UIColor cle arColor];
-    //        //        ((UIView *)cell.backgroundView).backgroundColor = [UIColor clearColor];
-    //        //        cell.backgroundColor.
-    //    }
-    //    else if([self.groupDic[@"category"]isEqualToString:@"2"] && [self.groupDic[@"grouptype"]isEqualToString:@"1"] && indexPath.row == 1
-    //            && [timeLineCells count] > 0){
-    //
-    //        NSLog(@"test 1");
-    //        progressLabel.hidden = YES;
-    //        schedule.hidden = NO;
-    //        member.hidden = NO;
-    //        //        gradationView.hidden = YES;
-    //        cell.backgroundColor = RGB(246,246,246);
-    //        label.text = @"";
-    //        [activity stopAnimating];
-    //
-    //    }
-    //    else{
-    //
-    //        NSLog(@"test 2");
-    //        schedule.hidden = YES;
-    //        member.hidden = YES;
-    //        //        gradationView.hidden = YES;
-    //
-    //
-    //        if([self.timeLineCells count]==0){
-    //            NSLog(@"here");
-    //            NSLog(@"test 3");
-    //
-    //            progressLabel.hidden = NO;
-    //            [activity startAnimating];
-    //
-    //
-    //
-    //        }
-    //        else
-    //        {
-    //            NSLog(@"test 4");
-    //            label.text = @"";
-    //            progressLabel.hidden = YES;
-    //            [activity stopAnimating];
-    //
-    //            TimeLineCell *dataItem = nil;
-    //            if([self.groupDic[@"category"]isEqualToString:@"2"] && [self.groupDic[@"grouptype"]isEqualToString:@"1"])
-    //                dataItem = self.timeLineCells[indexPath.row-2];
-    //            else
-    //                dataItem = self.timeLineCells[indexPath.row-1];
-    //            NSLog(@"dataItem %@",dataItem);
-    //
-    //            cell.idx = dataItem.idx;
-    //
-    //            cell.profileImage = dataItem.profileImage;
-    //            cell.favorite = dataItem.favorite;
-    //            //            cell.deletePermission = dataItem.deletePermission;
-    //            cell.writeinfoType = dataItem.writeinfoType;
-    //            cell.personInfo = dataItem.personInfo;
-    //            cell.currentTime = dataItem.currentTime;
-    //            cell.time = dataItem.time;
-    //            cell.writetime = dataItem.writetime;
-    //            cell.contentDic = dataItem.contentDic;
-    //            cell.pollDic = dataItem.pollDic;
-    //            cell.fileArray = dataItem.fileArray;
-    //            //            cell.imageString = dataItem.imageString;
-    //            //            cell.content = dataItem.content;
-    //            //            [cell setImageString:dataItem.imageString content:dataItem.content wh:dataItem.where];
-    //            //            cell.where = dataItem.where;
-    //            cell.readArray = dataItem.readArray;
-    //
-    //            //            cell.group = dataItem.group;
-    //            //            cell.company = dataItem.company;
-    //            //            cell.targetname = dataItem.targetname;
-    //            cell.notice = dataItem.notice;
-    //            cell.targetdic = dataItem.targetdic;
-    //            
-    //            cell.contentType = dataItem.contentType;
-    //            
-    //            cell.type = dataItem.type;
-    //            cell.categoryType = dataItem.categoryType;
-    //            cell.sub_category = dataItem.sub_category;//dic[@"sub_category"];
-    //            cell.likeCount = dataItem.likeCount;//
-    //            cell.likeArray = dataItem.likeArray;
-    //            cell.replyCount = dataItem.replyCount;
-    //            cell.replyArray = dataItem.replyArray;
-    //            
-    //            NSLog(@"cell.replyArray %@",cell.replyArray);
-    //            //ContentImage:dataItem.imageContent
-    //            //            cell.likeImage = dataItem.likeImage;
-    //        }
-    //    }
-    //#endif
+ 
+#endif
     return cell;
 }
 
@@ -3677,15 +4204,15 @@ return height;
 
 - (void)setGroup:(NSDictionary *)dic regi:(NSString *)yn{
     
-    if(groupnum){
+    if(self.groupnum){
 //        [groupnum release];
-        groupnum = nil;
+        self.groupnum = nil;
     }
     self.groupnum = [[NSString alloc]initWithFormat:@"%@",dic[@"groupnumber"]];
     
-    if(groupDic){
+    if(self.groupDic){
 //        [groupDic release];
-        groupDic = nil;
+        self.groupDic = nil;
     }
     self.groupDic = [[NSDictionary alloc]initWithDictionary:dic];
     NSLog(@"groupDic %@",self.groupDic);
@@ -3861,6 +4388,28 @@ return height;
 #ifdef BearTalk
     
     
+    if(category_data){
+        //            [category_data release];
+        category_data = nil;
+    }
+    
+    category_data = [[NSMutableArray alloc]init];
+    NSLog(@"------1 category_data %@",category_data);
+    
+    if(self.groupDic[@"SNS_CATEGORY"]!=nil && [self.groupDic[@"SNS_CATEGORY"]isKindOfClass:[NSArray class]]){
+        if(categoryname){
+            categoryname = nil;
+        }
+        categoryname = [[NSString alloc]initWithFormat:@"%@",@"전체"];
+        
+        for(NSDictionary *dic in self.groupDic[@"SNS_CATEGORY"]){
+            if([dic[@"USE_YN"]isEqualToString:@"Y"])
+                [category_data addObject:dic];
+        }
+    }
+    NSLog(@"category_data %@",category_data);
+    NSLog(@"------2 category_data %@",category_data);
+    [myTable reloadData];
     
     
     if(stack){
@@ -3970,14 +4519,14 @@ return height;
         
     }
     else if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"C"]){
-        BOOL excluded = NO;
+        BOOL included = NO;
         for(NSString *uid in self.groupDic[@"SNS_ADMIN_UID"]){
             if([uid isEqualToString:[ResourceLoader sharedInstance].myUID]){
-                excluded = YES;
+                included = YES;
                 break;
             }
         }
-        if(excluded == YES){
+        if(included == YES){
             stack.hidden = NO;
         }
         else{
@@ -3999,14 +4548,14 @@ return height;
 
             }
             else{
-            BOOL excluded = NO;
+            BOOL included = NO;
             for(NSString *uid in self.groupDic[@"SNS_ADMIN_UID"]){
                 if([uid isEqualToString:[ResourceLoader sharedInstance].myUID]){
-                    excluded = YES;
+                    included = YES;
                     break;
                 }
             }
-            if(excluded == YES){
+            if(included == YES){
                 stack.hidden = NO;
             }
             else{
@@ -4156,9 +4705,10 @@ return height;
 }
 - (void)settingGroupDic:(NSDictionary *)dic{
     
-    if(groupDic){
+    NSLog(@"settingGroupDic %@",dic);
+    if(self.groupDic){
 //        [groupDic release];
-        groupDic = nil;
+        self.groupDic = nil;
     }
     self.groupDic = [[NSDictionary alloc]initWithDictionary:dic];
     
@@ -4245,7 +4795,14 @@ return height;
 //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/group/groupcategory.lemp",[SharedAppDelegate readPlist:@"was"]];
+    NSString *urlString;
+#ifdef BearTalk
+    
+    urlString = [NSString stringWithFormat:@"%@/api/sns/category",BearTalkBaseUrl];
+#else
+    
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/timeline/group/groupcategory.lemp",[SharedAppDelegate readPlist:@"was"]];
+#endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -4255,16 +4812,21 @@ return height;
     
     
     
-    NSDictionary *param;
-    param = [NSDictionary dictionaryWithObjectsAndKeys:
+    NSDictionary *parameters;
+#ifdef BearTalk
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+             self.groupnum,@"group",nil];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parameters:parameters error:nil];
+#else
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                   [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",
                   [ResourceLoader sharedInstance].myUID,@"uid",
                   self.groupnum,@"group",nil];
     
-    NSLog(@"parameters %@",param);
+    NSLog(@"parameters %@",parameters);
     
-    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parametersJson:param key:@"param"];
-//    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/timeline/group/groupcategory.lemp" parametersJson:parameters key:@"param"];
+    NSMutableURLRequest *request = [client.requestSerializer requestWithMethod:@"POST" URLString:[baseUrl absoluteString] parametersJson:parameters key:@"param"];
+#endif
     
     
     NSLog(@"timeout: %f", request.timeoutInterval);
@@ -4272,6 +4834,33 @@ return height;
         
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+#ifdef BearTalk
+        
+        
+        if(category_data){
+            //            [category_data release];
+            category_data = nil;
+        }
+        
+        category_data = [[NSMutableArray alloc]init];
+        NSLog(@"------3 category_data %@",category_data);
+
+        
+        if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString]count]>0){
+            if(categoryname){
+                categoryname = nil;
+            }
+            categoryname = [[NSString alloc]initWithFormat:@"%@",@"전체"];
+            
+            for(NSDictionary *dic in [operation.responseString objectFromJSONString]){
+                if([dic[@"USE_YN"]isEqualToString:@"Y"])
+                   [category_data addObject:dic];
+            }
+        }
+        NSLog(@"------4 category_data %@",category_data);
+        [myTable reloadData];
+#else
         //        [MBProgressHUD hideHUDForView:self.view animated:YES];
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
         NSLog(@"ResultDic %@",resultDic);
@@ -4325,6 +4914,8 @@ return height;
             NSLog(@"isSuccess NOT 0, BUT %@",isSuccess);
         }
         
+#endif
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -4367,7 +4958,10 @@ return height;
         
         
     
-    NSLog(@"getTimeline %@",idx);
+        NSLog(@"getTimeline %@",idx);
+        NSLog(@"categoryname %@",categoryname);
+        NSLog(@"target %@ t %@ num %@",target,t,num);
+        NSLog(@"didRequest1 %@",didRequest?@"YES":@"NO");
     
     if(didRequest){
         if ([idx length] > 0) {
@@ -4380,13 +4974,14 @@ return height;
         return;
     }
     
-    didRequest = YES;
+        didRequest = YES;
+        NSLog(@"didReques2 %@",didRequest?@"YES":@"NO");
     
     if(greenCode){
 //        [greenCode release];
         greenCode = nil;
     }
-    greenCode = [[NSString alloc]initWithString:@""];
+    greenCode = [[NSString alloc]init];
     
     
     [self checkSocialTabNew];
@@ -4460,12 +5055,20 @@ return height;
         // bookmark
         
         [parameters setObject:@"bookmark" forKey:@"bookmark"];
+ 
     }
     else{
         [parameters setObject:num forKey:@"snskey"];
     }
     
-  
+        NSLog(@"categoryname %@",categoryname);
+        if(categoryname != nil && [categoryname length]>0 && ![categoryname isEqualToString:@"전체"]){
+            for(NSDictionary *dic in category_data){
+                if([categoryname isEqualToString:dic[@"CATEGORY_NAME"]])
+            [parameters setObject:dic[@"CATEGORY_KEY"] forKey:@"category"];
+            }
+        }
+        
     
         
 #else
@@ -4521,6 +5124,7 @@ return height;
         
         didRequest = NO;
         refreshing = NO;
+        NSLog(@"didReques3 %@",didRequest?@"YES":@"NO");
         
         if ([idx length] > 0) {
             [myTable.infiniteScrollingView stopAnimating];
@@ -4539,6 +5143,7 @@ return height;
         
         NSLog(@"ResultDic %@",[operation.responseString objectFromJSONString]);
         if([[operation.responseString objectFromJSONString]isKindOfClass:[NSArray class]] && [[operation.responseString objectFromJSONString] count]>0){
+            
         NSLog(@"self.category %@",self.category);
             
             if(![self.category isEqualToString:@"2"] && ![self.category isEqualToString:@"1"])
@@ -4640,9 +5245,19 @@ return height;
             NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:idx,@"idx",parsingArray,@"array",nil];
             [self performSelectorOnMainThread:@selector(handleContents:) withObject:dic waitUntilDone:NO];
             
-            if([self.groupDic[@"category"]isEqualToString:@"3"])
-                [self getGroupcategory];
+//            if([self.groupDic[@"category"]isEqualToString:@"3"])
+//                [self getGroupcategory];
             
+        }
+        else{
+            
+            if(idx != nil && [idx length]>5){
+            }
+            else{
+            if(self.timeLineCells)
+                self.timeLineCells = nil;
+                [myTable reloadData];
+            }
         }
         
         
@@ -4741,6 +5356,7 @@ return height;
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         didRequest = NO;
         refreshing = NO;
+        NSLog(@"didReques4 %@",didRequest?@"YES":@"NO");
         //        [activity stopAnimating];
         //		[loadMoreIndicator stopAnimating];
         //        progressLabel.hidden = YES;
@@ -4805,6 +5421,7 @@ return height;
     }
     
     didRequest = YES;
+    NSLog(@"didRequest5 %@",didRequest?@"YES":@"NO");
     
     
     //    [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
@@ -4866,6 +5483,7 @@ return height;
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         didRequest = NO;
         refreshing = NO;
+        NSLog(@"didRequest6 %@",didRequest?@"YES":@"NO");
         
         if ([idx length] > 0) {
             [myTable.infiniteScrollingView stopAnimating];
@@ -4949,6 +5567,7 @@ return height;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         didRequest = NO;
         refreshing = NO;
+        NSLog(@"didRequest7 %@",didRequest?@"YES":@"NO");
         //        [activity stopAnimating];
         //		[loadMoreIndicator stopAnimating];
         //        progressLabel.hidden = YES;
@@ -5004,6 +5623,7 @@ return height;
     }
     
     didRequest = YES;
+    NSLog(@"didRequest8 %@",didRequest?@"YES":@"NO");
     
     
     //    [MBProgressHUD showHUDAddedTo:self.view label:nil animated:YES];
@@ -5068,6 +5688,7 @@ return height;
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         didRequest = NO;
         refreshing = NO;
+        NSLog(@"didRequest9 %@",didRequest?@"YES":@"NO");
         
         if ([idx length] > 0) {
             [myTable.infiniteScrollingView stopAnimating];
@@ -5150,6 +5771,7 @@ return height;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         didRequest = NO;
         refreshing = NO;
+        NSLog(@"didRequest10 %@",didRequest?@"YES":@"NO");
         //        [activity stopAnimating];
         //		[loadMoreIndicator stopAnimating];
         //        progressLabel.hidden = YES;
@@ -5185,6 +5807,61 @@ return height;
     NSLog(@"didSelectRowAtIndexPath %d %d",indexPath.section,indexPath.row);
 
 
+#ifdef LempMobileNowon
+
+    if(indexPath.row == 0)
+        return;
+
+    
+    if(didRequest)
+        return;
+    
+    
+    didRequest = YES;
+    NSLog(@"didRequest11 %@",didRequest?@"YES":@"NO");
+    NSLog(@"self.category %@",self.category);
+    DetailViewController *contentsViewCon = [[DetailViewController alloc] init];//WithViewCon:self]autorelease];
+    contentsViewCon.parentViewCon = self;
+
+    if([self.groupDic[@"category"]isEqualToString:@"2"] && [self.groupDic[@"grouptype"]isEqualToString:@"1"]){
+        if(indexPath.row == 1)
+            return;
+        
+        contentsViewCon.contentsData = self.timeLineCells[indexPath.row-2];
+    }
+    else{
+        contentsViewCon.contentsData = self.timeLineCells[indexPath.row-1];
+        
+    }
+    
+    
+    
+    
+    //    [contentsViewCon setPush];
+    NSLog(@"contentsviewcon.contentsdata %@",contentsViewCon.contentsData);
+    NSLog(@"contentsViewCon.contentsData.type %@",contentsViewCon.contentsData.type);
+    if([contentsViewCon.contentsData.type isEqualToString:@"6"] || [contentsViewCon.contentsData.type isEqualToString:@"7"]) {
+        //        [contentsViewCon release];
+        return;
+    }
+    
+    
+    //    if([contentsViewCon.contentsData.contentType isEqualToString:@"14"]){
+    //        if(![contentsViewCon.contentsData.profileImage isEqualToString:[ResourceLoader sharedInstance].myUID]){
+    //            return;
+    //        }
+    //    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if(![self.navigationController.topViewController isKindOfClass:[contentsViewCon class]]){
+            contentsViewCon.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:contentsViewCon animated:YES];
+        }
+    });
+    //    [contentsViewCon release];
+    
+    
+#else
     if(indexPath.section == 0)
         return;
 
@@ -5194,6 +5871,7 @@ return height;
     
     
     didRequest = YES;
+    NSLog(@"didRequest12 %@",didRequest?@"YES":@"NO");
     NSLog(@"self.category %@",self.category);
     DetailViewController *contentsViewCon = [[DetailViewController alloc] init];//WithViewCon:self]autorelease];
     contentsViewCon.parentViewCon = self;
@@ -5202,12 +5880,24 @@ return height;
     contentsViewCon.contentsData = nil;
     
 #ifdef BearTalk
+    
+    
+    int row = (int)indexPath.row;
+    
+    if([category_data count]>0){// || [self.groupDic[@"CATEGORY_YN"]isEqualToString:@"Y"]){
+             row -= 1;
+            
+        }
+        
     if([noticeArray count]>0)
     {
-        NSLog(@"noticearray count > 0");
-        if(indexPath.row == 0)
-        {
-         
+        row -= 1;
+    }
+    
+    if([noticeArray count]>0)
+    {
+        NSLog(@"notice exist");
+            if(indexPath.row == 0){
             NSDictionary *dic = noticeArray[0];
             NSLog(@"dic %@",dic);
             TimeLineCell *cellData = [[TimeLineCell alloc] init];
@@ -5216,62 +5906,61 @@ return height;
             
             cellData.idx = dic[@"CONTS_KEY"];
             cellData.writeinfoType = @"1";//dic[@"writeinfotype"]; // ##
-//
-//            
-//            NSString *dateValue = [NSString stringWithFormat:@"%lli",[dic[@"WRITE_DATE"]longLongValue]/1000];
-//            cellData.currentTime = dateValue;
-//            cellData.time = cellData.currentTime;
-//            cellData.writetime = cellData.currentTime;
-//            
-//            lastInteger = [dic[@"WRITE_DATE"] longLongValue];
-//            NSLog(@"lastInteger %lli",lastInteger);
-//            
-//            cellData.profileImage = dic[@"WRITE_UID"]!=nil?dic[@"WRITE_UID"]:@"";
-//            
-//            cellData.personInfo = nil;//[dic[@"writeinfo"]objectFromJSONString];// ##
-//            BOOL myFav = NO;
-//            NSLog(@"cellData.idx %@",dic[@"BOOKMARK_MEMBER"]);
-//            for(NSString *auid in dic[@"BOOKMARK_MEMBER"]){
-//                if([auid isEqualToString:[ResourceLoader sharedInstance].myUID]){
-//                    myFav = YES;
-//                }
-//            }
-//            cellData.favorite = (myFav == YES)?@"1":@"0";
-//            cellData.readArray = dic[@"READ_MEMBER"];
-//                                cellData.notice = @"0";//dic[@"notice"];
-//            cellData.targetdic = nil;//dic[@"target"];
-//            
-//            //                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
-            //            cellData.contentDic = nil;//contentDic;
+            
             NSString *beforedecoded = [dic[@"CONTENTS"] stringByReplacingOccurrencesOfString:@"+" withString:@"%20"];
             NSString *decoded = [beforedecoded stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             NSLog(@"decoded %@",decoded);
             cellData.content = decoded;
-//            cellData.imageArray = dic[@"IMAGES"];
-//            cellData.pollDic = dic[@"POLL"];//[@"poll_data"] objectFromJSONString];
-//            cellData.pollCntArray = dic[@"POLL_RESULT"];
-//            cellData.fileArray = dic[@"FILES"];//[@"attachedfile"] objectFromJSONString];
             cellData.contentType = @"1";//dic[@"contenttype"];
-//            cellData.type = @"1";//dic[@"type"];
-//            cellData.categoryType = self.category;
-//            cellData.sub_category = nil;//dic[@"sub_category"];
-//            cellData.likeCount = [dic[@"LIKE_MEMBER"]count];
-//            cellData.likeArray = dic[@"LIKE_MEMBER"];
-//            cellData.replyCount = [dic[@"REPLY"]count];
-//            cellData.replyArray = dic[@"REPLY"];
             
-    
+            
             contentsViewCon.contentsData = cellData;
             
+            if([contentsViewCon.contentsData.type isEqualToString:@"6"] || [contentsViewCon.contentsData.type isEqualToString:@"7"]) {
+                
+                return;
+            }
+            
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(![self.navigationController.topViewController isKindOfClass:[contentsViewCon class]]){
+                    contentsViewCon.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:contentsViewCon animated:YES];
+                    
+                }
+            });
+                return;
+            }
+            
+        if([category_data count]>0){// || [self.groupDic[@"CATEGORY_YN"]isEqualToString:@"Y"]){
+            NSLog(@"category_data exist");
+                if(indexPath.row == 1){
+                    [self showFilterActionSheet];
+                    return;
+                }
+            }
+            
         }
-        else
-            contentsViewCon.contentsData = self.timeLineCells[indexPath.row-1];
+        else{
+            NSLog(@"notice X");
+            if([category_data count]>0){// || [self.groupDic[@"CATEGORY_YN"]isEqualToString:@"Y"]){
+                NSLog(@"category_data exist");
+                if(indexPath.row == 0){
+                    [self showFilterActionSheet];
+                    return;
+                }
+            }
+            
+        }
+    NSLog(@"row %d",row);
+    contentsViewCon.contentsData = self.timeLineCells[row];
+  
+    
+    
+    
+    
         
-    }
-    else{
-        contentsViewCon.contentsData = self.timeLineCells[indexPath.row];
-        
-    }
+    
 #else
     contentsViewCon.contentsData = self.timeLineCells[indexPath.row];
     
@@ -5311,6 +6000,8 @@ return height;
     });
 //    [contentsViewCon release];
     
+#endif
+    
 }
 
 - (void)goReply:(NSString *)idx withKeyboard:(BOOL)popKeyboard {
@@ -5320,6 +6011,7 @@ return height;
     
     
     didRequest = YES;
+    NSLog(@"didRequest13 %@",didRequest?@"YES":@"NO");
     for(TimeLineCell *cell in self.timeLineCells){
         if([cell.idx isEqualToString:idx]){
             
@@ -5957,6 +6649,7 @@ return height;
     if(didRequest)
         return;
     didRequest = YES;
+    NSLog(@"didRequest14 %@",didRequest?@"YES":@"NO");
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     
@@ -6008,6 +6701,7 @@ return height;
     
     AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         didRequest = NO;
+        NSLog(@"didRequest15 %@",didRequest?@"YES":@"NO");
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         
         
@@ -6276,6 +6970,7 @@ return height;
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         didRequest = NO;
+        NSLog(@"didRequest16 %@",didRequest?@"YES":@"NO");
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
         //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"댓글을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
@@ -6324,12 +7019,24 @@ return height;
     
     
 }
+    
+    - (void)initCategory {
+        
+        if(category_data){
+            category_data = nil;
+        }
+        NSLog(@"------5category_data %@",category_data);
+    }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
     NSLog(@"viewwillappear");
+    
+    
 #ifdef BearTalk
+    
+    
     
  //   if(self.isMovingToParentViewController == YES){
 
@@ -6368,6 +7075,7 @@ return height;
     
     refreshing = NO;
     didRequest = NO;
+    NSLog(@"didRequest17 %@",didRequest?@"YES":@"NO");
     NSLog(@"viewWillAppear %f",self.tabBarController.tabBar.frame.size.height);
     NSLog(@"scrollView.contentOffset.y %.0f",myTable.contentOffset.y);
     NSLog(@"%@",NSStringFromCGRect(self.view.frame));
@@ -6461,6 +7169,8 @@ return height;
         writeButton.hidden = YES;
     }
     }
+#elif LempMobileNowon
+    
 #else
     
     
@@ -6647,6 +7357,7 @@ return height;
 #endif
     [stack closeStack];
     didRequest = NO;
+    NSLog(@"didRequest18 %@",didRequest?@"YES":@"NO");
     
     NSLog(@"viewWillDisappear");
     NSLog(@"scrollView.contentOffset.y %.0f",myTable.contentOffset.y);

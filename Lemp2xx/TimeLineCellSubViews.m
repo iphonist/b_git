@@ -894,7 +894,7 @@
     [positionLabel setText:[NSString stringWithFormat:@"%@ | %@",adic[@"grade2"],adic[@"team"]]];
 
     
-    [SharedAppDelegate.root getProfileImageWithURL:self.profileImage ifNil:@"profile_photo.png" view:profileImageView scale:24];
+    [SharedAppDelegate.root getProfileImageWithURL:self.profileImage ifNil:@"profile_photo.png" view:profileImageView scale:0];
     
     
     
@@ -976,15 +976,13 @@
     else if([self.writeinfoType isEqualToString:@"1"]){
         [nameLabel setText:dic[@"name"]];
         [positionLabel setText:dic[@"position"]];
-#ifdef BearTalk
-        [positionLabel setText:[NSString stringWithFormat:@"%@ | %@",dic[@"position"],dic[@"deptname"]]];
-#elif Batong
+
+        [SharedAppDelegate.root getProfileImageWithURL:self.profileImage ifNil:@"profile_photo.png" view:profileImageView scale:24];
         if([dic[@"position"]length]>0)
         [positionLabel setText:[NSString stringWithFormat:@"%@ | %@",dic[@"deptname"],dic[@"position"]]];
         else
             [positionLabel setText:dic[@"deptname"]];
-#endif
-        [SharedAppDelegate.root getProfileImageWithURL:self.profileImage ifNil:@"profile_photo.png" view:profileImageView scale:24];
+
         
     
         
@@ -1017,6 +1015,7 @@
     }
     
 #endif
+    
     
 #ifdef BearTalk
     UIImageView *roundingView2;
@@ -1529,7 +1528,7 @@
 
                 likeLabel.backgroundColor = RGB(252, 179, 66);
                 
-    #ifdef LempMobile
+    #if defined(LempMobile) || defined(LempMobileNowon)
                 likeLabel.backgroundColor = RGB(39, 128, 248);
     #endif
                 
