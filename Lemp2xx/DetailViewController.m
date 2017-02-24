@@ -6431,7 +6431,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         
                         UIButton *checkBtn = [[UIButton alloc]initWithFrame:CGRectMake(16,14,24,24)];
                         checkBtn.adjustsImageWhenHighlighted = NO;
-
+                        checkBtn.tag = 1;
                         checkBtn.titleLabel.text = number;
                         checkBtn.layer.borderWidth = 1.0f;
                         checkBtn.backgroundColor =  [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
@@ -6534,9 +6534,52 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         [optLabel setTextColor:RGB(51, 51, 51)];//RGB(142,136,134)];
                         [optionView addSubview:optLabel];
                         optLabel.text = opt;
-                
                         
+                        optLabel.userInteractionEnabled = YES;
                         
+                        UIButton *transButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,optLabel.frame.size.width,optLabel.frame.size.height)];
+                        transButton.tag = 2;
+//                        transButton.backgroundColor = [UIColor blueColor];
+                        transButton.adjustsImageWhenHighlighted = NO;
+                        transButton.titleLabel.text = number;
+                        [optLabel addSubview:transButton];
+                        
+                        if([pollDic[@"MULTI_YN"]isEqualToString:@"Y"]){
+                            NSLog(@"is_multi yes");
+                            [transButton addTarget:self action:@selector(cmdMultiCheck:) forControlEvents:UIControlEventTouchUpInside];
+                            
+                            if(myVote == YES){
+                                transButton.selected = YES;
+                                [answerArray addObject:number];
+                                [myAnswerArray addObject:number];
+                                
+                            }
+                            else{
+                                
+                                transButton.selected = NO;
+                                
+                            }
+                            
+                            
+                        }
+                        else{
+                            NSLog(@"is_multi no");
+                            [transButton addTarget:self action:@selector(cmdSingularCheck:) forControlEvents:UIControlEventTouchUpInside];
+                            
+                            
+                            if(myVote == YES){
+                                transButton.selected = YES;
+                                [answerArray addObject:number];
+                                [myAnswerArray addObject:number];
+                            }
+                            else{
+                                transButton.selected = NO;
+                            }
+                            
+                            
+                            [btnArray addObject:transButton];
+                            
+                        }
 
                         
                         optionView.frame = CGRectMake(0,optViewHeight,pollView.frame.size.width,14+optHeight+14+1);
@@ -12332,16 +12375,20 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 NSLog(@"btn same");
                 if(btn.selected == YES)
                 {
+                    if(button.tag == 1){
                     btn.backgroundColor = RGB(249, 249, 249);
                     btn.layer.borderColor = [RGB(223,223,223)CGColor];
+                    }
                     btn.selected = NO;
                     
                     [answerArray removeObject:button.titleLabel.text];
                 }
                 else
                 {
+                    if(button.tag == 1){
                     btn.backgroundColor = BearTalkColor;
                     btn.layer.borderColor = [BearTalkColor CGColor];
+                    }
                     btn.selected = YES;
                     [answerArray addObject:button.titleLabel.text];
                     
@@ -12350,8 +12397,10 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
             }
             else{
+                if(button.tag == 1){
                 btn.backgroundColor = RGB(249, 249, 249);
                 btn.layer.borderColor = [RGB(223,223,223)CGColor];
+                }
                 NSLog(@"else");
                 btn.selected = NO;
                 
@@ -12415,16 +12464,20 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     if(button.selected == YES)
     {
         button.selected = NO;
+        if(button.tag == 1){
         button.backgroundColor = RGB(249,249,249);
         button.layer.borderColor = [RGB(223,223,223)CGColor];
+        }
         [answerArray removeObject:button.titleLabel.text];
     }
     
     else
     {
         button.selected = YES;
+        if(button.tag == 1){
         button.backgroundColor = BearTalkColor;
         button.layer.borderColor = [BearTalkColor CGColor];
+        }
         [answerArray addObject:button.titleLabel.text];
         
     }
