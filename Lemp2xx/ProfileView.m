@@ -3104,6 +3104,26 @@
     if([dic[@"newfield4"]count]>0){
         NSString *positionstring = @"";
         
+        if([dic[@"grade2"]length]>0)
+            positionstring = [positionstring stringByAppendingFormat:@" %@ |",dic[@"grade2"]];
+        
+        NSLog(@"positionstring1 %@",positionstring);
+        if([dic[@"team"]length]>0)
+            positionstring = [positionstring stringByAppendingFormat:@" %@ |",dic[@"team"]];
+        
+        NSLog(@"positionstring2 %@",positionstring);
+        if([dic[@"newfield7"]length]>0)
+            positionstring = [positionstring stringByAppendingFormat:@" %@ |",dic[@"newfield7"]];
+        
+        
+        NSLog(@"positionstring3 %@",positionstring);
+        if([positionstring hasSuffix:@"|"]){
+            positionstring = [positionstring substringWithRange:NSMakeRange(0,[positionstring length]-1)];
+        }
+        NSLog(@"positionstring4 %@",positionstring);
+        
+        positionstring = [positionstring stringByAppendingString:@"\n"];
+        
         for(NSDictionary *pdic in dic[@"newfield4"]){
             
             
