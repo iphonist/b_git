@@ -681,13 +681,12 @@
         
         
 #ifdef BearTalk
-        profileView.frame = CGRectMake(16, 10, 42, 42);
-        disableView.frame = CGRectMake(0, 0, profileView.frame.size.width, profileView.frame.size.height);
-        roundingView.frame = CGRectMake(0,0,profileView.frame.size.width,profileView.frame.size.height);
-      
         
-        checkView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(profileView.frame)-20, CGRectGetMaxY(profileView.frame)-20, 20, 20)];
-        checkView.tag = 5;
+        
+        
+        
+        checkView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(profileView.frame)-20/2, CGRectGetMaxY(profileView.frame)-20/2, 20, 20)];
+        checkView.tag = 51;
         checkView.layer.borderWidth = 1.0;
         checkView.layer.borderColor = [RGB(223, 223, 223)CGColor];
         checkView.layer.cornerRadius = checkView.frame.size.width/2;
@@ -695,11 +694,14 @@
         [cell.contentView addSubview:checkView];
         
         checkAddView = [[UIImageView alloc]init];
-        checkAddView.tag = 51;
+        checkAddView.tag = 52;
         checkAddView.image = [CustomUIKit customImageNamed:@"btn_bookmark_on.png"];
-        checkAddView.frame = CGRectMake(checkView.frame.size.width/2-26/2, checkView.frame.size.height/2-26/2-1, 26, 26);
+        checkAddView.frame = CGRectMake(checkView.frame.size.width/2-26/2, checkView.frame.size.height/2-26/2, 26, 26);
         checkAddView.backgroundColor = [UIColor clearColor];
         [checkView addSubview:checkAddView];
+        
+        
+        
         
 #else
         
@@ -730,8 +732,8 @@
         bgView = (UIImageView *)[cell viewWithTag:5];
 //        department = (UILabel *)[cell viewWithTag:7];
 #ifdef BearTalk
-        checkView = (UIImageView *)[cell viewWithTag:5];
-        checkAddView = (UIImageView *)[cell viewWithTag:51];
+        checkView = (UIImageView *)[cell viewWithTag:51];
+        checkAddView = (UIImageView *)[cell viewWithTag:52];
         
 
 #else
@@ -810,7 +812,13 @@
         team.frame = CGRectMake(name.frame.origin.x, CGRectGetMaxY(name.frame), 120, 19);
         team.textColor = RGB(151,152,157);
         
-
+        
+        profileView.frame = CGRectMake(16, 10, 42, 42);
+        disableView.frame = CGRectMake(0, 0, profileView.frame.size.width, profileView.frame.size.height);
+        roundingView.frame = CGRectMake(0,0,profileView.frame.size.width,profileView.frame.size.height);
+        
+        checkView.frame = CGRectMake(CGRectGetMaxX(profileView.frame)-20, CGRectGetMaxY(profileView.frame)-20, 20, 20);
+        checkAddView.frame = CGRectMake(checkView.frame.size.width/2-26/2, checkView.frame.size.height/2-26/2, 26, 26);
 #else
         [[invite layer] setValue:dic[@"cellphone"] forKey:@"cellphone"];
         invite.titleLabel.text = dic[@"uniqueid"];
@@ -925,6 +933,7 @@
         
 #ifdef BearTalk
         
+        
         if([dic[@"favorite"]isEqualToString:@"0"]){
             
             checkView.hidden = YES;
@@ -959,6 +968,8 @@ if([leave_type isEqualToString:@"출산"])
             
             holiday.image = nil;
         }
+        
+        
     }
     else{
         
