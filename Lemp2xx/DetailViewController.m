@@ -2351,7 +2351,10 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     //		[nameLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
     [readLabel setBackgroundColor:[UIColor clearColor]];
     //	[readLabel setText:@"0명 읽음"];
+#ifdef BearTalk
+#else
     [myTable addSubview:readLabel];
+#endif
 //    [readLabel release];
     
     favButton = [[UIButton alloc]initWithFrame:CGRectMake(320-36-10, 7, 36, 36)];
@@ -3742,6 +3745,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     
 #ifdef BearTalk
                     CGSize cSize = [SharedFunctions textViewSizeForString:content font:[UIFont systemFontOfSize:15] width:self.view.frame.size.width - 16*2 - 15*2 realZeroInsets:NO];
+                    NSLog(@"categorycSize!!!! %@",NSStringFromCGSize(cSize));
                     height += 18+cSize.height + 18;
 #else
                     height += 10; // gap
@@ -3776,6 +3780,9 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 #ifdef BearTalk
                 
                 NSString *content = [categoryname length]>0?[NSString stringWithFormat:@"[%@]\n\n%@",categoryname,contentsData.content]:contentsData.content;
+                
+          
+                
                 NSString *where = @"";
                 
 #else
@@ -3788,6 +3795,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                 //                CGSize cSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(295, FLT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
                 CGSize cSize = [SharedFunctions textViewSizeForString:content font:[UIFont systemFontOfSize:fontSize] width:self.view.frame.size.width - 32 realZeroInsets:NO];
+                NSLog(@"categorycSize!!!! %@",NSStringFromCGSize(cSize));
                 
                 
                 //                NSLog(@"else content %@",content);
@@ -5074,9 +5082,13 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 #endif
         timeLabel = [[UILabel alloc] init];//WithFrame:CGRectMake(whLabel.frame.origin.x, contentImageView.frame.origin.y + contentImageView.frame.size.height + 6, whLabel.frame.size.width, 13)];//(3, 42, 38, 13)];
         timeLabel.frame = CGRectMake(nameLabel.frame.origin.x, CGRectGetMaxY(nameLabel.frame), 300 - nameLabel.frame.origin.x - 40, 20);
-#ifdef Beartalk
-        timeLabel.frame = CGRectMake(nameLabel.frame.origin.x, CGRectGetMaxY(nameLabel.frame) + 6, 100, 14);
+        NSLog(@"timeLabel1 %@",timeLabel);
+#ifdef BearTalk
+        timeLabel.frame = CGRectMake(nameLabel.frame.origin.x, CGRectGetMaxY(nameLabel.frame) + 6, 130, 14);
         readLabel.frame = CGRectMake(CGRectGetMaxX(timeLabel.frame)+5, timeLabel.frame.origin.y, 100, timeLabel.frame.size.height);
+        
+        [defaultView addSubview:readLabel];
+        NSLog(@"timeLabel2 %@",timeLabel);
         
 #endif
         [timeLabel setText:[NSString formattingDate:contentsData.writetime withFormat:@"yy/MM/dd a h:mm"]];//dateString];
@@ -6130,25 +6142,63 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                 
                 
-                NSString *content;
                 NSString *where;
                 NSString *imageString;
 #ifdef BearTalk
+//                contentsTextView.backgroundColor = [UIColor blueColor];
+                CGSize cSize;;
+                if([categoryname length]>0){
+                    
+                    
+                NSString *msg = [NSString stringWithFormat:@"[%@]\n\n%@",categoryname,contentsData.content];
+                    
+                NSArray *texts=[NSArray arrayWithObjects:[NSString stringWithFormat:@"[%@]\n\n",categoryname],[NSString stringWithFormat:@"%@",contentsData.content],nil];
                 
-                content = [categoryname length]>0?[NSString stringWithFormat:@"[%@]\n\n%@",categoryname,contentsData.content]:contentsData.content;
+                NSMutableAttributedString *content = [[NSMutableAttributedString alloc]initWithString:msg];
+                
+                    NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"];
+                    
+                    [content addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:[msg rangeOfString:texts[0]]];
+                    [content addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:[msg rangeOfString:texts[1]]];
+                    [content addAttribute:NSForegroundColorAttributeName
+                                    value:[NSKeyedUnarchiver unarchiveObjectWithData:colorData]
+                                    range:[msg rangeOfString:texts[0]]];
+                    
+                    [content addAttribute:NSForegroundColorAttributeName
+                                    value:RGB(54, 54, 55)
+                                    range:[msg rangeOfString:texts[1]]];
+                
+                    [contentsTextView setAttributedText:content];
+                    NSLog(@"content!!!! %@",content);
+//                    cSize = [SharedFunctions textViewSizeForString:content font:[UIFont systemFontOfSize:fontSize] width:self.view.frame.size.width - 32 realZeroInsets:NO];
+                    
+                    
+                    cSize = [SharedFunctions textViewSizeForAttributeString:content font:[UIFont systemFontOfSize:fontSize] width:self.view.frame.size.width - 32 realZeroInsets:NO];
+
+                }
+                else{
+                    NSString *content = contentsData.content;
+                    
+                    [contentsTextView setText:content];
+                    
+                    NSLog(@"content!!!! %@",content);
+                    cSize = [SharedFunctions textViewSizeForString:content font:[UIFont systemFontOfSize:fontSize] width:self.view.frame.size.width - 32 realZeroInsets:NO];
+                }
+                NSLog(@"categorycSize!!!! %@",NSStringFromCGSize(cSize));
                 where = @"";
                 imageString = @"";
 #else
                 
+                 NSString *content;
                 content = contentsData.contentDic[@"msg"];
                 where = contentsData.contentDic[@"jlocation"];
                 imageString = contentsData.contentDic[@"image"];
+                [contentsTextView setText:content];
+                CGSize cSize = [SharedFunctions textViewSizeForString:content font:[UIFont systemFontOfSize:fontSize] width:self.view.frame.size.width - 32 realZeroInsets:NO];
 #endif
                 NSDictionary *pollDic = contentsData.pollDic;
                 
-                [contentsTextView setText:content];
                 
-                CGSize cSize = [SharedFunctions textViewSizeForString:content font:[UIFont systemFontOfSize:fontSize] width:self.view.frame.size.width - 32 realZeroInsets:NO];
                 
                 contentsTextView.frame = CGRectMake(16, 0, self.view.frame.size.width - 32, cSize.height);
                 
@@ -7873,6 +7923,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             timeLabel = [[UILabel alloc] init];//WithFrame:CGRectMake(whLabel.frame.origin.x, contentImageView.frame.origin.y + contentImageView.frame.size.height + 6, whLabel.frame.size.width, 13)];//(3, 42, 38, 13)];
             timeLabel.frame = CGRectMake(nameLabel.frame.origin.x, CGRectGetMaxY(nameLabel.frame), 300 - nameLabel.frame.origin.x - 40, 20);
             [timeLabel setText:[NSString formattingDate:replydic[@"writetime"] withFormat:@"yy/MM/dd a h:mm"]];//dateString];
+            NSLog(@"timeLabel3 %@",timeLabel);
             [timeLabel setTextColor:[UIColor grayColor]];
             [timeLabel setFont:[UIFont systemFontOfSize:12]];
             [timeLabel setBackgroundColor:[UIColor clearColor]];
@@ -9036,53 +9087,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     
 //
                     
-#if defined(Batong) || defined(BearTalk)
-    #ifdef BearTalk
-                    
-                     
-                     NSString *emoString = IS_NULL(replydic[@"REPLY_EMO"])?@"":replydic[@"REPLY_EMO"];
-                    
-                    if([emoString length]>0){
-                        emoticonView.image = nil;
-                        emoticonView.frame = CGRectMake(replyContentsTextView.frame.origin.x, CGRectGetMaxY(replyContentsTextView.frame), 100, 100);
-                    NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/emoticon_%@",NSHomeDirectory(),emoString];
-                    NSLog(@"cachefilePath %@",cachefilePath);
-                    UIImage *img = [UIImage imageWithContentsOfFile:cachefilePath];
-                    NSLog(@"img %@",img);
-                      NSString *imgUrl = [NSString stringWithFormat:@"%@/images/emoticon/%@",BearTalkBaseUrl,emoString];
-                    NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:imgUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
-                    NSLog(@"timeout: %f", request.timeoutInterval);
-                    //                    NSURLRequest *request = [client requestWithMethod:@"GET" path:nil parameters:nil];
-                    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-                    
-                    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead)
-                     {
-                         NSLog(@"progress %f",(float)totalBytesRead / totalBytesExpectedToRead);
-                     }];
-                    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        
-                        UIGraphicsBeginImageContext(CGSizeMake(240,240));
-                        [[UIImage imageWithData:operation.responseData] drawInRect:CGRectMake(0,0,240,240)];
-                        UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
-                        UIGraphicsEndImageContext();
-                        
-                        
-                        
-                        NSData *dataObj = UIImagePNGRepresentation(newImage);
-                        [dataObj writeToFile:cachefilePath atomically:YES];
-                        NSLog(@"cachefilePath %@",cachefilePath);
-                        
-                        emoticonView.image = newImage;
-                        
-                        
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        
-                        [HTTPExceptionHandler handlingByError:error];
-                        NSLog(@"failed %@",error);
-                    }];
-                    [operation start];
-                    }
-    #else
+#ifdef Batong
+   
                      
                      if([[replydic[@"replymsg"]objectFromJSONString][@"emoticon"]length]>0)
                      emoticonView.frame = CGRectMake(replyDetailTimeLabel.frame.origin.x, CGRectGetMaxY(replyContentsTextView.frame)-12, 100, 100);
@@ -9128,8 +9134,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     }];
                     [operation start];
 #endif
-                  
-#endif
+         
+                    
                     
                     UIImageView *replyPhotoView = [[UIImageView alloc]initWithFrame:CGRectMake(0,CGRectGetMaxY(replyContentsTextView.frame), 120, 0)];
                     replyPhotoView.userInteractionEnabled = YES;
@@ -9223,6 +9229,53 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         replyPhotoView.backgroundColor = [UIColor blackColor];
                         
                     }
+                        
+#ifdef BearTalk
+                        
+                        
+                        NSString *emoString = IS_NULL(replydic[@"REPLY_EMO"])?@"":replydic[@"REPLY_EMO"];
+                        
+                        if([emoString length]>0){
+                            emoticonView.image = nil;
+                            emoticonView.frame = CGRectMake(replyContentsTextView.frame.origin.x, CGRectGetMaxY(replyPhotoView.frame), 100, 100);
+                            NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/emoticon_%@",NSHomeDirectory(),emoString];
+                            NSLog(@"cachefilePath %@",cachefilePath);
+                            UIImage *img = [UIImage imageWithContentsOfFile:cachefilePath];
+                            NSLog(@"img %@",img);
+                            NSString *imgUrl = [NSString stringWithFormat:@"%@/images/emoticon/%@",BearTalkBaseUrl,emoString];
+                            NSURLRequest* request = [NSURLRequest requestWithURL:[NSURL URLWithString:imgUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:5.0];
+                            NSLog(@"timeout: %f", request.timeoutInterval);
+                            //                    NSURLRequest *request = [client requestWithMethod:@"GET" path:nil parameters:nil];
+                            AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+                            
+                            [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead)
+                             {
+                                 NSLog(@"progress %f",(float)totalBytesRead / totalBytesExpectedToRead);
+                             }];
+                            [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                
+                                UIGraphicsBeginImageContext(CGSizeMake(240,240));
+                                [[UIImage imageWithData:operation.responseData] drawInRect:CGRectMake(0,0,240,240)];
+                                UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+                                UIGraphicsEndImageContext();
+                                
+                                
+                                
+                                NSData *dataObj = UIImagePNGRepresentation(newImage);
+                                [dataObj writeToFile:cachefilePath atomically:YES];
+                                NSLog(@"cachefilePath %@",cachefilePath);
+                                
+                                emoticonView.image = newImage;
+                                
+                                
+                            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                
+                                [HTTPExceptionHandler handlingByError:error];
+                                NSLog(@"failed %@",error);
+                            }];
+                            [operation start];
+                        }
+#endif
                     if([rewriteinfotype intValue]>4 && [rewriteinfotype intValue]!=10)
                     {
                         [replyNameLabel setText:@""];
@@ -10829,7 +10882,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     readLabel.hidden = YES;
                 }
                 
-                
+                NSLog(@"readLabel %@",readLabel);
                 NSLog(@"favorite %@",contentsData.favorite);
                 if([contentsData.favorite isEqualToString:@"0"]){
                     if([contentsData.contentType isEqualToString:@"7"])

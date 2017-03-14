@@ -133,7 +133,13 @@
 #define RGB(r, g, b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1]
 #define GreenTalkColor [UIColor colorWithRed:127.0/255.0 green:169.0/255.0 blue:33.0/255.0 alpha:1]
 #define BearTalkColor [UIColor colorWithRed:255/255.0 green:112/255.0 blue:58/255.0 alpha:1]
+
+#ifdef BearTalkDev
+#define BearTalkBaseUrl @"https://sns.lemp.co.kr"
+#else
 #define BearTalkBaseUrl @"https://dinside.lemp.co.kr"
+#endif
+
 #define SharedAppDelegate ((AppDelegate*)[[UIApplication sharedApplication] delegate])
 #define oscode @"1"
 #define VIEWY 64

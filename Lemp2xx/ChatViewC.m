@@ -3395,7 +3395,13 @@ try {
 
 - (void)socketConnect{
     NSLog(@"socketConnect");
-    NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://dinside.lemp.co.kr:3000"]];
+    
+    NSURL *url;
+#ifdef BearTalkDev
+    url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://sns.lemp.co.kr:3000"]];
+#else
+    url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://dinside.lemp.co.kr:3000"]];
+#endif
     self.socket = [[SocketIOClient alloc]initWithSocketURL:url config:@{@"log":@YES, @"forcePolling":@YES, @"forceWebsockets":@YES}];
     
     [self.socket on:@"connect" callback:^(NSArray *data, SocketAckEmitter *ack){
@@ -3423,7 +3429,12 @@ try {
 
     NSLog(@"connectSocket");
 
-    NSURL *url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://dinside.lemp.co.kr:3000"]];
+    NSURL *url;
+#ifdef BearTalkDev
+    url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://sns.lemp.co.kr:3000"]];
+#else
+    url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://dinside.lemp.co.kr:3000"]];
+#endif
     self.socket = [[SocketIOClient alloc]initWithSocketURL:url config:@{@"log":@YES, @"forcePolling":@YES, @"forceWebsockets":@YES}];
     
   

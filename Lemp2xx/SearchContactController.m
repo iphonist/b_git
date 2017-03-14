@@ -304,6 +304,7 @@
             for(int i = 0 ; i < [myList count] ; i++)
             {
                 searchDic = myList[i];
+                NSLog(@"searchDic %@",searchDic);
                 if([[SharedAppDelegate.root getPureNumbers:searchDic[@"cellphone"]] rangeOfString:searchText].location != NSNotFound
                    || [[SharedAppDelegate.root getPureNumbers:searchDic[@"companyphone"]] rangeOfString:searchText].location != NSNotFound
                    )

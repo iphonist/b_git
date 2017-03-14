@@ -12,6 +12,7 @@
 
 - (BOOL)openURL:(NSURL *)url
 {
+    NSLog(@"openURL %@",url);
 	return [self openURL:url toSafari:NO];
 }
 
@@ -32,7 +33,7 @@
 			isHttp = [(AppDelegate*)self.delegate openURL:url];
 		}
 	}
-	
+    NSLog(@"isHttp %@",isHttp?@"YES":@"NO");
 	if (!isHttp) {
 		return [super openURL:url];
 	} else {

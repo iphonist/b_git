@@ -1886,6 +1886,7 @@ const char paramNumber;
 #ifdef BearTalk
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
     urlString = [NSString stringWithFormat:@"%@/api/check/email/",BearTalkBaseUrl];
+    NSLog(@"BearTalkBaseUrl %@",BearTalkBaseUrl);
 #else
     
     urlString = [NSString stringWithFormat:@"https://%@/lemp/auth/register.lemp",[SharedAppDelegate readPlist:@"ipaddress"]];

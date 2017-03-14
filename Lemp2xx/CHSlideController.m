@@ -7565,9 +7565,11 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         NSString *lastDate = [[NSString alloc]initWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
         NSArray *loginArray = resultDic[@"login"];
         BOOL bomb = NO;
+            BOOL mobile = NO;
         for(NSDictionary *ldic in loginArray){
           
                 if([ldic[@"DEVICE"]isEqualToString:@"MOBILE"]){
+                    mobile = YES;
                     if(![ldic[@"DEVICE_ID"]isEqualToString:[SharedFunctions getDeviceIDForParameter]]){
                         
                         
@@ -7576,7 +7578,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 }
             
         }
-        
+            
         if(bomb == YES){
             // (폭탄)
             NSLog(@"bomb");
@@ -7686,12 +7688,21 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             [SharedAppDelegate.root anywhereModal:alert];
 
         }
+            
+            
         else{
+            
+            
+            if(mobile == NO){
+                [self registDeviceWithSocket:@""];
+            }
+            
             NSLog(@"bomb out else");
             
             [SharedAppDelegate writeToPlist:@"myindex" value:resultDic[@"myindex"]];
             [SharedAppDelegate writeToPlist:@"serverappver" value:resultDic[@"ios_update"]];
-            
+            NSLog(@"myappver %@",[[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"]);
+            [SVProgressHUD dismiss];
             
             if ([resultDic[@"ios_update"] compare:[[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"] options:NSNumericSearch] == NSOrderedDescending) {
                 NSLog(@"updategogogogo");
@@ -8734,7 +8745,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         NSLog(@"FAIL : %@",operation.error);
         self.showFeedbackMessage = NO;
         [SVProgressHUD dismiss];
-        [CustomUIKit popupSimpleAlertViewOK:@"오류" msg:@"네트워크 접속이 원활하지 않습니다.\n요청한 동작이 수행되지 않을 수 있습니다.\n잠시 후 다시 시도해주세요." con:self];
+//        [CustomUIKit popupSimpleAlertViewOK:@"오류" msg:@"네트워크 접속이 원활하지 않습니다.\n요청한 동작이 수행되지 않을 수 있습니다.\n잠시 후 다시 시도해주세요." con:self];
+        
+        [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
         
         [HTTPExceptionHandler handlingByError:error];
         

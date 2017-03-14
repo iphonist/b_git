@@ -42,4 +42,5 @@
 + (float)scaleFromHeight:(float)h;
 + (float)scaleFromWidth:(float)w;
 + (NSString *)getMimeTypeForData:(NSData*)data;
++ (CGSize)textViewSizeForAttributeString:(NSAttributedString*)string font:(UIFont*)font width:(CGFloat)width realZeroInsets:(BOOL)zeroInsets;
 @end

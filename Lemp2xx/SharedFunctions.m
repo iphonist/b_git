@@ -355,6 +355,57 @@
 	[def synchronize];
 }
 
++ (CGSize)textViewSizeForAttributeString:(NSAttributedString*)string font:(UIFont*)font width:(CGFloat)width realZeroInsets:(BOOL)zeroInsets
+{
+    NSLog(@"string %@ font %@ width %f",string,font,width);
+    if(IS_NULL(string)){
+        return CGSizeMake(0, 0);
+    }
+    
+    
+    UITextView *calculationView = [[UITextView alloc] init];
+    
+    if ([calculationView respondsToSelector:@selector(setAttributedText:)]) {
+        
+        [calculationView setAttributedText:string];
+        //		[attributedString release];
+    } else {
+        [calculationView setText:string];
+        [calculationView setFont:font];
+    }
+    
+    CGFloat extraWidth = 0.0;
+    CGFloat adjustPoint = 0.0;
+    if (zeroInsets) {
+        if ([calculationView respondsToSelector:@selector(textContainer)]) {
+            calculationView.textContainer.lineFragmentPadding = 0.0;
+            [calculationView setTextContainerInset:UIEdgeInsetsZero];
+        } else {
+            [calculationView setContentInset:UIEdgeInsetsMake(-8, -8, -8, -8)];
+            
+            
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+            paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+            NSDictionary *attributes = @{NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle};
+            extraWidth = [string boundingRectWithSize:CGSizeMake(width, FLT_MAX) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin context:nil].size.width;
+            
+            
+            //		extraWidth = [string sizeWithFont:font constrainedToSize:CGSizeMake(width, FLT_MAX)].width;
+            adjustPoint = 16.0;
+        }
+    } else {
+        [calculationView setContentInset:UIEdgeInsetsZero];
+    }
+    
+    CGSize size = [calculationView sizeThatFits:CGSizeMake(width+adjustPoint, FLT_MAX)];
+    size.height -= adjustPoint;
+    if (extraWidth != 0.0) {
+        size.width = extraWidth;
+    }
+    
+    //	[calculationView release];
+    return size;
+}
 + (CGSize)textViewSizeForString:(NSString*)string font:(UIFont*)font width:(CGFloat)width realZeroInsets:(BOOL)zeroInsets
 {
     NSLog(@"string %@ font %@ width %f",string,font,width);

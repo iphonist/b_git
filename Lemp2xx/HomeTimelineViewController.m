@@ -815,11 +815,11 @@ const char paramIndex;
         case 1:
             
             
-            if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"S"]){
-                
-                
-                [SharedAppDelegate.root getRoomWithRk:@"" number:self.groupnum sendMemo:@"" modal:YES];
-            }
+//            if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"S"]){
+//                
+//                
+//                [SharedAppDelegate.root getRoomWithRk:@"" number:self.groupnum sendMemo:@"" modal:YES];
+//            }
             if([self.groupnum  isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"])
             {
             
@@ -850,6 +850,12 @@ const char paramIndex;
                 navigationViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 
                 [SharedAppDelegate.root anywhereModal:navigationViewController];
+            }
+            else{
+                    
+                    
+                    [SharedAppDelegate.root getRoomWithRk:@"" number:self.groupnum sendMemo:@"" modal:YES];
+                
             }
             
             
@@ -4463,30 +4469,47 @@ return height;
     [items addObject:writeItem];
 //    [items addObject:scheduleItem];
     
-    if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"S"]){
-         [items addObject:chatItem];
-    }
-    if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"P"]){
-        if([self.groupDic[@"WRITE_AUTH"]isEqualToString:@"ALL"]){
-            
-        }
-        else{// if([self.groupDic[@"WRITE_AUTH"]isEqualToString:@"ADM"]){
-            
-            if([self.groupnum isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"] || [self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
-                
-                if([self.groupnum  isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"]){
-                    [dailyItem setAnothertitle:@"의뢰"];
-                    [items addObject:dailyItem];
-                }
-                else if([self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
-                    [dailyItem setAnothertitle:@"PC서비스"];
-                    [items addObject:dailyItem];
-                    
-                }
-            }
-        }
-    }
+//    if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"S"]){
+//         [items addObject:chatItem];
+//    }
+//    if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"P"]){
+//        if([self.groupDic[@"WRITE_AUTH"]isEqualToString:@"ALL"]){
+//            
+//        }
+//        else{// if([self.groupDic[@"WRITE_AUTH"]isEqualToString:@"ADM"]){
+//            
+//            if([self.groupnum isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"] || [self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
+//                
+//                if([self.groupnum  isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"]){
+//                    [dailyItem setAnothertitle:@"의뢰"];
+//                    [items addObject:dailyItem];
+//                }
+//                else if([self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
+//                    [dailyItem setAnothertitle:@"PC서비스"];
+//                    [items addObject:dailyItem];
+//                    
+//                }
+//            }
+//        }
+//    }
     
+    if([self.groupnum isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"] || [self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
+        
+        if([self.groupnum  isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"]){
+            [dailyItem setAnothertitle:@"의뢰"];
+            [items addObject:dailyItem];
+        }
+        else if([self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
+            [dailyItem setAnothertitle:@"PC서비스"];
+            [items addObject:dailyItem];
+            
+        }
+    }
+    else{
+        if([self.groupDic[@"SNS_TYPE"]isEqualToString:@"S"]){
+            [items addObject:chatItem];
+        }
+    }
     [items enumerateObjectsUsingBlock:^(UPStackMenuItem *item, NSUInteger idx, BOOL *stop) {
         //                    [item setLabelPosition:UPStackMenuItemLabelPosition_right];
         NSLog(@"whiteColor");
