@@ -498,25 +498,25 @@
                 
                 NSMutableDictionary *newDic = [NSMutableDictionary dictionary];
                 [newDic setObject:beartalkdic[@"available"] forKey:@"available"];
-                [newDic setObject:pdic[@"MOBILE_NUM"] forKey:@"cellphone"];
-                [newDic setObject:pdic[@"COMPANY_TEL_NUM"] forKey:@"companyphone"];
-                [newDic setObject:pdic[@"DEPT_CODE"] forKey:@"deptcode"];
+                [newDic setObject:IS_NULL(pdic[@"MOBILE_NUM"])?@"":pdic[@"MOBILE_NUM"] forKey:@"cellphone"];
+                [newDic setObject:IS_NULL(pdic[@"COMPANY_TEL_NUM"])?@"":pdic[@"COMPANY_TEL_NUM"] forKey:@"companyphone"];
+                [newDic setObject:IS_NULL(pdic[@"DEPT_CODE"])?@"":pdic[@"DEPT_CODE"] forKey:@"deptcode"];
                 [newDic setObject:beartalkdic[@"email"] forKey:@"email"];
                 [newDic setObject:beartalkdic[@"favorite"] forKey:@"favorite"];
                 [newDic setObject:beartalkdic[@"position"] forKey:@"position"];
-                [newDic setObject:[NSString stringWithFormat:@"%@/%@",pdic[@"POS_NAME"],pdic[@"DUTY_NAME"]] forKey:@"grade2"];
+                [newDic setObject:[NSString stringWithFormat:@"%@/%@",IS_NULL(pdic[@"POS_NAME"])?@"":pdic[@"POS_NAME"],IS_NULL(pdic[@"DUTY_NAME"])?@"":pdic[@"DUTY_NAME"]] forKey:@"grade2"];
                 [newDic setObject:beartalkdic[@"id"] forKey:@"id"];
-                [newDic setObject:pdic[@"USER_NAME"] forKey:@"name"];
+                [newDic setObject:IS_NULL(pdic[@"USER_NAME"])?@"":pdic[@"USER_NAME"] forKey:@"name"];
                 [newDic setObject:beartalkdic[@"newfield1"] forKey:@"newfield1"];
                 [newDic setObject:beartalkdic[@"newfield2"] forKey:@"newfield2"];
                 [newDic setObject:beartalkdic[@"newfield3"] forKey:@"newfield3"];
                 [newDic setObject:beartalkdic[@"newfield4"] forKey:@"newfield4"];
                 [newDic setObject:beartalkdic[@"newfield5"] forKey:@"newfield5"];
                 [newDic setObject:beartalkdic[@"newfield6"] forKey:@"newfield6"];
-                [newDic setObject:pdic[@"COMPANY_NAME"] forKey:@"newfield7"];
+                [newDic setObject:IS_NULL(pdic[@"COMPANY_NAME"])?@"":pdic[@"COMPANY_NAME"] forKey:@"newfield7"];
                 [newDic setObject:beartalkdic[@"profileimage"] forKey:@"profileimage"];
                 //                NSLog(@"pdic deptcode %@",pdic[@"deptcode"]);
-                [newDic setObject:pdic[@"DEPT_NAME"] forKey:@"team"];
+                [newDic setObject:IS_NULL(pdic[@"DEPT_NAME"])?@"":pdic[@"DEPT_NAME"] forKey:@"team"];
                 [newDic setObject:beartalkdic[@"uniqueid"] forKey:@"uniqueid"];
                 //               NSLog(@"newdic %@",newDic);
                 
