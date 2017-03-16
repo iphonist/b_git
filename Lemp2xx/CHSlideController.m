@@ -2029,6 +2029,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 - (NSString *)getPureNumbers:(NSString *)originalString
 {
     
+//    if(IS_NULL(originalString))
+//        return @"";
     
     //    NSString *numberString = [[originalString componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"0123456789*#abcdefghijklmnopqrstuvwxyz"] invertedSet]] componentsJoinedByString:@""];
     
@@ -7564,12 +7566,13 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         else{
         NSString *lastDate = [[NSString alloc]initWithFormat:@"%.0f",[[NSDate date] timeIntervalSince1970]];
         NSArray *loginArray = resultDic[@"login"];
+            NSLog(@"loginArray %@",loginArray);
         BOOL bomb = NO;
-            BOOL mobile = NO;
+            BOOL mobileInfoExist = NO;
         for(NSDictionary *ldic in loginArray){
           
                 if([ldic[@"DEVICE"]isEqualToString:@"MOBILE"]){
-                    mobile = YES;
+                    mobileInfoExist = YES;
                     if(![ldic[@"DEVICE_ID"]isEqualToString:[SharedFunctions getDeviceIDForParameter]]){
                         
                         
@@ -7693,7 +7696,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         else{
             
             
-            if(mobile == NO){
+            if(mobileInfoExist == NO){
+                NSLog(@"mobileInfoExist not exist");
                 [self registDeviceWithSocket:@""];
             }
             
