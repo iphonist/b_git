@@ -1290,7 +1290,7 @@
         [searchBar setShowsCancelButton:YES animated:YES];
         for(UIView *subView in searchBar.subviews){
             if([subView isKindOfClass:UIButton.class]){
-                [(UIButton*)subView setTitle:@"취소" forState:UIControlStateNormal];
+                [(UIButton*)subView setTitle:NSLocalizedString(@"cancel", @"cancel") forState:UIControlStateNormal];
             }
         }
 
@@ -1388,7 +1388,7 @@
 				searching = NO;
 
 			} else {
-//				UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"검색하신 주소를 찾을 수 없습니다.\n주소를 확인해 주세요." message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"확인",nil];
+//				UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"검색하신 주소를 찾을 수 없습니다.\n주소를 확인해 주세요." message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"),nil];
 //				[alert show];
 //				[alert release];
 //                
@@ -1414,7 +1414,7 @@
 //		}
 //		else {
 //			
-//			UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"검색하신 주소를 찾을 수 없습니다.\n주소를 확인해 주세요." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"확인",nil];
+//			UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"검색하신 주소를 찾을 수 없습니다.\n주소를 확인해 주세요." delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"),nil];
 //			[alert show];
 //			[alert release];
 //		}
@@ -1719,7 +1719,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-//	UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"현재 위치를 검색할 수 없습니다.\n설정 > 개인정보보호 > 위치서비스가\n활성화되어 있는지 확인해주세요." message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:@"확인",nil];
+//	UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"현재 위치를 검색할 수 없습니다.\n설정 > 개인정보보호 > 위치서비스가\n활성화되어 있는지 확인해주세요." message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"),nil];
 //	[alert show];
 //	[alert release];
     

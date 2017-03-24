@@ -144,8 +144,8 @@ const char paramDic;
     
     if (myTable.tag == kSubPush) {
         leftButton = [CustomUIKit backButtonWithTitle:@"" target:self selector:@selector(backTo)];
-		self.title = @"푸시알림";
-		myList = [[NSMutableArray alloc]initWithObjects:@"푸시알림",nil];
+		self.title = NSLocalizedString(@"push_alert", @"push_alert");
+		myList = [[NSMutableArray alloc]initWithObjects:NSLocalizedString(@"push_alert", @"push_alert"),nil];
 		myTable.scrollEnabled = NO;
         
 			myTable.frame = CGRectMake(0, 0, 320, self.view.frame.size.height - viewY);
@@ -222,7 +222,7 @@ const char paramDic;
         leftButton = [CustomUIKit backButtonWithTitle:@"" target:self selector:@selector(backTo)];
         
         
-        myList = [[NSMutableArray alloc]initWithObjects:@"전체 보기",@"대웅생활",@"My소셜",@"주소록",@"채팅",@"기타",nil];
+        myList = [[NSMutableArray alloc]initWithObjects:@"전체 보기",@"대웅생활",@"My소셜",NSLocalizedString(@"contacts", @"contacts"),NSLocalizedString(@"chat", @"chat"),@"기타",nil];
         myTable.frame = CGRectMake(0, 0, 320, self.view.frame.size.height - viewY);
         
         myTable.rowHeight = 53;
@@ -540,9 +540,9 @@ const char paramDic;
     
       self.navigationItem.rightBarButtonItem = nil;
     
-    self.title = @"내 정보";
+    self.title = NSLocalizedString(@"my_info", @"my_info");
 #ifdef BearTalk
-    self.title = @"내 프로필";
+    self.title = NSLocalizedString(@"my_profile", @"my_profile");
 #endif
     
  gkpicker = [[GKImagePicker alloc] init];
@@ -655,7 +655,7 @@ const char paramDic;
     //        infoTf.delegate = self;
     infoLabel.font = [UIFont systemFontOfSize:14];
     infoLabel.textColor = RGB(205, 205, 210);//RGB(51, 61, 71);
-    infoLabel.text = @"본인의 업무를 소개해주세요!";
+    infoLabel.text = NSLocalizedString(@"introduce_your_work", @"introduce_your_work");
     //        infoTf.returnKeyType = UIReturnKeyDone;
     [view addSubview:infoLabel];
     if([[SharedAppDelegate readPlist:@"employeinfo"]length]>0){
@@ -865,7 +865,7 @@ const char paramDic;
 //    infoLabel.font = [UIFont systemFontOfSize:16];
 //    [view addSubview:infoLabel];
 //    infoLabel.textColor = RGB(51, 61, 71);
-//    infoLabel.text = @"메모";
+//    infoLabel.text = NSLocalizedString(@"memo", @"memo");
 //    
 //    memoCount = [CustomUIKit labelWithText:@""
 //                                      fontSize:16 fontColor:RGB(131, 145, 159)
@@ -933,13 +933,13 @@ const char paramDic;
     borderView.image = nil;
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UILabel *titleLabel = [CustomUIKit labelWithText:[NSString stringWithFormat:@"휴대폰"]
+    UILabel *titleLabel = [CustomUIKit labelWithText:NSLocalizedString(@"cellphone", @"cellphone")
                                             fontSize:13 fontColor:GreenTalkColor
                                                frame:CGRectMake(110-40, CGRectGetMaxY(name.frame)+9, 40, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
     [borderView addSubview:titleLabel];
     
     
-    UILabel *inputLabel = [CustomUIKit labelWithText:[NSString stringWithFormat:@"%@",[dic[@"cellphone"]length]>0?[SharedAppDelegate.root dashCheck:dic[@"cellphone"]]:@"정보 없음"]
+    UILabel *inputLabel = [CustomUIKit labelWithText:[NSString stringWithFormat:@"%@",[dic[@"cellphone"]length]>0?[SharedAppDelegate.root dashCheck:dic[@"cellphone"]]:NSLocalizedString(@"info_null", @"info_null")]
                                             fontSize:13 fontColor:[UIColor blackColor]
                                                frame:CGRectMake(115, titleLabel.frame.origin.y, 320-115-10, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
     [borderView addSubview:inputLabel];
@@ -960,7 +960,7 @@ const char paramDic;
         NSDictionary *contactDic = [ResourceLoader sharedInstance].allContactList[i];
         NSLog(@"contactdic %@",contactDic);
         
-        titleLabel = [CustomUIKit labelWithText:[NSString stringWithFormat:@"담당 HA %d",i+1]
+        titleLabel = [CustomUIKit labelWithText:[NSString stringWithFormat:@"%@ %d",NSLocalizedString(@"my_ha", @"my_ha"),i+1]
                                                 fontSize:13 fontColor:GreenTalkColor
                                                    frame:CGRectMake(5, 3+i*40, 60, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
         [haBoxView addSubview:titleLabel];
@@ -973,7 +973,7 @@ const char paramDic;
 //        [button release];
         
         UILabel *label;
-        label = [CustomUIKit labelWithText:@"연락" fontSize:13 fontColor:[UIColor whiteColor]
+        label = [CustomUIKit labelWithText:NSLocalizedString(@"contact_something", @"contact_something") fontSize:13 fontColor:[UIColor whiteColor]
                                      frame:CGRectMake(5, 5, button.frame.size.width - 10, button.frame.size.height - 10) numberOfLines:1 alignText:NSTextAlignmentCenter];
         [button addSubview:label];
     
@@ -1116,7 +1116,7 @@ const char paramDic;
     textFieldImageView.userInteractionEnabled = YES;
 //    [textFieldImageView release];
     
-    UILabel *introduce = [CustomUIKit labelWithText:@"내 소개"
+    UILabel *introduce = [CustomUIKit labelWithText:NSLocalizedString(@"introduce_myself", @"introduce_myself")
                                            fontSize:13 fontColor:GreenTalkColor
                                               frame:CGRectMake(5, 5, 55, 25) numberOfLines:1 alignText:NSTextAlignmentLeft];
     [textFieldImageView addSubview:introduce];
@@ -1134,7 +1134,7 @@ const char paramDic;
     //        infoTf.delegate = self;
     infoLabel.font = [UIFont systemFontOfSize:13];
     infoLabel.textColor = RGB(205, 205, 210);
-    infoLabel.text = @"본인의 업무를 소개해주세요!";
+    infoLabel.text = NSLocalizedString(@"introduce_your_work", @"introduce_your_work");
     //        infoTf.returnKeyType = UIReturnKeyDone;
     [textFieldImageView addSubview:infoLabel];
     if([[SharedAppDelegate readPlist:@"employeinfo"]length]>0){
@@ -1321,7 +1321,7 @@ const char paramDic;
                                               frame:CGRectMake(CGRectGetMaxX(titleLabel.frame), 5, 10, 50) numberOfLines:2 alignText:NSTextAlignmentLeft];
     [infoboxImage addSubview:lineLabel];
     
-    UILabel *inputLabel = [CustomUIKit labelWithText:[NSString stringWithFormat:@"%@ / %@\n%@",[dic[@"deptname"]length]>0?dic[@"deptname"]:@"정보 없음",dic[@"position"],[dic[@"cellphone"]length]>0?[SharedAppDelegate.root dashCheck:dic[@"cellphone"]]:@"정보 없음"]
+    UILabel *inputLabel = [CustomUIKit labelWithText:[NSString stringWithFormat:@"%@ / %@\n%@",[dic[@"deptname"]length]>0?dic[@"deptname"]:NSLocalizedString(@"info_null", @"info_null"),dic[@"position"],[dic[@"cellphone"]length]>0?[SharedAppDelegate.root dashCheck:dic[@"cellphone"]]:NSLocalizedString(@"info_null", @"info_null")]
                                             fontSize:13 fontColor:[UIColor blackColor]
                                                frame:CGRectMake(CGRectGetMaxX(lineLabel.frame), 5, borderView.frame.size.width - 10 - 65, 50) numberOfLines:2 alignText:NSTextAlignmentLeft];
     [infoboxImage addSubview:inputLabel];
@@ -1329,7 +1329,7 @@ const char paramDic;
     borderView.frame = CGRectMake(21, 10, 278, CGRectGetMaxY(infoboxImage.frame)+10);
     
     
-    UILabel *introduce = [CustomUIKit labelWithText:@"내 업무 소개"
+    UILabel *introduce = [CustomUIKit labelWithText:NSLocalizedString(@"introduce_my_work", @"introduce_my_work")
                                            fontSize:14 fontColor:[UIColor grayColor]
                                               frame:CGRectMake(21, CGRectGetMaxY(borderView.frame) + 20, 280, 16) numberOfLines:1 alignText:NSTextAlignmentLeft];
     [transView addSubview:introduce];
@@ -1355,7 +1355,7 @@ const char paramDic;
     //        infoTf.delegate = self;
     infoLabel.font = [UIFont systemFontOfSize:15];
     infoLabel.textColor = RGB(205, 205, 210);
-    infoLabel.text = @"본인의 업무를 소개해주세요!";
+    infoLabel.text = NSLocalizedString(@"introduce_your_work", @"introduce_your_work");
     //        infoTf.returnKeyType = UIReturnKeyDone;
     [textFieldImageView addSubview:infoLabel];
     if([[SharedAppDelegate readPlist:@"employeinfo"]length]>0){
@@ -1460,12 +1460,12 @@ const char paramDic;
     //        [self.view addSubview:infoImageView];
     //        [infoImageView release];
     
-    //        label = [CustomUIKit labelWithText:@"내 업무 소개"
+    //        label = [CustomUIKit labelWithText:NSLocalizedString(@"introduce_my_work", @"introduce_my_work")
     //                                  fontSize:16 fontColor:[UIColor blackColor]
     //                                     frame:CGRectMake(circle.frame.origin.x + circle.frame.size.width + 5, circle.frame.origin.y - 5, 200, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
     //		[self.view addSubview:label];
     
-    UILabel *introduce = [CustomUIKit labelWithText:@"내 업무 소개"
+    UILabel *introduce = [CustomUIKit labelWithText:NSLocalizedString(@"introduce_my_work", @"introduce_my_work")
                                            fontSize:17 fontColor:name.textColor
                                               frame:CGRectMake(21, label.frame.origin.y + label.frame.size.height + 20, 280, 16) numberOfLines:1 alignText:NSTextAlignmentLeft];
     [transView addSubview:introduce];
@@ -1489,7 +1489,7 @@ const char paramDic;
     //        infoTf.delegate = self;
     infoLabel.font = [UIFont systemFontOfSize:15];
     infoLabel.textColor = RGB(205, 205, 210);
-    infoLabel.text = @"본인의 업무를 소개해주세요!";
+    infoLabel.text = NSLocalizedString(@"introduce_your_work", @"introduce_your_work");
     //        infoTf.returnKeyType = UIReturnKeyDone;
     [textFieldImageView addSubview:infoLabel];
     if([[SharedAppDelegate readPlist:@"employeinfo"]length]>0){
@@ -1523,7 +1523,7 @@ const char paramDic;
                                                                                  message:@""
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *actionb = [UIAlertAction actionWithTitle:@"통화"
+        UIAlertAction *actionb = [UIAlertAction actionWithTitle:NSLocalizedString(@"call", @"call")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -1539,7 +1539,7 @@ const char paramDic;
                                                     }];
         
         [alertcontroller addAction:actionb];
-        actionb = [UIAlertAction actionWithTitle:@"문자"
+        actionb = [UIAlertAction actionWithTitle:NSLocalizedString(@"sms", @"sms")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             
@@ -1568,14 +1568,14 @@ const char paramDic;
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                         }];
         [alertcontroller addAction:actionb];
-        actionb = [UIAlertAction actionWithTitle:@"채팅"
+        actionb = [UIAlertAction actionWithTitle:NSLocalizedString(@"chat", @"chat")
                                                           style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction * action){
                                              [self loadChatListFromHere];
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                         }];
         [alertcontroller addAction:actionb];
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -1592,7 +1592,7 @@ const char paramDic;
         
     UIAlertView *alert;
     //    NSString *msg = [NSString stringWithFormat:@"%@로 일반 전화를 거시겠습니까?",number];
-    alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"통화",@"문자",@"채팅", nil];
+    alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"call", @"call"),NSLocalizedString(@"sms", @"sms"),NSLocalizedString(@"chat", @"chat"), nil];
     alert.tag = kContact;
     
     objc_setAssociatedObject(alert, &paramDic, dic, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -1603,7 +1603,7 @@ const char paramDic;
 }
 
 - (void)logout:(id)sender{
-    [CustomUIKit popupAlertViewOK:@"로그아웃" msg:@"로그아웃 하시겠습니까?" delegate:self tag:kLogout sel:@selector(confirmLogout) with:nil csel:nil with:nil];
+    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"logout", @"logout") msg:@"로그아웃 하시겠습니까?" delegate:self tag:kLogout sel:@selector(confirmLogout) with:nil csel:nil with:nil];
     
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -1744,7 +1744,7 @@ const char paramDic;
         } else {
             
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
 //            [alert show];
             
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
@@ -1974,7 +1974,7 @@ const char paramDic;
     infoTf.font = [UIFont systemFontOfSize:15];
     infoTf.delegate = self;
     infoTf.clearButtonMode = UITextFieldViewModeAlways;
-    infoTf.placeholder = @"착신전환할 번호를 입력해주세요.";
+    infoTf.placeholder = NSLocalizedString(@"enter_another_contact", @"enter_another_contact");
     infoTf.returnKeyType = UIReturnKeyDone;
     [textFieldImageView addSubview:infoTf];
     [infoTf becomeFirstResponder];
@@ -1990,19 +1990,19 @@ const char paramDic;
 }
 
 - (void)setMyInfoLabel{
-    self.title = @"내 업무 소개";
+    self.title = NSLocalizedString(@"introduce_my_work", @"introduce_my_work");
     
     self.view.backgroundColor = RGB(236, 236, 236);
     
 #ifdef Batong
-    self.title = @"내 소개";
+    self.title = NSLocalizedString(@"introduce_myself", @"introduce_myself");
     self.view.backgroundColor = RGB(242, 242, 242);
 #elif BearTalk
     
     
     self.view.backgroundColor = RGB(238, 242, 245);
 
-    self.title = @"내 소개";
+    self.title = NSLocalizedString(@"introduce_myself", @"introduce_myself");
 #endif
     
     if(self.navigationItem.leftBarButtonItem){
@@ -2077,9 +2077,9 @@ const char paramDic;
     infoTf.font = [UIFont systemFontOfSize:15];
     infoTf.delegate = self;
 	infoTf.clearButtonMode = UITextFieldViewModeAlways;
-    infoTf.placeholder = @"본인의 업무를 소개해주세요!";
+    infoTf.placeholder = NSLocalizedString(@"introduce_your_work", @"introduce_your_work");
 #ifdef Batong
-    infoTf.placeholder = @"본인을 소개해주세요!";
+    infoTf.placeholder = NSLocalizedString(@"introduce_yourself", @"introduce_yourself");
 #elif BearTalk
     infoTf.placeholder = @"";
 #endif
@@ -2360,7 +2360,7 @@ const char paramDic;
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -2638,7 +2638,7 @@ const char paramDic;
 #endif
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -2653,13 +2653,13 @@ const char paramDic;
     else{
     UIActionSheet *actionSheet;
     if(image == nil){
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                     destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
         
     }
     else{
         
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                     destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", @"사진 삭제", nil];
     }
     
@@ -2932,7 +2932,7 @@ const char paramDic;
 //        NSLog(@"FAIL : %@",operation.error);
 //        //            [MBProgressHUD hideHUDForView:self.view animated:YES];
 //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-////        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"사진을 삭제하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+////        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"사진을 삭제하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
 ////        [alert show];
 //        
 //    }];
@@ -3205,9 +3205,9 @@ const char paramDic;
 
         
 		if (currentStatus == NO) {
-			cell.detailTextLabel.text = @"꺼짐";
+			cell.detailTextLabel.text = NSLocalizedString(@"alarm_off_status", @"alarm_off_status");
 		} else {
-			cell.detailTextLabel.text = @"켜짐";
+			cell.detailTextLabel.text = NSLocalizedString(@"alarm_on_status", @"alarm_on_status");
 		}
 	}
 	else if(tableView.tag == kSubStatus)
@@ -3860,7 +3860,7 @@ const char paramDic;
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -3883,7 +3883,7 @@ const char paramDic;
         
   
     if([areaList count] == 0){
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [view dismissViewControllerAnimated:YES completion:nil];

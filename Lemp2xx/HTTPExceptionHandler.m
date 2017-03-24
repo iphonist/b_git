@@ -53,7 +53,7 @@
 - (void)showAlertWithTag:(NSInteger)tag message:(NSString*)message
 {
 	if (!self.sharedAlertView) {
-		self.sharedAlertView = [[UIAlertView alloc] initWithTitle:@"오류" message:nil delegate:self cancelButtonTitle:@"확인" otherButtonTitles:nil];
+		self.sharedAlertView = [[UIAlertView alloc] initWithTitle:@"오류" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil];
 	}
 
 	if (sharedAlertView.isVisible && sharedAlertView.tag == tag) {

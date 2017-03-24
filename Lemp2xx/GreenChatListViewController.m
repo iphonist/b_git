@@ -1041,7 +1041,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //                    }
 //                }
 //                else{
-//                nameStr = @"대화상대없음";
+//                nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");
 //                }
 //            }
 //            else{
@@ -1117,7 +1117,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //    }
 //    
 //    if([nameStr length]<1)
-//        nameStr = @"알 수 없는 사용자";
+//        nameStr = NSLocalizedString(@"unknown_user", @"unknown_user");
     
     name.text = dic[@"names"];
     

@@ -124,7 +124,7 @@ const char alertNumber;
 {
 	NSLog(@"member %@",member);
     if ([member count] < 1) {
-		[SVProgressHUD showErrorWithStatus:@"선택된 대상이 없습니다!"];
+		[SVProgressHUD showErrorWithStatus:NSLocalizedString(@"there_is_no_selected_room", @"there_is_no_selected_room")];
 		return;
 	}
     [SharedAppDelegate.window addSubview:[self setFullOutgoing:member[0][@"uniqueid"] usingUid:kUsingUid]];
@@ -173,7 +173,7 @@ const char alertNumber;
                                                                         message:msg
                                                                  preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"네"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                         style:UIAlertActionStyleDefault
                                                       handler:^(UIAlertAction * action){
                                                           
@@ -181,7 +181,7 @@ const char alertNumber;
                                                           [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                       }];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action){
                                                            [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -193,7 +193,7 @@ const char alertNumber;
         
     }
     else{
-    alert = [[UIAlertView alloc] initWithTitle:@"일반통화" message:msg delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+    alert = [[UIAlertView alloc] initWithTitle:@"일반통화" message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
     objc_setAssociatedObject(alert, &alertNumber, number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);    
     [alert show];
 //    [alert release];

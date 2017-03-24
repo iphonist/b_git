@@ -260,7 +260,8 @@
     NSMutableAttributedString *stringText = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"mqm_test_explain_opt", @"mqm_test_explain_opt")];
     
     NSString *msg = NSLocalizedString(@"mqm_test_explain_opt", @"mqm_test_explain_opt");
-//    NSArray *texts=[NSArray arrayWithObjects:@"검사 대상", @"\n풀무원 제품 전체이며, 동일라인에서 생산되더라도\n날인기를 따로 운영할 경우 개별로 검사\n\n",@"검사 주기 (샘플링)",@"\n생산 시작 시, 생산 중단 후 재가동 전, 추가 생산 시",nil];
+
+    
 
     UIFont *boldFont = [UIFont boldSystemFontOfSize:explainLabel.font.pointSize];
     NSRange rangeA = [msg rangeOfString:NSLocalizedString(@"mqm_test_target", @"mqm_test_target")];

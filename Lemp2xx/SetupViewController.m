@@ -265,11 +265,11 @@
                 cell.textLabel.text = @"공지사항";
                 break;
             case 1:
-                cell.textLabel.text = @"내 정보";
+                cell.textLabel.text = NSLocalizedString(@"my_info", @"my_info");
                 break;
 #else
             case 0:
-                cell.textLabel.text = @"내 정보";
+                cell.textLabel.text = NSLocalizedString(@"my_info", @"my_info");
                 break;
 #endif
             default:
@@ -299,7 +299,7 @@
             }
                 break;
             case 1:
-                cell.textLabel.text = @"소셜별 알림 설정";
+                cell.textLabel.text = NSLocalizedString(@"setup_each_social_alert", @"setup_each_social_alert");
                 break;
             default:
                 break;
@@ -372,7 +372,7 @@
                 cell.detailTextLabel.text = [[NSBundle mainBundle]objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
                 break;
             case 2:
-                cell.textLabel.text = @"로그아웃";
+                cell.textLabel.text = NSLocalizedString(@"logout", @"logout");
                 break;
             default:
                 break;
@@ -554,9 +554,9 @@
         if (currentStatus == NO) {
             imageView.frame = CGRectMake(84.0, 14.0, 20.0, 20.0);
             imageView.image = [UIImage imageNamed:@"listalert_ic.png"];
-            cell.detailTextLabel.text = @"꺼짐";
+            cell.detailTextLabel.text = NSLocalizedString(@"alarm_off_status", @"alarm_off_status");
         } else {
-            cell.detailTextLabel.text = @"켜짐";
+            cell.detailTextLabel.text = NSLocalizedString(@"alarm_on_status", @"alarm_on_status");
         }
         
     }
@@ -844,7 +844,7 @@ else if (indexPath.row == globalFontSize) {
 #else
             case 0:
             {
-                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"주소록을 다시 받아오시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"주소록을 다시 받아오시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
                 //            [alert setTag:initContact];
                 //            [alert show];
 //                            [alert release];
@@ -868,11 +868,11 @@ else if (indexPath.row == globalFontSize) {
                 break;
             case 2:
             {
-                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"로그아웃 하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"로그아웃 하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
                 //            [alert setTag:logOut];
                 //            [alert show];
                 //            [alert release];
-                [CustomUIKit popupAlertViewOK:@"로그아웃" msg:@"로그아웃 하시겠습니까?" delegate:self tag:(int)logOut sel:@selector(confirmLogout) with:nil csel:nil with:nil];
+                [CustomUIKit popupAlertViewOK:NSLocalizedString(@"logout", @"logout") msg:@"로그아웃 하시겠습니까?" delegate:self tag:(int)logOut sel:@selector(confirmLogout) with:nil csel:nil with:nil];
             }
                 break;
                 
@@ -930,7 +930,7 @@ else if (indexPath.row == globalFontSize) {
     }
     else if(indexPath.section == 3 && indexPath.row == initContact)
     {
-        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"주소록을 다시 받아오시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"주소록을 다시 받아오시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         //            [alert setTag:initContact];
         //            [alert show];
         //            [alert release];
@@ -953,11 +953,11 @@ else if (indexPath.row == globalFontSize) {
         //        [sub release];
     }
     else if(indexPath.section == 3 && indexPath.row == logOut) {
-        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"로그아웃 하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"로그아웃 하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         //            [alert setTag:logOut];
         //            [alert show];
         //            [alert release];
-        [CustomUIKit popupAlertViewOK:@"로그아웃" msg:@"로그아웃 하시겠습니까?" delegate:self tag:(int)logOut sel:@selector(confirmLogout) with:nil csel:nil with:nil];
+        [CustomUIKit popupAlertViewOK:NSLocalizedString(@"logout", @"logout") msg:@"로그아웃 하시겠습니까?" delegate:self tag:(int)logOut sel:@selector(confirmLogout) with:nil csel:nil with:nil];
     }
     //        else if(indexPath.row == allSetup){
     //
@@ -1181,7 +1181,7 @@ else if (indexPath.row == globalFontSize) {
     }
     else if(indexPath.row == initContact)
     {
-        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"주소록을 다시 받아오시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"주소록을 다시 받아오시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         //            [alert setTag:initContact];
         //            [alert show];
         //            [alert release];
@@ -1204,11 +1204,11 @@ else if (indexPath.row == globalFontSize) {
         //        [sub release];
     }
     else if(indexPath.row == logOut) {
-        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"로그아웃 하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"로그아웃 하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         //            [alert setTag:logOut];
         //            [alert show];
         //            [alert release];
-        [CustomUIKit popupAlertViewOK:@"로그아웃" msg:@"로그아웃 하시겠습니까?" delegate:self tag:(int)logOut sel:@selector(confirmLogout) with:nil csel:nil with:nil];
+        [CustomUIKit popupAlertViewOK:NSLocalizedString(@"logout", @"logout") msg:@"로그아웃 하시겠습니까?" delegate:self tag:(int)logOut sel:@selector(confirmLogout) with:nil csel:nil with:nil];
     }
     //        else if(indexPath.row == allSetup){
     //
@@ -1355,7 +1355,7 @@ else if (indexPath.row == globalFontSize) {
                                                                                  message:@"지금까지 풀무원 건강생활 그린톡을 이용해\n주셔서 감사합니다."
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"확인"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -1370,7 +1370,7 @@ else if (indexPath.row == globalFontSize) {
     else{
         
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"그린톡 탈퇴" message:@"지금까지 풀무원 건강생활 그린톡을 이용해\n주셔서 감사합니다." delegate:self cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"그린톡 탈퇴" message:@"지금까지 풀무원 건강생활 그린톡을 이용해\n주셔서 감사합니다." delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         [alert setTag:kLeave];
         [alert show];
 //        [alert release];
@@ -1499,7 +1499,7 @@ else if (indexPath.row == globalFontSize) {
         } else {
             
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-            //                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //                [alert show];
             [CustomUIKit popupSimpleAlertViewOK:@"" msg:msg con:self];
             
@@ -1592,7 +1592,7 @@ else if (indexPath.row == globalFontSize) {
 
 - (void)settingAllSetup{
     
-    self.title = @"설정";
+    self.title = NSLocalizedString(@"setup", @"setup");
     
     //    UIButton *button = [CustomUIKit closeButtonWithTarget:self selector:@selector(cancel)];
     //    UIBarButtonItem *btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
@@ -1637,24 +1637,24 @@ else if (indexPath.row == globalFontSize) {
     replySort = 101;
     
 //    myList = [[NSMutableArray alloc] initWithObjects:
-//              @"내 프로필",
-//              @"푸시알림",
+//              NSLocalizedString(@"my_profile", @"my_profile"),
+//              NSLocalizedString(@"push_alert", @"push_alert")",
 //              @"알림음"
-//              @"소셜별 알림 설정",
+//              NSLocalizedString(@"setup_each_social_alert", @"setup_each_social_alert"),
 //              @"글씨크기",
 //              @"암호잠금",
 //              @"직급자보기 설정",
 //              @"공유 계정",
 //              @"프로그램 정보",
 //              @"주소록 다시받기",
-//              @"로그아웃",
+//              NSLocalizedString(@"logout", @"logout"),
 //              nil];
     if(myList){
         myList = nil;
     }
     myList = [[NSMutableArray alloc]init];
-    [myList addObject:[NSArray arrayWithObjects:@"내 프로필",@"화면 가이드", nil]];
-    [myList addObject:[NSArray arrayWithObjects:@"푸시알림",@"알림음",@"소셜별 알림 설정",nil]];
+    [myList addObject:[NSArray arrayWithObjects:NSLocalizedString(@"my_profile", @"my_profile"),@"화면 가이드", nil]];
+    [myList addObject:[NSArray arrayWithObjects:NSLocalizedString(@"push_alert", @"push_alert"),@"알림음",NSLocalizedString(@"setup_each_social_alert", @"setup_each_social_alert"),nil]];
     [myList addObject:[NSArray arrayWithObjects:@"글자 크기",@"앱 잠금",@"공유 계정",@"직급자보기 설정",nil]];
     [myList addObject:[NSArray arrayWithObjects:@"테마 설정", @"근무 지역 설정", @"주소록 다시받기",@"프로그램 정보",nil]];
 #else
@@ -1679,10 +1679,10 @@ else if (indexPath.row == globalFontSize) {
         initContact = 10;
         logOut = 11;
         myList = [[NSMutableArray alloc] initWithObjects:
-                  @"푸시알림",
-                  @"내 정보 변경",
-                  @"채팅 히스토리",
-                  @"비밀번호",
+                  NSLocalizedString(@"push_alert", @"push_alert"),
+                  NSLocalizedString(@"change_my_info", @"change_my_info"),
+                  NSLocalizedString(@"chat_history", @"chat_history"),
+                  NSLocalizedString(@"password", @"password"),
                   @"댓글 정렬 순서",
                   @"글자 크기",
                   @"알림음",
@@ -1690,7 +1690,7 @@ else if (indexPath.row == globalFontSize) {
                   @"공유 계정",
                   @"프로그램 정보",
                   @"주소록 다시받기",
-                  @"로그아웃",
+                  NSLocalizedString(@"logout", @"logout"),
                   nil];
     }
     else{
@@ -1700,17 +1700,17 @@ else if (indexPath.row == globalFontSize) {
         initContact = 9;
         logOut = 10;
         myList = [[NSMutableArray alloc] initWithObjects:
-                  @"푸시알림",
-                  @"내 정보 변경",
-                  @"채팅 히스토리",
-                  @"비밀번호",
+                  NSLocalizedString(@"push_alert", @"push_alert"),
+                  NSLocalizedString(@"change_my_info", @"change_my_info"),
+                  NSLocalizedString(@"chat_history", @"chat_history"),
+                  NSLocalizedString(@"password", @"password"),
                   @"댓글 정렬 순서",
                   @"글자 크기",
                   @"알림음",
                   @"공유 계정",
                   @"프로그램 정보",
                   @"주소록 다시받기",
-                  @"로그아웃",
+                  NSLocalizedString(@"logout", @"logout"),
                   nil];
     }
     
@@ -1724,11 +1724,11 @@ else if (indexPath.row == globalFontSize) {
     initContact = 5;
     programInfo = 6;
     myList = [[NSMutableArray alloc] initWithObjects:
-              @"푸시알림",
-              @"내 정보",
+              NSLocalizedString(@"push_alert", @"push_alert"),
+              NSLocalizedString(@"my_info", @"my_info"),
               @"알림음",
               @"글자 크기",
-              @"비밀번호",
+              NSLocalizedString(@"password", @"password"),
               @"주소록 다시받기",
               @"프로그램 정보",
               nil];
@@ -1770,8 +1770,8 @@ else if (indexPath.row == globalFontSize) {
 //        shareAccount = 6;//8;
 //
 //        myList = [[NSMutableArray alloc] initWithObjects:
-//              @"푸시알림",
-//                  @"비밀번호",
+//              NSLocalizedString(@"push_alert", @"push_alert")",
+//                  NSLocalizedString(@"password", @"password"),
 //                  @"글자크기",
 //                  @"댓글 정렬 순서",
 //                  @"알림음",
@@ -1784,8 +1784,8 @@ else if (indexPath.row == globalFontSize) {
 //        shareAccount = 5;//8;
 //
 //        myList = [[NSMutableArray alloc] initWithObjects:
-//                  @"푸시알림",
-//                  @"비밀번호",
+//                  NSLocalizedString(@"push_alert", @"push_alert")",
+//                  NSLocalizedString(@"password", @"password"),
 //                  @"글자크기",
 //                  @"댓글 정렬 순서",
 //                  @"알림음",
@@ -1986,7 +1986,7 @@ else if (indexPath.row == globalFontSize) {
         
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {

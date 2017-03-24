@@ -94,7 +94,7 @@
     
     myTable.allowsMultipleSelectionDuringEditing = YES;
     
-    editB = [CustomUIKit buttonWithTitle:@"편집" fontSize:16 fontColor:[UIColor whiteColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    editB = [CustomUIKit buttonWithTitle:NSLocalizedString(@"edit", @"edit") fontSize:16 fontColor:[UIColor whiteColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
     editB.tag = kNotEditing;
     editButton = [[UIBarButtonItem alloc]initWithCustomView:editB];
        self.navigationItem.rightBarButtonItem = editButton;
@@ -138,7 +138,7 @@
 //    self.navigationItem.rightBarButtonItem = btnNavi;
 //    [btnNavi release];
     
-    self.title = @"메모";
+    self.title = NSLocalizedString(@"memo", @"memo");
 //    [SharedAppDelegate.root returnTitle:self.title viewcon:self noti:NO alarm:YES];
 //    [SharedAppDelegate.root returnTitleWithTwoButton:self.title viewcon:self image:@"memo_writetopbtn.png" sel:@selector(writeMemo) alarm:YES];
     
@@ -303,7 +303,7 @@
             [HTTPExceptionHandler handlingByError:error];
             //            [MBProgressHUD hideHUDForView:self.view animated:YES];
             //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //        [alert show];
             
         }];
@@ -365,7 +365,7 @@
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -534,7 +534,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
 //        
 //        NSDictionary *dic = myList[(int)indexPath.row];
 //        NSLog(@"dic %@",dic);
-//        [CustomUIKit popupAlertViewOK:@"삭제" msg:@"정말 메모를 삭제하시겠습니까?" delegate:self tag:(int)indexPath.row sel:@selector(commitDelete) with:dic csel:nil with:nil];
+//        [CustomUIKit popupAlertViewOK:NSLocalizedString(@"delete", @"delete") msg:@"정말 메모를 삭제하시겠습니까?" delegate:self tag:(int)indexPath.row sel:@selector(commitDelete) with:dic csel:nil with:nil];
 //
 //    }
     
@@ -964,11 +964,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
         message = @"선택한 메모를 삭제하시겠습니까?";
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
             
-            UIAlertController *alertcontroller = [UIAlertController alertControllerWithTitle:@"삭제"
+            UIAlertController *alertcontroller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"delete", @"delete")
                                                                                      message:message
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *okb = [UIAlertAction actionWithTitle:@"삭제"
+            UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             
@@ -990,7 +990,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
             
         }
         else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"삭제" message:message delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"삭제", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"delete", @"delete") message:message delegate:self cancelButtonTitle:@"취소" otherButtonTitles:NSLocalizedString(@"delete", @"delete"), nil];
             [alert show];
             //        [alert release];
         }

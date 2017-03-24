@@ -1634,7 +1634,7 @@
         [view addAction:actionButton];
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -1648,7 +1648,7 @@
     }
 
     else{
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
 											   destructiveButtonTitle:nil otherButtonTitles:@"개인 일정 등록", @"그룹 일정 등록", nil];
 	[actionSheet showInView:SharedAppDelegate.window];
     }

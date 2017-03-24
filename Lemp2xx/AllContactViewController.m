@@ -89,7 +89,7 @@
     
     search.frame = CGRectMake(0,0,320,0);
 #endif
-	search.placeholder = @"이름(초성), 부서, 전화번호 검색";
+    search.placeholder = NSLocalizedString(@"search_name_dept_phone", @"search_name_dept_phone");
     
    
     
@@ -346,11 +346,11 @@
 #endif
     
     if(section == 1)
-        headerLabel.text = @"내 정보";
+        headerLabel.text = NSLocalizedString(@"my_info", @"my_info");
     else if(section == 2)
-        headerLabel.text = [NSString stringWithFormat:@"즐겨찾기 %d",(int)[favList count]];
+        headerLabel.text = [NSString stringWithFormat:@"%@ %d",NSLocalizedString(@"favorite", @"favorite"),(int)[favList count]];
     else if(section == 3)
-        headerLabel.text = @"최근 대화 목록";
+        headerLabel.text = NSLocalizedString(@"recent_call_list", @"recent_call_list");
     else
         headerLabel.text = @"";
     
@@ -361,7 +361,7 @@
         
 #ifdef BearTalk
         
-        UILabel *label = [CustomUIKit labelWithText:@"편집" fontSize:11 fontColor:RGB(161,176,191) frame:CGRectMake(headerView.frame.size.width - 16 - 20, 7, 20, 12) numberOfLines:1 alignText:NSTextAlignmentRight];
+        UILabel *label = [CustomUIKit labelWithText:NSLocalizedString(@"edit", @"edit") fontSize:11 fontColor:RGB(161,176,191) frame:CGRectMake(headerView.frame.size.width - 16 - 20, 7, 20, 12) numberOfLines:1 alignText:NSTextAlignmentRight];
         [headerView addSubview:label];
         
         UIImageView *cellImage = [[UIImageView alloc]init];
@@ -378,7 +378,7 @@
         edit = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(editFavorite) frame:CGRectMake(320-57, 0, 57, 33) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
         [headerView addSubview:edit];
         
-        UILabel *label = [CustomUIKit labelWithText:@"편집" fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(10, 5, edit.frame.size.width-15, edit.frame.size.height - 10) numberOfLines:1 alignText:NSTextAlignmentCenter];
+        UILabel *label = [CustomUIKit labelWithText:NSLocalizedString(@"edit", @"edit") fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(10, 5, edit.frame.size.width-15, edit.frame.size.height - 10) numberOfLines:1 alignText:NSTextAlignmentCenter];
         label.backgroundColor = [UIColor grayColor];
         label.layer.cornerRadius = 3.0; // rounding label
         label.clipsToBounds = YES;
@@ -530,7 +530,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
         NSLog(@"FAIL : %@",operation.error);
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
 		[HTTPExceptionHandler handlingByError:error];
-		//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+		//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -945,7 +945,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
             
             
             if([dic[@"available"]isEqualToString:@"0"]){
-				lblStatus.text = @"미설치";
+				lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
                 disableView.hidden = NO;
                 infoBgView.hidden = YES;
                 info.text = @"";
@@ -954,7 +954,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
                 
             }
             else if([dic[@"available"]isEqualToString:@"4"]){
-                lblStatus.text = @"로그아웃";
+                lblStatus.text = NSLocalizedString(@"logout", @"logout");
                 disableView.hidden = NO;
                 //                invite.hidden = YES;
                 info.text = dic[@"newfield1"];

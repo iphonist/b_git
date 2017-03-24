@@ -312,7 +312,7 @@
                 
                 NSDictionary *contactDic = [ResourceLoader sharedInstance].allContactList[i];
                 NSLog(@"contactdic %@",contactDic);
-                NSString *title = [NSString stringWithFormat:@"담당 HA %d: %@ | %@",i+1,contactDic[@"name"],contactDic[@"team"]];
+                NSString *title = [NSString stringWithFormat:@"%@ %d: %@ | %@",NSLocalizedString(@"my_ha", @"my_ha"),i+1,contactDic[@"name"],contactDic[@"team"]];
                 
                 actionButton = [UIAlertAction
                                 actionWithTitle:title
@@ -331,7 +331,7 @@
             
             
             UIAlertAction* cancel = [UIAlertAction
-                                     actionWithTitle:@"취소"
+                                     actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                      style:UIAlertActionStyleDefault
                                      handler:^(UIAlertAction * action)
                                      {
@@ -351,10 +351,10 @@
             
             NSDictionary *contactDic = [ResourceLoader sharedInstance].allContactList[i];
             NSLog(@"contactdic %@",contactDic);
-            NSString *title = [NSString stringWithFormat:@"담당 HA %d: %@ | %@",i+1,contactDic[@"name"],contactDic[@"team"]];
+            NSString *title = [NSString stringWithFormat:@"%@ %d: %@ | %@",NSLocalizedString(@"my_ha", @"my_ha"),i+1,contactDic[@"name"],contactDic[@"team"]];
             [actionSheet addButtonWithTitle:title];
         }
-        [actionSheet addButtonWithTitle:@"취소"];
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"cancel", @"cancel")];
         [actionSheet setCancelButtonIndex:[[ResourceLoader sharedInstance].allContactList count]];
         [actionSheet showInView:SharedAppDelegate.window];
         actionSheet.tag = kTester;
@@ -403,7 +403,7 @@
                 
                 NSDictionary *contactDic = [ResourceLoader sharedInstance].allContactList[i];
                 NSLog(@"contactdic %@",contactDic);
-                NSString *title = [NSString stringWithFormat:@"담당 HA %d: %@ | %@",i+1,contactDic[@"name"],contactDic[@"team"]];
+                NSString *title = [NSString stringWithFormat:@"%@ %d: %@ | %@",NSLocalizedString(@"my_ha", @"my_ha"),i+1,contactDic[@"name"],contactDic[@"team"]];
                 
                 actionButton = [UIAlertAction
                                 actionWithTitle:title
@@ -428,7 +428,7 @@
             }
             
             UIAlertAction* cancel = [UIAlertAction
-                                     actionWithTitle:@"취소"
+                                     actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                      style:UIAlertActionStyleDefault
                                      handler:^(UIAlertAction * action)
                                      {
@@ -448,10 +448,10 @@
                 
                 NSDictionary *contactDic = [ResourceLoader sharedInstance].allContactList[i];
                 NSLog(@"contactdic %@",contactDic);
-                NSString *title = [NSString stringWithFormat:@"담당 HA %d: %@ | %@",i+1,contactDic[@"name"],contactDic[@"team"]];
+                NSString *title = [NSString stringWithFormat:@"%@ %d: %@ | %@",NSLocalizedString(@"my_ha", @"my_ha"),i+1,contactDic[@"name"],contactDic[@"team"]];
                 [actionSheet addButtonWithTitle:title];
             }
-                [actionSheet addButtonWithTitle:@"취소"];
+                [actionSheet addButtonWithTitle:NSLocalizedString(@"cancel", @"cancel")];
                 [actionSheet setCancelButtonIndex:[[ResourceLoader sharedInstance].allContactList count]];
                 [actionSheet showInView:SharedAppDelegate.window];
         actionSheet.tag = [sender tag];
@@ -599,7 +599,7 @@
                 [SVProgressHUD dismiss];
                 NSLog(@"FAIL : %@",operation.error);
                 [HTTPExceptionHandler handlingByError:error];
-                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"글쓰기를 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"글쓰기를 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
                 //            [alert show];
                 
             }];

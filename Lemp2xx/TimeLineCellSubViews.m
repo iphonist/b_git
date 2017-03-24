@@ -3099,7 +3099,7 @@
         
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -3113,7 +3113,7 @@
     }
     else{
     UIActionSheet *actionSheet;
-    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                 destructiveButtonTitle:nil otherButtonTitles:@"소셜로 공유하기", @"외부로 공유하기", nil];
     
     [actionSheet showInView:SharedAppDelegate.window];
@@ -3283,7 +3283,7 @@
         [MBProgressHUD hideHUDForView:sender animated:YES];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];

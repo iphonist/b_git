@@ -336,7 +336,7 @@
 	}
 #else
     
-    self.title = @"주소록";
+    self.title = NSLocalizedString(@"contacts", @"contacts");
 #endif
 
 //    [SharedAppDelegate.root returnTitle:self.title viewcon:self noti:NO alarm:NO];
@@ -451,7 +451,7 @@
 #if defined(BearTalk) || defined(LempMobileNowon) || defined(IVTalk)
     self.title = first;
 #else
-    self.title = @"주소록";
+    self.title = NSLocalizedString(@"contacts", @"contacts");
 #endif
 //    [SharedAppDelegate.root returnTitle:self.title viewcon:self];
 		
@@ -1347,16 +1347,16 @@
         if([dic[@"available"]isEqualToString:@"0"])
         {
             disableView.hidden = NO;
-            lblStatus.text = @"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             //				if([[SharedAppDelegate.root getPureNumbers:subPeopleList[indexPath.row][@"cellphone"]]length]>9)
-            invite.hidden = NO;//                lblStatus.text = @"미설치";
+            invite.hidden = NO;//                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             infoBgView.hidden = YES;
             info.text = @"";
             
         }
         else if([dic[@"available"]isEqualToString:@"4"]){
             disableView.hidden = NO;
-            lblStatus.text = @"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");
             invite.hidden = YES;
             infoBgView.hidden = NO;
             info.text = dic[@"newfield1"];
@@ -1751,16 +1751,16 @@
         if([dic[@"available"]isEqualToString:@"0"])
         {
             disableView.hidden = NO;
-            lblStatus.text = @"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             //				if([[SharedAppDelegate.root getPureNumbers:subPeopleList[indexPath.row][@"cellphone"]]length]>9)
-            invite.hidden = NO;//                lblStatus.text = @"미설치";
+            invite.hidden = NO;//                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             infoBgView.hidden = YES;
             info.text = @"";
             
         }
         else if([dic[@"available"]isEqualToString:@"4"]){
             disableView.hidden = NO;
-            lblStatus.text = @"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");
             invite.hidden = YES;
             infoBgView.hidden = NO;
             infoBgView.image = [[UIImage imageNamed:@"imageview_contact_info_logout.png"]stretchableImageWithLeftCapWidth:20 topCapHeight:20];
@@ -1861,16 +1861,16 @@
             if([dic[@"available"]isEqualToString:@"0"])
             {
                 disableView.hidden = NO;
-				lblStatus.text = @"미설치";
+				lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 //				if([[SharedAppDelegate.root getPureNumbers:subPeopleList[indexPath.row][@"cellphone"]]length]>9)
-					invite.hidden = NO;//                lblStatus.text = @"미설치";
+					invite.hidden = NO;//                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
                 infoBgView.hidden = YES;
                 info.text = @"";
                 
 			            }
             else if([dic[@"available"]isEqualToString:@"4"]){
                 disableView.hidden = NO;
-                lblStatus.text = @"로그아웃";
+                lblStatus.text = NSLocalizedString(@"logout", @"logout");
                 invite.hidden = YES;
                 infoBgView.hidden = NO;
                 infoBgView.image = [[UIImage imageNamed:@"imageview_contact_info_logout.png"]stretchableImageWithLeftCapWidth:20 topCapHeight:20];
@@ -2039,7 +2039,7 @@
     
     self.title = myList[rowOfButton][@"shortname"];//[arrayobjectatindex:[array count]-1];
 #else
-    self.title = @"주소록";
+    self.title = NSLocalizedString(@"contacts", @"contacts");
     
 #endif
     NSLog(@"myList %d",[myList count]);

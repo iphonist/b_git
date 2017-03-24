@@ -84,7 +84,7 @@
         [[self.cancelButton titleLabel] setFont:[UIFont boldSystemFontOfSize:17]];
         [[self.cancelButton titleLabel] setShadowOffset:CGSizeMake(0, -1)];
         [self.cancelButton setFrame:CGRectMake(0, 0, 58, 30)];
-        [self.cancelButton setTitle:NSLocalizedString(@"취소",@"") forState:UIControlStateNormal];
+        [self.cancelButton setTitle:NSLocalizedString(NSLocalizedString(@"cancel", @"cancel"),@"") forState:UIControlStateNormal];
         [self.cancelButton setTitleShadowColor:[UIColor colorWithRed:0.118 green:0.247 blue:0.455 alpha:1] forState:UIControlStateNormal];
         [self.cancelButton  addTarget:self action:@selector(_actionCancel) forControlEvents:UIControlEventTouchUpInside];
     } else {
@@ -96,7 +96,7 @@
         [[self.cancelButton titleLabel] setFont:[UIFont boldSystemFontOfSize:17]];
         [[self.cancelButton titleLabel] setShadowOffset:CGSizeMake(0, 1)];
         [self.cancelButton setFrame:CGRectMake(0, 0, 50, 30)];
-        [self.cancelButton setTitle:NSLocalizedString(@"취소",@"") forState:UIControlStateNormal];
+        [self.cancelButton setTitle:NSLocalizedString(NSLocalizedString(@"cancel", @"cancel"),@"") forState:UIControlStateNormal];
         [self.cancelButton setTitleColor:[UIColor colorWithRed:0.173 green:0.176 blue:0.176 alpha:1] forState:UIControlStateNormal];
         [self.cancelButton setTitleShadowColor:[UIColor colorWithRed:0.827 green:0.831 blue:0.839 alpha:1] forState:UIControlStateNormal];
         [self.cancelButton  addTarget:self action:@selector(_actionCancel) forControlEvents:UIControlEventTouchUpInside];

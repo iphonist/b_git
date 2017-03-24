@@ -205,7 +205,7 @@ const char paramNumber;
         [popoverView addSubview:btn];
         btn.tag = kSetup;
         label = [[UILabel alloc]initWithFrame:CGRectMake(70, 13, 100, 20)];
-        label.text = @"설정";
+        label.text = NSLocalizedString(@"setup", @"setup");
         [label setBackgroundColor:[UIColor clearColor]];
         [btn addSubview:label];
         //        [label release];
@@ -237,7 +237,7 @@ const char paramNumber;
         //                       [NSDictionary dictionaryWithObjectsAndKeys:@"Link",@"text",@"n01_tl_lisnic_07.png",@"image",nil],
         //                       [NSDictionary dictionaryWithObjectsAndKeys:@"대화",@"text",@"n01_tl_lisnic_08.png",@"image",nil],
         //                       [NSDictionary dictionaryWithObjectsAndKeys:@"전화",@"text",@"n01_tl_lisnic_09.png",@"image",nil],
-        //                       [NSDictionary dictionaryWithObjectsAndKeys:@"메모",@"text",@"n01_tl_lisnic_10.png",@"image",nil],nil];
+        //                       [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"memo", @"memo"),@"text",@"n01_tl_lisnic_10.png",@"image",nil],nil];
         
         //        slidingMenuView = [[UIView alloc]initWithFrame:CGRectMake(34, 0-400, 252, 37*5+25)];
         //
@@ -2442,7 +2442,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         
         actionButton = [UIAlertAction
-                        actionWithTitle:@"채팅"
+                        actionWithTitle:NSLocalizedString(@"chat", @"chat")
                         style:UIAlertActionStyleDefault
                         handler:^(UIAlertAction * action)
                         {
@@ -2484,7 +2484,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -2500,11 +2500,11 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         UIActionSheet *actionSheet;
         
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"mVoIPEnable"]) {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                        destructiveButtonTitle:nil otherButtonTitles:@"채팅", @"쪽지", @"무료통화", nil];
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                        destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"chat", @"chat"), @"쪽지", @"무료통화", nil];
         } else {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                        destructiveButtonTitle:nil otherButtonTitles:@"채팅", @"쪽지",nil];
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                        destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"chat", @"chat"), @"쪽지",nil];
         }
         [actionSheet showInView:SharedAppDelegate.window];
     }
@@ -2647,7 +2647,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         } else {
             
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             //            [alert show];
             //
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
@@ -2695,7 +2695,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                        message:@"멤버의 휴대폰으로 설치요청 SMS를\n발송하시겠습니까?"
                                                                 preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"예"
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                      style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action){
                                                        
@@ -2734,7 +2734,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                        [alert dismissViewControllerAnimated:YES completion:nil];
                                                    }];
         
-        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"아니요"
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action){
                                                            [alert dismissViewControllerAnimated:YES completion:nil];
@@ -2749,7 +2749,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         UIAlertView *alert;
         //    NSLog(@"dic %@",dic);
         //    NSString *msg = [NSString stringWithFormat:@"%@ %@ %@\n%@\n위 번호로 설치요청 SMS를전송합니다.",dic[@"name"],dic[@"grade2"],dic[@"team"],dic[@"cellphone"]];
-        alert = [[UIAlertView alloc] initWithTitle:@"설치요청" message:@"멤버의 휴대폰으로 설치요청 SMS를\n발송하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+        alert = [[UIAlertView alloc] initWithTitle:@"설치요청" message:@"멤버의 휴대폰으로 설치요청 SMS를\n발송하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
         
 #if defined(GreenTalk) || defined(GreenTalkCustomer)
         NSDictionary *dic = [self searchContactDictionary:[[sender titleLabel]text]];
@@ -2887,7 +2887,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -2988,7 +2988,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -3362,7 +3362,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [SVProgressHUD dismiss];
         //        [viewcon.navigationItem.rightBarButtonItem setEnabled:YES];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -3470,7 +3470,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [SVProgressHUD dismiss];
         //        [viewcon.navigationItem.rightBarButtonItem setEnabled:YES];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -3561,7 +3561,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //        [MBProgressHUD hideHUDForView:SharedAppDelegate.window animated:YES];
         [SVProgressHUD dismiss];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -3639,7 +3639,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 SharedAppDelegate.root.home.title = name;
 #if defined(GreenTalk) || defined(GreenTalkCustomer)
                 SharedAppDelegate.root.greenBoard.title = name;
-                [SVProgressHUD showSuccessWithStatus:@"설정이 저장되었습니다."];
+                [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"save_config_alert", @"save_config_alert")];
                 
 #endif
                 //                [SharedAppDelegate.root returnTitle:name viewcon:SharedAppDelegate.root.home image:NO noti:NO];
@@ -3713,7 +3713,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 
 #endif
                 
-                [CustomUIKit popupSimpleAlertViewOK:@"소셜 탈퇴" msg:@"탈퇴 완료!" con:self];
+                [CustomUIKit popupSimpleAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:NSLocalizedString(@"drop_complete", @"drop_complete") con:self];
             }
             else if(type == 6){ // 방장 위임
                 
@@ -3734,7 +3734,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 UINavigationController *navCon = (UINavigationController*)[[SharedAppDelegate.root.mainTabBar viewControllers] objectAtIndex:kTabIndexSocial];
                 [(CBNavigationController *)navCon popToRootViewControllerWithBlockGestureAnimated:NO];
                 
-                [CustomUIKit popupSimpleAlertViewOK:@"소셜 탈퇴" msg:@"탈퇴 완료!" con:self];
+                [CustomUIKit popupSimpleAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:NSLocalizedString(@"drop_complete", @"drop_complete") con:self];
                 
 #endif
             }
@@ -3794,7 +3794,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [SVProgressHUD dismiss];
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -3946,7 +3946,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 
 
                 
-                [CustomUIKit popupSimpleAlertViewOK:@"소셜 탈퇴" msg:@"탈퇴 완료!" con:self];
+                [CustomUIKit popupSimpleAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:NSLocalizedString(@"drop_complete", @"drop_complete") con:self];
             }
             else if(type == 6){ // 방장 위임
                 
@@ -4007,7 +4007,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [SVProgressHUD dismiss];
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -4129,7 +4129,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
             NSLog(@"11 mng %@ memberarray count %d name %@",mng,[memberArray count],name);
             if([mng length]>0){
-                [SVProgressHUD showSuccessWithStatus:@"설정이 저장되었습니다."];
+                [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"save_config_alert", @"save_config_alert")];
                 
                 [con performSelector:@selector(cancel)];
                 
@@ -4148,7 +4148,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             //        [MBProgressHUD hideHUDForView:SharedAppDelegate.window animated:YES];
             [SVProgressHUD dismiss];
             [HTTPExceptionHandler handlingByError:error];
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //        [alert show];
             
         }];
@@ -4206,7 +4206,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
             NSLog(@"22 mng %@ memberarray count %d name %@",mng,[memberArray count],name);
             if([mng length]>0){
-                [SVProgressHUD showSuccessWithStatus:@"설정이 저장되었습니다."];
+                [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"save_config_alert", @"save_config_alert")];
                 
                 [con performSelector:@selector(cancel)];
                 
@@ -4227,7 +4227,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             //        [MBProgressHUD hideHUDForView:SharedAppDelegate.window animated:YES];
             [SVProgressHUD dismiss];
             [HTTPExceptionHandler handlingByError:error];
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //        [alert show];
             
         }];
@@ -4336,7 +4336,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         //        [MBProgressHUD hideHUDForView:SharedAppDelegate.window animated:YES];
         [SVProgressHUD dismiss];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -4490,7 +4490,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -4670,7 +4670,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -4813,7 +4813,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -5094,7 +5094,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -5342,7 +5342,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -5497,7 +5497,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -5591,7 +5591,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -5680,7 +5680,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -5740,7 +5740,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -5835,7 +5835,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                     }
                 }
                 else{
-                    grouproomname = @"대화상대없음";
+                    grouproomname = NSLocalizedString(@"none_chatmember", @"none_chatmember");
                 }
                 //                NSLog(@"grouproomname %@",grouproomname);
                 
@@ -5863,7 +5863,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"방을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -5917,7 +5917,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     //        NSLog(@"FAIL : %@",operation.error);
     //        //            [MBProgressHUD hideHUDForView:self.view animated:YES];
     //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+    //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
     //        [alert show];
     //
     //    }];
@@ -6134,7 +6134,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                            message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action){
                                                            
@@ -6151,7 +6151,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
         }
         else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             [alert show];
             //        [alert release];
         }
@@ -6265,7 +6265,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             
-            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //            [alert show];
             //			[alert release];
             
@@ -6283,7 +6283,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                            message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action){
                                                            
@@ -6300,7 +6300,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
         }
         else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             [alert show];
             //		[alert release];
         }
@@ -6564,7 +6564,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             
-            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //            [alert show];
             //			[alert release];
             
@@ -6578,7 +6578,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         NSLog(@"FAIL : %@",operation.error);
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //                if([bell length]>0){
-        //                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"벨소리를 변경하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"벨소리를 변경하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //                    [alert show];
         //
         //                }
@@ -6589,7 +6589,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                            message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action){
                                                            
@@ -6607,7 +6607,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         }
         else{
             
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             [alert show];
             //		[alert release];
         }
@@ -6989,7 +6989,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             [SharedAppDelegate.root.login loginfail];
             
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //            [alert show];
             //			[alert release];
             
@@ -7014,7 +7014,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                            message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!"
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action){
                                                            
@@ -7032,7 +7032,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         }
         else{
             
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             [alert show];
             //		[alert release];
             //                }
@@ -7205,7 +7205,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                                message:msg
                                                                         preferredStyle:UIAlertControllerStyleAlert];
                 
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action){
                                                                
@@ -7223,7 +7223,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             }
             else{
                 
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
                 [alert show];
             }
             
@@ -7260,7 +7260,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                                  message:@"소셜 리더가 변경되었습니다."
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"확인"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -7282,7 +7282,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     else{
         UIAlertView *alert;
         //    NSString *msg = [NSString stringWithFormat:@"%@로 일반 전화를 거시겠습니까?",number];
-        alert = [[UIAlertView alloc] initWithTitle:@"리더위임" message:@"소셜 리더가 변경되었습니다." delegate:self cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+        alert = [[UIAlertView alloc] initWithTitle:@"리더위임" message:@"소셜 리더가 변경되었습니다." delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         alert.tag = kPassMaster;
         [alert show];
         //        [alert release];
@@ -7354,7 +7354,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -7547,7 +7547,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                            message:msg
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action){
                                                            
@@ -7594,7 +7594,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                            message:msg
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action){
                                                            
@@ -7648,7 +7648,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                            message:msg
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action){
                                                            
@@ -8145,7 +8145,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                                    message:msg
                                                                             preferredStyle:UIAlertControllerStyleAlert];
                     
-                    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+                    UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * action){
                                                                    
@@ -8190,7 +8190,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                 }
                 else{
                     
-                    alert = [[UIAlertView alloc] initWithTitle:@"오류" message:msg delegate:self cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+                    alert = [[UIAlertView alloc] initWithTitle:@"오류" message:msg delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
                     alert.tag = kBomb;
                     [alert show];
                     //                [alert release];
@@ -8864,7 +8864,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         [HTTPExceptionHandler handlingByError:error];
         
@@ -8958,7 +8958,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             [HTTPExceptionHandler handlingByError:error];
             //            [MBProgressHUD hideHUDForView:self.view animated:YES];
             //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //        [alert show];
             
         }];
@@ -9023,7 +9023,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             [HTTPExceptionHandler handlingByError:error];
             //            [MBProgressHUD hideHUDForView:self.view animated:YES];
             //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //        [alert show];
             
         }];
@@ -9071,7 +9071,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                      }];
         
         [alertcontroller addAction:okb];
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -9084,7 +9084,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     else{
         UIAlertView *alert;
         //    NSString *msg = [NSString stringWithFormat:@"%@로 일반 전화를 거시겠습니까?",number];
-        alert = [[UIAlertView alloc] initWithTitle:@"검색방법" message:@"검색방법을 선택하세요." delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"이름/부서 검색",@"업무내용 검색", nil];
+        alert = [[UIAlertView alloc] initWithTitle:@"검색방법" message:@"검색방법을 선택하세요." delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"이름/부서 검색",@"업무내용 검색", nil];
         alert.tag = kHowCall;
         [alert show];
         //        [alert release];
@@ -9305,7 +9305,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -9447,7 +9447,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -9735,7 +9735,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -10117,7 +10117,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -10375,7 +10375,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"채팅 목록을 받아오는데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"채팅 목록을 받아오는데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
     }];
     
@@ -10502,7 +10502,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"채팅 목록을 받아오는데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"채팅 목록을 받아오는데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
     }];
     
@@ -10575,7 +10575,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         [HTTPExceptionHandler handlingByError:error];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"채팅 목록을 받아오는데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"채팅 목록을 받아오는데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
     }];
     
@@ -11355,7 +11355,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                            message:msg
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action){
                                                            
@@ -11366,7 +11366,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
             
             
-            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"취소"
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action){
                                                                [alert dismissViewControllerAnimated:YES completion:nil];
@@ -11383,7 +11383,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
                                                             message:msg
-                                                           delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+                                                           delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             alert.tag = kAppExit;
             [alert show];
             //        [alert release];

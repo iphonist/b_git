@@ -176,7 +176,7 @@
     [searchBar setShowsCancelButton:YES animated:YES];
     for(UIView *subView in searchBar.subviews){
         if([subView isKindOfClass:UIButton.class]){
-            [(UIButton*)subView setTitle:@"취소" forState:UIControlStateNormal];
+            [(UIButton*)subView setTitle:NSLocalizedString(@"cancel", @"cancel") forState:UIControlStateNormal];
         }
     }
     
@@ -2103,7 +2103,7 @@
         }
         NSLog(@"[ResourceLoader sharedInstance].myDeptList %@",[ResourceLoader sharedInstance].myDeptList);
         NSLog(@"array %@",array);
-        [array addObject:@"취소"];
+        [array addObject:NSLocalizedString(@"cancel", @"cancel")];
         
         NSLog(@"dropFirstobj %@",dropFirstobj);
         if(dropFirstobj){
@@ -2128,7 +2128,7 @@
         NSMutableArray *array = [NSMutableArray array];
         [array addObject:@"전체 직급"];
         [array addObjectsFromArray:selectedTeamList];
-        [array addObject:@"취소"];
+        [array addObject:NSLocalizedString(@"cancel", @"cancel")];
         
         if(dropFirstobj){
             [dropFirstobj removeFromSuperview];
@@ -2915,7 +2915,7 @@
         
 //        UIAlertView *alert;
         NSString *msg = @"이전 화면 이동 시, 선택 된 항목들이 모두 초기화 됩니다. 이동하시겠습니까?";
-//        alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"이동", nil];
+//        alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"이동", nil];
 //        alert.tag = kExit;
 //        [alert show];
 //        [alert release];
@@ -2958,7 +2958,7 @@
     
     if([addArray count]<1) {
         if(viewTag != kNewGroup){
-            [CustomUIKit popupSimpleAlertViewOK:nil msg:@"선택된 대상이 없습니다." con:self];
+            [CustomUIKit popupSimpleAlertViewOK:nil msg:NSLocalizedString(@"there_is_no_selected_room", @"there_is_no_selected_room") con:self];
             return;
         }
         
@@ -3024,7 +3024,7 @@
     
 //    UIAlertView *alert;
     NSString *msg = [NSString stringWithFormat:@"%@ 멤버를 추가하시겠습니까?",names];
-//    alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//    alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //    alert.tag = kAlertAdd;
 //    [alert show];
 //    [alert release];
@@ -3447,7 +3447,7 @@
             
             
             if (isEnable == YES) {
-                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"무료통화를 하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"무료통화를 하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
                 //            alert.tag = kAlertCall;
                 //            [alert show];
                 //            [alert release];
@@ -3555,7 +3555,7 @@
             
             
             if (isEnable == YES) {
-                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"무료통화를 하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"무료통화를 하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
                 //            alert.tag = kAlertCall;
                 //            [alert show];
                 //            [alert release];
@@ -3609,7 +3609,7 @@
             
             
             if (isEnable == YES) {
-                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"무료통화를 하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+                //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"무료통화를 하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
                 //            alert.tag = kAlertCall;
                 //            [alert show];
                 //            [alert release];
@@ -3743,7 +3743,7 @@
                 
                 
                 if (isEnable == YES) {
-                    //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"무료통화를 하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+                    //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"무료통화를 하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
                     //            alert.tag = kAlertCall;
                     //            [alert show];
                     //            [alert release];
@@ -3866,7 +3866,7 @@
         
         
         if (isEnable == YES) {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"무료통화를 하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"무료통화를 하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //            alert.tag = kAlertCall;
 //            [alert show];
 //            [alert release];
@@ -4784,7 +4784,7 @@
         {
             //            name.textColor = [UIColor grayColor];
             disableView.hidden = NO;
-            lblStatus.text = @"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             //            if([[SharedAppDelegate.root getPureNumbers:copyList[indexPath.row][@"cellphone"]]length]>0)
             //				invite.hidden = NO;
             //            else
@@ -4794,7 +4794,7 @@
             
             //            name.textColor = [UIColor grayColor];
             disableView.hidden = NO;
-            lblStatus.text = @"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");
             //            invite.hidden = YES;
         }
         else
@@ -5011,7 +5011,7 @@
         
         NSLog(@"FAIL : %@",operation.error);
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         [HTTPExceptionHandler handlingByError:error];
         

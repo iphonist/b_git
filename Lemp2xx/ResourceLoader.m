@@ -498,15 +498,15 @@
                 
                 NSMutableDictionary *newDic = [NSMutableDictionary dictionary];
                 [newDic setObject:beartalkdic[@"available"] forKey:@"available"];
-                [newDic setObject:IS_NULL(pdic[@"MOBILE_NUM"])?@"":pdic[@"MOBILE_NUM"] forKey:@"cellphone"];
-                [newDic setObject:IS_NULL(pdic[@"COMPANY_TEL_NUM"])?@"":pdic[@"COMPANY_TEL_NUM"] forKey:@"companyphone"];
+                [newDic setObject:beartalkdic[@"cellphone"] forKey:@"cellphone"];
+                [newDic setObject:beartalkdic[@"companyphone"] forKey:@"companyphone"];
                 [newDic setObject:IS_NULL(pdic[@"DEPT_CODE"])?@"":pdic[@"DEPT_CODE"] forKey:@"deptcode"];
                 [newDic setObject:beartalkdic[@"email"] forKey:@"email"];
                 [newDic setObject:beartalkdic[@"favorite"] forKey:@"favorite"];
                 [newDic setObject:beartalkdic[@"position"] forKey:@"position"];
                 [newDic setObject:[NSString stringWithFormat:@"%@/%@",IS_NULL(pdic[@"POS_NAME"])?@"":pdic[@"POS_NAME"],IS_NULL(pdic[@"DUTY_NAME"])?@"":pdic[@"DUTY_NAME"]] forKey:@"grade2"];
                 [newDic setObject:beartalkdic[@"id"] forKey:@"id"];
-                [newDic setObject:IS_NULL(pdic[@"USER_NAME"])?@"":pdic[@"USER_NAME"] forKey:@"name"];
+                [newDic setObject:beartalkdic[@"name"] forKey:@"name"];
                 [newDic setObject:beartalkdic[@"newfield1"] forKey:@"newfield1"];
                 [newDic setObject:beartalkdic[@"newfield2"] forKey:@"newfield2"];
                 [newDic setObject:beartalkdic[@"newfield3"] forKey:@"newfield3"];

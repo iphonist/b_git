@@ -311,7 +311,7 @@
         acceptLabel.tag = 50;
         acceptLabel.userInteractionEnabled = YES;
         [invitationImage addSubview:acceptLabel];
-        acceptLabel.text = @"가입";
+        acceptLabel.text = NSLocalizedString(@"register", @"register");
     }
     
     
@@ -1341,7 +1341,7 @@
     //                                         }];
     //            [alertcontroller addAction:okb];
     //
-    //            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+    //            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
     //                                                              style:UIAlertActionStyleDefault
     //                                                            handler:^(UIAlertAction * action){
     //                                                                [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -1353,7 +1353,7 @@
     //        }
     //        else{
     //            UIAlertView *alert;
-    //            alert = [[UIAlertView alloc] initWithTitle:@"새소셜 만들기" message:msg delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"고객 관리형 소셜 만들기",@"HA용 소셜 만들기", nil];
+    //            alert = [[UIAlertView alloc] initWithTitle:@"새소셜 만들기" message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"고객 관리형 소셜 만들기",@"HA용 소셜 만들기", nil];
     //            alert.tag = kMakeSocical;
     //            [alert show];
     //            [alert release];
@@ -1454,7 +1454,7 @@
             
             NSLog(@"FAIL : %@",operation.error);
             [HTTPExceptionHandler handlingByError:error];
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 가입하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 가입하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //        [alert show];
             
         }];
@@ -1558,7 +1558,7 @@
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 가입하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 가입하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];

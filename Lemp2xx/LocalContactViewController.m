@@ -64,10 +64,10 @@
             
         }
         else{
-            self.title = @"주소록";
+            self.title = NSLocalizedString(@"contacts", @"contacts");
             
             if(self.view.tag == kRequest){
-                self.title = @"고객 초대";
+                self.title = NSLocalizedString(@"invite_customer", @"invite_customer");
                 
                button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(inviteDone) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:@"barbutton_done.png" imageNamedPressed:nil];
                 UIBarButtonItem *btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
@@ -179,7 +179,7 @@
     [searchBar setShowsCancelButton:YES animated:YES];
     for(UIView *subView in searchBar.subviews){
         if([subView isKindOfClass:UIButton.class]){
-            [(UIButton*)subView setTitle:@"취소" forState:UIControlStateNormal];
+            [(UIButton*)subView setTitle:NSLocalizedString(@"cancel", @"cancel") forState:UIControlStateNormal];
         }
     }
     
@@ -730,7 +730,7 @@
         
         NSLog(@"FAIL : %@",operation.error);
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
 		[HTTPExceptionHandler handlingByError:error];
         
@@ -1223,11 +1223,11 @@
         if([dic[@"available"]isEqualToString:@"0"])
         {
             disableView.hidden = NO;
-            lblStatus.text = @"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             
         }
         else if([dic[@"available"]isEqualToString:@"4"]){
-            lblStatus.text = @"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");
             disableView.hidden = NO;
             //            invite.hidden = YES;
         }

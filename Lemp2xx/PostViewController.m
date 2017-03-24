@@ -863,7 +863,7 @@ const char paramNumber;
 //        [addPoll release];
     }
     
-#ifdef MQM
+#if defined(MQM) || defined(Batong)
     
     if(addFile)
     {
@@ -1349,6 +1349,13 @@ const char paramNumber;
     
   
     
+#elif Batong
+    
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    picker.mediaTypes = @[(NSString *)kUTTypeMovie];
+    [self.navigationController presentViewController:picker animated:YES completion:nil];
 #else
     [self cmdButton:sender];
     
@@ -1392,7 +1399,7 @@ const char paramNumber;
     }
     
     UIAlertAction* cancel = [UIAlertAction
-                             actionWithTitle:@"취소"
+                             actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                              style:UIAlertActionStyleDefault
                              handler:^(UIAlertAction * action)
                              {
@@ -1462,7 +1469,7 @@ const char paramNumber;
         
         
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             
@@ -1857,11 +1864,11 @@ const char paramNumber;
 - (void)tryCancel{
 //    UIAlertView *alert;
     NSString *msg = @"글 작성을 취소하시겠습니까?\n내용은 보존되지 않습니다.";
-    //    alert = [[UIAlertView alloc] initWithTitle:@"취소" message:msg delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+    //    alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"cancel", @"cancel") message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
     //    alert.tag = kAlertCancel;
     //    [alert show];
     //    [alert release];
-    [CustomUIKit popupAlertViewOK:@"취소" msg:msg delegate:self tag:kAlertCancel sel:@selector(cancel) with:nil csel:nil with:nil];
+    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"cancel", @"cancel") msg:msg delegate:self tag:kAlertCancel sel:@selector(cancel) with:nil csel:nil with:nil];
     
 }
 
@@ -2176,7 +2183,7 @@ const char paramNumber;
             NSLog(@"FAIL : %@",operation.error);
             [SVProgressHUD dismiss];
             [HTTPExceptionHandler handlingByError:error];
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //        [alert show];
             
         }];
@@ -2486,7 +2493,7 @@ const char paramNumber;
             NSLog(@"FAIL : %@",operation.error);
             [SVProgressHUD dismiss];
             [HTTPExceptionHandler handlingByError:error];
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //        [alert show];
             
         }];
@@ -2626,7 +2633,7 @@ const char paramNumber;
             
             //            UIAlertView *alert;
             NSString *msg = [NSString stringWithFormat:@"등록이 됩니다.\n%@ 소셜 멤버에게 알림이 갑니다. 계속하시겠습니까?",SharedAppDelegate.root.home.titleString];
-            //            alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+            //            alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             //            alert.tag = kAlertPost;
             //            [alert show];
             //            [alert release];
@@ -2636,7 +2643,7 @@ const char paramNumber;
         else if([SharedAppDelegate.root.home.category isEqualToString:@"0"] || [SharedAppDelegate.root.home.category isEqualToString:@"1"]){
             
             //            UIAlertView *alert;
-            //            alert = [[UIAlertView alloc] initWithTitle:@"전체 직원에게 알림이 갑니다. 계속하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+            //            alert = [[UIAlertView alloc] initWithTitle:@"전체 직원에게 알림이 갑니다. 계속하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             //            alert.tag = kAlertPost;
             //            [alert show];
             //            [alert release];
@@ -2649,7 +2656,7 @@ const char paramNumber;
 //        NSLog(@"category %@",category);
         if([SharedAppDelegate.root.home.category isEqualToString:@"0"] || [SharedAppDelegate.root.home.category isEqualToString:@"1"]){
             //            UIAlertView *alert;
-            //            alert = [[UIAlertView alloc] initWithTitle:@"전체 직원에게 공유됩니다. 계속하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+            //            alert = [[UIAlertView alloc] initWithTitle:@"전체 직원에게 공유됩니다. 계속하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             //            alert.tag = kAlertPost;
             //            [alert show];
             //            [alert release];
@@ -2931,7 +2938,7 @@ const char paramNumber;
     NSLog(@"parameters %@",parameters);
     
     if([dataArray count] > 0 || [attachFilePaths count] > 0) {
-        
+        NSLog(@"data %d file %d",[dataArray count],[attachFilePaths count]);
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 //        request = [client multipartFormRequestWithMethod:@"POST" path:@"/lemp/timeline/write/timeline.lemp" parameters:parameters JSONKey:@"poll" JSONParameter:pollDic constructingBodyWithBlock: ^(id <AFMultipartFormData>formData) {
@@ -2965,12 +2972,22 @@ const char paramNumber;
 					NSString *filePath = attachFilePaths[i];
 					NSData *fileData = [NSData dataWithContentsOfFile:filePath];
 					NSString *mimeType = [SharedFunctions getMIMETypeWithFilePath:filePath];
-					DBMetadata *metaData = (DBMetadata*)attachFiles[i];
-					NSLog(@"ATTACH filePath %@ / fileSize %i / mimeType %@ / filename %@",filePath,(int)[fileData length],mimeType, metaData.filename);
 #ifdef BearTalk
+                    DBMetadata *metaData = (DBMetadata*)attachFiles[i];
+                    NSLog(@"ATTACH filePath %@ / fileSize %i / mimeType %@ / filename %@",filePath,(int)[fileData length],mimeType, metaData.filename);
                     [formData appendPartWithFileData:fileData name:@"filesArr" fileName:metaData.filename mimeType:mimeType];
                     
+#elif Batong
+               
+                    
+                    NSArray *fileNamearray = [filePath componentsSeparatedByString:@"/"];
+                    NSString *filename = fileNamearray[[fileNamearray count]-1];
+                    NSLog(@"ATTACH filePath %@ / fileSize %i / mimeType %@ / filename %@",filePath,(int)[fileData length],mimeType,filename);
+                    [formData appendPartWithFileData:fileData name:[NSString stringWithFormat:@"attach%d",i] fileName:filename mimeType:mimeType];
+                    
 #else
+                    DBMetadata *metaData = (DBMetadata*)attachFiles[i];
+                    NSLog(@"ATTACH filePath %@ / fileSize %i / mimeType %@ / filename %@",filePath,(int)[fileData length],mimeType, metaData.filename);
                     [formData appendPartWithFileData:fileData name:[NSString stringWithFormat:@"attach%d",i] fileName:metaData.filename mimeType:mimeType];
                     
 #endif
@@ -3085,7 +3102,7 @@ const char paramNumber;
 			[SVProgressHUD dismiss];
             NSLog(@"FAIL : %@",operation.error);
 			[HTTPExceptionHandler handlingByError:error];
-            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"글쓰기를 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"글쓰기를 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //            [alert show];
             
         }];
@@ -3165,7 +3182,7 @@ const char paramNumber;
                                                                                  message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?"
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -3174,7 +3191,7 @@ const char paramNumber;
                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                     }];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -3187,7 +3204,7 @@ const char paramNumber;
     }
     else{
     UIAlertView *alert;
-    alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+    alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
     alert.tag = kAlertPhoto;
     objc_setAssociatedObject(alert, &paramNumber, tagString, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [alert show];
@@ -3208,7 +3225,7 @@ const char paramNumber;
                                                                                  message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?"
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -3217,7 +3234,7 @@ const char paramNumber;
                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                     }];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -3230,7 +3247,7 @@ const char paramNumber;
     }
     else{
         UIAlertView *alert;
-        alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+        alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
         NSString *tagString = [NSString stringWithFormat:@"%d",(int)[sender tag]];
         alert.tag = kAlertModifyPhoto;
         objc_setAssociatedObject(alert, &paramNumber, tagString, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -3813,7 +3830,7 @@ const char paramNumber;
                 [view addAction:actionButton];
                 
                 UIAlertAction* cancel = [UIAlertAction
-                                         actionWithTitle:@"취소"
+                                         actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                          style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction * action)
                                          {
@@ -3826,7 +3843,7 @@ const char paramNumber;
                 
             }
             else{
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                         destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
                 actionSheet.tag = [sender tag];
                 [actionSheet showInView:SharedAppDelegate.window];
@@ -3840,7 +3857,7 @@ const char paramNumber;
     else if([sender tag] == kLocation){
         
         if(locationInfo){
-            //            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+            //            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
             //                                        destructiveButtonTitle:nil otherButtonTitles:@"위치 삭제", @"위치 재설정", nil];
             //            actionSheet.tag = [sender tag];
 			int lastTag = (int)keyboardUnderView.tag;
@@ -3914,7 +3931,7 @@ const char paramNumber;
             
             
             UIAlertAction* cancel = [UIAlertAction
-                                     actionWithTitle:@"취소"
+                                     actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                      style:UIAlertActionStyleDefault
                                      handler:^(UIAlertAction * action)
                                      {
@@ -3928,7 +3945,7 @@ const char paramNumber;
         }
 
         else{
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                     destructiveButtonTitle:nil otherButtonTitles:@"설문 삭제하기", @"설문 수정하기", nil];
         actionSheet.tag = [sender tag];
         [actionSheet showInView:SharedAppDelegate.window];
@@ -4434,11 +4451,173 @@ const char paramNumber;
 	[picker dismissViewControllerAnimated:YES completion:nil];
 }
 
+                   -(NSNumber *) fileOneSize:(NSString *)file
+        {
+            /****************************************************************
+             작업자 : 박형준
+             작업일자 : 2012/06/04
+             작업내용 : 파일의 크기를 구해 반환
+             param	- file(NSString*) : 파일경로
+             연관화면 : 없음
+             ****************************************************************/
+            
+            NSDictionary *fileAttributes=[[NSFileManager defaultManager] attributesOfItemAtPath:file error:nil];
+            NSLog(@"fileAttrivute %@",fileAttributes);
+            NSLog(@"fileSize %@",fileAttributes[NSFileSize]);
+            return fileAttributes[NSFileSize];
+        }
+                   
+                   -(void) convertVideoToMP4AndFixMooV:(NSString*)filename// toPath:(NSString*)outputPath
+        {
+            /****************************************************************
+             작업자 : 박형준
+             작업일자 : 2012/06/04
+             작업내용 : 미디어 전송기능 - 안드로이드와 호환을 위해 동영상을 MP4로 인코딩
+             param	- filename(NSString*) : 소스파일경로
+             연관화면 : 채팅
+             ****************************************************************/
+            
+            [SVProgressHUD showWithStatus:@"비디오 인코딩 중..."];
+            NSURL *url = [NSURL fileURLWithPath:filename];
+            AVAsset *avAsset = [AVURLAsset URLAssetWithURL:url options:nil];
+            
+            NSString *timeStamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentDirectory = paths[0];
+            
+            NSString *movieName = [NSString stringWithFormat:@"%@.mp4",timeStamp];
+            
+            
+            NSString *fullPathToFile = [documentDirectory stringByAppendingPathComponent:movieName];
+            
+            
+            AVAssetExportSession *exportSession = [AVAssetExportSession
+                                                   exportSessionWithAsset:avAsset
+                                                   presetName:AVAssetExportPresetPassthrough];
+            
+            exportSession.outputURL = [NSURL fileURLWithPath:fullPathToFile];
+            exportSession.outputFileType = AVFileTypeMPEG4;
+            
+            // This should move the moov atom before the mdat atom,
+            // hence allow playback before the entire file is downloaded
+            exportSession.shouldOptimizeForNetworkUse = YES;
+            
+            [exportSession exportAsynchronouslyWithCompletionHandler:
+             ^{
+                 if (AVAssetExportSessionStatusCompleted == exportSession.status) {
+                     NSLog(@"AVAssetExportSessiongStatusCompleted %@ to %@",filename, fullPathToFile);
+                     NSLog(@"Movie Export Completed... filesize : %@",[self fileOneSize:fullPathToFile]);
+                     NSData *movieData = [NSData dataWithContentsOfFile:fullPathToFile];
+                     //             NSLog(@"movieData %d %@",[movieData length],self.roomKey);
+                     //             NSLog(@"movieDName %@",movieName);
+                     //             NSLog(@"timeStamp %@",timeStamp);
+                     //             NSLog(@"self.roomkey %@",self.roomKey);
+                     //             	 [self hideMBProgressHUD:self.view];
+                     NSArray *array = @[movieData, movieName, fullPathToFile];//, nil];
+                     //             NSLog(@"array count %d",[array count]);
+                     //             NSLog(@"data length %d name %@ stamp %@ rk %@",[movieData length],movieName,timeStamp,self.roomKey);
+                     [self performSelectorOnMainThread:@selector(sendMovie:) withObject:array waitUntilDone:NO];
+                     //             	[self addSendFile:5 withFileName:movieName data:movieData rk:self.roomKey index:timeStamp];
+                     //             [self hideMBProgressHUD:self.view];
+                     //             [self sendFile:5 sendData:movieData Rk:self.roomKey filename:movieName index:timeStamp];
+                     //			 [self sendFile:5 sendData:movieData Rk:self.roomKey filename:movieName];
+                     
+                 } 
+                 else if (AVAssetExportSessionStatusFailed == exportSession.status) {
+                     //			 NSLog(@"AVAssetExportSessionStatusFailed");
+                     [SVProgressHUD dismiss];
+                 } 
+                 else 
+                 {
+                     //			 NSLog(@"Export Session Status: %d", exportSession.status);
+                     
+                     [SVProgressHUD dismiss];
+                     
+                 }
+             }];
+        }  
+                   
+                   -(void)sendMovie:(NSArray*)array
+        {
+            NSLog(@"sendmovie %@",array);
+            [SVProgressHUD dismiss];
+            
+            
+            [attachFiles addObject:array[0]];
+            [attachFilePaths addObject:[NSString stringWithString:array[2]]];
+            NSLog(@"attachFiles count %d",(int)[attachFiles count]);
+            NSLog(@"attachFilePaths %@",attachFilePaths);
+            [addFile setBackgroundImage:[CustomUIKit customImageNamed:@"file_prs.png"] forState:UIControlStateNormal];
+            
+            
+            
+        }
+
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary*)info
 {
-	//	NSLog(@"ipicker %@",info);
+	NSLog(@"ipicker %@",info);
     
-    
+   	if ([info[UIImagePickerControllerMediaType] isEqualToString:@"public.movie"]) {
+        
+        
+        if(attachFilePaths && [attachFilePaths count]>0)
+            [attachFilePaths removeAllObjects];
+        
+        if(attachFiles && [attachFiles count]>0){
+            [attachFiles removeAllObjects];
+            [keyboardUnderView reloadData];
+        }
+        
+        //   [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        NSString *movieURL = [info[UIImagePickerControllerMediaURL] path];
+        int maxFileSize = 10485760;
+        
+        NSLog(@"================ SELECTED FILESIZE : %d",[[self fileOneSize:movieURL] intValue]);
+        
+        if([[self fileOneSize:movieURL] intValue] <= maxFileSize) {
+            [self convertVideoToMP4AndFixMooV:movieURL];
+            [picker dismissViewControllerAnimated:YES completion:nil];
+            //			[picker release];
+        } else  {
+            [picker dismissViewControllerAnimated:YES completion:nil];
+            //			[picker release];
+            //			[CustomUIKit popupSimpleAlertViewOK:nil msg:@"10MB 이하의 파일만 전송 가능합니다." con:self];
+            
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
+                
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]
+                                                                               message:@"10MB 이하의 파일만 전송 가능합니다."
+                                                                        preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *ok = [UIAlertAction actionWithTitle: NSLocalizedString(@"ok", @"ok")
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action){
+                                                               
+                                                               
+                                                               [alert dismissViewControllerAnimated:YES completion:nil];
+                                                           }];
+                
+                
+                [alert addAction:ok];
+                [self presentViewController:alert animated:YES completion:nil];
+                
+                
+            }
+            
+            else{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]
+                                                                message:@"10MB 이하의 파일만 전송 가능합니다."
+                                                               delegate:nil
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
+                [alert show];
+                //                [alert release];
+            }
+            
+        }
+        
+    }
+    else{
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     
     if(picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
@@ -4451,7 +4630,7 @@ const char paramNumber;
         [picker presentViewController:photoView animated:YES completion:nil];
     }
     
-    
+    }
 }
 
 - (void)sendPhoto:(UIImage*)image
@@ -5440,7 +5619,7 @@ if(dic != nil){
                 [view addAction:actionButton];
                 
                 UIAlertAction* cancel = [UIAlertAction
-                                         actionWithTitle:@"취소"
+                                         actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                          style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction * action)
                                          {
@@ -5455,7 +5634,7 @@ if(dic != nil){
             else{
                 UIActionSheet *actionSheet = nil;
                 
-                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                             destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
                 actionSheet.tag = kPhoto;
                 [actionSheet showInView:SharedAppDelegate.window];
@@ -5471,7 +5650,7 @@ if(dic != nil){
                                                                                      message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?"
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+            UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             
@@ -5480,7 +5659,7 @@ if(dic != nil){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                         }];
             
-            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -5493,7 +5672,7 @@ if(dic != nil){
         }
         else{
             UIAlertView *alert;
-            alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+            alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
             alert.tag = kAlertPhoto;
             objc_setAssociatedObject(alert, &paramNumber, tagString, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             [alert show];
@@ -5510,7 +5689,7 @@ if(dic != nil){
                                                                                      message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?"
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+            UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             
@@ -5519,7 +5698,7 @@ if(dic != nil){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                         }];
             
-            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -5532,7 +5711,7 @@ if(dic != nil){
         }
         else{
             UIAlertView *alert;
-            alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+            alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
             NSString *tagString = [NSString stringWithFormat:@"%d",bRow];
             alert.tag = kAlertModifyPhoto;
             objc_setAssociatedObject(alert, &paramNumber, tagString, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -5559,7 +5738,7 @@ if(dic != nil){
                                                                                      message:@"선택한 파일이 삭제됩니다.\n계속하시겠습니까?"
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+            UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             
@@ -5568,7 +5747,7 @@ if(dic != nil){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                         }];
             
-            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -5584,7 +5763,7 @@ if(dic != nil){
                                                                                          message:@"선택한 파일이 삭제됩니다.\n계속하시겠습니까?"
                                                                                   preferredStyle:UIAlertControllerStyleAlert];
                 
-                UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+                UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 
@@ -5593,7 +5772,7 @@ if(dic != nil){
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                             }];
                 
-                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action){
                                                                     [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -5654,7 +5833,7 @@ if(dic != nil){
                 
                 
                 UIAlertAction* cancel = [UIAlertAction
-                                         actionWithTitle:@"취소"
+                                         actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                          style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction * action)
                                          {
@@ -5669,7 +5848,7 @@ if(dic != nil){
             
             else{
                 UIActionSheet *actionSheet;
-                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                             destructiveButtonTitle:nil otherButtonTitles:@"설문 삭제하기", @"설문 수정하기", nil];
                 actionSheet.tag = kPoll;
                 [actionSheet showInView:SharedAppDelegate.window];

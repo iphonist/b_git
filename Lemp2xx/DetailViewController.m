@@ -327,7 +327,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                 
                 actionButton = [UIAlertAction
-                                actionWithTitle:@"삭제"
+                                actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
@@ -361,7 +361,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                 
                 actionButton = [UIAlertAction
-                                actionWithTitle:@"삭제"
+                                actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
@@ -385,7 +385,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     NSLog(@"5\n");
                     
                     actionButton = [UIAlertAction
-                                    actionWithTitle:@"삭제"
+                                    actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                     style:UIAlertActionStyleDefault
                                     handler:^(UIAlertAction * action)
                                     {
@@ -406,7 +406,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         
         
          cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -445,7 +445,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         [view addAction:actionButton];
                         
                         actionButton = [UIAlertAction
-                                        actionWithTitle:@"삭제"
+                                        actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                         style:UIAlertActionStyleDefault
                                         handler:^(UIAlertAction * action)
                                         {
@@ -483,7 +483,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             
             
             actionButton = [UIAlertAction
-                            actionWithTitle:@"삭제"
+                            actionWithTitle:NSLocalizedString(@"delete", @"delete")
                             style:UIAlertActionStyleDefault
                             handler:^(UIAlertAction * action)
                             {
@@ -531,7 +531,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                 
                 actionButton = [UIAlertAction
-                                actionWithTitle:@"삭제"
+                                actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
@@ -579,7 +579,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 [view addAction:actionButton];
                 
                 actionButton = [UIAlertAction
-                                actionWithTitle:@"삭제"
+                                actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
@@ -617,7 +617,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             [view addAction:actionButton];
             
             actionButton = [UIAlertAction
-                            actionWithTitle:@"삭제"
+                            actionWithTitle:NSLocalizedString(@"delete", @"delete")
                             style:UIAlertActionStyleDefault
                             handler:^(UIAlertAction * action)
                             {
@@ -637,10 +637,10 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             NSLog(@"11 %@",groupMaster);
             NSString *typestring = @"";
             if([contentsData.contentType isEqualToString:@"11"]){
-                typestring = @"질문";
+                typestring = NSLocalizedString(@"question", @"question");
             }
             else{
-                typestring = @"요청";
+                typestring = NSLocalizedString(@"request", @"request");
             }
             if([groupMaster isEqualToString:[ResourceLoader sharedInstance].myUID]){
                 
@@ -774,7 +774,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                 
                 actionButton = [UIAlertAction
-                                actionWithTitle:@"삭제"
+                                actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
@@ -808,7 +808,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                 
                 actionButton = [UIAlertAction
-                                actionWithTitle:@"삭제"
+                                actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
@@ -866,7 +866,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         
         
          cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -888,15 +888,15 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             
             if([contentsData.notice isEqualToString:@"1"]) {
                 
-                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                            destructiveButtonTitle:nil otherButtonTitles:@"삭제", nil];
+                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                            destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"delete", @"delete"), nil];
                 
             }
             else{
                 
                 
-                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                            destructiveButtonTitle:nil otherButtonTitles:@"수정", @"삭제", nil];
+                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                            destructiveButtonTitle:nil otherButtonTitles:@"수정", NSLocalizedString(@"delete", @"delete"), nil];
                 
                 [actionSheet showInView:SharedAppDelegate.window];
                 actionSheet.tag = kEdit;
@@ -909,8 +909,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 if([[SharedAppDelegate readPlist:@"isCS"]isEqualToString:@"1"])// i am cs
                 {
                     
-                    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                                destructiveButtonTitle:nil otherButtonTitles:@"삭제", nil];
+                    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                                destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"delete", @"delete"), nil];
                 }
             }
             
@@ -932,8 +932,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             if([groupMaster isEqualToString:[ResourceLoader sharedInstance].myUID]){
                 // 공유 삭제
                 
-                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                            destructiveButtonTitle:nil otherButtonTitles: @"삭제", nil];
+                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                            destructiveButtonTitle:nil otherButtonTitles: NSLocalizedString(@"delete", @"delete"), nil];
                 
                 [actionSheet showInView:SharedAppDelegate.window];
                 actionSheet.tag = kEdit;
@@ -941,8 +941,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             else if([contentsData.profileImage isEqualToString:[ResourceLoader sharedInstance].myUID]){
                 // 공유 이동 수정 삭제
                 
-                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                            destructiveButtonTitle:nil otherButtonTitles:@"수정", @"삭제", nil];
+                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                            destructiveButtonTitle:nil otherButtonTitles:@"수정", NSLocalizedString(@"delete", @"delete"), nil];
                 
                 [actionSheet showInView:SharedAppDelegate.window];
                 actionSheet.tag = kEdit;
@@ -953,27 +953,27 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 
 #elif defined(GreenTalk) || defined(GreenTalkCustomer)
             
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                        destructiveButtonTitle:nil otherButtonTitles:@"수정", @"삭제", nil];
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                        destructiveButtonTitle:nil otherButtonTitles:@"수정", NSLocalizedString(@"delete", @"delete"), nil];
             
             [actionSheet showInView:SharedAppDelegate.window];
             actionSheet.tag = kEdit;
             return;
 #endif
             if([contentsData.notice isEqualToString:@"1"]) {
-                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                            destructiveButtonTitle:nil otherButtonTitles:@"삭제", nil];
+                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                            destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"delete", @"delete"), nil];
             } else{// if([contentsData.notice isEqualToString:@"0"]) {
-                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                            destructiveButtonTitle:nil otherButtonTitles:@"수정", @"이동", @"삭제", nil];
+                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                            destructiveButtonTitle:nil otherButtonTitles:@"수정", @"이동", NSLocalizedString(@"delete", @"delete"), nil];
             }
 //            else {
 //                return;
 //            }
         }
         else if([contentsData.contentType isEqualToString:@"7"]) {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                        destructiveButtonTitle:nil otherButtonTitles:@"다시 보내기", @"삭제", nil];
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                        destructiveButtonTitle:nil otherButtonTitles:@"다시 보내기", NSLocalizedString(@"delete", @"delete"), nil];
             
         }
         
@@ -982,23 +982,23 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             NSLog(@"11 %@",groupMaster);
             NSString *typestring = @"";
             if([contentsData.contentType isEqualToString:@"11"]){
-                typestring = @"질문";
+                typestring = NSLocalizedString(@"question", @"question");
             }
             else{
-                typestring = @"요청";
+                typestring = NSLocalizedString(@"request", @"request");
             }
             if([groupMaster isEqualToString:[ResourceLoader sharedInstance].myUID]){
                 
                 if([replyArray count] == 0){
                     NSLog(@"1");
                     //답변전 (질문 삭제)
-                    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+                    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                                 destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"%@ 삭제",typestring], nil];
                 }
                 else{
                     NSLog(@"2");
                     //답변후 (답변 수정, 답변 삭제, 질문 삭제
-                    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+                    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                                 destructiveButtonTitle:nil otherButtonTitles:@"답변 수정",
                                    @"답변 삭제",
                                    [NSString stringWithFormat:@"%@ 삭제",typestring], nil];
@@ -1010,7 +1010,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     NSLog(@"3");
                     //답변전 (질문 수정 / 질문 삭제
                     if([contentsData.profileImage isEqualToString:[ResourceLoader sharedInstance].myUID]){
-                        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+                        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                                     destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"%@ 수정",typestring],
                                        [NSString stringWithFormat:@"%@ 삭제",typestring], nil];
                     }
@@ -1029,21 +1029,21 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         else if([contentsData.contentType isEqualToString:@"17"]){
                 if([groupMaster isEqualToString:[ResourceLoader sharedInstance].myUID]){
                     // 삭제
-                    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                                destructiveButtonTitle:nil otherButtonTitles:@"삭제", nil];
+                    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                                destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"delete", @"delete"), nil];
                 }
                 else if([contentsData.profileImage isEqualToString:[ResourceLoader sharedInstance].myUID]){
                     // 수정 삭제
-                    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                                destructiveButtonTitle:nil otherButtonTitles:@"수정", @"삭제", nil];
+                    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                                destructiveButtonTitle:nil otherButtonTitles:@"수정", NSLocalizedString(@"delete", @"delete"), nil];
                 }
         }
         else {
             if([contentsData.contentDic[@"schedulestarttime"] intValue]==0) {
-                actionSheet = [[UIActionSheet alloc] initWithTitle:@"취소된 일정입니다." delegate:self cancelButtonTitle:@"취소"
+                actionSheet = [[UIActionSheet alloc] initWithTitle:@"취소된 일정입니다." delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                             destructiveButtonTitle:nil otherButtonTitles:nil];
             } else {
-                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+                actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                             destructiveButtonTitle:nil otherButtonTitles:@"일정수정", @"일정취소", nil];
             }
         }
@@ -1652,7 +1652,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     //    UIAlertView *alert;
     //    //    NSString *msg = [NSString stringWithFormat:@"%@로 일반 전화를 거시겠습니까?",number];
-    //    alert = [[UIAlertView alloc] initWithTitle:@"정말 취소하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+    //    alert = [[UIAlertView alloc] initWithTitle:@"정말 취소하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
     //    alert.tag = kCancelSchedule;
     //    [alert show];
     //    [alert release];
@@ -1689,12 +1689,12 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     else{
         msg = @"정말 삭제하시겠습니까?";
     }
-    //    alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+    //    alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
     //    alert.tag = kDeletePost;
     //    [alert show];
     //    [alert release];
     
-    [CustomUIKit popupAlertViewOK:@"삭제" msg:msg delegate:self tag:kDeletePost sel:@selector(confirmDelete) with:nil csel:nil with:nil];
+    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"delete", @"delete") msg:msg delegate:self tag:kDeletePost sel:@selector(confirmDelete) with:nil csel:nil with:nil];
     
     //    [self backTo];
 }
@@ -1824,7 +1824,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         else if(alertView.tag == kEndPoll){
             
             //            UIAlertView *alert;
-            //            alert = [[UIAlertView alloc] initWithTitle:@"설문 참여 대상 모두에게 설문 종료 알림을 보내시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+            //            alert = [[UIAlertView alloc] initWithTitle:@"설문 참여 대상 모두에게 설문 종료 알림을 보내시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             //            alert.tag = kPushEndPoll;
             //            [alert show];
             //            [alert release];
@@ -1962,7 +1962,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         }
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -1981,7 +1981,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         for(NSDictionary *dic in groupArray){
             [actionSheet addButtonWithTitle:dic[@"groupname"]];
         }
-        [actionSheet addButtonWithTitle:@"취소"];
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"cancel", @"cancel")];
         [actionSheet setCancelButtonIndex:[groupArray count]];
         //    [actionSheet showInView:self.parentViewController.tabBarController.view];
         [actionSheet showInView:SharedAppDelegate.window];
@@ -2721,7 +2721,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"타임라인을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"타임라인을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -2879,7 +2879,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -2965,7 +2965,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         [view addAction:actionButton];
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -2982,7 +2982,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         
         
         
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                     destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
         actionSheet.tag = kPhoto;
         
@@ -3358,7 +3358,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                                                                  message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?"
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -3367,7 +3367,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                     }];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -3381,7 +3381,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     else{
         
         UIAlertView *alert;
-        alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+        alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"선택한 사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
         alert.tag = kDeletePhoto;
         [alert show];
 //        [alert release];
@@ -5773,7 +5773,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                             setMyAttend.tag = 2;
 //                            [setMyAttend release];
                             
-                            UILabel *checkLabel = [CustomUIKit labelWithText:@"확인" fontSize:15 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 0, setMyAttend.frame.size.width, setMyAttend.frame.size.height) numberOfLines:1 alignText:NSTextAlignmentCenter];
+                            UILabel *checkLabel = [CustomUIKit labelWithText:NSLocalizedString(@"ok", @"ok") fontSize:15 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 0, setMyAttend.frame.size.width, setMyAttend.frame.size.height) numberOfLines:1 alignText:NSTextAlignmentCenter];
                             [setMyAttend addSubview:checkLabel];
                         }
                         else{
@@ -9454,7 +9454,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -9469,7 +9469,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     else{
         
         UIActionSheet *actionSheet;
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                     destructiveButtonTitle:nil otherButtonTitles:@"댓글 수정", @"댓글 삭제", nil];
         
         [actionSheet showInView:SharedAppDelegate.window];
@@ -9540,7 +9540,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                                                                  message:@"정말 삭제하시겠습니까?"
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -9553,7 +9553,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                     }];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -9567,7 +9567,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     else{
         
         UIAlertView *alert;
-        alert = [[UIAlertView alloc] initWithTitle:title message:@"정말 삭제하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+        alert = [[UIAlertView alloc] initWithTitle:title message:@"정말 삭제하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
         alert.tag = kDeleteReply;
         objc_setAssociatedObject(alert, &paramNumber, dic[@"replyindex"], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         [alert show];
@@ -9649,7 +9649,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -9663,7 +9663,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     }
     else{
         UIActionSheet *actionSheet;
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                     destructiveButtonTitle:nil otherButtonTitles:@"소셜로 공유하기", @"외부로 공유하기", nil];
         
         [actionSheet showInView:SharedAppDelegate.window];
@@ -9888,7 +9888,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         [MBProgressHUD hideHUDForView:sender animated:YES];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -10283,7 +10283,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 //
 //
 //            UIAlertView *alert;
-//            alert = [[UIAlertView alloc] initWithTitle:nil message:@"첨부 파일을 보기 위한 뷰어 앱이 설치 되어 있지 않습니다. 뷰어 설치를 위해 스토어로 이동하시겠습니까?" delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//            alert = [[UIAlertView alloc] initWithTitle:nil message:@"첨부 파일을 보기 위한 뷰어 앱이 설치 되어 있지 않습니다. 뷰어 설치를 위해 스토어로 이동하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //            alert.tag = kInstallHWP;
 //            [alert show];
 //            [alert release];
@@ -11214,7 +11214,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         [MBProgressHUD hideHUDForView:myTable animated:YES];
         [HTTPExceptionHandler handlingByError:error];
         
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"댓글을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"댓글을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -11251,7 +11251,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         
         
         actionButton = [UIAlertAction
-                        actionWithTitle:@"삭제"
+                        actionWithTitle:NSLocalizedString(@"delete", @"delete")
                         style:UIAlertActionStyleDefault
                         handler:^(UIAlertAction * action)
                         {
@@ -11266,7 +11266,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -11281,8 +11281,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
     else{
         UIActionSheet *actionSheet;
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
-                                    destructiveButtonTitle:nil otherButtonTitles:@"답장하기", @"삭제", nil];
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                                    destructiveButtonTitle:nil otherButtonTitles:@"답장하기", NSLocalizedString(@"delete", @"delete"), nil];
         
         [actionSheet showInView:SharedAppDelegate.window];
         actionSheet.tag = kReply;
@@ -12239,7 +12239,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             NSLog(@"FAIL : %@",operation.error);
             //        [MBProgressHUD hideHUDForView:self.view animated:YES];
             [HTTPExceptionHandler handlingByError:error];
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"댓글을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"댓글을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //?        [alert show];
             
         }];
@@ -12392,7 +12392,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         //        [sender setEnabled:YES];
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -12564,7 +12564,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 {
     
     //UIAlertView *alert;
-    //    alert = [[UIAlertView alloc] initWithTitle:@"설문을 종료하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+    //    alert = [[UIAlertView alloc] initWithTitle:@"설문을 종료하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
     //    alert.tag = kEndPoll;
     //    [alert show];
     //    [alert release];
@@ -13771,7 +13771,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
             NSLog(@"FAIL : %@",operation.error);
             //        [MBProgressHUD hideHUDForView:self.view animated:YES];
             [HTTPExceptionHandler handlingByError:error];
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"댓글을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"댓글을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //?        [alert show];
             
         }];
@@ -13844,7 +13844,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     
         
         [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(186, 198, 210) title:@"수정"];
-    [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(255, 67, 59) title:@"삭제"];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(255, 67, 59) title:NSLocalizedString(@"delete", @"delete")];
     }
     else{
         return nil;

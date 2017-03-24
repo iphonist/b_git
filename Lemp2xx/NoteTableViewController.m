@@ -300,12 +300,12 @@
     #endif
     
     
-    editB = [CustomUIKit buttonWithTitle:@"편집" fontSize:16 fontColor:[UIColor blackColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    editB = [CustomUIKit buttonWithTitle:NSLocalizedString(@"edit", @"edit") fontSize:16 fontColor:[UIColor blackColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
     editB.tag = kNotEditing;
     editButton = [[UIBarButtonItem alloc]initWithCustomView:editB];
     
     
-    UIButton *cancelB = [CustomUIKit buttonWithTitle:@"취소" fontSize:16 fontColor:[UIColor blackColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    UIButton *cancelB = [CustomUIKit buttonWithTitle:NSLocalizedString(@"cancel", @"cancel") fontSize:16 fontColor:[UIColor blackColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
     cancelButton = [[UIBarButtonItem alloc] initWithCustomView:cancelB];
     
     
@@ -389,7 +389,7 @@
     [searchBar setShowsCancelButton:YES animated:YES];
     for(UIView *subView in searchBar.subviews){
         if([subView isKindOfClass:UIButton.class]){
-            [(UIButton*)subView setTitle:@"취소" forState:UIControlStateNormal];
+            [(UIButton*)subView setTitle:NSLocalizedString(@"cancel", @"cancel") forState:UIControlStateNormal];
         }
     }
     
@@ -2082,14 +2082,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     if (selectedCount > 0) {
         NSString *message;
         
-       message = @"삭제된 쪽지는 다시 볼 수 없습니다.\n쪽지를 삭제하시겠습니까?";
+       message = NSLocalizedString(@"delete_note_alert", @"delete_note_alert");
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
             
-            UIAlertController *alertcontroller = [UIAlertController alertControllerWithTitle:@"삭제"
+            UIAlertController *alertcontroller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"delete", @"delete")
                                                                                      message:message
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *okb = [UIAlertAction actionWithTitle:@"삭제"
+            UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             
@@ -2099,7 +2099,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                         }];
             
-            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -2111,7 +2111,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
             
         }
         else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"삭제" message:message delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"삭제", nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"delete", @"delete") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"delete", @"delete"), nil];
         [alert show];
 //        [alert release];
     }
@@ -2178,7 +2178,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 
 - (void)writePost{
 		[self loadMember:0];
-//    UIActionSheet *objectSelectSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소" destructiveButtonTitle:nil otherButtonTitles:@"개별 쪽지",@"부서 쪽지", nil];
+//    UIActionSheet *objectSelectSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") destructiveButtonTitle:nil otherButtonTitles:@"개별 쪽지",@"부서 쪽지", nil];
 //	[objectSelectSheet showInView:self.tabBarController.view];
 //	[objectSelectSheet release];
 }

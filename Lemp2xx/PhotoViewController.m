@@ -200,7 +200,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
         [button addTarget:self action:@selector(cancel) forControlEvents:UIControlEventTouchUpInside];
         [bottomView addSubview:button];
         
-		UILabel *label = [CustomUIKit labelWithText:@"취소" fontSize:15 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 4, 50, 20) numberOfLines:1 alignText:NSTextAlignmentCenter];
+		UILabel *label = [CustomUIKit labelWithText:NSLocalizedString(@"cancel", @"cancel") fontSize:15 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 4, 50, 20) numberOfLines:1 alignText:NSTextAlignmentCenter];
         [button addSubview:label];
 //        [button release];
         
@@ -470,7 +470,9 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
     NSLog(@"getFile %d",type);
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    NSString *cachefilePath = [NSString stringWithFormat:@"%@/Library/Caches/%@",NSHomeDirectory(),fileName];
+    
+    NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    NSString *cachefilePath = [NSString stringWithFormat:@"%@/%@",documentsPath,fileName];
     NSLog(@"fileexist %@",cachefilePath);
     
     if(type == 12){
@@ -518,25 +520,27 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
         downloadProgress = nil;
         }
         NSString* documentsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-        NSString *filePath = [documentsPath stringByAppendingPathComponent:fileName];
-        
+        NSString *cachefilePath = [NSString stringWithFormat:@"%@/%@",documentsPath,fileName];
+        NSLog(@"fileexist %@",cachefilePath);
         if(roomkey != nil && [roomkey length]>0){
             
 #ifdef BearTalk
             
             if(type == 5|| type == 6){
                 
-                if(![filePath hasSuffix:@"mp4"]){
-                    filePath = [NSString stringWithFormat:@"%@.mp4",filePath];
+                if(![cachefilePath hasSuffix:@"mp4"]
+                   && ![cachefilePath hasSuffix:@"mov"]
+                   && ![cachefilePath hasSuffix:@"m4v"]){
+                    cachefilePath = [NSString stringWithFormat:@"%@.mp4",cachefilePath];
                 }
-                
-                [operation.responseData writeToFile:filePath atomically:YES];
+                NSLog(@"cachefilePath %@",cachefilePath);
+                [operation.responseData writeToFile:cachefilePath atomically:YES];
             }
             else if(type != 12){
-            [operation.responseData writeToFile:filePath atomically:YES];
+            [operation.responseData writeToFile:cachefilePath atomically:YES];
             }
 #else
-            [operation.responseData writeToFile:filePath atomically:YES];
+            [operation.responseData writeToFile:cachefilePath atomically:YES];
             NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
             NSLog(@"resultDic %@",resultDic);
             NSString *savedIdx = [fileName substringToIndex:[fileName length]-4];
@@ -546,7 +550,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
 #endif
             
             
-            NSLog(@"filePath %@",filePath);
+            NSLog(@"cachefilePath %@",cachefilePath);
         }
         
         if(type == 12){
@@ -590,14 +594,14 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
 		} else if (type == 5) {
 			//        [self.navigationController popViewControllerWithBlockGestureAnimated:NO];
 			//		[parentVC playMedia:type withPath:filePath];
-			[self playMovie:filePath];
+			[self playMovie:cachefilePath];
 		}
 	
 		if(fileName != nil) {
 //			[fileName release];
 			fileName = nil;
 		}
-		fileName = [[NSString alloc] initWithString:filePath];
+		fileName = [[NSString alloc] initWithString:cachefilePath];
 
             
                 
@@ -734,7 +738,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
 //	[downConnection release];
 //	downConnection = nil;
 //	NSLog(@"Download Connection Failed! - %@",[error localizedDescription]);
-//	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"미디어 파일 다운로드에 실패했습니다. 잠시후 다시 시도해 주세요!" delegate:self cancelButtonTitle:@"확인" otherButtonTitles:nil	, nil];
+//	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"미디어 파일 다운로드에 실패했습니다. 잠시후 다시 시도해 주세요!" delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil	, nil];
 //	[alert setTag:52];
 //	[alert show];
 //	[alert release];
@@ -794,7 +798,7 @@ static inline float radians(double degrees) { return degrees * PI / 180; }
 //		}
 //		fileName = [[NSString alloc] initWithString:filePath];
 //	} else { 
-//		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"파일을 다운로드 할 수 없습니다.\n잠시 후 다시 시도해 주세요!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+//		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"파일을 다운로드 할 수 없습니다.\n잠시 후 다시 시도해 주세요!" delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //		[alertView setTag:52];
 //		[alertView show];
 //		[alertView release];

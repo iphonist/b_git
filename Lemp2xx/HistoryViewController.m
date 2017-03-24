@@ -127,7 +127,7 @@
 //    [btnNavi release];
     topImageView.frame = CGRectMake(0, 0, 320, 0);
     myTable.frame = CGRectMake(0, topImageView.frame.size.height, 320, self.view.frame.size.height-topImageView.frame.size.height);
-    self.title = @"채팅 히스토리";
+    self.title = NSLocalizedString(@"chat_history", @"chat_history");
     //    [SharedAppDelegate.root returnTitle:self.title viewcon:self noti:NO alarm:NO];
 #ifdef BearTalk
     [myList setArray:[NSArray arrayWithObjects:@"음성메시지",@"사진",@"동영상",nil]];

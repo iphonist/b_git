@@ -648,11 +648,11 @@ const char paramNumber;
         
         NSString *msg = @"";
         if([new_onoff isEqualToString:@"1"] || [reply_onoff isEqualToString:@"1"]){
-            msg = @"알림을 켰습니다.";
+            msg = NSLocalizedString(@"on_the_alarm_toast", @"on_the_alarm_toast");
             
         }
         else if([new_onoff isEqualToString:@"0"] || [reply_onoff isEqualToString:@"0"]){
-            msg = @"알림을 껐습니다.";
+            msg = NSLocalizedString(@"off_the_alarm_toast", @"off_the_alarm_toast");
         }
         
         
@@ -676,7 +676,7 @@ const char paramNumber;
         [SVProgressHUD dismiss];
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -745,11 +745,11 @@ const char paramNumber;
             
              NSString *msg = @"";
             if([new_onoff isEqualToString:@"1"] || [reply_onoff isEqualToString:@"1"]){
-                 msg = NSLocalizedString(@"on_the_alarm", @"on_the_alarm");
+                 msg = NSLocalizedString(@"on_the_alarm_toast", @"on_the_alarm_toast");
                 
             }
             else if([new_onoff isEqualToString:@"0"] || [reply_onoff isEqualToString:@"0"]){
-                msg = NSLocalizedString(@"off_the_alarm", @"off_the_alarm");
+                msg = NSLocalizedString(@"off_the_alarm_toast", @"off_the_alarm_toast");
             }
                 OLGhostAlertView *toast = [[OLGhostAlertView alloc] initWithTitle:msg];
                 
@@ -777,7 +777,7 @@ const char paramNumber;
 //        [MBProgressHUD hideHUDForView:self.view animated:YES];
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];

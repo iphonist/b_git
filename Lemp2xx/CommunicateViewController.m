@@ -53,7 +53,7 @@
     editB = [CustomUIKit buttonWithTitle:@"" fontSize:0 fontColor:[UIColor clearColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 26, 26) imageNamedBullet:nil imageNamedNormal:@"barbutton_delete.png" imageNamedPressed:nil];
     NSLog(@"editB");
 #else
-    editB = [CustomUIKit buttonWithTitle:@"편집" fontSize:16 fontColor:[UIColor blackColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    editB = [CustomUIKit buttonWithTitle:NSLocalizedString(@"edit", @"edit") fontSize:16 fontColor:[UIColor blackColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
 #endif
     
     
@@ -62,7 +62,7 @@
 	self.navigationItem.rightBarButtonItem = editButton;
     self.navigationItem.rightBarButtonItem.tag = NO;
 	
-	UIButton *cancelB = [CustomUIKit buttonWithTitle:@"취소" fontSize:16 fontColor:[UIColor blackColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+	UIButton *cancelB = [CustomUIKit buttonWithTitle:NSLocalizedString(@"cancel", @"cancel") fontSize:16 fontColor:[UIColor blackColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
 	cancelButton = [[UIBarButtonItem alloc] initWithCustomView:cancelB];
     
     
@@ -121,7 +121,7 @@
 		}
         
         //		UIButton *leftButton = (UIButton*)self.navigationItem.leftBarButtonItem.customView;
-        //		[leftButton setTitle:@"취소" forState:UIControlStateNormal];
+        //		[leftButton setTitle:NSLocalizedString(@"cancel", @"cancel") forState:UIControlStateNormal];
 		[self.navigationItem setLeftBarButtonItem:cancelButton animated:YES];
 		[self.navigationItem setRightBarButtonItem:deleteButton animated:YES];
 		[self.selectedViewController performSelector:@selector(startEditing)];
@@ -170,20 +170,20 @@
 	if (selectedCount > 0) {
 		NSString *message;
 		if (self.selectedIndex == kSubTabIndexChat) {
-			message = @"삭제된 채팅 내용은 다시 볼 수 없습니다.\n채팅 내용을 삭제하시겠습니까?\n(단, 읽지 않은 메시지가 있는 채팅방은 삭제되지 않습니다.)";
+			message = NSLocalizedString(@"delete_chat_alert", @"delete_chat_alert");
 		} else if (self.selectedIndex == kSubTabIndexNote) {
-			message = @"삭제된 쪽지는 다시 볼 수 없습니다.\n쪽지를 삭제하시겠습니까?";
+			message = NSLocalizedString(@"delete_note_alert", @"delete_note_alert");
 		} else { // 무료통화
-			message = @"삭제된 통화 목록은 다시 볼 수 없습니다.\n통화 목록을 삭제하시겠습니까?";
+			message = NSLocalizedString(@"delete_call_alert", @"delete_call_alert");
 		}
         
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
             
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"삭제"
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"delete", @"delete")
                                                                            message:message
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"삭제"
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                                          style:UIAlertActionStyleDefault
                                                        handler:^(UIAlertAction * action){
                                                            
@@ -195,7 +195,7 @@
                                                            [alert dismissViewControllerAnimated:YES completion:nil];
                                                        }];
             
-            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"취소"
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action){
                                                                [alert dismissViewControllerAnimated:YES completion:nil];
@@ -208,7 +208,7 @@
             
         }
         else{
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"삭제" message:message delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"삭제", nil];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"delete", @"delete") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"delete", @"delete"), nil];
 		alert.tag = self.selectedIndex;
 		[alert show];
 //		[alert release];
@@ -233,7 +233,7 @@
 	if (buttonIndex == 1) {
 		if (alertView.tag != self.selectedIndex) {
 			// 경고창 떠 있는 사이 뷰가 바뀜
-			[CustomUIKit popupSimpleAlertViewOK:@"알 림" msg:@"화면 내용이 바뀌어 작업을 완료할 수 없습니다. 다시 시도해 주세요!" con:self];
+			[CustomUIKit popupSimpleAlertViewOK:@"알 림" msg:NSLocalizedString(@"changeview_not_done_alert", @"changeview_not_done_alert") con:self];
 		} else {
 			[self.selectedViewController performSelector:@selector(commitDelete)];
 		}

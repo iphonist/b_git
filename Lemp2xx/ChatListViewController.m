@@ -47,7 +47,7 @@ const char paramNumber;
 #elif GreenTalk
         self.title = @"개인채팅";
 #elif defined(GreenTalkCustomer) || defined(Hicare) || defined(BearTalk)
-        self.title = @"채팅";
+        self.title = NSLocalizedString(@"chat", @"chat");
 #endif
     }
     return self;
@@ -141,7 +141,7 @@ const char paramNumber;
         search.barTintColor = RGB(242,242,242);
     }
     
-    search.placeholder = @"채팅방 검색";
+    search.placeholder = NSLocalizedString(@"search_chatroom", @"search_chatroom");
     
     //    [search release];
     
@@ -168,7 +168,7 @@ const char paramNumber;
 //    editButton = [[UIBarButtonItem alloc]initWithCustomView:editB];
 //    self.navigationItem.rightBarButtonItem = editButton;
 //    
-//    UIButton *cancelB = [CustomUIKit buttonWithTitle:@"취소" fontSize:16 fontColor:[UIColor whiteColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+//    UIButton *cancelB = [CustomUIKit buttonWithTitle:NSLocalizedString(@"cancel", @"cancel") fontSize:16 fontColor:[UIColor whiteColor] target:self selector:@selector(toggleStatus) frame:CGRectMake(0, 0, 32, 32) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
 //    cancelButton = [[UIBarButtonItem alloc] initWithCustomView:cancelB];
 //    
 //    
@@ -484,7 +484,7 @@ const char paramNumber;
         if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"S"]){
             
             if([tempArray count] == 0){
-                nameStr = @"대화상대없음";
+                nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");
             }
             else{
                 
@@ -588,7 +588,7 @@ const char paramNumber;
     }
     if([nameStr length]<1){
         
-        nameStr = @"알 수 없는 사용자";
+        nameStr = NSLocalizedString(@"unknown_user", @"unknown_user");
     }
         NSLog(@"nameSTr %@",nameStr);
         
@@ -813,7 +813,7 @@ const char paramNumber;
             
             
 		} else {
-			[CustomUIKit popupSimpleAlertViewOK:nil msg:@"선택된 채팅방이 없습니다!" con:self];
+			[CustomUIKit popupSimpleAlertViewOK:nil msg:NSLocalizedString(@"there_is_no_selected_room", @"there_is_no_selected_room") con:self];
 		}
 	}
     
@@ -831,7 +831,7 @@ const char paramNumber;
 	
 	AddMemberViewController *addController = [[AddMemberViewController alloc] initWithTag:1 array:nil add:nil];
     [addController setDelegate:self selector:@selector(selectedMember:)];
-	addController.title = @"채팅 대상 선택";
+	addController.title = NSLocalizedString(@"select_chat_member", @"select_chat_member");
 	UINavigationController *nc = [[CBNavigationController alloc] initWithRootViewController:addController];
 	[self presentViewController:nc animated:YES completion:nil];
 //	[addController release];
@@ -914,7 +914,7 @@ const char paramNumber;
     } else {
         // 멤버가 없는 경우
         // AddMember에서 멤버를 선택하지 않은채로 완료를 할 수 없으므로 발생하면 안됨
-        [CustomUIKit popupSimpleAlertViewOK:nil msg:@"선택된 대상이 없습니다!" con:self];
+        [CustomUIKit popupSimpleAlertViewOK:nil msg:NSLocalizedString(@"there_is_no_selected_room", @"there_is_no_selected_room") con:self];
     }
 }
 - (void)selectedMember:(NSMutableArray*)member
@@ -945,7 +945,7 @@ const char paramNumber;
 	} else {
 		// 멤버가 없는 경우
 		// AddMember에서 멤버를 선택하지 않은채로 완료를 할 수 없으므로 발생하면 안됨
-		[CustomUIKit popupSimpleAlertViewOK:nil msg:@"선택된 대상이 없습니다!" con:self];
+		[CustomUIKit popupSimpleAlertViewOK:nil msg:NSLocalizedString(@"there_is_no_selected_room", @"there_is_no_selected_room") con:self];
 	}
 }
 
@@ -1185,27 +1185,27 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
  //   [rightUtilityButtons sw_addUtilityButtonWithColor:
  //    [UIColor colorWithRed:0.78f green:0.78f blue:0.8f alpha:1.0]
 //                                                title:@"More"];
-//    [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(192, 0, 0) title:@"나가기"];
+//    [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(192, 0, 0) title:NSLocalizedString(@"out", @"out")];
     
     if([[SharedAppDelegate readPlist:@"favchatlist"]isEqualToString:dic[@"roomkey"]]){
-    [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(186, 198, 210) title:@"고정해제"];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(186, 198, 210) title:NSLocalizedString(@"off_locked_room", @"off_locked_room")];
     }
     else{
-        [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(186, 198, 210) title:@"상단고정"];
+        [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(186, 198, 210) title:NSLocalizedString(@"on_locked_room", @"on_locked_room")];
         
     }
     
     if([[NSUserDefaults standardUserDefaults] boolForKey:dic[@"roomkey"]] == YES){
              // alarm off
-        [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(135, 147, 166) title:@"알림켜기"];
+        [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(135, 147, 166) title:NSLocalizedString(@"on_the_alarm", @"on_the_alarm")];
     }
     else{
-        [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(135, 147, 166) title:@"알림끄기"];
+        [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(135, 147, 166) title:NSLocalizedString(@"off_the_alarm", @"off_the_alarm")];
         
     }
     
     if(![dic[@"rtype"]isEqualToString:@"S"])
-      [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(255, 67, 59) title:@"나가기"];
+      [rightUtilityButtons sw_addUtilityButtonWithColor:RGB(255, 67, 59) title:NSLocalizedString(@"out", @"out")];
     
     return rightUtilityButtons;
 }
@@ -1377,7 +1377,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
             [HTTPExceptionHandler handlingByError:error];
             //            [MBProgressHUD hideHUDForView:self.view animated:YES];
             //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"authenticate 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //        [alert show];
             
         }];
@@ -1463,15 +1463,15 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
             
             NSString *message;
             
-            message = @"삭제된 채팅 내용은 다시 볼 수 없습니다.\n채팅 내용을 삭제하시겠습니까?\n(단, 읽지 않은 메시지가 있는 채팅방은 삭제되지 않습니다.)";
+            message = NSLocalizedString(@"delete_chat_alert", @"delete_chat_alert");
             
             if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
                 
-                UIAlertController *alertcontroller = [UIAlertController alertControllerWithTitle:@"삭제"
+                UIAlertController *alertcontroller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"delete", @"delete")
                                                                                          message:message
                                                                                   preferredStyle:UIAlertControllerStyleAlert];
                 
-                UIAlertAction *okb = [UIAlertAction actionWithTitle:@"삭제"
+                UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 
@@ -1481,7 +1481,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                             }];
                 
-                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action){
                                                                     [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -1493,7 +1493,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                 
             }
             else{
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"삭제" message:message delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"삭제", nil];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"delete", @"delete") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"delete", @"delete"), nil];
                 [alert show];
                 
                 objc_setAssociatedObject(alert, &paramNumber, [NSString stringWithFormat:@"%d",cellIndexPath.row], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -1546,7 +1546,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         
         
         UIAlertAction *okAction = [UIAlertAction
-                                   actionWithTitle:@"확인"
+                                   actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                    style:UIAlertActionStyleDefault
                                    handler:^(UIAlertAction *action)
                                    {
@@ -1561,7 +1561,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                                    }];
         
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertController dismissViewControllerAnimated:YES completion:nil];
@@ -1572,7 +1572,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         [self presentViewController:alertController animated:YES completion:nil];
     }
     else{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"설정할 채팅방 이름을 입력해주세요." message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"설정할 채팅방 이름을 입력해주세요." message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
     [alert setAlertViewStyle:UIAlertViewStylePlainTextInput];
     [[alert textFieldAtIndex:0] resignFirstResponder];
     alert.tag = kModifyChatName;
@@ -1813,7 +1813,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
         lastDateOrTime.text = nil;
 		alarmView.hidden = YES;
 		cell.textLabel.font = [UIFont systemFontOfSize:15.0];
-		cell.textLabel.text = @"동료들과 채팅을 해보세요.";
+		cell.textLabel.text = NSLocalizedString(@"lets_start_to_chat", @"lets_start_to_chat");
 		cell.textLabel.textAlignment = NSTextAlignmentCenter;
 		return cell;
 	}
@@ -2002,7 +2002,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //        if([dic[@"rtype"]isEqualToString:@"2"]){
 //            
 //            if([tempArray count] == 0){
-//                nameStr = @"대화상대없음";
+//                nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");
 //            }
 //            else{
 //            
@@ -2065,13 +2065,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //            if([memberArray count]>0)
 //            nameStr = [[ResourceLoader sharedInstance] getUserName:memberArray[0]];//[SharedAppDelegate.root searchContactDictionary:memberArray[0]][@"name"];
 //            else
-//                nameStr = @"대화상대없음";
+//                nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");
 //        }
 //        }
 //    }
 //    if([nameStr length]<1){
 //        
-//        nameStr = @"알 수 없는 사용자";
+//        nameStr = NSLocalizedString(@"unknown_user", @"unknown_user");
 //    }
     
 	name.text = dic[@"names"];
@@ -2192,10 +2192,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                 inImageView.hidden = NO;
                 profileView.hidden = YES;
                 profileView.image = nil;
-                socialLabel.text = @"소셜\n채팅";
+                socialLabel.text = NSLocalizedString(@"social_chat_2line", @"social_chat_2line");
 #ifdef MQM
 #elif Batong
-                socialLabel.text = @"커뮤\n니티";
+                socialLabel.text = NSLocalizedString(@"community_2line", @"community_2line");
 #endif
                 inImageView.backgroundColor = RGB(252, 178, 46);
             }
@@ -2203,7 +2203,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                 inImageView.hidden = NO;
                 profileView.hidden = YES;
                 profileView.image = nil;
-                socialLabel.text = @"고객\n채팅";
+                socialLabel.text = NSLocalizedString(@"customer_chat_2line", @"customer_chat_2line");
                 inImageView.backgroundColor = RGB(135, 212, 228);
 
             }
@@ -2602,7 +2602,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     [searchBar setShowsCancelButton:YES animated:YES];
     for(UIView *subView in searchBar.subviews){
         if([subView isKindOfClass:UIButton.class]){
-            [(UIButton*)subView setTitle:@"취소" forState:UIControlStateNormal];
+            [(UIButton*)subView setTitle:NSLocalizedString(@"cancel", @"cancel") forState:UIControlStateNormal];
         }
     }
     
@@ -2714,15 +2714,15 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
     if (selectedCount > 0) {
         NSString *message;
         
-        message = @"삭제된 채팅 내용은 다시 볼 수 없습니다.\n채팅 내용을 삭제하시겠습니까?\n(단, 읽지 않은 메시지가 있는 채팅방은 삭제되지 않습니다.)";
+        message = NSLocalizedString(@"delete_chat_alert", @"delete_chat_alert");
         
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0){
             
-            UIAlertController *alertcontroller = [UIAlertController alertControllerWithTitle:@"삭제"
+            UIAlertController *alertcontroller = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"delete", @"delete")
                                                                                      message:message
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *okb = [UIAlertAction actionWithTitle:@"삭제"
+            UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"delete", @"delete")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             
@@ -2732,7 +2732,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                         }];
             
-            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -2744,7 +2744,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
             
         }
         else{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"삭제" message:message delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"삭제", nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"delete", @"delete") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"delete", @"delete"), nil];
             [alert show];
             //        [alert release];
         }

@@ -107,7 +107,7 @@
         [view addAction:actionButton];
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -125,11 +125,11 @@
         
         
         if(selectedImageData == nil){
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                         destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
         }
         else{
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                         destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
             
         }
@@ -184,7 +184,7 @@
         master = [[NSString alloc]initWithFormat:@"%@",gm];
         
         if(viewTag == kNewGroup){
-            self.title = @"새 소셜";
+            self.title = NSLocalizedString(@"new_social_short", @"new_social_short");
             
         }
         else if(viewTag == kModifyChatName){
@@ -192,7 +192,7 @@
         }
         else if(viewTag == kModifyGroup || viewTag == kModifyGroupName || viewTag == kModifyGroupExp || viewTag == kModifyGroupImage || viewTag == kModifyGroupAll){
             NSLog(@"4");
-            self.title = @"소셜 설정";
+            self.title = NSLocalizedString(@"social_config", @"social_config");
         }
         
         
@@ -808,7 +808,7 @@
             
             
             UILabel *label = [CustomUIKit labelWithText:nil fontSize:16 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 0, 269, 32) numberOfLines:1 alignText:NSTextAlignmentCenter];
-            label.text = @"멤버 관리";
+            label.text = NSLocalizedString(@"control_member", @"control_member");
             [button addSubview:label];
             
             
@@ -819,7 +819,7 @@
            
             
             label = [CustomUIKit labelWithText:nil fontSize:16 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 0, 269, 32) numberOfLines:1 alignText:NSTextAlignmentCenter];
-            label.text = @"소셜 삭제";
+            label.text = NSLocalizedString(@"social_delete", @"social_delete");
             [button addSubview:label];
             
             viewY = CGRectGetMaxY(button.frame);
@@ -1337,7 +1337,7 @@
     [addController setDelegate:self selector:@selector(saveArray:)];
     addController.title = @"멤버초대";
     if(viewTag == kModifyChatName)
-        addController.title = @"채팅 대상 선택";
+        addController.title = NSLocalizedString(@"select_chat_member", @"select_chat_member");
     UINavigationController *nc = [[CBNavigationController alloc]initWithRootViewController:addController];
     [self presentViewController:nc animated:YES completion:nil];
     
@@ -1348,7 +1348,7 @@
     
 //    UIAlertView *alert;
 //    NSString *msg = @"소셜의 모든 데이터가 삭제되며 삭제 처리가 완료된 후에는 복구가 불가능합니다.";
-//    alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//    alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //    alert.tag = kDelete;
 //    [alert show];
     //    [alert release];
@@ -1512,8 +1512,8 @@
     
     if(viewTag == kNewGroup){
 //    UIAlertView *alert;
-    NSString *msg = @"새로운 소셜 만들기를 중단하시겠습니까?";
-//    alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+    NSString *msg = NSLocalizedString(@"stop_make_new_social_alert", @"stop_make_new_social_alert");
+//    alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //    alert.tag = kNewGroupCancel;
 //    [alert show];
         //    [alert release];
@@ -1783,7 +1783,7 @@ else
     
     //            UIAlertView *alert;
     NSString *msg = @"소셜을 삭제하시겠습니까?";
-    //            alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+    //            alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
     //            alert.tag = kConfirmDelete;
     //            [alert show];
     //            [alert release];
@@ -1966,7 +1966,7 @@ else
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -2040,7 +2040,7 @@ else
         
         
         if(viewTag == kNewGroup){
-            self.title = @"새로운 소셜";
+            self.title = NSLocalizedString(@"new_social", @"new_social");
             
         }
         else if(viewTag == kChat){
@@ -2051,10 +2051,10 @@ else
         }
         else if(viewTag == kModifyGroup){
             NSLog(@"4");
-            self.title = @"소셜 설정";
+            self.title = NSLocalizedString(@"social_config", @"social_config");
         }
         else{
-            self.title = @"멤버 초대";
+            self.title = NSLocalizedString(@"invite_member", @"invite_member");
         }
         
         
@@ -2155,7 +2155,7 @@ else
 //        }
 //        else if(myTable.tag == kModifyGroup){
 //            NSLog(@"4");
-//            self.title = @"소셜 설정";
+//            self.title = NSLocalizedString(@"social_config", @"social_config");
 //        }
 //        else{
 //            self.title = @"소셜 멤버 초대";
@@ -2357,7 +2357,7 @@ else
     if(viewTag == kChat || viewTag == kModifyChatName)
         titleText = @"채팅방 이름";
     else
-        titleText = @"소셜 이름";
+        titleText = NSLocalizedString(@"social_name", @"social_name");
     
     nameTitleLabel = [CustomUIKit labelWithText:titleText
                                        fontSize:14 fontColor:RGB(136, 136, 136)
@@ -2417,7 +2417,7 @@ else
     
     if(viewTag == kNewGroup || viewTag == kModifyGroup){
         
-        explainTitleLabel = [CustomUIKit labelWithText:@"소셜 설명"
+        explainTitleLabel = [CustomUIKit labelWithText:NSLocalizedString(@"social_exp", @"social_exp")
                                                        fontSize:14 fontColor:RGB(136, 136, 136)
                                                           frame:CGRectMake(nameTitleLabel.frame.origin.x, CGRectGetMaxY(view.frame)+25, nameTitleLabel.frame.size.width, nameTitleLabel.frame.size.height) numberOfLines:1 alignText:NSTextAlignmentLeft];
         
@@ -2455,7 +2455,7 @@ else
             
             
             UILabel *label = [CustomUIKit labelWithText:nil fontSize:18 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 0, 269, 32) numberOfLines:1 alignText:NSTextAlignmentCenter];
-            label.text = @"멤버 관리";
+            label.text = NSLocalizedString(@"control_member", @"control_member");
             [button addSubview:label];
             
             
@@ -2466,7 +2466,7 @@ else
             
             
             label = [CustomUIKit labelWithText:nil fontSize:18 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 0, 269, 32) numberOfLines:1 alignText:NSTextAlignmentCenter];
-            label.text = @"소셜 삭제";
+            label.text = NSLocalizedString(@"social_delete", @"social_delete");
             [button addSubview:label];
             scrollView.contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(button.frame)+64+10);
         }
@@ -2910,7 +2910,7 @@ else
 //        if(tableView.tag == kAddGroup){
 //            if(indexPath.row == 0){
 //
-//            cell.textLabel.text = @"멤버 초대";
+//            cell.textLabel.text = NSLocalizedString(@"invite_member", @"invite_member");
 //            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 //        }
 //            else{
@@ -2981,7 +2981,7 @@ else
 //
 //
 //                if([groupArray[indexPath.row-1][@"available"]isEqualToString:@"0"]){
-//                    lblStatus.text = @"미설치";
+//                    lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 //                    disableView.hidden = NO;
 //
 //                }
@@ -3169,11 +3169,11 @@ else
 //
 //
 //                if([dic[@"available"]isEqualToString:@"0"]){
-//                    lblStatus.text = @"미설치";
+//                    lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 //                    disableView.hidden = NO;
 //
 ////                    if([[SharedAppDelegate.root getPureNumbers:waitArray[indexPath.row][@"cellphone"]]length]>9)
-////                    invite.hidden = NO;// lblStatus.text = @"미설치";
+////                    invite.hidden = NO;// lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 ////                    else
 ////                        invite.hidden = YES;
 //                }
@@ -3205,7 +3205,7 @@ else
 //                [cell.contentView addSubview:separatorView];
 //                [separatorView release];
 //
-//                cell.textLabel.text = @"채팅 대상 선택";
+//                cell.textLabel.text = NSLocalizedString(@"select_chat_member", @"select_chat_member");
 //                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 //            }
 //            else{
@@ -3263,7 +3263,7 @@ else
 //
 //				NSString *nameStr = dic[@"name"];
 //				if ([nameStr length] < 1) {
-//					nameStr = @"알 수 없는 사용자";
+//					nameStr = NSLocalizedString(@"unknown_user", @"unknown_user");
 //				}
 //                else
 //                    name.text = nameStr;
@@ -3296,9 +3296,9 @@ else
 //                if([dic[@"available"]isEqualToString:@"0"])
 //                {
 //                    disableView.hidden = NO;
-//                    lblStatus.text = @"미설치";
+//                    lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 ////                    if([[SharedAppDelegate.root getPureNumbers:groupArray[indexPath.row-1][@"cellphone"]]length]>9)
-////                    invite.hidden = NO;//lblStatus.text = @"미설치";
+////                    invite.hidden = NO;//lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 ////                    else
 ////                        invite.hidden = YES;
 //                }
@@ -3437,9 +3437,9 @@ else
 ////            invite.titleLabel.text = waitArray[indexPath.row][@"uniqueid"];
 ////            if([waitArray[indexPath.row][@"available"]isEqualToString:@"0"])
 ////            {
-////                  lblStatus.text = @"미설치";
+////                  lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 ////            if([[SharedAppDelegate.root getPureNumbers:waitArray[indexPath.row-1][@"cellphone"]]length]>9)
-////                invite.hidden = NO;//  lblStatus.text = @"미설치";
+////                invite.hidden = NO;//  lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 ////                else
 ////                    invite.hidden = YES;
 ////            }
@@ -3466,7 +3466,7 @@ else
 //                button.frame = CGRectMake(15, 0, 269, 32);
 //            }
 //            UILabel *label = [CustomUIKit labelWithText:nil fontSize:18 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 0, 269, 32) numberOfLines:1 alignText:NSTextAlignmentCenter];
-//            label.text = @"소셜 삭제";
+//            label.text = NSLocalizedString(@"social_delete", @"social_delete");
 //            [button addSubview:label];
 //
 //        }
@@ -3570,9 +3570,9 @@ else
 ////                    invite.titleLabel.text = groupArray[indexPath.row-1][@"uniqueid"];
 ////                    if([groupArray[indexPath.row-1][@"available"]isEqualToString:@"0"])
 ////                    {
-////                        lblStatus.text = @"미설치";
+////                        lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 ////                        if([[SharedAppDelegate.root getPureNumbers:groupArray[indexPath.row-1][@"cellphone"]]length]>9)
-////                            invite.hidden = NO;//     lblStatus.text = @"미설치";
+////                            invite.hidden = NO;//     lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 ////                        else
 ////                            invite.hidden = YES;
 ////                    }
@@ -3869,7 +3869,7 @@ else
     [addController setDelegate:self selector:@selector(saveArray:)];
     addController.title = @"멤버초대";
     if(viewTag == kChat || viewTag == kModifyChatName)
-        addController.title = @"채팅 대상 선택";
+        addController.title = NSLocalizedString(@"select_chat_member", @"select_chat_member");
     UINavigationController *nc = [[CBNavigationController alloc]initWithRootViewController:addController];
     [self presentViewController:nc animated:YES completion:nil];
     
@@ -3880,7 +3880,7 @@ else
     
     //    UIAlertView *alert;
     //    NSString *msg = @"소셜의 모든 데이터가 삭제되며 삭제 처리가 완료된 후에는 복구가 불가능합니다.";
-    //    alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+    //    alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
     //    alert.tag = kDelete;
     //    [alert show];
     //    [alert release];
@@ -3908,7 +3908,7 @@ else
         }
         //        UIAlertView *alert;
         NSString *msg = [NSString stringWithFormat:@"%@ 멤버를 추가하시겠습니까?",names];
-        //        alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+        //        alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         //        alert.tag = kAdd;
         //        [alert show];
         //        [alert release];
@@ -4027,8 +4027,8 @@ else
     
     if(viewTag == kNewGroup){
         //    UIAlertView *alert;
-        NSString *msg = @"새로운 소셜 만들기를 중단하시겠습니까?";
-        //    alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+        NSString *msg = NSLocalizedString(@"stop_make_new_social_alert", @"stop_make_new_social_alert");
+        //    alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         //    alert.tag = kNewGroupCancel;
         //    [alert show];
         //    [alert release];
@@ -4258,7 +4258,7 @@ else
     
     //            UIAlertView *alert;
     NSString *msg = @"소셜을 삭제하시겠습니까?";
-    //            alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+    //            alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
     //            alert.tag = kConfirmDelete;
     //            [alert show];
     //            [alert release];
@@ -4401,7 +4401,7 @@ else
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];

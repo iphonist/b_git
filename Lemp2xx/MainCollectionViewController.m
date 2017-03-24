@@ -389,7 +389,7 @@ const char paramNumber;
         [self.view addSubview:button];
         
         
-        UILabel *label = [CustomUIKit labelWithText:@"내정보" fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(2, 2, button.frame.size.width - 5, button.frame.size.height - 5) numberOfLines:1 alignText:NSTextAlignmentCenter];
+        UILabel *label = [CustomUIKit labelWithText:NSLocalizedString(@"my_info_nospace", @"my_info_nospace") fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(2, 2, button.frame.size.width - 5, button.frame.size.height - 5) numberOfLines:1 alignText:NSTextAlignmentCenter];
         label.font = [UIFont boldSystemFontOfSize:14];
         [button addSubview:label];
         
@@ -397,7 +397,7 @@ const char paramNumber;
         [self.view addSubview:button];
         
         
-        label = [CustomUIKit labelWithText:@"고객\n쿠폰" fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(2, 2, button.frame.size.width - 5, button.frame.size.height - 5) numberOfLines:2 alignText:NSTextAlignmentCenter];
+        label = [CustomUIKit labelWithText: NSLocalizedString(@"customer_coupon_2line", @"customer_coupon_2line") fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(2, 2, button.frame.size.width - 5, button.frame.size.height - 5) numberOfLines:2 alignText:NSTextAlignmentCenter];
         label.font = [UIFont boldSystemFontOfSize:14];
         [button addSubview:label];
     }
@@ -407,7 +407,7 @@ const char paramNumber;
         [self.view addSubview:button];
         
         
-        UILabel *label = [CustomUIKit labelWithText:@"내정보" fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(2, 2, button.frame.size.width - 5, button.frame.size.height - 5) numberOfLines:1 alignText:NSTextAlignmentCenter];
+        UILabel *label = [CustomUIKit labelWithText:NSLocalizedString(@"my_info_nospace", @"my_info_nospace") fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(2, 2, button.frame.size.width - 5, button.frame.size.height - 5) numberOfLines:1 alignText:NSTextAlignmentCenter];
         label.font = [UIFont boldSystemFontOfSize:14];
         [button addSubview:label];
     }
@@ -1553,7 +1553,7 @@ const char paramNumber;
         acceptLabel.tag = 50;
         acceptLabel.userInteractionEnabled = YES;
         [invitationImage addSubview:acceptLabel];
-        acceptLabel.text = @"가입";
+        acceptLabel.text = NSLocalizedString(@"register", @"register");
     }
     
     
@@ -1902,7 +1902,7 @@ const char paramNumber;
         
         bg.image = [UIImage imageNamed:@"button_main_newsocial.png"];
         //        infoView.hidden = YES;
-        name.text = @"새로운 소셜 생성";
+        name.text = NSLocalizedString(@"make_new_social", @"make_new_social");
         name.frame = CGRectMake(10, 40, 124-20, 20);
         name.textColor = RGB(202, 202, 202);
         
@@ -2174,7 +2174,7 @@ const char paramNumber;
                                                                                  message:@"거절 시, 다시 초대 받기 전까지는 해당 소셜에 가입하실 수 없습니다. 초대를 거절 하시겠습니까?"
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -2183,7 +2183,7 @@ const char paramNumber;
                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                     }];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -2197,7 +2197,7 @@ const char paramNumber;
     else{
         UIAlertView *alert;
         //    NSString *msg = [NSString stringWithFormat:@"%@로 일반 전화를 거시겠습니까?",number];
-        alert = [[UIAlertView alloc] initWithTitle:@"소셜 가입" message:@"거절 시, 다시 초대 받기 전까지는 해당 소셜에 가입하실 수 없습니다. 초대를 거절 하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예",nil];
+        alert = [[UIAlertView alloc] initWithTitle:@"소셜 가입" message:@"거절 시, 다시 초대 받기 전까지는 해당 소셜에 가입하실 수 없습니다. 초대를 거절 하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"),nil];
         
         objc_setAssociatedObject(alert, &paramNumber, [[sender titleLabel]text], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         
@@ -2256,7 +2256,7 @@ const char paramNumber;
                                          }];
             [alertcontroller addAction:okb];
             
-            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -2268,7 +2268,7 @@ const char paramNumber;
         }
         else{
             UIAlertView *alert;
-            alert = [[UIAlertView alloc] initWithTitle:@"새소셜 만들기" message:msg delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"고객 관리형 소셜 만들기",@"HA용 소셜 만들기", nil];
+            alert = [[UIAlertView alloc] initWithTitle:@"새소셜 만들기" message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"고객 관리형 소셜 만들기",@"HA용 소셜 만들기", nil];
             alert.tag = kMakeSocical;
             [alert show];
             //        [alert release];
@@ -2292,7 +2292,7 @@ const char paramNumber;
     NSLog(@"loadNew");
 #ifdef Batong
     
-    [CustomUIKit popupAlertViewOK:@"새로운 소셜" msg:@"주소록 상의 멤버를 초대하는\n소셜을 생성합니다.\n조직 연동 (입/퇴사, 전배 등 자동 적용)\n소셜 생성을 원하시는 분께서는\nIT 지원 팀으로 문의부탁드립니다.\n계속 진행하시겠습니까?" delegate:self tag:kECMDMakeSocial sel:@selector(confirmLoadNewSocial) with:nil csel:nil with:nil];
+    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"new_social", @"new_social") msg:NSLocalizedString(@"make_new_social_alert", @"make_new_social_alert") delegate:self tag:kECMDMakeSocial sel:@selector(confirmLoadNewSocial) with:nil csel:nil with:nil];
     return;
 #endif
     
@@ -2381,7 +2381,7 @@ const char paramNumber;
         
         
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"닫기"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"close", @"close")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -2394,7 +2394,7 @@ const char paramNumber;
     else{
         UIAlertView *alert;
         //    NSString *msg = [NSString stringWithFormat:@"%@로 일반 전화를 거시겠습니까?",number];
-        alert = [[UIAlertView alloc] initWithTitle:@"바른소통 링크" message:@"" delegate:self cancelButtonTitle:@"닫기" otherButtonTitles:@"mKWP", @"mECMD", nil];
+        alert = [[UIAlertView alloc] initWithTitle:@"바른소통 링크" message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"close", @"close") otherButtonTitles:@"mKWP", @"mECMD", nil];
         alert.tag = kLink;
         [alert show];
         //        [alert release];
@@ -2521,7 +2521,7 @@ const char paramNumber;
                                      }];
         [alertcontroller addAction:okb];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"닫기"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"close", @"close")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -2534,7 +2534,7 @@ const char paramNumber;
     else{
         UIAlertView *alert;
         //    NSString *msg = [NSString stringWithFormat:@"%@로 일반 전화를 거시겠습니까?",number];
-        alert = [[UIAlertView alloc] initWithTitle:@"풀무원 링크" message:@"" delegate:self cancelButtonTitle:@"닫기" otherButtonTitles:@"풀무원샵", @"그린체", @"그린체 블로그", @"잇슬림", @"베이비밀", @"아미오", @"더스킨", @"자담터", nil];
+        alert = [[UIAlertView alloc] initWithTitle:@"풀무원 링크" message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"close", @"close") otherButtonTitles:@"풀무원샵", @"그린체", @"그린체 블로그", @"잇슬림", @"베이비밀", @"아미오", @"더스킨", @"자담터", nil];
         alert.tag = kLink;
         [alert show];
         //    [alert release];
@@ -2629,7 +2629,7 @@ const char paramNumber;
         [alertcontroller addAction:okb];
         
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"닫기"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"close", @"close")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -2642,7 +2642,7 @@ const char paramNumber;
     else{
         UIAlertView *alert;
         //    NSString *msg = [NSString stringWithFormat:@"%@로 일반 전화를 거시겠습니까?",number];
-        alert = [[UIAlertView alloc] initWithTitle:@"풀무원 링크" message:@"" delegate:self cancelButtonTitle:@"닫기" otherButtonTitles:@"풀무원샵", @"그린체", @"그린체 블로그", @"잇슬림", @"베이비밀", @"자담터",nil];
+        alert = [[UIAlertView alloc] initWithTitle:@"풀무원 링크" message:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"close", @"close") otherButtonTitles:@"풀무원샵", @"그린체", @"그린체 블로그", @"잇슬림", @"베이비밀", @"자담터",nil];
         alert.tag = kLinkCustomer;
         [alert show];
         //    [alert release];
@@ -2802,7 +2802,7 @@ const char paramNumber;
             
             NSLog(@"FAIL : %@",operation.error);
             [HTTPExceptionHandler handlingByError:error];
-            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 가입하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 가입하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //        [alert show];
             
         }];
@@ -2912,7 +2912,7 @@ const char paramNumber;
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 가입하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 가입하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];

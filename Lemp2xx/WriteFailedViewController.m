@@ -110,7 +110,7 @@
     
     
     UILabel *testLabel;
-    testLabel = [CustomUIKit labelWithText:@"검사 중" fontSize:17 fontColor:[UIColor darkGrayColor] frame:testButtonImage.frame numberOfLines:1 alignText:NSTextAlignmentCenter];
+    testLabel = [CustomUIKit labelWithText:NSLocalizedString(@"mqm_testing", @"mqm_testing") fontSize:17 fontColor:[UIColor darkGrayColor] frame:testButtonImage.frame numberOfLines:1 alignText:NSTextAlignmentCenter];
     testLabel.font = [UIFont boldSystemFontOfSize:16];
     [bgButtonImageView addSubview:testLabel];
     
@@ -231,7 +231,7 @@
     [array addObject:@"품목 운영상의 사유로\n실제 날인 유통기한 확인시 정상입니다."];
     [array addObject:@"제조일 검사결과 부적합"];
     
-        [array addObject:@"취소"];
+        [array addObject:NSLocalizedString(@"cancel", @"cancel")];
     
     NSLog(@"dropFirstobj %@",dropObj);
     if(dropObj){

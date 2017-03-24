@@ -282,7 +282,7 @@
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                             }];
                 
-                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action){
                                                                     [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -295,7 +295,7 @@
             }
             else{
             UIAlertView *alert;
-            alert = [[UIAlertView alloc] initWithTitle:@"인증메일 재발송" message:@"메일을 받지 못하셨나요?\n스팸편지함 혹은 휴지통 등의 편지함을 확인해보세요. 메일서비스에 따라 메일이 도착하기 까지 다소 시간이 걸릴 수 있습니다.\n\n'재발송'을 선택하면 이메일 주소로 인증메일을 다시 발송합니다." delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"재발송", nil];
+            alert = [[UIAlertView alloc] initWithTitle:@"인증메일 재발송" message:@"메일을 받지 못하셨나요?\n스팸편지함 혹은 휴지통 등의 편지함을 확인해보세요. 메일서비스에 따라 메일이 도착하기 까지 다소 시간이 걸릴 수 있습니다.\n\n'재발송'을 선택하면 이메일 주소로 인증메일을 다시 발송합니다." delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"재발송", nil];
             alert.tag = [sender tag];
             [alert show];
 //            [alert release];
@@ -319,7 +319,7 @@
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                             }];
                 
-                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action){
                                                                     [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -332,7 +332,7 @@
             }
             else{
             UIAlertView *alert;
-            alert = [[UIAlertView alloc] initWithTitle:@"인증메일 미수신" message:@"메일 미수신 신고하기\n메일서비스에 따라 메일이 도착하기 까지 다소 시간이 걸릴 수 있습니다.\n\n2시간이 지나도 이메일이 오지 않았다면 아래의 '신고하기'버튼을 눌러주세요. 최대한 빠른시간내에 조치해 드리겠습니다." delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"신고하기", nil];
+            alert = [[UIAlertView alloc] initWithTitle:@"인증메일 미수신" message:@"메일 미수신 신고하기\n메일서비스에 따라 메일이 도착하기 까지 다소 시간이 걸릴 수 있습니다.\n\n2시간이 지나도 이메일이 오지 않았다면 아래의 '신고하기'버튼을 눌러주세요. 최대한 빠른시간내에 조치해 드리겠습니다." delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"신고하기", nil];
             alert.tag = [sender tag];
             [alert show];
 //            [alert release];

@@ -53,7 +53,7 @@ static NSUInteger const kDBSignInAlertViewTag = 1;
 #endif
 	self.title = @"첨부 파일";
 	
-	UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"취소" style:UIBarButtonItemStyleDone target:self action:@selector(close)];
+	UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"cancel", @"cancel") style:UIBarButtonItemStyleDone target:self action:@selector(close)];
 	self.navigationItem.rightBarButtonItem = rightButton;
 //	[rightButton release];
     
@@ -157,7 +157,7 @@ static NSUInteger const kDBSignInAlertViewTag = 1;
 	
 	if ([attachTypes[indexPath.row] isEqualToString:@"Dropbox"]) {
 		if (![[DBSession sharedSession] isLinked]) {
-//			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox 로그인 후 파일 첨부가 가능합니다. Dropbox에 연결하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"연 결", nil];
+//			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox 로그인 후 파일 첨부가 가능합니다. Dropbox에 연결하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"연 결", nil];
 //			alertView.tag = kDBSignInAlertViewTag;
 //			[alertView show];
 //			[alertView release];

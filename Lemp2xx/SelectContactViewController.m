@@ -22,7 +22,7 @@
         // Custom initialization
         
 #if defined(GreenTalk) || defined(GreenTalkCustomer)
-        self.title = @"주소록";
+        self.title = NSLocalizedString(@"contacts", @"contacts");
 #else
         self.title = @"조직도";
 #endif
@@ -453,16 +453,16 @@
         if([firstPersonDic[@"available"]isEqualToString:@"0"])
         {
             disableView.hidden = NO;
-            lblStatus.text = @"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             //				if([[SharedAppDelegate.root getPureNumbers:subPeopleList[indexPath.row][@"cellphone"]]length]>9)
-            invite.hidden = NO;//                lblStatus.text = @"미설치";
+            invite.hidden = NO;//                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             infoBgView.hidden = YES;
             info.text = @"";
             
         }
         else if([firstPersonDic[@"available"]isEqualToString:@"4"]){
             disableView.hidden = NO;
-            lblStatus.text = @"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");
             invite.hidden = YES;
             infoBgView.hidden = NO;
             infoBgView.image = [[UIImage imageNamed:@"imageview_contact_info_logout.png"]stretchableImageWithLeftCapWidth:20 topCapHeight:20];

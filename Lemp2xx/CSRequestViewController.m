@@ -229,7 +229,7 @@
     
     UILabel *celllabel;
     
-    celllabel = [CustomUIKit labelWithText:@"전화 번호" fontSize:13 fontColor:[UIColor blackColor] frame:CGRectMake(10, CGRectGetMaxY(namelabel.frame)+20, 65, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
+    celllabel = [CustomUIKit labelWithText:NSLocalizedString(@"phone_number", @"phone_number") fontSize:13 fontColor:[UIColor blackColor] frame:CGRectMake(10, CGRectGetMaxY(namelabel.frame)+20, 65, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
     [infoView addSubview:celllabel];
     
     textFieldImageView = [[UIImageView alloc]init];
@@ -245,7 +245,7 @@
     cellTextField.tag = kName;
     cellTextField.clearButtonMode = UITextFieldViewModeAlways;
     cellTextField.text = mydic[@"cellphone"];
-    cellTextField.placeholder = @"전화 번호 입력";
+    cellTextField.placeholder = NSLocalizedString(@"enter_number", @"enter_number");
     [textFieldImageView addSubview:cellTextField];
 //    [textFieldImageView release];
     
@@ -424,7 +424,7 @@
                 
                 
                 actionButton = [UIAlertAction
-                                actionWithTitle:@"확인"
+                                actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
@@ -440,7 +440,7 @@
             else{
             
             UIAlertView *alert;
-            alert = [[UIAlertView alloc] initWithTitle:@"Q.S.C 119" message:msg delegate:self cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+            alert = [[UIAlertView alloc] initWithTitle:@"Q.S.C 119" message:msg delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             [alert show];
 //            [alert release];
             }
@@ -512,7 +512,7 @@
         }
         
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             

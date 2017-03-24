@@ -1,14 +1,16 @@
-/* 
-  Localizable.strings
-  Lemp2xx
-
-  Created by Hyemin Kim on 2016. 5. 2..
-  Copyright © 2016년 BENCHBEE Co., Ltd. All rights reserved.
-*/
+/*
+ Localizable.strings
+ Lemp2xx
+ 
+ Created by Hyemin Kim on 2016. 5. 2..
+ Copyright © 2016년 BENCHBEE Co., Ltd. All rights reserved.
+ */
 
 // NSLocalizedString(@"chat", @"chat")
 
 "chat" = "채팅";
+"call" = "통화";
+"sms" = "문자";
 "social_chat" = "소셜채팅";
 "setup" = "설정";
 "edit" = "편집";
@@ -26,8 +28,12 @@
 "community_chat" = "커뮤니티 전체 채팅";
 "search_chatroom" = "채팅방 검색";
 "select_chat_member" = "채팅 대상 선택";
-"there_is_no_selected_room" = "선택된 채팅방이 없습니다!";
-"there_is_no_selected_member" = "선택된 대상이 없습니다!";
+"add_chat_member" = "채팅 대상 추가";
+"chat_member_info" = "채팅 대상 정보";
+"out_chatroom" = "채팅방 나가기";
+"out" = "나가기";
+"there_is_no_selected_room" = "선택된 채팅방이 없습니다.";
+"there_is_no_selected_member" = "선택된 대상이 없습니다.";
 "lets_start_to_chat" = "동료들과 채팅을 해보세요.";
 "search_chatroom_customername" = "채팅방 검색 (고객명 검색)";
 "mqm_test_explain" = "‘검사시작’ 버튼 선택 시,\nStep별 스캔 화면으로 이동합니다.\n안내에 따라 진행해주세요.\n감사합니다.";
@@ -40,18 +46,23 @@
 "mqm_select_mode" = "모드 설정";
 "mqm_reject_makdedate" = "제조일자 불일치";
 "mqm_reject_result" = "제조일자와 유통기한 연산시 불일치";
+"out_chatroom_alert" = "채팅방에서 나가시겠습니까?\n채팅내용이 삭제되고 채팅목록에서도 삭제됩니다.";
 "delete_chat_alert" = "삭제된 채팅 내용은 다시 볼 수 없습니다.\n채팅 내용을 삭제하시겠습니까?\n(단, 읽지 않은 메시지가 있는 채팅방은 삭제되지 않습니다.)";
 "delete_note_alert" = "삭제된 쪽지는 다시 볼 수 없습니다.\n쪽지를 삭제하시겠습니까?";
 "delete_call_alert" = "삭제된 통화 목록은 다시 볼 수 없습니다.\n통화 목록을 삭제하시겠습니까?";
-"changeview_not_done_alert" = "화면 내용이 바뀌어 작업을 완료할 수 없습니다. 다시 시도해 주세요!";
+"changeview_not_done_alert" = "화면 내용이 바뀌어 작업을 완료할 수 없습니다. 다시 시도해 주세요.";
 
 "none_chatmember" = "대화상대없음";
 "unknown_user" = "알 수 없는 사용자";
 "social_chat_2line" = "소셜\n채팅";
 "community_2line" = "커뮤\n니티";
 "customer_chat_2line" = "고객\n채팅";
+"customer_coupon_2line" = "고객\n쿠폰";
 
-"myinfo" = "내 정보";
+"my_info" = "내 정보";
+"my_profile" = "내 프로필";
+"view_my_profile" = "내 프로필 보기";
+"my_info_nospace" = "내정보";
 "notice" = "공지사항";
 "my_coupon" = "내 쿠폰";
 "my_gpoint" = "내 G포인트";
@@ -66,16 +77,18 @@
 "pulmuone_sentence" = "풀무원 건강생활, 그린톡";
 "new_question" = "새질문";
 "question" = "질문";
+"request" = "요청";
 "new_request" = "새요청";
 "new_delivery_request" = "새 배송요청";
 
-"coupon_register" = "가입";
-"coupon_birth" = "생일";
-"coupon_new" = "신규";
-"coupon_secret" = "시크릿";
-"coupon_vip" = "VIP";
+"there_is_no_coupon_customer" = "발급 대상이 없습니다.";
+"register" = "가입";
+"birth" = "생일";
+"new" = "신규";
+"secret" = "시크릿";
+"vip" = "VIP";
 "coupon_rogen" = "로젠빈수";
-"coupon_event" = "이벤트";
+"event" = "이벤트";
 "coupon_number" = "쿠폰번호";
 "coupon_expiration" = "유효기간";
 "gpoint_explain" = "* G포인트 1점 = 현금 1원\n  (구매금액의 건기식 3%, 스킨케어 5% 적립)\n* 사용하지 않은 G포인트는 적립월로 부터 2년 경과시 소멸\n* G포인트 적립은 구매하신 월말 이후 익월에 반영되어 적립됩니다.";
@@ -111,10 +124,17 @@
 "setup_each_social_alert" = "소셜별 알림 설정";
 "setup_newpost_alert" = "전체 새글 알림";
 "setup_newreply_alert" = "전체 댓글 알림";
-"off_the_alarm" = "알림을 껐습니다.";
-"on_the_alarm" = "알림을 켰습니다.";
+"on_the_alarm" = "알림켜기";
+"off_the_alarm" = "알림끄기";
+"off_locked_room" = "고정해제";
+"on_locked_room" = "상단고정";
+"on_the_alarm_toast" = "알림을 켰습니다.";
+"off_the_alarm_toast" = "알림을 껐습니다.";
 "newpost_alert" = "새글 알림";
 "newreply_alert" = "댓글 알림";
+"chat_alert" = "채팅 알림";
+"alarm_on_status" = "켜짐";
+"alarm_off_status" = "꺼짐";
 
 "kakaotalk" = "카카오톡";
 "not_install_kakaotalk" = "카카오톡이 설치되어 있지 않습니다.";
@@ -134,13 +154,13 @@
 "far_future" = "먼미래";
 "longtime_ing" = "오랫동안";
 
-"agreement" = "이용약관";
+"agreement" = "이용약관";
 "companyinfo" = "회사소개";
 "greentalk_agreement_companyinfo" = "이용약관 및 회사소개";
-"greentalk_use_agreement" = "그린톡 이용약관";
-"greentalk_personalinfo_agreement" = "개인정보 수집 및 이용 동의서";
-"greentalk_marketing_agreement" = "마케팅 활용 동의서";
-"greentalk_personalinfo_usage" = "그린톡 개인정보취급방침";
+"greentalk_use_agreement" = "그린톡 이용약관";
+"greentalk_personalinfo_agreement" = "개인정보 수집 및 이용 동의서";
+"greentalk_marketing_agreement" = "마케팅 활용 동의서";
+"greentalk_personalinfo_usage" = "그린톡 개인정보취급방침";
 "greentalk_companyname" = "상호: 풀무원건강생활(주)";
 "greentalk_ceoname" = "대표: 여익현";
 "greentalk_address" = "주소: 서울특별시 강남구 수서동 724 로즈데일빌딩 2층";
@@ -153,6 +173,7 @@
 "favorite_member" = "즐겨찾기 멤버 ";
 "selected_member" = "선택된 멤버";
 "view_member" = "멤버 보기";
+"invite_member" = "멤버 초대";
 "control_member" = "멤버 관리";
 "view_customer" = "고객 보기";
 "cannot_get_customerinfo" = "고객의 정보를 가져오지 못하였습니다. 고객과의 원활한 대화를 위해 앱을 종료 후 재시작 해주세요.";
@@ -177,4 +198,53 @@
 
 "not_installed" = "미설치";
 "contact_something" = "연락";
+"cellphone" = "휴대폰";
+
 "logout" = "로그아웃";
+
+
+"search_name_dept_phone" = "이름(초성), 부서, 전화번호 검색";
+"recent_call_list" = "최근 대화 목록";
+"favorite" = "즐겨찾기";
+"info_null" = "정보 없음";
+"introduce_my_work" = "내 업무 소개";
+"introduce_myself" = "내 소개";
+"enter_another_contact" = "착신전환할 번호를 입력해주세요.";
+"introduce_your_work" = "본인의 업무를 소개해주세요.";
+"introduce_yourself" = "본인을 소개해주세요.";
+"enter_your_phone_number" = "본인의 휴대전화 번호를 입력해주세요.";
+"enter_phone_number" = "휴대전화 번호를 입력해주세요.";
+"enter_number" = "전화번호 입력";
+"phone_number" = "전화 번호";
+"chat_history" = "채팅 히스토리";
+"push_alert" = "푸시알림";
+"change_my_info" = "내 정보 변경";
+"password" = "비밀번호";
+"memo" = "메모";
+"my_ha" = "담당 HA";
+"new_social" = "새로운 소셜";
+"make_new_social" = "새로운 소셜 생성";
+"stop_make_new_social_alert" = "새로운 소셜 만들기를 중단하시겠습니까?";
+"make_new_social_alert" = "주소록 상의 멤버를 초대하는\n소셜을 생성합니다.\n조직 연동 (입/퇴사, 전배 등 자동 적용)\n소셜 생성을 원하시는 분께서는\nIT 지원 팀으로 문의부탁드립니다.\n계속 진행하시겠습니까?";
+
+"new_social_short" = "새 소셜";
+"make_new_social_short" = "새 소셜 만들기";
+"invite_new_social_short" = "새 소셜 초대";
+"social_config" = "소셜 설정";
+"social_name" = "소셜 이름";
+"social_exp" = "소셜 설명";
+"social_coverimage" = "소셜 커버 이미지";
+"social_out" = "소셜 나가기";
+"social_drop" = "소셜 탈퇴";
+"social_delete" = "소셜 삭제";
+"social_info" = "소셜 기본 정보";
+"pass_leader" = "리더 위임";
+"invite_customer" = "고객 초대";
+"drop_complete" = "탈퇴 완료";
+"save_config_alert" = "설정이 저장되었습니다.";
+
+
+
+
+
+

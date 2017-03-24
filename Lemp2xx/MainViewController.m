@@ -210,7 +210,7 @@
 //        [buttonImage release];
 //        
 //        
-//        label = [CustomUIKit labelWithText:@"주소록" fontSize:11 fontColor:[UIColor blackColor] frame:CGRectMake(buttonImage.frame.origin.x - 5,58-16,buttonImage.frame.size.width + 10,14) numberOfLines:1 alignText:NSTextAlignmentCenter];
+//        label = [CustomUIKit labelWithText:NSLocalizedString(@"contacts", @"contacts") fontSize:11 fontColor:[UIColor blackColor] frame:CGRectMake(buttonImage.frame.origin.x - 5,58-16,buttonImage.frame.size.width + 10,14) numberOfLines:1 alignText:NSTextAlignmentCenter];
 //        [topView addSubview:label];
 //        label.shadowOffset = CGSizeMake(1, 1);
 //        label.shadowColor = [UIColor whiteColor];
@@ -620,7 +620,7 @@
         invitationImage.frame = CGRectMake(0,0,124,93);
         invitationImage.image = [UIImage imageNamed:@"sns_invbg.png"];
         
-        UILabel *invitationLabel = [CustomUIKit labelWithText:@"새 소셜 초대" fontSize:18 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 21, coverImage.frame.size.width, 20) numberOfLines:1 alignText:NSTextAlignmentCenter];
+        UILabel *invitationLabel = [CustomUIKit labelWithText:NSLocalizedString(@"invite_new_social_short", @"invite_new_social_short") fontSize:18 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 21, coverImage.frame.size.width, 20) numberOfLines:1 alignText:NSTextAlignmentCenter];
         
         invitationMemberLabel = [CustomUIKit labelWithText:nil fontSize:11 fontColor:[UIColor whiteColor] frame:CGRectMake(0, CGRectGetMaxY(invitationLabel.frame), coverImage.frame.size.width, coverImage.frame.size.height-CGRectGetMaxY(invitationLabel.frame)-10.0) numberOfLines:2 alignText:NSTextAlignmentCenter];
         invitationMemberLabel.tag = 10;
@@ -737,7 +737,7 @@
 //        supporterGroup.hidden = YES;
         invitationImage.hidden = YES;
         new.hidden = YES;
-        name.text = @"새 소셜 만들기";
+        name.text = NSLocalizedString(@"make_new_social_short", @"make_new_social_short");
         [CustomUIKit customImageNamed:@"add_photo.png" block:^(UIImage *image) {
             coverImage.image = image;
         }];
@@ -829,7 +829,7 @@
         invitationImage.frame = CGRectMake(0,0,280,93);
         invitationImage.image = [UIImage imageNamed:@"sns_invbg.png"];
         
-		UILabel *invitationLabel = [CustomUIKit labelWithText:@"새 소셜 초대" fontSize:18 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 21, coverImage.frame.size.width, 20) numberOfLines:1 alignText:NSTextAlignmentCenter];
+		UILabel *invitationLabel = [CustomUIKit labelWithText:NSLocalizedString(@"invite_new_social_short", @"invite_new_social_short") fontSize:18 fontColor:[UIColor whiteColor] frame:CGRectMake(0, 21, coverImage.frame.size.width, 20) numberOfLines:1 alignText:NSTextAlignmentCenter];
 		
 		invitationMemberLabel = [CustomUIKit labelWithText:nil fontSize:11 fontColor:[UIColor whiteColor] frame:CGRectMake(0, CGRectGetMaxY(invitationLabel.frame), coverImage.frame.size.width, coverImage.frame.size.height-CGRectGetMaxY(invitationLabel.frame)-10.0) numberOfLines:2 alignText:NSTextAlignmentCenter];
 		invitationMemberLabel.tag = 10;
@@ -947,7 +947,7 @@
 //			supporterGroup.hidden = YES;
             invitationImage.hidden = YES;
             new.hidden = YES;
-            name.text = @"새 소셜 만들기";
+            name.text = NSLocalizedString(@"make_new_social_short", @"make_new_social_short");
             [CustomUIKit customImageNamed:@"add_photo.png" block:^(UIImage *image) {
 				coverImage.image = image;
 			}];
@@ -1054,7 +1054,7 @@
                 
                 
                 UIAlertAction* cancel = [UIAlertAction
-                                         actionWithTitle:@"취소"
+                                         actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                          style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction * action)
                                          {
@@ -1069,7 +1069,7 @@
 
             else{
             UIActionSheet *actionSheet;
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                         destructiveButtonTitle:nil otherButtonTitles:@"가 입", @"거 절", nil];
             
             [actionSheet showInView:SharedAppDelegate.window];
@@ -1185,7 +1185,7 @@
                     
                     
                     UIAlertAction* cancel = [UIAlertAction
-                                             actionWithTitle:@"취소"
+                                             actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                              style:UIAlertActionStyleDefault
                                              handler:^(UIAlertAction * action)
                                              {
@@ -1199,7 +1199,7 @@
                 }
                 else{
                 UIActionSheet *actionSheet;
-				actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+				actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
 											destructiveButtonTitle:nil otherButtonTitles:@"가 입", @"거 절", nil];
 				
                 [actionSheet showInView:SharedAppDelegate.window];
@@ -1435,7 +1435,7 @@
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 가입하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 가입하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];

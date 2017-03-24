@@ -249,7 +249,7 @@
                                                     }];
         [alertcontroller addAction:okb];
         
-        okb = [UIAlertAction actionWithTitle:@"주소록"
+        okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"contacts", @"contacts")
                                        style:UIAlertActionStyleDefault
                                      handler:^(UIAlertAction * action){
                                          
@@ -262,7 +262,7 @@
                                      }];
         [alertcontroller addAction:okb];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -277,8 +277,8 @@
                           initWithTitle:@"통화 방법"
                           message:@"통화 방법을 선택하세요."
                           delegate:self
-                          cancelButtonTitle:@"취소"
-                          otherButtonTitles:@"다이얼", @"주소록", nil];
+                          cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+                          otherButtonTitles:@"다이얼", NSLocalizedString(@"contacts", @"contacts"), nil];
     alert.tag = kCallpopup;
     [alert show];
 //    [alert release];
@@ -365,7 +365,7 @@
 //     작업내용 : 최근통화에서 삭제 버튼을 누른 후 전체삭제 버튼을 눌렀을 때
 //     연관화면 : 최근통화 삭제
 //     ****************************************************************/
-//		UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"전체 삭제를 하시겠습니까?" delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인",nil];
+//		UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"전체 삭제를 하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"),nil];
 //		[alert show];
 //		[alert release];
 //}
@@ -946,8 +946,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath
 //								  initWithTitle:@"무료통화를 하시겠습니까?"
 //								  message:nil
 //								  delegate:self
-//								  cancelButtonTitle:@"취소"
-//								  otherButtonTitles:@"확인", nil];
+//								  cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
+//								  otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //			alert.tag = indexPath.row;
 //			[alert show];
 //			[alert release];

@@ -858,11 +858,11 @@ static int g_textSizeHeight[MAX_MESSAGEEND_LINE] = {31, 50, 69};//, 88, 107, 126
   
         
     }
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //    [alert show];
 //    [alert release];
     
-    [CustomUIKit popupAlertViewOK:@"취소" msg:msg delegate:self tag:0 sel:@selector(commitCancel) with:nil csel:nil with:nil];
+    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"cancel", @"cancel") msg:msg delegate:self tag:0 sel:@selector(commitCancel) with:nil csel:nil with:nil];
   
     
 }
@@ -1174,7 +1174,7 @@ static int g_textSizeHeight[MAX_MESSAGEEND_LINE] = {31, 50, 69};//, 88, 107, 126
 		[SVProgressHUD dismiss];
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"글쓰기를 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"글쓰기를 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //            [alert show];
         
     }];
@@ -1797,7 +1797,7 @@ static int g_textSizeHeight[MAX_MESSAGEEND_LINE] = {31, 50, 69};//, 88, 107, 126
     
     UIBarButtonItem *flexibleSpaceLeft = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     
-    UIBarButtonItem* cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"취소"
+    UIBarButtonItem* cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                                      style:UIBarButtonItemStyleBordered target:self action:@selector(pickerCancel)];
     UIBarButtonItem* doneButton = nil;
     
@@ -2325,15 +2325,15 @@ static int g_textSizeHeight[MAX_MESSAGEEND_LINE] = {31, 50, 69};//, 88, 107, 126
 
     
     if([dic[@"available"]isEqualToString:@"0"]){
-        lblStatus.text = @"미설치";
+        lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
         disableView.hidden = NO;
         //            if([[SharedAppDelegate.root getPureNumbers:memberArray[indexPath.row][@"cellphone"]]length]>9)
-        //                invite.hidden = NO;// lblStatus.text = @"미설치";
+        //                invite.hidden = NO;// lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
         //            else
         //                invite.hidden = YES;// lblStatus.text = @"";
     }
     else if([memberArray[indexPath.row][@"available"]isEqualToString:@"4"]){
-        lblStatus.text = @"로그아웃";
+        lblStatus.text = NSLocalizedString(@"logout", @"logout");
         disableView.hidden = NO;
         //            invite.hidden = YES;
     }

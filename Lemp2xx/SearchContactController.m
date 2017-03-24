@@ -210,7 +210,7 @@
 
     for(UIView *subView in search.subviews){
         if([subView isKindOfClass:UIButton.class]){
-            [(UIButton*)subView setTitle:@"취소" forState:UIControlStateNormal];
+            [(UIButton*)subView setTitle:NSLocalizedString(@"cancel", @"cancel") forState:UIControlStateNormal];
         }
     }
 }
@@ -826,7 +826,7 @@
 #endif
         if([dic[@"available"]isEqualToString:@"0"])
         {
-            lblStatus.text = @"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             disableView.hidden = NO;
             	invite.hidden = NO;
             //        if([[SharedAppDelegate.root getPureNumbers:searchList[indexPath.row][@"cellphone"]]length]>9)
@@ -841,7 +841,7 @@
 #endif
         }
         else if([dic[@"available"]isEqualToString:@"4"]){
-            lblStatus.text = @"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");
             disableView.hidden = NO;
             infoBgView.hidden = NO;
             info.text = dic[@"newfield1"];

@@ -58,7 +58,7 @@ static NSString *currentFileName = nil;
 		self.currentPath = @"/";
 	}
 	
-	UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"취소" style:UIBarButtonItemStyleDone target:self action:@selector(removeDropboxBrowser)];
+	UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"cancel", @"cancel") style:UIBarButtonItemStyleDone target:self action:@selector(removeDropboxBrowser)];
 	self.navigationItem.rightBarButtonItem = rightButton;
 //	[rightButton release];
     
@@ -129,7 +129,7 @@ static NSString *currentFileName = nil;
     
     if (![[DBSession sharedSession] isLinked]) {
         NSLog(@"viewwill 1");
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox 연동 후 파일 첨부가 가능합니다. Dropbox에 연결하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"연 결", nil];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox 연동 후 파일 첨부가 가능합니다. Dropbox에 연결하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"연 결", nil];
 //        alertView.tag = kDBSignInAlertViewTag;
 //        [alertView show];
 //		[alertView release];
@@ -478,7 +478,7 @@ static NSString *currentFileName = nil;
                                                                                  message:[NSString stringWithFormat:@"%@\n파일을 다운로드 하지 못했습니다. 잠시 후 다시 시도해 주세요!", currentFileName]
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"확인"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -493,7 +493,7 @@ static NSString *currentFileName = nil;
         
     }
     else{
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:[NSString stringWithFormat:@"%@\n파일을 다운로드 하지 못했습니다. 잠시 후 다시 시도해 주세요!", currentFileName] delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:[NSString stringWithFormat:@"%@\n파일을 다운로드 하지 못했습니다. 잠시 후 다시 시도해 주세요!", currentFileName] delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil];
 	[alert show];
 //	[alert release];
     }
@@ -532,7 +532,7 @@ static NSString *currentFileName = nil;
 
     if ([fileManager fileExistsAtPath:localPath] == NO) {
 		downloadFile = YES;
-//		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox에서 파일을 다운로드 후 첨부할 수 있습니다. 다운로드 하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"다운로드", nil];
+//		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox에서 파일을 다운로드 후 첨부할 수 있습니다. 다운로드 하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"다운로드", nil];
 //		alertView.tag = kDBDownloadAlertViewTag;
 //		[alertView show];
 //		[alertView release];

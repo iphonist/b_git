@@ -56,7 +56,7 @@ return self;
     // Do any additional setup after loading the view.
     self.edgesForExtendedLayout = UIRectEdgeBottom;
     
-    self.title = NSLocalizedString(@"myinfo", @"myinfo");
+    self.title = NSLocalizedString(@"my_info", @"my_info");
     
 
     self.view.backgroundColor = RGB(242, 242, 242);
@@ -116,8 +116,8 @@ return self;
     label.numberOfLines = 2;
     [myTopView addSubview:label];
     
-    NSString *msg = [NSString stringWithFormat:@"%@\n내 프로필 보기",[SharedAppDelegate readPlist:@"myinfo"][@"name"]];
-    NSArray *texts=[NSArray arrayWithObjects:[SharedAppDelegate readPlist:@"myinfo"][@"name"],@"\n내 프로필 보기",nil];
+    NSString *msg = [NSString stringWithFormat:@"%@\n%@",[SharedAppDelegate readPlist:@"myinfo"][@"name"],NSLocalizedString(@"view_my_profile", @"view_my_profile")];
+    NSArray *texts=[NSArray arrayWithObjects:[SharedAppDelegate readPlist:@"myinfo"][@"name"],[NSString stringWithFormat:@"\n%@",NSLocalizedString(@"view_my_profile", @"view_my_profile")],nil];
 
     
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:msg];
@@ -173,7 +173,7 @@ return self;
     imageview.image = [UIImage imageNamed:@"ic_ect_memo.png"];
     
     
-    label = [CustomUIKit labelWithText:@"메모" fontSize:14 fontColor:RGB(116,127,147) frame:CGRectMake(0, CGRectGetMaxY(imageview.frame)+10, button.frame.size.width, 15) numberOfLines:1 alignText:NSTextAlignmentCenter];
+    label = [CustomUIKit labelWithText:NSLocalizedString(@"memo", @"memo") fontSize:14 fontColor:RGB(116,127,147) frame:CGRectMake(0, CGRectGetMaxY(imageview.frame)+10, button.frame.size.width, 15) numberOfLines:1 alignText:NSTextAlignmentCenter];
     [button addSubview:label];
     
 //    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadMyInfoSetup:) frame:CGRectMake(0, 0, buttonHeight, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
@@ -215,7 +215,7 @@ return self;
     
 //    [button release];
     
-    label = [CustomUIKit labelWithText:NSLocalizedString(@"myinfo", @"myinfo") fontSize:14 fontColor:GreenTalkColor frame:CGRectMake(5, button.frame.size.height - 25, button.frame.size.width - 10, 20) numberOfLines:1 alignText:NSTextAlignmentCenter];
+    label = [CustomUIKit labelWithText:NSLocalizedString(@"my_info", @"my_info") fontSize:14 fontColor:GreenTalkColor frame:CGRectMake(5, button.frame.size.height - 25, button.frame.size.width - 10, 20) numberOfLines:1 alignText:NSTextAlignmentCenter];
     [button addSubview:label];
 #endif
     

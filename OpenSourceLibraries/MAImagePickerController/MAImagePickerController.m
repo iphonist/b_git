@@ -282,7 +282,7 @@
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     if (error != NULL) {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"이미지를 저장할 수 없습니다." delegate:self cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"이미지를 저장할 수 없습니다." delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
 //        [alert show];
         
         [CustomUIKit popupSimpleAlertViewOK:@"오류" msg:@"이미지를 저장할 수 없습니다." con:self];

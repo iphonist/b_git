@@ -95,7 +95,7 @@
             search.barTintColor = RGB(242,242,242);
         }
     
-    search.placeholder = NSLocalizedString(@"search_chatroom", @"search_chatroom");//@"채팅방 검색";
+    search.placeholder = NSLocalizedString(@"search_chatroom", @"search_chatroom");
     
 //    [search release];
     
@@ -278,7 +278,7 @@
                     }
                 }
                 else{
-                    nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");//@"대화상대없음";
+                    nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");;
                 }
             }
             else{
@@ -359,7 +359,7 @@
     if([nameStr length]<1){
         
         
-        nameStr = NSLocalizedString(@"unknown_user", @"unknown_user");//@"알 수 없는 사용자";
+        nameStr = NSLocalizedString(@"unknown_user", @"unknown_user");
     }
     
     NSDictionary *newDic = [SharedFunctions fromOldToNew:dic object:nameStr key:@"names"];
@@ -715,7 +715,7 @@
 //                    }
 //                }
 //                else{
-//                    nameStr = @"대화상대없음";
+//                    nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");
 //                }
 //            }
 //            else{
@@ -781,7 +781,7 @@
 //    if([nameStr length]<1){
 //        
 //            
-//            nameStr = @"알 수 없는 사용자";
+//            nameStr = NSLocalizedString(@"unknown_user", @"unknown_user");
 //    }
 //    
 //    NSDictionary *newDic = [SharedFunctions fromOldToNew:dic object:nameStr key:@"names"];

@@ -114,7 +114,7 @@
 //    UIMenuItem *item3 = [[UIMenuItem alloc]initWithTitle:@"잘라내기" action:@selector(cut:)];
 //    UIMenuItem *item4 = [[UIMenuItem alloc]initWithTitle:@"복사" action:@selector(copy:)];
 //    UIMenuItem *item5 = [[UIMenuItem alloc]initWithTitle:@"붙여넣기" action:@selector(paste:)];
-//    UIMenuItem *item6 = [[UIMenuItem alloc]initWithTitle:@"삭제" action:@selector(delete:)];
+//    UIMenuItem *item6 = [[UIMenuItem alloc]initWithTitle:NSLocalizedString(@"delete", @"delete") action:@selector(delete:)];
 //    //    UIMenuItem *item5 = [[UIMenuItem alloc]initWithTitle:@"복사" action:@selector(copy:)];
 //    //    UIMenuItem *item3 = [[UIMenuItem alloc]initWithTitle:@"붙여넣기" action:@selector(paste:)];
 //    //    UIMenuItem *item2 = [[UIMenuItem alloc]initWithTitle:@"모두 선택" action:@selector(b:)];

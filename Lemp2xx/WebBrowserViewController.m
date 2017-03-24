@@ -395,7 +395,7 @@
 	
 	NSLog(@"ERROR CODE %i",(int)[error code]);
 	if (error.code != NSURLErrorCancelled && error.code != 101) {
-//		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"페이지에 연결할 수 없습니다.\n잠시 후 다시 시도해 주세요." delegate:self cancelButtonTitle:@"확인" otherButtonTitles:nil];
+//		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"오류" message:@"페이지에 연결할 수 없습니다.\n잠시 후 다시 시도해 주세요." delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil];
 //		alert.tag = 999;
 //		[alert show];
         

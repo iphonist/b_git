@@ -200,7 +200,7 @@
         greenRequest.tabBarItem.title = @"배송요청";
         greenQnA.tabBarItem.title = @"Q&A";
         scal.tabBarItem.title = @"일정";
-        member.tabBarItem.title = @"설정";
+        member.tabBarItem.title = NSLocalizedString(@"setup", @"setup");
         [scal fromWhere:kCalendar];
         [member setFromGreen];
         greenChatBoard.viewControllers = @[self.chatList, self.socialChatList];

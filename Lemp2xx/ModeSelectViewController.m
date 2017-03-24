@@ -39,7 +39,7 @@
     
     NSLog(@"settingView");
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"모드 설정";
+    self.title = NSLocalizedString(@"mqm_select_mode", @"mqm_select_mode");
     
     UIButton *button;
     UIBarButtonItem *btnNavi;

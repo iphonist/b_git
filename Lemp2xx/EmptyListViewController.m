@@ -513,7 +513,7 @@ const char paramDic;
                         
                 }
                 NSLog(@"myList %@",myList);
-                self.title = NSLocalizedString(@"view_customer", @"view_customer");//@"고객 보기";
+                self.title = NSLocalizedString(@"view_customer", @"view_customer");
                 
             }
             else if(tag == kCouponCustomer){
@@ -1780,7 +1780,7 @@ const char paramDic;
             if([dic[@"rtype"]isEqualToString:@"2"] || [dic[@"rtype"]isEqualToString:@"S"]){
                 
                 if([tempArray count] == 0){
-                    nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");//@"대화상대없음";
+                    nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");
                 }
                 else{
                     
@@ -1814,7 +1814,7 @@ const char paramDic;
                 }
             }
             else
-                nameStr = NSLocalizedString(@"unknown_user", @"unknown_user");//@"알 수 없는 사용자";
+                nameStr = NSLocalizedString(@"unknown_user", @"unknown_user");
         }
         else{
             if([dic[@"rtype"]isEqualToString:@"5"]){
@@ -1837,7 +1837,7 @@ const char paramDic;
                     if([tempArray count]>0)
                         nameStr = [[ResourceLoader sharedInstance] getUserName:tempArray[0]];//[SharedAppDelegate.root searchContactDictionary:memberArray[0]][@"name"];
                     else
-                        nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");//@"대화상대없음";
+                        nameStr = NSLocalizedString(@"none_chatmember", @"none_chatmember");
                 }
             }
         }
@@ -2523,16 +2523,16 @@ if(tag0 >= 0)
         
         if([dic[@"available"]isEqualToString:@"0"])
         {
-            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");//@"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");//;
             disableView.hidden = NO;
             
 //            if([[SharedAppDelegate.root getPureNumbers:dic[@"cellphone"]]length]>9)
-//            invite.hidden = NO;//   lblStatus.text = @"미설치";
+//            invite.hidden = NO;//   lblStatus.text = ;
 //            else
 //                invite.hidden = YES;
         }
         else if([dic[@"available"]isEqualToString:@"4"]){
-            lblStatus.text = NSLocalizedString(@"logout", @"logout");//@"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");//;
             disableView.hidden = NO;
         }
         else{
@@ -2687,7 +2687,7 @@ if(tag0 >= 0)
         NSLog(@"dic %@",dic);
         [SharedAppDelegate.root getProfileImageWithURL:dic[@"uniqueid"] ifNil:@"profile_photo.png" view:profileView scale:0];
         
-        name.text = [NSString stringWithFormat:@"%@",[dic[@"name"]length]>0?dic[@"name"]:@"알 수 없는 사용자"];
+        name.text = [NSString stringWithFormat:@"%@",[dic[@"name"]length]>0?dic[@"name"]:NSLocalizedString(@"unknown_user", @"unknown_user")];
         name.frame = CGRectMake(profileView.frame.origin.x+profileView.frame.size.width+5, profileView.frame.origin.y, 155, 20);
     
         
@@ -2752,13 +2752,13 @@ if(tag0 >= 0)
         if([dic[@"available"]isEqualToString:@"0"])
         {
             disableView.hidden = NO;
-            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");//@"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");//;
             
             
         }
         else if([dic[@"available"]isEqualToString:@"4"]){
             disableView.hidden = NO;
-            lblStatus.text = NSLocalizedString(@"logout", @"logout");//@"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");//;
         }
         else
         {
@@ -2864,7 +2864,7 @@ if(tag0 >= 0)
         NSLog(@"customerdic %@",dic);
         [SharedAppDelegate.root getProfileImageWithURL:dic[@"uniqueid"] ifNil:@"profile_photo.png" view:profileView scale:0];
         
-        name.text = [NSString stringWithFormat:@"%@",[dic[@"name"]length]>0?dic[@"name"]:@"알 수 없는 사용자"];
+        name.text = [NSString stringWithFormat:@"%@",[dic[@"name"]length]>0?dic[@"name"]:NSLocalizedString(@"unknown_user", @"unknown_user")];
         name.frame = CGRectMake(profileView.frame.origin.x+profileView.frame.size.width+5, profileView.frame.origin.y + 5, 155, 20);
         
         team.text = [NSString stringWithFormat:@"%@",[dic[@"team"]length]>0?dic[@"team"]:@""];        
@@ -2875,13 +2875,13 @@ if(tag0 >= 0)
         if([dic[@"available"]isEqualToString:@"0"])
         {
             disableView.hidden = NO;
-            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");//@"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");//;
             
             
         }
         else if([dic[@"available"]isEqualToString:@"4"]){
             disableView.hidden = NO;
-            lblStatus.text = NSLocalizedString(@"logout", @"logout");//@"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");//;
         }
         else
         {
@@ -3025,13 +3025,13 @@ if(tag0 >= 0)
             if([dic[@"available"]isEqualToString:@"0"])
             {
                 disableView.hidden = NO;
-                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");//@"미설치";
+                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");//;
              
                 
             }
             else if([dic[@"available"]isEqualToString:@"4"]){
                 disableView.hidden = NO;
-                lblStatus.text = NSLocalizedString(@"logout", @"logout");//@"로그아웃";
+                lblStatus.text = NSLocalizedString(@"logout", @"logout");//;
                            }
             else
             {
@@ -3152,7 +3152,7 @@ if(tag0 >= 0)
             lblStatus = (UILabel *)[cell viewWithTag:9];
         }
         
-        callLabel.text = NSLocalizedString(@"contact_something", @"contact_something");//@"연락";
+        callLabel.text = NSLocalizedString(@"contact_something", @"contact_something");//;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         if(indexPath.section == 0){
@@ -3171,7 +3171,7 @@ if(tag0 >= 0)
             if([customerDic[@"uniqueid"]length]<1){
                 
                 disableView.hidden = NO;
-                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");//@"미설치";
+                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");//;
             }
             else{
                 disableView.hidden = YES;
@@ -3224,39 +3224,39 @@ if(tag0 >= 0)
             
             
             if([type isEqualToString:@"G"]){
-                couponLabel.text = NSLocalizedString(@"coupon_register", @"coupon_register");//@"가입";
+                couponLabel.text = NSLocalizedString(@"register", @"register");
                 couponLabel.textColor = RGB(240,72,14);
                 couponLabel.font = [UIFont systemFontOfSize:10];
             }
             else if([type isEqualToString:@"B"]){
-                couponLabel.text = NSLocalizedString(@"coupon_birth", @"coupon_birth");//@"생일";
+                couponLabel.text = NSLocalizedString(@"birth", @"birth");
                 couponLabel.textColor = RGB(72,121,18);
                 couponLabel.font = [UIFont systemFontOfSize:10];
             }
             else if([type isEqualToString:@"N1"]){
-                couponLabel.text = NSLocalizedString(@"coupon_new", @"coupon_new");//@"신규";
+                couponLabel.text = NSLocalizedString(@"new", @"new");
                 couponLabel.textColor = RGB(12,118,183);
                 couponLabel.font = [UIFont systemFontOfSize:10];
             }
             else if([type isEqualToString:@"N2"]){
-                couponLabel.text = NSLocalizedString(@"coupon_secret", @"coupon_secret");//@"시크릿";
+                couponLabel.text = NSLocalizedString(@"secret", @"secret");
                 couponLabel.font = [UIFont systemFontOfSize:10];
                 couponLabel.textColor = RGB(111,86,5);
                 
             }
             else if([type isEqualToString:@"V"]){
-                couponLabel.text = NSLocalizedString(@"coupon_vip", @"coupon_vip");//@"VIP";
+                couponLabel.text = NSLocalizedString(@"vip", @"vip");
                 couponLabel.textColor = RGB(150,25,138);
                 couponLabel.font = [UIFont systemFontOfSize:10];
                 
             }
             else if([type isEqualToString:@"R"]){
-                couponLabel.text = NSLocalizedString(@"coupon_rogen", @"coupon_rogen");//@"로젠빈수";
+                couponLabel.text = NSLocalizedString(@"rogen", @"rogen");
                 couponLabel.textColor = RGB(230,72,175);
                 couponLabel.font = [UIFont systemFontOfSize:8];
             }
             else if([type isEqualToString:@"EV"]){
-                couponLabel.text = NSLocalizedString(@"coupon_event", @"coupon_event");//@"이벤트";
+                couponLabel.text = NSLocalizedString(@"event", @"event");
                 couponLabel.textColor = RGB(6,141,135);
                 couponLabel.font = [UIFont systemFontOfSize:10];
                 
@@ -3294,42 +3294,42 @@ if(tag0 >= 0)
                     
                     
                     if([type isEqualToString:@"G"]){
-                        couponLabel.text = @"가입";
+                        couponLabel.text = NSLocalizedString(@"register", @"register");
                         couponLabel.textColor = RGB(240,72,14);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"B"]){
-                        couponLabel.text = @"생일";
+                        couponLabel.text = NSLocalizedString(@"birth", @"birth");
                         couponLabel.textColor = RGB(72,121,18);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"N1"]){
-                        couponLabel.text = @"신규";
+                        couponLabel.text = NSLocalizedString(@"new", @"new");
                         couponLabel.textColor = RGB(12,118,183);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"N2"]){
-                        couponLabel.text = @"시크릿";
+                        couponLabel.text = NSLocalizedString(@"secret", @"secret");
                         couponLabel.textColor = RGB(111,86,5);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"V"]){
-                        couponLabel.text = @"VIP";
+                        couponLabel.text = NSLocalizedString(@"vip", @"vip");
                         couponLabel.textColor = RGB(150,25,138);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"R"]){
-                        couponLabel.text = @"로젠빈수";
+                        couponLabel.text = NSLocalizedString(@"rogen", @"rogen");
                         couponLabel.textColor = RGB(230,72,175);
                         couponLabel.font = [UIFont systemFontOfSize:8];
                     }
                     else if([type isEqualToString:@"EV"]){
-                        couponLabel.text = @"이벤트";
+                        couponLabel.text = NSLocalizedString(@"event", @"event");
                         couponLabel.textColor = RGB(6,141,135);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                         
@@ -3363,42 +3363,42 @@ if(tag0 >= 0)
                     
                     
                     if([type isEqualToString:@"G"]){
-                        couponLabel.text = @"가입";
+                        couponLabel.text = NSLocalizedString(@"register", @"register");
                         couponLabel.textColor = RGB(240,72,14);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"B"]){
-                        couponLabel.text = @"생일";
+                        couponLabel.text = NSLocalizedString(@"birth", @"birth");
                         couponLabel.textColor = RGB(72,121,18);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"N1"]){
-                        couponLabel.text = @"신규";
+                        couponLabel.text = NSLocalizedString(@"new", @"new");
                         couponLabel.textColor = RGB(12,118,183);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"N2"]){
-                        couponLabel.text = @"시크릿";
+                        couponLabel.text = NSLocalizedString(@"secret", @"secret");
                         couponLabel.textColor = RGB(111,86,5);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"V"]){
-                        couponLabel.text = @"VIP";
+                        couponLabel.text = NSLocalizedString(@"vip", @"vip");
                         couponLabel.textColor = RGB(150,25,138);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"R"]){
-                        couponLabel.text = @"로젠빈수";
+                        couponLabel.text = NSLocalizedString(@"rogen", @"rogen");
                         couponLabel.textColor = RGB(230,72,175);
                         couponLabel.font = [UIFont systemFontOfSize:8];
                     }
                     else if([type isEqualToString:@"EV"]){
-                        couponLabel.text = @"이벤트";
+                        couponLabel.text = NSLocalizedString(@"event", @"event");
                         couponLabel.textColor = RGB(6,141,135);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                         
@@ -3436,42 +3436,42 @@ if(tag0 >= 0)
                     
                     
                     if([type isEqualToString:@"G"]){
-                        couponLabel.text = @"가입";
+                        couponLabel.text = NSLocalizedString(@"register", @"register");
                         couponLabel.textColor = RGB(240,72,14);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"B"]){
-                        couponLabel.text = @"생일";
+                        couponLabel.text = NSLocalizedString(@"birth", @"birth");
                         couponLabel.textColor = RGB(72,121,18);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"N1"]){
-                        couponLabel.text = @"신규";
+                        couponLabel.text = NSLocalizedString(@"new", @"new");
                         couponLabel.textColor = RGB(12,118,183);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"N2"]){
-                        couponLabel.text = @"시크릿";
+                        couponLabel.text = NSLocalizedString(@"secret", @"secret");
                         couponLabel.textColor = RGB(111,86,5);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"V"]){
-                        couponLabel.text = @"VIP";
+                        couponLabel.text = NSLocalizedString(@"vip", @"vip");
                         couponLabel.textColor = RGB(150,25,138);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                        
                     }
                     else if([type isEqualToString:@"R"]){
-                        couponLabel.text = @"로젠빈수";
+                        couponLabel.text = NSLocalizedString(@"rogen", @"rogen");
                         couponLabel.textColor = RGB(230,72,175);
                         couponLabel.font = [UIFont systemFontOfSize:8];
                     }
                     else if([type isEqualToString:@"EV"]){
-                        couponLabel.text = @"이벤트";
+                        couponLabel.text = NSLocalizedString(@"event", @"event");
                         couponLabel.textColor = RGB(150,25,138);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                         
@@ -3506,37 +3506,37 @@ if(tag0 >= 0)
                     
                     
                     if([type isEqualToString:@"G"]){
-                        couponLabel.text = @"가입";
+                        couponLabel.text = NSLocalizedString(@"register", @"register");
                         couponLabel.textColor = RGB(240,72,14);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                     }
                     else if([type isEqualToString:@"B"]){
-                        couponLabel.text = @"생일";
+                        couponLabel.text = NSLocalizedString(@"birth", @"birth");
                         couponLabel.textColor = RGB(72,121,18);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                     }
                     else if([type isEqualToString:@"N1"]){
-                        couponLabel.text = @"신규";
+                        couponLabel.text = NSLocalizedString(@"new", @"new");
                         couponLabel.textColor = RGB(12,118,183);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                     }
                     else if([type isEqualToString:@"N2"]){
-                        couponLabel.text = @"시크릿";
+                        couponLabel.text = NSLocalizedString(@"secret", @"secret");
                         couponLabel.textColor = RGB(111,86,5);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                     }
                     else if([type isEqualToString:@"V"]){
-                        couponLabel.text = @"VIP";
+                        couponLabel.text = NSLocalizedString(@"vip", @"vip");
                         couponLabel.textColor = RGB(150,25,138);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                     }
                     else if([type isEqualToString:@"R"]){
-                        couponLabel.text = @"로젠빈수";
+                        couponLabel.text = NSLocalizedString(@"rogen", @"rogen");
                         couponLabel.textColor = RGB(230,72,175);
                         couponLabel.font = [UIFont systemFontOfSize:8];
                     }
                     else if([type isEqualToString:@"EV"]){
-                        couponLabel.text = @"이벤트";
+                        couponLabel.text = NSLocalizedString(@"event", @"event");
                         couponLabel.textColor = RGB(150,25,138);
                         couponLabel.font = [UIFont systemFontOfSize:10];
                         
@@ -3552,7 +3552,7 @@ if(tag0 >= 0)
             name.text = @"";
             cellphone.text = @"";
             call.hidden = YES;
-            cell.textLabel.text = @"발급 대상이 없습니다.";
+            cell.textLabel.text = NSLocalizedString(@"there_is_no_coupon_customer", @"there_is_no_coupon_customer");
            
         }
         }
@@ -3754,13 +3754,13 @@ if(tag0 >= 0)
             if([dic[@"available"]isEqualToString:@"0"])
             {
                 disableView.hidden = NO;
-                lblStatus.text = @"미설치";
+                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
                 
                 
             }
             else if([dic[@"available"]isEqualToString:@"4"]){
                 disableView.hidden = NO;
-                lblStatus.text = @"로그아웃";
+                lblStatus.text = NSLocalizedString(@"logout", @"logout");
             }
             else
             {
@@ -4046,13 +4046,13 @@ if(tag0 >= 0)
             if([dic[@"available"]isEqualToString:@"0"])
             {
                 disableView.hidden = NO;
-                lblStatus.text = @"미설치";
+                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
                 
                 
             }
             else if([dic[@"available"]isEqualToString:@"4"]){
                 disableView.hidden = NO;
-                lblStatus.text = @"로그아웃";
+                lblStatus.text = NSLocalizedString(@"logout", @"logout");
             }
             else
             {
@@ -4253,12 +4253,12 @@ if(tag0 >= 0)
         if([dic[@"available"]isEqualToString:@"0"])
         {
             name.textColor = [UIColor blackColor];
-            lblStatus.text = @"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             disableView.hidden = NO;
             
         }
         else if([dic[@"available"]isEqualToString:@"4"]){
-            lblStatus.text = @"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");
             disableView.hidden = NO;
             name.textColor = [UIColor blackColor];
             
@@ -4478,12 +4478,12 @@ if(tag0 >= 0)
         if([myList[indexPath.row][@"available"]isEqualToString:@"0"])
         {
             name.textColor = [UIColor blackColor];
-            lblStatus.text = @"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             disableView.hidden = NO;
             
         }
         else if([myList[indexPath.row][@"available"]isEqualToString:@"4"]){
-            lblStatus.text = @"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");
             disableView.hidden = NO;
             name.textColor = [UIColor blackColor];
             
@@ -4634,12 +4634,12 @@ if(tag0 >= 0)
         if([myList[indexPath.row][@"available"]isEqualToString:@"0"])
         {
             name.textColor = [UIColor blackColor];
-            lblStatus.text = @"미설치";
+            lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             disableView.hidden = NO;
             
         }
         else if([myList[indexPath.row][@"available"]isEqualToString:@"4"]){
-            lblStatus.text = @"로그아웃";
+            lblStatus.text = NSLocalizedString(@"logout", @"logout");
             disableView.hidden = NO;
             name.textColor = [UIColor blackColor];
             
@@ -5788,24 +5788,24 @@ if(tag0 >= 0)
 - (void)backController:(id)sender{
     NSLog(@"backController");
     
-    NSDictionary *dic0 = [NSDictionary dictionaryWithObjectsAndKeys:@"-1",@"tag",@"없음",@"text",nil];
-    NSDictionary *dic1 = [NSDictionary dictionaryWithObjectsAndKeys:@"-1",@"tag",@"약간",@"text",nil];
-    NSDictionary *dic2 = [NSDictionary dictionaryWithObjectsAndKeys:@"-1",@"tag",@"보통",@"text",nil];
-    NSDictionary *dic3 = [NSDictionary dictionaryWithObjectsAndKeys:@"-1",@"tag",@"심함",@"text",nil];
+    NSDictionary *dic0 = [NSDictionary dictionaryWithObjectsAndKeys:@"-1",@"tag",NSLocalizedString(@"ki_none", @"ki_none"),@"text",nil];
+    NSDictionary *dic1 = [NSDictionary dictionaryWithObjectsAndKeys:@"-1",@"tag",NSLocalizedString(@"ki_little", @"ki_little"),@"text",nil];
+    NSDictionary *dic2 = [NSDictionary dictionaryWithObjectsAndKeys:@"-1",@"tag",NSLocalizedString(@"ki_normal", @"ki_normal"),@"text",nil];
+    NSDictionary *dic3 = [NSDictionary dictionaryWithObjectsAndKeys:@"-1",@"tag",NSLocalizedString(@"ki_danger", @"ki_danger"),@"text",nil];
   
     NSMutableArray *array = [NSMutableArray arrayWithObjects:dic0,dic1,dic2,dic3,nil];
     NSMutableArray *testArray = [NSMutableArray array];
-    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",@"안면홍조 (얼굴 화끈거림)",@"title",nil]];
-    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",@" 발한 (등 뒤로 땀이 흐름)",@"title",nil]];
-    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",@"불면증",@"title",nil]];
-    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",@"신경질",@"title",nil]];
-    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",@"우울증",@"title",nil]];
-    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",@"어지럼증",@"title",nil]];
-    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",@"피로감",@"title",nil]];
-    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",@"관절통, 근육통",@"title",nil]];
-    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",@"두통",@"title",nil]];
-    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",@"가슴 두근거림",@"title",nil]];
-    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",@"질 건조, 분비물 감소",@"title",nil]];
+    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",NSLocalizedString(@"ki_hotflush", @"ki_hotflush"),@"title",nil]];
+    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",NSLocalizedString(@"ki_sweat", @"ki_sweat"),@"title",nil]];
+    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",NSLocalizedString(@"ki_insomnia", @"ki_insomnia"),@"title",nil]];
+    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",NSLocalizedString(@"ki_anger", @"ki_anger"),@"title",nil]];
+    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",NSLocalizedString(@"ki_depressed", @"ki_depressed"),@"title",nil]];
+    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",NSLocalizedString(@"ki_dizzy", @"ki_dizzy"),@"title",nil]];
+    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",NSLocalizedString(@"ki_tired", @"ki_tired"),@"title",nil]];
+    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",NSLocalizedString(@"ki_muscle", @"ki_muscle"),@"title",nil]];
+    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",NSLocalizedString(@"ki_tired", @"ki_tired"),@"title",nil]];
+    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",NSLocalizedString(@"ki_pitpat", @"ki_pitpat"),@"title",nil]];
+    [testArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:array,@"option",NSLocalizedString(@"ki_vagina", @"ki_vagina"),@"title",nil]];
     
     [myList setArray:testArray];
     [myTable reloadData];
@@ -5834,7 +5834,7 @@ if(tag0 >= 0)
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
             
-            UIAlertAction *actionb = [UIAlertAction actionWithTitle:@"통화"
+            UIAlertAction *actionb = [UIAlertAction actionWithTitle:NSLocalizedString(@"call", @"call")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 [self confirmCell:cellphone];
@@ -5842,7 +5842,7 @@ if(tag0 >= 0)
                                                             }];
             
             [alertcontroller addAction:actionb];
-            actionb = [UIAlertAction actionWithTitle:@"문자"
+            actionb = [UIAlertAction actionWithTitle:NSLocalizedString(@"sms", @"sms")
                                                style:UIAlertActionStyleDefault
                                              handler:^(UIAlertAction * action){
                                                  [self confirmSMS:cellphone];
@@ -5851,7 +5851,7 @@ if(tag0 >= 0)
             [alertcontroller addAction:actionb];
         
         if([customerDic[@"uniqueid"]length]>0){
-            actionb = [UIAlertAction actionWithTitle:@"채팅"
+            actionb = [UIAlertAction actionWithTitle:NSLocalizedString(@"chat", @"chat")
                                                style:UIAlertActionStyleDefault
                                              handler:^(UIAlertAction * action){
                                                  [self confirmChat:customerDic[@"uniqueid"]];
@@ -5859,7 +5859,7 @@ if(tag0 >= 0)
                                              }];
             [alertcontroller addAction:actionb];
         }
-            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 
@@ -5879,7 +5879,7 @@ if(tag0 >= 0)
         NSDictionary *tempDic = [NSDictionary dictionaryWithObjectsAndKeys:customerDic[@"cellphone"],@"cellphone",[[sender titleLabel]text],@"cust_tel", customerDic[@"uniqueid"], @"uniqueid",nil];
         UIAlertView *alert;
         //    NSString *msg = [NSString stringWithFormat:@"%@로 일반 전화를 거시겠습니까?",number];
-        alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"통화",@"문자", nil];
+        alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"call", @"call"),NSLocalizedString(@"sms", @"sms"), nil];
         alert.tag = kContactCustomer;
         //    alert.tag = kContact;
         
@@ -5894,7 +5894,7 @@ if(tag0 >= 0)
         
         UIAlertView *alert;
         //    NSString *msg = [NSString stringWithFormat:@"%@로 일반 전화를 거시겠습니까?",number];
-        alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"통화",@"문자",@"채팅", nil];
+        alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"call", @"call"),NSLocalizedString(@"sms", @"sms"),NSLocalizedString(@"chat", @"chat"), nil];
         alert.tag = kContactCustomer;
         //    alert.tag = kContact;
         
@@ -5916,7 +5916,7 @@ if(tag0 >= 0)
                                                                                  message:@"다시 초대하지 않는 한\n재가입이 불가능합니다.\n선택한 멤버를 탈퇴시키겠습니까?"
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -5925,7 +5925,7 @@ if(tag0 >= 0)
                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                     }];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -5938,7 +5938,7 @@ if(tag0 >= 0)
     }
     else{
     UIAlertView *alert;
-    alert = [[UIAlertView alloc] initWithTitle:@"강제탈퇴" message:@"다시 초대하지 않는 한\n재가입이 불가능합니다.\n선택한 멤버를 탈퇴시키겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+    alert = [[UIAlertView alloc] initWithTitle:@"강제탈퇴" message:@"다시 초대하지 않는 한\n재가입이 불가능합니다.\n선택한 멤버를 탈퇴시키겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
     alert.tag = kOutMemberAlert;
     
     objc_setAssociatedObject(alert, &paramNumber, [sender titleForState:UIControlStateDisabled], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -5954,7 +5954,7 @@ if(tag0 >= 0)
                                                                              message:@"선택한 초대를 취소하시겠습니까?"
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+    UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                   style:UIAlertActionStyleDefault
                                                 handler:^(UIAlertAction * action){
                                                     
@@ -5963,7 +5963,7 @@ if(tag0 >= 0)
                                                     [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                 }];
     
-    UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+    UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -5977,7 +5977,7 @@ if(tag0 >= 0)
 else{
     UIAlertView *alert;
     
-    alert = [[UIAlertView alloc] initWithTitle:@"초대 취소" message:@"선택한 초대를 취소하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+    alert = [[UIAlertView alloc] initWithTitle:@"초대 취소" message:@"선택한 초대를 취소하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
     alert.tag = kCancelInviteAlert;
     objc_setAssociatedObject(alert, &paramNumber, [sender titleForState:UIControlStateDisabled], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [alert show];
@@ -6164,7 +6164,7 @@ else if(alertView.tag == kGroupChat){
                                                                                  message:@"선택한 멤버를 강퇴시키겠습니까?"
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -6173,7 +6173,7 @@ else if(alertView.tag == kGroupChat){
                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                     }];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -6186,7 +6186,7 @@ else if(alertView.tag == kGroupChat){
     }
     else{
     UIAlertView *alert;
-    alert = [[UIAlertView alloc] initWithTitle:@"강제탈퇴" message:@"선택한 멤버를 강퇴시키겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+    alert = [[UIAlertView alloc] initWithTitle:@"강제탈퇴" message:@"선택한 멤버를 강퇴시키겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
     alert.tag = kGroupChat;
     objc_setAssociatedObject(alert, &paramNumber, [sender titleForState:UIControlStateDisabled], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     [alert show];
@@ -6555,7 +6555,7 @@ else if(alertView.tag == kGroupChat){
     [searchBar setShowsCancelButton:YES animated:YES];
     for(UIView *subView in searchBar.subviews){
         if([subView isKindOfClass:UIButton.class]){
-            [(UIButton*)subView setTitle:@"취소" forState:UIControlStateNormal];
+            [(UIButton*)subView setTitle:NSLocalizedString(@"cancel", @"cancel") forState:UIControlStateNormal];
         }
     }
     

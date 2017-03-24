@@ -152,7 +152,7 @@
         
         chatLabel = [[UILabel alloc]init];
         chatLabel.frame = CGRectMake(0, 0, chatButton.frame.size.width, chatButton.frame.size.height);
-        chatLabel.text = @"채팅";
+        chatLabel.text = NSLocalizedString(@"chat", @"chat");
         chatLabel.textColor = [UIColor whiteColor];
         chatLabel.textAlignment = NSTextAlignmentCenter;
         chatLabel.font = [UIFont systemFontOfSize:14];
@@ -426,7 +426,7 @@
         
         chatLabel = [[UILabel alloc]init];
         chatLabel.frame = CGRectMake(0, 0, chatButton.frame.size.width, chatButton.frame.size.height);
-        chatLabel.text = @"채팅";
+        chatLabel.text = NSLocalizedString(@"chat", @"chat");
         chatLabel.textColor = [UIColor whiteColor];
         chatLabel.textAlignment = NSTextAlignmentCenter;
         chatLabel.font = [UIFont systemFontOfSize:14];
@@ -474,7 +474,7 @@
         
         greenPhoneLabel = [[UILabel alloc]init];
         greenPhoneLabel.frame = CGRectMake(profile.frame.origin.x,bottomView.frame.size.height - 35, 45, 20);
-        greenPhoneLabel.text = @"휴대폰";
+        greenPhoneLabel.text = NSLocalizedString(@"cellphone", @"cellphone");
         greenPhoneLabel.font = [UIFont systemFontOfSize:11];
         [bottomView addSubview:greenPhoneLabel];
 //        [greenPhoneLabel release];
@@ -496,7 +496,7 @@
         
         label = [[UILabel alloc]init];
         label.frame = CGRectMake(0, 0, phoneButton.frame.size.width, phoneButton.frame.size.height);
-        label.text = @"통화";
+        label.text = NSLocalizedString(@"call", @"call");
         label.textColor = [UIColor whiteColor];
         label.textAlignment = NSTextAlignmentCenter;
         label.font = [UIFont systemFontOfSize:13];
@@ -794,7 +794,7 @@
         
         NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"]; // [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
         // chat call
-        chatButton = [CustomUIKit buttonWithTitle:@"채팅" fontSize:16 fontColor:RGB(255,255,255) target:self selector:@selector(manToMan)
+        chatButton = [CustomUIKit buttonWithTitle:NSLocalizedString(@"chat", @"chat") fontSize:16 fontColor:RGB(255,255,255) target:self selector:@selector(manToMan)
                                         frame:CGRectMake(buttonView.frame.size.width/2 - (buttonView.frame.size.width/2 - 13 - 37)/2, 0, buttonView.frame.size.width/2 - 13 - 37, 40)
                              imageNamedBullet:nil imageNamedNormal:@"" imageNamedPressed:nil];
        
@@ -828,7 +828,7 @@
         
         
         // invite
-        myButton = [CustomUIKit buttonWithTitle:@"내 정보 변경" fontSize:16 fontColor:RGB(255,255,255) target:self selector:@selector(editMyProfile)
+        myButton = [CustomUIKit buttonWithTitle:NSLocalizedString(@"change_my_info", @"change_my_info") fontSize:16 fontColor:RGB(255,255,255) target:self selector:@selector(editMyProfile)
                                         frame:CGRectMake(37, 0, inviteView.frame.size.width - 37*2, 40)
                              imageNamedBullet:nil imageNamedNormal:@"" imageNamedPressed:nil];
         [myButtonView addSubview:myButton];
@@ -1010,7 +1010,7 @@
         title.font = [UIFont systemFontOfSize:12];
         title.textColor = [UIColor blackColor];
         title.backgroundColor = [UIColor clearColor];
-        title.text = @"휴대폰";
+        title.text = NSLocalizedString(@"cellphone", @"cellphone");
         [companyBackgroundView addSubview:title];
 //        [title release];
         
@@ -1120,7 +1120,7 @@
         title.font = [UIFont systemFontOfSize:14];
         title.textColor = [UIColor blackColor];
         title.backgroundColor = [UIColor clearColor];
-        title.text = @"채팅";
+        title.text = NSLocalizedString(@"chat", @"chat");
         [button addSubview:title];
 //        [title release];
         
@@ -1197,7 +1197,7 @@
         title.font = [UIFont systemFontOfSize:14];
         title.textColor = [UIColor blackColor];
         title.backgroundColor = [UIColor clearColor];
-        title.text = @"내 정보 변경";
+        title.text = NSLocalizedString(@"change_my_info", @"change_my_info");
         [button addSubview:title];
 //        [title release];
         
@@ -1298,7 +1298,7 @@
                 
                 
                 UIAlertAction* cancel = [UIAlertAction
-                                         actionWithTitle:@"취소"
+                                         actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                          style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction * action)
                                          {
@@ -1312,7 +1312,7 @@
             }
             
             else{
-                UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+                UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                                            destructiveButtonTitle:nil otherButtonTitles:@"사무실 무료통화", @"휴대폰 무료통화", nil];
                 [actionSheet showInView:SharedAppDelegate.window];
             }
@@ -1320,7 +1320,7 @@
     } else {
         NSString *msg = @"상대방의 핸드폰 번호로 일반통화 연결합니다. 통화하시겠습니까?";
         
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         //        alert.tag = kCell;
         //        [alert show];
         //        [alert release];
@@ -1610,7 +1610,7 @@
         [activity stopAnimating];
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -1859,7 +1859,7 @@
             
             NSString *msg = [NSString stringWithFormat:@"%@로 이메일을 보내시겠습니까?",lblEmail.text];
             //            UIAlertView *alert;
-            //            alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+            //            alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             //            alert.tag = kEmail;
             //            [alert show];
             //            [alert release];
@@ -1987,7 +1987,7 @@
     
     
     //	if(result == MFMailComposeResdismissViewControllerAnimated:YES completion:nil];ltFailed){
-    //		UIAlertView *alert=[[UIAlertView alloc] initWithTitle:nil message:@"메일 전송에 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:self cancelButtonTitle:@"확인" otherButtonTitles:nil];
+    //		UIAlertView *alert=[[UIAlertView alloc] initWithTitle:nil message:@"메일 전송에 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:self cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil];
     //
     //		[alert show];
     //		[alert release];
@@ -2365,7 +2365,7 @@
         inviteButton.titleLabel.text = dic[@"uniqueid"];
         chatButton.hidden = YES;
         coverProfileView.hidden = NO;
-        infoLabel.text = @"미설치";
+        infoLabel.text = NSLocalizedString(@"not_installed", @"not_installed");
         
     }
     else if([dic[@"available"]isEqualToString:@"4"]){
@@ -2373,7 +2373,7 @@
         chatButton.hidden = NO;
         chatButton.enabled = NO;
         coverProfileView.hidden = NO;
-        infoLabel.text = @"로그아웃";
+        infoLabel.text = NSLocalizedString(@"logout", @"logout");
         
         
     }
@@ -2627,7 +2627,7 @@
         favButton.hidden = NO;
 
         coverProfileView.hidden = NO;
-        infoLabel.text = @"미설치";
+        infoLabel.text = NSLocalizedString(@"not_installed", @"not_installed");
         
     }
     else if([dic[@"available"]isEqualToString:@"4"]){
@@ -2638,7 +2638,7 @@
         favButton.hidden = NO;
 
         coverProfileView.hidden = NO;
-        infoLabel.text = @"로그아웃";
+        infoLabel.text = NSLocalizedString(@"logout", @"logout");
         
         
     }
@@ -2968,7 +2968,7 @@
         buttonView.hidden = YES;
         inviteView.hidden = NO;
         coverProfileView.hidden = NO;
-        infoLabel.text = @"미설치";
+        infoLabel.text = NSLocalizedString(@"not_installed", @"not_installed");
         favButton.hidden = NO;
         
         
@@ -2986,13 +2986,13 @@
         //
         //
         //        coverProfileView.hidden = NO;
-        //        infoLabel.text = @"로그아웃";
+        //        infoLabel.text = NSLocalizedString(@"logout", @"logout");
         
         myButtonView.hidden = YES;
         buttonView.hidden = NO;
         inviteView.hidden = YES;
         coverProfileView.hidden = NO;
-        infoLabel.text = @"로그아웃";
+        infoLabel.text = NSLocalizedString(@"logout", @"logout");
         favButton.hidden = NO;
         
         

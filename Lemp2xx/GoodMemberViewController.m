@@ -231,7 +231,7 @@
 //                         [teamLabel setFrame:CGRectMake(positionLabel.frame.origin.x + (size2.width+5>90?90:size2.width+5), 15, 80, 15)];
     
     if([nameLabel.text length]<1){
-        nameLabel.text = @"알 수 없는 사용자";
+        nameLabel.text = NSLocalizedString(@"unknown_user", @"unknown_user");
 //        positionLabel.text = @"";
         teamLabel.text = @"";
     }

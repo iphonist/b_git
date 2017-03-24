@@ -489,7 +489,7 @@
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
-            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             //            [alert show];
             
         }
@@ -598,7 +598,7 @@
                                                                                message:@"비밀번호가 변경되었습니다.\n\n변경된 비밀번호는 로그아웃 하신 후,\n다시 로그인 하실 때부터 적용됩니다."
                                                                         preferredStyle:UIAlertControllerStyleAlert];
                 
-                UIAlertAction *ok = [UIAlertAction actionWithTitle:@"확인"
+                UIAlertAction *ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * action){
                                                                
@@ -615,7 +615,7 @@
             
             else{
             UIAlertView *alert;
-            alert = [[UIAlertView alloc] initWithTitle:@"비밀번호 변경" message:@"비밀번호가 변경되었습니다.\n\n변경된 비밀번호는 로그아웃 하신 후,\n다시 로그인 하실 때부터 적용됩니다." delegate:self cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+            alert = [[UIAlertView alloc] initWithTitle:@"비밀번호 변경" message:@"비밀번호가 변경되었습니다.\n\n변경된 비밀번호는 로그아웃 하신 후,\n다시 로그인 하실 때부터 적용됩니다." delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             alert.tag = kCancel;
             [alert show];
 //            [alert release];
@@ -627,7 +627,7 @@
         } else {
             
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             //            [alert show];
             //
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
@@ -687,7 +687,7 @@
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                             }];
                 
-                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action){
                                                                     [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -700,7 +700,7 @@
             }
             else{
                 UIAlertView *alert;
-                alert = [[UIAlertView alloc] initWithTitle:@"인증메일 재발송" message:@"메일을 받지 못하셨나요?\n스팸편지함 혹은 휴지통 등의 편지함을 확인해보세요. 메일서비스에 따라 메일이 도착하기 까지 다소 시간이 걸릴 수 있습니다.\n\n'재발송'을 선택하면 이메일 주소로 인증메일을 다시 발송합니다." delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"재발송", nil];
+                alert = [[UIAlertView alloc] initWithTitle:@"인증메일 재발송" message:@"메일을 받지 못하셨나요?\n스팸편지함 혹은 휴지통 등의 편지함을 확인해보세요. 메일서비스에 따라 메일이 도착하기 까지 다소 시간이 걸릴 수 있습니다.\n\n'재발송'을 선택하면 이메일 주소로 인증메일을 다시 발송합니다." delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"재발송", nil];
                 alert.tag = [sender tag];
                 [alert show];
 //                [alert release];
@@ -724,7 +724,7 @@
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                             }];
                 
-                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action){
                                                                     [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -737,7 +737,7 @@
             }
             else{
                 UIAlertView *alert;
-                alert = [[UIAlertView alloc] initWithTitle:@"인증메일 미수신" message:@"메일 미수신 신고하기\n메일서비스에 따라 메일이 도착하기 까지 다소 시간이 걸릴 수 있습니다.\n\n2시간이 지나도 이메일이 오지 않았다면 아래의 '신고하기'버튼을 눌러주세요. 최대한 빠른시간내에 조치해 드리겠습니다." delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"신고하기", nil];
+                alert = [[UIAlertView alloc] initWithTitle:@"인증메일 미수신" message:@"메일 미수신 신고하기\n메일서비스에 따라 메일이 도착하기 까지 다소 시간이 걸릴 수 있습니다.\n\n2시간이 지나도 이메일이 오지 않았다면 아래의 '신고하기'버튼을 눌러주세요. 최대한 빠른시간내에 조치해 드리겠습니다." delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"신고하기", nil];
                 alert.tag = [sender tag];
                 [alert show];
 //                [alert release];

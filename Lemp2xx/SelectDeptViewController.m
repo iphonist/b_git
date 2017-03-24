@@ -747,7 +747,7 @@
                                                                                                  message:msg
                                                                                           preferredStyle:UIAlertControllerStyleAlert];
                         
-                        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+                        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                                       style:UIAlertActionStyleDefault
                                                                     handler:^(UIAlertAction * action){
                                                                         
@@ -756,7 +756,7 @@
                                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                                     }];
                         
-                        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+                        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                                           style:UIAlertActionStyleDefault
                                                                         handler:^(UIAlertAction * action){
                                                                             
@@ -771,7 +771,7 @@
                         
                     }
                     else{
-					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+					UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
 					[alertView show];
 					alertView.tag = 33;
 //					[alertView release];

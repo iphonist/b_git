@@ -697,7 +697,7 @@ const char paramNumber;
             
 //            UIAlertView *alert;
             NSString *msg = [NSString stringWithFormat:@"%@ 멤버에게 알림이 갑니다. 계속하시겠습니까?",self.title];
-//            alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//            alert = [[UIAlertView alloc] initWithTitle:msg message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //			alert.tag = kAlertPost;
 //            [alert show];
 //            [alert release];
@@ -707,7 +707,7 @@ const char paramNumber;
         else if([category isEqualToString:@"0"] || [category isEqualToString:@"1"]){
             
 //            UIAlertView *alert;
-//            alert = [[UIAlertView alloc] initWithTitle:@"전체 직원에게 알림이 갑니다. 계속하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//            alert = [[UIAlertView alloc] initWithTitle:@"전체 직원에게 알림이 갑니다. 계속하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //			alert.tag = kAlertPost;
 //            [alert show];
 //            [alert release];
@@ -719,7 +719,7 @@ const char paramNumber;
         NSLog(@"category %@",category);
         if([category isEqualToString:@"0"] || [category isEqualToString:@"1"]){
 //            UIAlertView *alert;
-//            alert = [[UIAlertView alloc] initWithTitle:@"전체 직원에게 공유됩니다. 계속하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//            alert = [[UIAlertView alloc] initWithTitle:@"전체 직원에게 공유됩니다. 계속하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //			alert.tag = kAlertPost;
 //            [alert show];
 //            [alert release];
@@ -982,7 +982,7 @@ const char paramNumber;
 			[SVProgressHUD dismiss];
             NSLog(@"FAIL : %@",operation.error);
 			[HTTPExceptionHandler handlingByError:error];
-            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"글쓰기를 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+            //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"글쓰기를 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
             //            [alert show];
             
         }];
@@ -1120,7 +1120,7 @@ const char paramNumber;
                                                                                  message:@"사진이 삭제됩니다.\n계속하시겠습니까?"
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -1129,7 +1129,7 @@ const char paramNumber;
                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                     }];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -1142,7 +1142,7 @@ const char paramNumber;
     }
     else{
     UIAlertView *alert;
-    alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+    alert = [[UIAlertView alloc] initWithTitle:@"사진 삭제" message:@"사진이 삭제됩니다.\n계속하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         
         NSString *tagString = [NSString stringWithFormat:@"%d",(int)[sender tag]];
         objc_setAssociatedObject(alert, &paramNumber, tagString, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -1418,7 +1418,7 @@ const char paramNumber;
                 [view addAction:actionButton];
                 
                 UIAlertAction* cancel = [UIAlertAction
-                                         actionWithTitle:@"취소"
+                                         actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                          style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction * action)
                                          {
@@ -1484,7 +1484,7 @@ const char paramNumber;
                 [view addAction:actionButton];
                 
                 UIAlertAction* cancel = [UIAlertAction
-                                         actionWithTitle:@"취소"
+                                         actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                          style:UIAlertActionStyleDefault
                                          handler:^(UIAlertAction * action)
                                          {
@@ -1512,7 +1512,7 @@ const char paramNumber;
         
         
         if([dataArray count]<5){
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                         destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기" , @"앨범에서 사진 선택", nil];
             actionSheet.tag = [sender tag];
         }
@@ -1523,7 +1523,7 @@ const char paramNumber;
     else if([sender tag] == kLocation){
         
         if(locationInfo){
-			actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+			actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
 										destructiveButtonTitle:nil otherButtonTitles:@"위치 삭제", @"위치 재설정", nil];
 			actionSheet.tag = [sender tag];
         }

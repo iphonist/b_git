@@ -59,7 +59,7 @@
     [searchBar setShowsCancelButton:YES animated:YES];
     for(UIView *subView in searchBar.subviews){
         if([subView isKindOfClass:UIButton.class]){
-            [(UIButton*)subView setTitle:@"취소" forState:UIControlStateNormal];
+            [(UIButton*)subView setTitle:NSLocalizedString(@"cancel", @"cancel") forState:UIControlStateNormal];
         }
     }
 
@@ -832,7 +832,7 @@ else
         
         NSLog(@"FAIL : %@",operation.error);
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"즐겨찾기 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
 		[HTTPExceptionHandler handlingByError:error];
         
@@ -1133,15 +1133,15 @@ else
 //                    
 //                    if([addRestList[indexPath.row][@"available"]isEqualToString:@"0"])
 //                    {
-//						lblStatus.text = @"미설치";
+//						lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 //                        
 ////                        if([[SharedAppDelegate.root getPureNumbers:addRestList[indexPath.row][@"cellphone"]]length]>9)
-////							invite.hidden = NO;// lblStatus.text = @"미설치";
+////							invite.hidden = NO;// lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
 ////                        else
 ////                            invite.hidden = YES;
 //                    }
 //                    else if([addRestList[indexPath.row][@"available"]isEqualToString:@"4"]){
-//                        lblStatus.text = @"로그아웃";
+//                        lblStatus.text = NSLocalizedString(@"logout", @"logout");
 ////                        invite.hidden = YES;
 //                    }
 //                    else{
@@ -1225,7 +1225,7 @@ else
     if([dic[@"available"]isEqualToString:@"0"])
     {
         disableView.hidden = NO;
-        lblStatus.text = @"미설치";
+        lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
         
         //            if([[SharedAppDelegate.root getPureNumbers:copyList[indexPath.row][@"cellphone"]]length]>9)
         //            invite.hidden = NO;
@@ -1233,7 +1233,7 @@ else
         //                invite.hidden = YES;
     }
     else if([dic[@"available"]isEqualToString:@"4"]){
-        lblStatus.text = @"로그아웃";
+        lblStatus.text = NSLocalizedString(@"logout", @"logout");
         disableView.hidden = NO;
         //            invite.hidden = YES;
     }

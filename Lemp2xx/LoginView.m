@@ -645,7 +645,7 @@ const char paramNumber;
         [button setBackgroundImage:[[UIImage imageNamed:@"photonumbering.png"]stretchableImageWithLeftCapWidth:20 topCapHeight:13] forState:UIControlStateNormal];
 //        [button release];
         
-    label = [CustomUIKit labelWithText:@"닫기" fontSize:14 fontColor:[UIColor whiteColor]
+    label = [CustomUIKit labelWithText:NSLocalizedString(@"close", @"close") fontSize:14 fontColor:[UIColor whiteColor]
                                  frame:CGRectMake(5, 5, button.frame.size.width - 10, button.frame.size.height - 10) numberOfLines:1 alignText:NSTextAlignmentCenter];
         [button addSubview:label];
         
@@ -713,7 +713,7 @@ const char paramNumber;
                                                                                      message:msg
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *okb = [UIAlertAction actionWithTitle:@"확인"
+            UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             
@@ -723,7 +723,7 @@ const char paramNumber;
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                         }];
             
-            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -737,7 +737,7 @@ const char paramNumber;
         else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
                                                         message:msg
-                                                       delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         alert.tag = kAppExit;
         [alert show];
 //        [alert release];
@@ -1625,7 +1625,7 @@ const char paramNumber;
 #else
             
             NSString *msg = [NSString stringWithFormat:@"%@ (에러코드 %@)",resultDic[@"resultMessage"],isSuccess];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
 //            [alert show];
             
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
@@ -1646,7 +1646,7 @@ const char paramNumber;
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
 //            [alert show];
 //			[self setEmail];
 			[emailTextField setEnabled:YES];
@@ -1845,7 +1845,7 @@ const char paramNumber;
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
 //            [alert show];
             //			[self setEmail];
 			[companyTextField setEnabled:YES];
@@ -1991,7 +1991,7 @@ const char paramNumber;
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
 //            [alert show];
             [self setEmail];
         }
@@ -2004,7 +2004,7 @@ const char paramNumber;
         NSLog(@"FAIL : %@",operation.error);
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         [self setEmail];
         
@@ -2284,7 +2284,7 @@ const char paramNumber;
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
 //            [alert show];
             [self createPassword];
         }
@@ -2294,7 +2294,7 @@ const char paramNumber;
         NSLog(@"FAIL : %@",operation.error);
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -2362,7 +2362,7 @@ const char paramNumber;
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
             
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
 //            [alert show];
             [self activation];
         }
@@ -2374,7 +2374,7 @@ const char paramNumber;
         NSLog(@"FAIL : %@",operation.error);
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -2575,7 +2575,7 @@ const char paramNumber;
                 NSString *msg = @"사용자 인증이 완료되지 않았습니다.\n\n인증요청 메일은 30분 후에 만료되므로\n해당하는 경우 재발송 요청을 하시기 바랍니다.";
                 
                 [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
-//                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"오류" message:msg delegate:self cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+//                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"오류" message:msg delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 ////                alert.tag = kStatus;
 //                [alert show];
 //                [alert release];
@@ -2586,7 +2586,7 @@ const char paramNumber;
             [SVProgressHUD dismiss];
             //            [SVProgressHUD dismiss];
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //            [alert show];
             
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
@@ -2601,7 +2601,7 @@ const char paramNumber;
         NSLog(@"FAIL : %@",operation.error);
         //            [MBProgressHUD hideHUDForView:self.view animated:YES];
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"로그인을 하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -2999,7 +2999,7 @@ const char paramNumber;
                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                     }];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -3013,7 +3013,7 @@ const char paramNumber;
     else{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"비밀번호 재설정"
                                                     message:[NSString stringWithFormat:@"%@\n%@",[SharedAppDelegate readPlist:@"email"],msg]
-                                                   delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"메일 발송", nil];
+                                                   delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:@"메일 발송", nil];
     alert.tag = kRequestPin;
     [alert show];
 //    [alert release];
@@ -3151,7 +3151,7 @@ const char paramNumber;
               NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
               
               [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //            [alert show];
             
         }
@@ -3821,7 +3821,7 @@ const char paramNumber;
     infoTf.backgroundColor = [UIColor clearColor];
     //        infoTf.place
     infoTf.delegate = self;
-    infoTf.placeholder = @"본인의 업무를 소개해주세요!";
+    infoTf.placeholder = NSLocalizedString(@"introduce_your_work", @"introduce_your_work");
     infoTf.returnKeyType = UIReturnKeyDone;
     [self.view addSubview:infoTf];
 	infoTf.clearButtonMode = UITextFieldViewModeAlways;
@@ -4151,7 +4151,7 @@ const char paramNumber;
     buttonOK.enabled = YES;
 //    [buttonOK release];
     
-    UILabel *label = [CustomUIKit labelWithText:@"확인" fontSize:18 fontColor:[UIColor whiteColor]
+    UILabel *label = [CustomUIKit labelWithText:NSLocalizedString(@"ok", @"ok") fontSize:18 fontColor:[UIColor whiteColor]
                                           frame:CGRectMake(0, 0, buttonOK.frame.size.width, buttonOK.frame.size.height) numberOfLines:1 alignText:NSTextAlignmentCenter];
     [buttonOK addSubview:label];
     
@@ -4164,7 +4164,7 @@ const char paramNumber;
     idTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 3, textFieldImageView.frame.size.width - 17, textFieldImageView.frame.size.height - 6)]; // 180
     idTextField.keyboardType = UIKeyboardTypeNumberPad;
     idTextField.backgroundColor = [UIColor clearColor];
-    idTextField.placeholder = @"휴대전화 번호를 입력하세요.";
+    idTextField.placeholder = NSLocalizedString(@"enter_phone_number", @"enter_phone_number");
     idTextField.text = [SharedAppDelegate readPlist:@"email"];
     idTextField.delegate = self;
 	idTextField.clearButtonMode = UITextFieldViewModeAlways;
@@ -4176,12 +4176,12 @@ const char paramNumber;
     
     
     
-    UILabel *welcomeLabel = [CustomUIKit labelWithText:@"전화번호 입력" fontSize:18 fontColor:[UIColor blackColor]
+    UILabel *welcomeLabel = [CustomUIKit labelWithText:NSLocalizedString(@"enter_number", @"enter_number") fontSize:18 fontColor:[UIColor blackColor]
                                                  frame:CGRectMake(25, textFieldImageView.frame.origin.y - 47, 150, 17) numberOfLines:1 alignText:NSTextAlignmentLeft];
     welcomeLabel.font = [UIFont boldSystemFontOfSize:18];
     [transView addSubview:welcomeLabel];
     
-    UILabel *loginLabel = [CustomUIKit labelWithText:@"본인의 휴대전화 번호를 입력해주세요." fontSize:14 fontColor:[UIColor grayColor]
+    UILabel *loginLabel = [CustomUIKit labelWithText:NSLocalizedString(@"enter_your_phone_number", @"enter_your_phone_number") fontSize:14 fontColor:[UIColor grayColor]
                                                frame:CGRectMake(welcomeLabel.frame.origin.x, welcomeLabel.frame.origin.y + 22,
                                                                 275, 17) numberOfLines:1 alignText:NSTextAlignmentLeft];
     
@@ -4207,7 +4207,7 @@ const char paramNumber;
                                                                                      message:msg
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction *okb = [UIAlertAction actionWithTitle:@"확인"
+            UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             
@@ -4216,7 +4216,7 @@ const char paramNumber;
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                         }];
             
-            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+            UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -4230,7 +4230,7 @@ const char paramNumber;
         else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:msg
-                                                       delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
         alert.tag = kRequestSMS;
         [alert show];
 //        [alert release];
@@ -4280,7 +4280,7 @@ const char paramNumber;
             
             
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //            [alert show];
                     [CustomUIKit popupSimpleAlertViewOK:@"오류" msg:msg con:self];
             
@@ -4514,7 +4514,7 @@ const char paramNumber;
     buttonOK.enabled = YES;
 //    [buttonOK release];
     
-    UILabel *label = [CustomUIKit labelWithText:@"확인" fontSize:18 fontColor:[UIColor whiteColor]
+    UILabel *label = [CustomUIKit labelWithText:NSLocalizedString(@"ok", @"ok") fontSize:18 fontColor:[UIColor whiteColor]
                                           frame:CGRectMake(0, 0, buttonOK.frame.size.width, buttonOK.frame.size.height) numberOfLines:1 alignText:NSTextAlignmentCenter];
     [buttonOK addSubview:label];
     
@@ -4621,7 +4621,7 @@ const char paramNumber;
     
     NSLog(@"requestResendSMS");
     
-//    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"SMS로 인증번호를 재전송하였습니다." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+//    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"SMS로 인증번호를 재전송하였습니다." delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //    [alert show];
 //    [alert release];
     
@@ -4713,7 +4713,7 @@ const char paramNumber;
                                                                                          message:msg
                                                                                   preferredStyle:UIAlertControllerStyleAlert];
                 
-                UIAlertAction *okb = [UIAlertAction actionWithTitle:@"확인"
+                UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                               style:UIAlertActionStyleDefault
                                                             handler:^(UIAlertAction * action){
                                                                 
@@ -4722,7 +4722,7 @@ const char paramNumber;
                                                                 [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                             }];
                 
-                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"취소"
+                UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                                                   style:UIAlertActionStyleDefault
                                                                 handler:^(UIAlertAction * action){
                                                                     [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -4736,7 +4736,7 @@ const char paramNumber;
             else{
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                             message:msg
-                                                           delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+                                                           delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
             alert.tag = kOtherPhone;
             objc_setAssociatedObject(alert, &paramNumber, resultDic, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
             [alert show];
@@ -4745,7 +4745,7 @@ const char paramNumber;
             
         }else {
             NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"resultMessage"]];
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //            [alert show];
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
             

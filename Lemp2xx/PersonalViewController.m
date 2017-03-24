@@ -324,7 +324,7 @@
         
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -338,7 +338,7 @@
     }
     else{
     UIActionSheet *actionSheet;
-    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                 destructiveButtonTitle:nil otherButtonTitles:@"개인 일정 등록", @"그룹 일정 등록", @"메모 작성", nil];
     actionSheet.tag = kWrite;
     [actionSheet showInView:SharedAppDelegate.window];
@@ -467,7 +467,7 @@
         }
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -485,14 +485,14 @@
         UIActionSheet *actionSheet;
         if(imgURL == nil){
             UIActionSheet *actionSheet;
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                         destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
             actionSheet.tag = kProfileNoPhoto;
             [actionSheet showInView:SharedAppDelegate.window];
         }
         else{
             UIActionSheet *actionSheet;
-            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                         destructiveButtonTitle:nil otherButtonTitles:@"사진 크게 보기", @"사진 찍기", @"앨범에서 사진 선택", @"사진삭제", nil];
             actionSheet.tag = kProfile;
             [actionSheet showInView:SharedAppDelegate.window];
@@ -560,7 +560,7 @@
         [view addAction:actionButton];
         
         UIAlertAction* cancel = [UIAlertAction
-                                 actionWithTitle:@"취소"
+                                 actionWithTitle:NSLocalizedString(@"cancel", @"cancel")
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
@@ -574,7 +574,7 @@
     }
     else{
     UIActionSheet *actionSheet;
-    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"취소"
+    actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel")
                                 destructiveButtonTitle:nil otherButtonTitles:@"사진 찍기", @"앨범에서 사진 선택", nil];
     actionSheet.tag = kCover;
     [actionSheet showInView:SharedAppDelegate.window];
@@ -983,7 +983,7 @@
 //        NSLog(@"FAIL : %@",operation.error);
 //        //            [MBProgressHUD hideHUDForView:self.view animated:YES];
 //        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-////        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"사진을 삭제하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+////        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"사진을 삭제하는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
 ////        [alert show];
 //
 //    }];
@@ -1448,7 +1448,7 @@
     [myInfoView addSubview:button];
     button.tag = kMemo;
 //    [button release];
-    label = [CustomUIKit labelWithText:@"메모"
+    label = [CustomUIKit labelWithText:NSLocalizedString(@"memo", @"memo")
                               fontSize:14 fontColor:RGB(130, 130, 130)
                                  frame:CGRectMake(5, 30, 85, 20) numberOfLines:1 alignText:NSTextAlignmentCenter];
     if(IS_HEIGHT568){

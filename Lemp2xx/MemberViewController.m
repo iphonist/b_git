@@ -30,9 +30,9 @@ const char paramNumber;
         // Custom initialization
         NSLog(@"MemberViewController init");
         
-        self.title = @"멤버";
+        self.title = NSLocalizedString(@"member", @"member");
 #if defined(Batong) || defined(BearTalk)
-        self.title = @"소셜 설정";
+        self.title = NSLocalizedString(@"social_config", @"social_config");
 #endif
         memberList = [[NSMutableArray alloc]init];
         
@@ -922,7 +922,7 @@ const char paramNumber;
         
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -984,7 +984,7 @@ const char paramNumber;
 //        
 //        NSLog(@"FAIL : %@",operation.error);
 //        [HTTPExceptionHandler handlingByError:error];
-//        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+//        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹정보를 받는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
 //        //        [alert show];
 //        
 //    }];
@@ -1235,14 +1235,14 @@ const char paramNumber;
     
     if(self.view.tag == kGreen){
         if(section == kConfig){
-          headerLabel.text = @"소셜 설정";
+          headerLabel.text = NSLocalizedString(@"social_config", @"social_config");
         }
         else if(section == kSocial)
             headerLabel.text = @"소셜 관리";
         else if(section == kMember){
             
 #ifdef Batong
-            headerLabel.text = @"멤버 관리";
+            headerLabel.text = NSLocalizedString(@"control_member", @"control_member");
 #else
             NSString *attribute2 = groupDic[@"groupattribute2"];
             if([attribute2 length]<1)
@@ -1250,7 +1250,7 @@ const char paramNumber;
             if([attribute2 hasPrefix:@"11"])
                 headerLabel.text = @"고객 관리";
             else
-            headerLabel.text = @"멤버 관리";
+            headerLabel.text = NSLocalizedString(@"control_member", @"control_member");
 #endif
         }
         else if(section == kNotice)
@@ -1269,7 +1269,7 @@ const char paramNumber;
             headerLabel.text = @"기타";
 #else
         if(section == 0)
-            headerLabel.text = @"소셜 설정";
+            headerLabel.text = NSLocalizedString(@"social_config", @"social_config");
         else if(section == 1)
             headerLabel.text = @"가입한 멤버";
         else if(section == 2)
@@ -1352,10 +1352,10 @@ const char paramNumber;
         if(indexPath.section == kConfig){
             switch (indexPath.row) {
                 case 0:
-                    label.text = @"소셜 기본 정보";
+                    label.text = NSLocalizedString(@"social_info", @"social_info");
                     break;
                 case 1:
-                    label.text = @"리더 위임";
+                    label.text = NSLocalizedString(@"pass_leader", @"pass_leader");
                     break;
                     
                 default:
@@ -1366,13 +1366,13 @@ const char paramNumber;
             
             switch (indexPath.row) {
                 case 0:
-                    label.text = @"소셜 커버 이미지";
+                    label.text = NSLocalizedString(@"social_coverimage", @"social_coverimage");
                     break;
                 case 1:
-                    label.text = @"소셜 이름";
+                    label.text = NSLocalizedString(@"social_name", @"social_name");
                     break;
                 case 2:
-                    label.text = @"소셜 설명";
+                    label.text = NSLocalizedString(@"social_exp", @"social_exp");
                     break;
                 
                 default:
@@ -1400,11 +1400,11 @@ const char paramNumber;
                 // create social
                 switch (indexPath.row) {
                     case 0:
-                        label.text = @"멤버 보기";
+                        label.text = NSLocalizedString(@"view_member", @"view_member");
                         
                         break;
                     case 1:
-                        label.text = @"멤버 초대";
+                        label.text = NSLocalizedString(@"invite_member", @"invite_member");
                         break;
                     default:
                         break;
@@ -1412,7 +1412,7 @@ const char paramNumber;
 //            }
 //            else if([array2[0]isEqualToString:@"1"]){
 //                // web social
-//                label.text = @"멤버 보기";
+//                label.text = NSLocalizedString(@"view_member", @"view_member");
 //            }
 #else
             if([attribute2 hasPrefix:@"00"]){
@@ -1420,15 +1420,15 @@ const char paramNumber;
                     case 0:
                         
                         if([groupDic[@"groupmaster"] isEqualToString:[ResourceLoader sharedInstance].myUID]){
-                        label.text = @"멤버 관리";
+                        label.text = NSLocalizedString(@"control_member", @"control_member");
                         }
                         else{
-                            label.text = @"멤버 보기";
+                            label.text = NSLocalizedString(@"view_member", @"view_member");
                         }
                         break;
                     case 1:
                         
-                        label.text = @"멤버 초대";
+                        label.text = NSLocalizedString(@"invite_member", @"invite_member");
                         break;
                     default:
                         break;
@@ -1437,7 +1437,7 @@ const char paramNumber;
             else if([attribute2 hasPrefix:@"10"]){
                 switch (indexPath.row) {
                     case 0:
-                        label.text = @"멤버 보기";
+                        label.text = NSLocalizedString(@"view_member", @"view_member");
                         break;
                     default:
                         break;
@@ -1448,10 +1448,10 @@ const char paramNumber;
                 
                 switch (indexPath.row) {
                     case 0:
-                        label.text = @"고객 초대";
+                        label.text = NSLocalizedString(@"invite_customer", @"invite_customer");
                         break;
                     case 1:
-                        label.text = @"고객 보기";
+                        label.text = NSLocalizedString(@"view_customer", @"view_customer");
                         break;
                     default:
                         break;
@@ -1464,24 +1464,24 @@ const char paramNumber;
             NSLog(@"newalert %@ replyAlert %@",newAlert,replyAlert);
             switch (indexPath.row) {
                 case 0:
-                    label.text = @"새글 알림";
+                    label.text = NSLocalizedString(@"newpost_alert", @"newpost_alert");
         if([newAlert isEqualToString:@"0"])
-                    cell.detailTextLabel.text = @"꺼짐";
+                    cell.detailTextLabel.text = NSLocalizedString(@"alarm_off_status", @"alarm_off_status");
                     else
-                        cell.detailTextLabel.text = @"켜짐";
+                        cell.detailTextLabel.text = NSLocalizedString(@"alarm_on_status", @"alarm_on_status");
                     break;
                 case 1:
                     
-                    label.text = @"댓글 알림";
+                    label.text = NSLocalizedString(@"newreply_alert", @"newreply_alert");
                     if([replyAlert isEqualToString:@"0"])
-                        cell.detailTextLabel.text = @"꺼짐";
+                        cell.detailTextLabel.text = NSLocalizedString(@"alarm_off_status", @"alarm_off_status");
                     else
-                        cell.detailTextLabel.text = @"켜짐";
+                        cell.detailTextLabel.text = NSLocalizedString(@"alarm_on_status", @"alarm_on_status");
                     break;
                 case 2:
                     
-                    label.text = @"채팅 알림";
-                    cell.detailTextLabel.text = @"켜짐";
+                    label.text = NSLocalizedString(@"chat_alert", @"chat_alert");
+                    cell.detailTextLabel.text = NSLocalizedString(@"alarm_on_status", @"alarm_on_status");
                     break;
 //                case 2:
 //                    
@@ -1512,21 +1512,21 @@ const char paramNumber;
      
 #ifdef MQM
             if(indexPath.row == 0)
-                label.text = @"소셜 나가기";
+                label.text = NSLocalizedString(@"social_out", @"social_out");
             else
-                label.text = @"소셜 삭제";
+                label.text = NSLocalizedString(@"social_delete", @"social_delete");
 #elif Batong
-            label.text = @"소셜 나가기";
+            label.text = NSLocalizedString(@"social_out", @"social_out");
 #else
             if([groupDic[@"groupmaster"] isEqualToString:[ResourceLoader sharedInstance].myUID]){
-                label.text = @"소셜 삭제";
+                label.text = NSLocalizedString(@"social_delete", @"social_delete");
             }
             else
-            label.text = @"소셜 탈퇴";
+            label.text = NSLocalizedString(@"social_drop", @"social_drop");
 #endif
         }
 //        else if(indexPath.section == kDelete){
-//            label.text = @"소셜 삭제";
+//            label.text = NSLocalizedString(@"social_delete", @"social_delete");
 //        }
     }
     else{
@@ -1543,7 +1543,7 @@ const char paramNumber;
             cell.accessoryType = UITableViewCellAccessoryNone;
                   switch (indexPath.row) {
                       case 0:
-                          label.text = @"소셜 기본 정보";
+                          label.text = NSLocalizedString(@"social_info", @"social_info");
                           break;
                       case 1:
                           label.text = @"리더 위임하기";
@@ -1561,11 +1561,11 @@ const char paramNumber;
                   
                   switch (indexPath.row) {
                       case 0:
-                          label.text = @"멤버 보기";
+                          label.text = NSLocalizedString(@"view_member", @"view_member");
                           cell.detailTextLabel.text = [NSString stringWithFormat:@"%d",(int)[groupDic[@"member"]count]];
                           break;
                       case 1:
-                          label.text = @"멤버 초대";
+                          label.text = NSLocalizedString(@"invite_member", @"invite_member");
                           cell.detailTextLabel.text = @"";
                           break;
                       default:
@@ -1579,24 +1579,24 @@ const char paramNumber;
                   NSLog(@"newalert %@ replyAlert %@",newAlert,replyAlert);
                   switch (indexPath.row) {
                       case 0:
-                          label.text = @"새글 알림";
+                          label.text = NSLocalizedString(@"newpost_alert", @"newpost_alert");
                           if([newAlert isEqualToString:@"0"])
-                              cell.detailTextLabel.text = @"꺼짐";
+                              cell.detailTextLabel.text = NSLocalizedString(@"alarm_off_status", @"alarm_off_status");
                           else
-                              cell.detailTextLabel.text = @"켜짐";
+                              cell.detailTextLabel.text = NSLocalizedString(@"alarm_on_status", @"alarm_on_status");
                           break;
                       case 1:
                           
-                          label.text = @"댓글 알림";
+                          label.text = NSLocalizedString(@"newreply_alert", @"newreply_alert");
                           if([replyAlert isEqualToString:@"0"])
-                              cell.detailTextLabel.text = @"꺼짐";
+                              cell.detailTextLabel.text = NSLocalizedString(@"alarm_off_status", @"alarm_off_status");
                           else
-                              cell.detailTextLabel.text = @"켜짐";
+                              cell.detailTextLabel.text = NSLocalizedString(@"alarm_on_status", @"alarm_on_status");
                           break;
                       case 2:
                           
-                          label.text = @"채팅 알림";
-                          cell.detailTextLabel.text = @"켜짐";
+                          label.text = NSLocalizedString(@"chat_alert", @"chat_alert");
+                          cell.detailTextLabel.text = NSLocalizedString(@"alarm_on_status", @"alarm_on_status");
                           break;
                           //                case 2:
                           //
@@ -1627,13 +1627,13 @@ const char paramNumber;
                   cell.accessoryType = UITableViewCellAccessoryNone;
                   
                   if(indexPath.row == 0)
-                      label.text = @"소셜 탈퇴";
+                      label.text = NSLocalizedString(@"social_drop", @"social_drop");
                   else
-                      label.text = @"소셜 삭제";
+                      label.text = NSLocalizedString(@"social_delete", @"social_delete");
 
               }
               //        else if(indexPath.section == kDelete){
-              //            label.text = @"소셜 삭제";
+              //            label.text = NSLocalizedString(@"social_delete", @"social_delete");
               //        }
           
 #else
@@ -1644,7 +1644,7 @@ const char paramNumber;
                 //                    cell.textLabel.text = @"그룹 설정";
                 
                 UILabel *label = [CustomUIKit labelWithText:nil fontSize:18 fontColor:RGB(51,61,71) frame:CGRectMake(55, 12, 150, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
-                label.text = @"소셜 설정";
+                label.text = NSLocalizedString(@"social_config", @"social_config");
                 [cell.contentView addSubview:label];
                 //                    [label release];
                 
@@ -1658,7 +1658,7 @@ const char paramNumber;
             }
             else if(indexPath.row == 1){
                 UILabel *label = [CustomUIKit labelWithText:nil fontSize:18 fontColor:RGB(51,61,71) frame:CGRectMake(55, 12, 150, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
-                label.text = @"멤버 초대";
+                label.text = NSLocalizedString(@"invite_member", @"invite_member");
                 [cell.contentView addSubview:label];
                 //                    [label release];
                 
@@ -1673,7 +1673,7 @@ const char paramNumber;
                     //                        cell.textLabel.text = @"그룹 탈퇴";
                     
                     UILabel *label = [CustomUIKit labelWithText:nil fontSize:18 fontColor:RGB(51,61,71) frame:CGRectMake(55, 12, 150, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
-                    label.text = @"소셜 탈퇴";
+                    label.text = NSLocalizedString(@"social_drop", @"social_drop");
                     [cell.contentView addSubview:label];
                     //                        [label release];
                     
@@ -1711,7 +1711,7 @@ const char paramNumber;
             if(dic == nil || [dic[@"uniqueid"]length]<1){
                 dic = [NSDictionary dictionaryWithObjectsAndKeys:
                        @"",@"available",
-                       @"알 수 없는 사용자",@"name",
+                       NSLocalizedString(@"unknown_user", @"unknown_user"),@"name",
                        @"",@"team",
                        @"",@"grade2",
                        @"",@"uniqueid",nil];
@@ -1762,12 +1762,12 @@ const char paramNumber;
             if([dic[@"available"]isEqualToString:@"0"])
             {
                 disableView.hidden = NO;
-                lblStatus.text = @"미설치";
+                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             }
             else if([dic[@"available"]isEqualToString:@"4"]){
                 
                 disableView.hidden = NO;
-                lblStatus.text = @"로그아웃";
+                lblStatus.text = NSLocalizedString(@"logout", @"logout");
             }
             else
             {
@@ -1867,12 +1867,12 @@ const char paramNumber;
             if([dic[@"available"]isEqualToString:@"0"])
             {
                 disableView.hidden = NO;
-                lblStatus.text = @"미설치";
+                lblStatus.text = NSLocalizedString(@"not_installed", @"not_installed");
             }
             else if([dic[@"available"]isEqualToString:@"4"]){
                 
                 disableView.hidden = NO;
-                lblStatus.text = @"로그아웃";
+                lblStatus.text = NSLocalizedString(@"logout", @"logout");
             }
             else
             {
@@ -1964,7 +1964,7 @@ const char paramNumber;
                                                                                  message:@"선택한 초대를 취소하시겠습니까?"
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"예"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"yes", @"yes")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -1973,7 +1973,7 @@ const char paramNumber;
                                                         [alertcontroller dismissViewControllerAnimated:YES completion:nil];
                                                     }];
         
-        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:@"아니요"
+        UIAlertAction *cancelb = [UIAlertAction actionWithTitle:NSLocalizedString(@"no", @"no")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * action){
                                                             [alertcontroller dismissViewControllerAnimated:YES completion:nil];
@@ -1987,7 +1987,7 @@ const char paramNumber;
     else{
     UIAlertView *alert;
     
-    alert = [[UIAlertView alloc] initWithTitle:@"초대 취소" message:@"선택한 초대를 취소하시겠습니까?" delegate:self cancelButtonTitle:@"아니요" otherButtonTitles:@"예", nil];
+    alert = [[UIAlertView alloc] initWithTitle:@"초대 취소" message:@"선택한 초대를 취소하시겠습니까?" delegate:self cancelButtonTitle:NSLocalizedString(@"no", @"no") otherButtonTitles:NSLocalizedString(@"yes", @"yes"), nil];
     objc_setAssociatedObject(alert, &paramNumber, [[sender titleLabel]text], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     alert.tag = [sender tag];//[[aps valueForKey:@"cidx"]intValue];
@@ -2051,7 +2051,7 @@ const char paramNumber;
                     
                     msg = @"현재 소셜에 멤버가 없어\n확인을 누르시면 소셜이 삭제됩니다.";
                     
-                    [CustomUIKit popupAlertViewOK:@"소셜 나가기" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
+                    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_out", @"social_out") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
                 }
                 else{
                     
@@ -2061,19 +2061,19 @@ const char paramNumber;
                         if([memberList count]==1){
                             msg = @"현재 소셜에 멤버가 없어\n확인을 누르시면 소셜이 삭제됩니다.";
                             
-                            [CustomUIKit popupAlertViewOK:@"소셜 나가기" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
+                            [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_out", @"social_out") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
                         }
                         else{
                             
                             msg = @"현재 리더이므로 리더 위임 이후에 나갈 수 있습니다.\n리더 위임을 하시겠습니까?";
                             
-                            [CustomUIKit popupAlertViewOK:@"소셜 나가기" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOut) with:nil csel:nil with:nil];
+                            [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_out", @"social_out") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOut) with:nil csel:nil with:nil];
                         }
                     }
                     else{
                     msg = [NSString stringWithFormat:@"'%@' 소셜을 나갑니다.\n소셜을 나가시면 작성한 모든 글, 댓글에 대한 권한을 잃게 됩니다. 나가시기 전에 필요한 글이나 댓글은 보관 및 삭제하시기 바랍니다.\n\n정말 소셜을 나가시겠습니까?",SharedAppDelegate.root.home.titleString];
                     
-                    [CustomUIKit popupAlertViewOK:@"소셜 나가기" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOutSocial) with:nil csel:nil with:nil];
+                    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_out", @"social_out") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOutSocial) with:nil csel:nil with:nil];
                 }
                 }
                 
@@ -2083,7 +2083,7 @@ const char paramNumber;
                 
                 
                 NSString *msg = [NSString stringWithFormat:@"%@ 소셜을 삭제합니다. 소셜을 삭제하시면, 소셜 내 작성된 모든 내용이 삭제되어 복구가 불가능합니다. 정말 삭제하시겠습니까?",SharedAppDelegate.root.home.titleString];
-                [CustomUIKit popupAlertViewOK:@"소셜 삭제" msg:msg delegate:self tag:kDeleteConfirm sel:@selector(confirmDelete) with:nil csel:nil with:nil];
+                [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_delete", @"social_delete") msg:msg delegate:self tag:kDeleteConfirm sel:@selector(confirmDelete) with:nil csel:nil with:nil];
             }
             
            
@@ -2096,13 +2096,13 @@ const char paramNumber;
                 if([memberList count]==1){
                 msg = @"현재 소셜에 멤버가 없어\n확인을 누르시면 소셜이 삭제됩니다.";
                 
-                [CustomUIKit popupAlertViewOK:@"소셜 나가기" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
+                [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_out", @"social_out") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
                 }
                 else{
                     
                     msg = @"현재 리더이므로 리더 위임 이후에 나갈 수 있습니다.\n리더 위임을 하시겠습니까?";
                     
-                    [CustomUIKit popupAlertViewOK:@"소셜 나가기" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOut) with:nil csel:nil with:nil];
+                    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_out", @"social_out") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOut) with:nil csel:nil with:nil];
                 }
             }
             else{
@@ -2112,13 +2112,13 @@ const char paramNumber;
                     
                     msg = @"현재 소셜에 멤버가 없어\n확인을 누르시면 소셜이 삭제됩니다.";
                     
-                    [CustomUIKit popupAlertViewOK:@"소셜 나가기" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
+                    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_out", @"social_out") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
                 }
                 else{
                     
                     msg = [NSString stringWithFormat:@"'%@' 소셜을 나갑니다.\n소셜을 나가시면 작성한 모든 글, 댓글에 대한 권한을 잃게 됩니다. 나가시기 전에 필요한 글이나 댓글은 보관 및 삭제하시기 바랍니다.\n\n정말 소셜을 나가시겠습니까?",SharedAppDelegate.root.home.titleString];
                     
-                    [CustomUIKit popupAlertViewOK:@"소셜 나가기" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOutSocial) with:nil csel:nil with:nil];
+                    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_out", @"social_out") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOutSocial) with:nil csel:nil with:nil];
                 }
             }
 #else
@@ -2126,7 +2126,7 @@ const char paramNumber;
             if([groupDic[@"groupmaster"] isEqualToString:[ResourceLoader sharedInstance].myUID]){
                 
                 NSString *msg = [NSString stringWithFormat:@"%@ 소셜을 삭제합니다. 소셜을 삭제하시면, 소셜 내 작성된 모든 내용이 삭제되어 복구가 불가능합니다. 정말 삭제하시겠습니까?",SharedAppDelegate.root.home.titleString];
-                [CustomUIKit popupAlertViewOK:@"소셜 삭제" msg:msg delegate:self tag:kDeleteConfirm sel:@selector(confirmDelete) with:nil csel:nil with:nil];
+                [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_delete", @"social_delete") msg:msg delegate:self tag:kDeleteConfirm sel:@selector(confirmDelete) with:nil csel:nil with:nil];
             }
             else{
             if([memberList count]==1)
@@ -2135,7 +2135,7 @@ const char paramNumber;
 
                 msg = [NSString stringWithFormat:@"현재 다른 멤버가 없기 때문에 탈퇴하시면 %@ 소셜이 삭제됩니다.\n정말 탈퇴하시겠습니까?",SharedAppDelegate.root.home.titleString];
                 
-                [CustomUIKit popupAlertViewOK:@"소셜 탈퇴" msg:msg delegate:self tag:kDeleteSocial sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
+                [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:msg delegate:self tag:kDeleteSocial sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
 
             }
             else{
@@ -2143,7 +2143,7 @@ const char paramNumber;
 
                 msg = [NSString stringWithFormat:@"'%@' 소셜을 탈퇴합니다.\n소셜을 탈퇴하면, 이 소셜에서 작성하신\n모든 내용들에 대한 권한을 잃으며,\n다시 초대 받을 때까지 가입할 수 없습니다.\n\n정말 소셜을 탈퇴하시겠습니까?",SharedAppDelegate.root.home.titleString];
                 
-                [CustomUIKit popupAlertViewOK:@"소셜 탈퇴" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOutSocial) with:nil csel:nil with:nil];
+                [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOutSocial) with:nil csel:nil with:nil];
 
                 
             }
@@ -2217,7 +2217,7 @@ const char paramNumber;
         if(indexPath.row == 1){
             
             NSString *msg = [NSString stringWithFormat:@"%@ 소셜을 삭제합니다. 소셜을 삭제하시면, 소셜 내 작성된 모든 내용이 삭제되어 복구가 불가능합니다. 정말 삭제하시겠습니까?",SharedAppDelegate.root.home.titleString];
-            [CustomUIKit popupAlertViewOK:@"소셜 삭제" msg:msg delegate:self tag:kDeleteConfirm sel:@selector(confirmDelete) with:nil csel:nil with:nil];
+            [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_delete", @"social_delete") msg:msg delegate:self tag:kDeleteConfirm sel:@selector(confirmDelete) with:nil csel:nil with:nil];
         }
         else{
             
@@ -2226,13 +2226,13 @@ const char paramNumber;
                 if([memberList count]==1){
                     msg = @"현재 소셜에 멤버가 없어\n확인을 누르시면 소셜이 삭제됩니다.";
                     
-                    [CustomUIKit popupAlertViewOK:@"소셜 탈퇴" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
+                    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
                 }
                 else{
                     
                     msg = @"현재 리더이므로 리더 위임 이후에 나갈 수 있습니다.\n리더 위임을 하시겠습니까?";
                     
-                    [CustomUIKit popupAlertViewOK:@"소셜 탈퇴" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOut) with:nil csel:nil with:nil];
+                    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOut) with:nil csel:nil with:nil];
                 }
                 
             }
@@ -2241,14 +2241,14 @@ const char paramNumber;
                 if([memberList count]==1){
                     msg = @"현재 소셜에 멤버가 없어\n확인을 누르시면 소셜이 삭제됩니다.";
                     
-                    [CustomUIKit popupAlertViewOK:@"소셜 탈퇴" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
+                    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
                 }
                 else{
                     
                     
                     msg = [NSString stringWithFormat:@"'%@' 소셜을 나갑니다.\n소셜을 나가시면 작성한 모든 글, 댓글에 대한 권한을 잃게 됩니다. 나가시기 전에 필요한 글이나 댓글은 보관 및 삭제하시기 바랍니다.\n\n정말 소셜을 나가시겠습니까?",SharedAppDelegate.root.home.titleString];
                     
-                    [CustomUIKit popupAlertViewOK:@"소셜 탈퇴" msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOutSocial) with:nil csel:nil with:nil];
+                    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:msg delegate:self tag:kOutConfirm sel:@selector(confirmOutSocial) with:nil csel:nil with:nil];
                 }
             }
         }
@@ -2318,11 +2318,11 @@ const char paramNumber;
                     {
                         NSString *msg = [NSString stringWithFormat:@"현재 다른 멤버가 없기 때문에 탈퇴하시면 %@ 소셜이 삭제됩니다.\n정말 탈퇴하시겠습니까?",SharedAppDelegate.root.home.titleString];
 //                        UIAlertView *alert;
-//                        alert = [[UIAlertView alloc] initWithTitle:@"소셜 탈퇴" message:msg delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//                        alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"social_drop", @"social_drop") message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //                        alert.tag = kDelete;
 //                        [alert show];
 //                        [alert release];
-                        [CustomUIKit popupAlertViewOK:@"소셜 탈퇴" msg:msg delegate:self tag:kDeleteSocial sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
+                        [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:msg delegate:self tag:kDeleteSocial sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
                         
                     }
                     else{
@@ -2330,17 +2330,17 @@ const char paramNumber;
 
                         
 //                        UIAlertView *alert;
-//                        alert = [[UIAlertView alloc] initWithTitle:@"소셜 탈퇴" message:msg delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//                        alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"social_drop", @"social_drop") message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //                        alert.tag = kOutRegi;
 //                        [alert show];
 //                        [alert release];
-                        [CustomUIKit popupAlertViewOK:@"소셜 탈퇴" msg:msg delegate:self tag:kOutRegi sel:@selector(confirmOut) with:nil csel:nil with:nil];
+                        [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:msg delegate:self tag:kOutRegi sel:@selector(confirmOut) with:nil csel:nil with:nil];
                     }
                 }
 //                else{
 //                    NSString *msg = [NSString stringWithFormat:@"%@ 그룹을 가입하시겠습니까?",SharedAppDelegate.root.home.title];
 //                    UIAlertView *alert;
-//                    alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//                    alert = [[UIAlertView alloc] initWithTitle:nil message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //                    alert.tag = kOutRegi;
 //                    [alert show];
 //                    [alert release];
@@ -2369,7 +2369,7 @@ const char paramNumber;
 - (void)confirmDelete{
     
     NSString *msg = [NSString stringWithFormat:@"%@ 소셜을 삭제합니다.",SharedAppDelegate.root.home.titleString];
-    [CustomUIKit popupAlertViewOK:@"소셜 삭제" msg:msg delegate:self tag:kDeleteSocial sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
+    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_delete", @"social_delete") msg:msg delegate:self tag:kDeleteSocial sel:@selector(confirmDeleteSocial) with:nil csel:nil with:nil];
 }
 - (void)confirmOut{
     
@@ -2423,7 +2423,7 @@ const char paramNumber;
 #ifdef Batong
         NSString *msg = [NSString stringWithFormat:@"'%@' 소셜을 나갑니다.",SharedAppDelegate.root.home.titleString];
         
-        [CustomUIKit popupAlertViewOK:@"소셜 나가기" msg:msg delegate:self tag:kOutRegi sel:@selector(confirmOut) with:nil csel:nil with:nil];
+        [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_out", @"social_out") msg:msg delegate:self tag:kOutRegi sel:@selector(confirmOut) with:nil csel:nil with:nil];
 #elif GreenTalkCustomer
     int socialCount = 0;
     
@@ -2441,12 +2441,12 @@ const char paramNumber;
         
         NSString *msg = [NSString stringWithFormat:@"'%@' 소셜을 탈퇴합니다.",SharedAppDelegate.root.home.titleString];
         
-        [CustomUIKit popupAlertViewOK:@"소셜 탈퇴" msg:msg delegate:self tag:kOutRegi sel:@selector(confirmOut) with:nil csel:nil with:nil];
+        [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:msg delegate:self tag:kOutRegi sel:@selector(confirmOut) with:nil csel:nil with:nil];
     }
 #else
     NSString *msg = [NSString stringWithFormat:@"'%@' 소셜을 탈퇴합니다.",SharedAppDelegate.root.home.titleString];
     
-    [CustomUIKit popupAlertViewOK:@"소셜 탈퇴" msg:msg delegate:self tag:kOutRegi sel:@selector(confirmOut) with:nil csel:nil with:nil];
+    [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:msg delegate:self tag:kOutRegi sel:@selector(confirmOut) with:nil csel:nil with:nil];
     
 #endif
 }
@@ -2457,7 +2457,7 @@ const char paramNumber;
                                                                                  message:@"지금까지 서비스를 이용해주셔서\n감사합니다."
                                                                           preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okb = [UIAlertAction actionWithTitle:@"확인"
+        UIAlertAction *okb = [UIAlertAction actionWithTitle:NSLocalizedString(@"ok", @"ok")
                                                       style:UIAlertActionStyleDefault
                                                     handler:^(UIAlertAction * action){
                                                         
@@ -2474,7 +2474,7 @@ const char paramNumber;
     }
     else{
         
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"서비스 탈퇴" message:@"지금까지 서비스를 이용해주셔서\n감사합니다." delegate:self cancelButtonTitle:nil otherButtonTitles:@"확인", nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"서비스 탈퇴" message:@"지금까지 서비스를 이용해주셔서\n감사합니다." delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
     [alert setTag:kLeave];
     [alert show];
 //    [alert release];
@@ -2627,11 +2627,11 @@ const char paramNumber;
         
         NSString *msg = @"";
         if([new_onoff isEqualToString:@"1"] || [reply_onoff isEqualToString:@"1"]){
-            msg = @"알림을 켰습니다.";
+            msg = NSLocalizedString(@"on_the_alarm_toast", @"on_the_alarm_toast");
             
         }
         else if([new_onoff isEqualToString:@"0"] || [reply_onoff isEqualToString:@"0"]){
-            msg = @"알림을 껐습니다.";
+            msg = NSLocalizedString(@"off_the_alarm_toast", @"off_the_alarm_toast");
         }
         
         
@@ -2658,11 +2658,11 @@ const char paramNumber;
             
             NSString *msg = @"";
             if([new_onoff isEqualToString:@"1"] || [reply_onoff isEqualToString:@"1"]){
-                msg = @"알림을 켰습니다.";
+                msg = NSLocalizedString(@"on_the_alarm_toast", @"on_the_alarm_toast");
                 
             }
             else if([new_onoff isEqualToString:@"0"] || [reply_onoff isEqualToString:@"0"]){
-                msg = @"알림을 껐습니다.";
+                msg = NSLocalizedString(@"off_the_alarm_toast", @"off_the_alarm_toast");
             }
             
             
@@ -2693,7 +2693,7 @@ const char paramNumber;
         [SVProgressHUD dismiss];
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"그룹을 만드는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
@@ -2930,7 +2930,7 @@ const char paramNumber;
     else{
         // 없다
         
-        [CustomUIKit popupAlertViewOK:@"소셜 탈퇴" msg:@"리더를 위임할 수 있는 멤버가 없습니다.\n위임하지 않고 소셜을 삭제하시겠습니까?\n소셜을 삭제하면 소셜 내 작성 된 모든 내용이 삭제되어 복구가 불가능합니다\n삭제하시겠습니까?" delegate:self tag:kDeleteConfirm sel:@selector(confirmDelete) with:nil csel:nil with:nil];
+        [CustomUIKit popupAlertViewOK:NSLocalizedString(@"social_drop", @"social_drop") msg:@"리더를 위임할 수 있는 멤버가 없습니다.\n위임하지 않고 소셜을 삭제하시겠습니까?\n소셜을 삭제하면 소셜 내 작성 된 모든 내용이 삭제되어 복구가 불가능합니다\n삭제하시겠습니까?" delegate:self tag:kDeleteConfirm sel:@selector(confirmDelete) with:nil csel:nil with:nil];
     }
 }
 - (void)passMaster{

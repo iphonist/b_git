@@ -128,7 +128,7 @@
 - (void)confirmInit{//:(id)sender{
     
 //    UIAlertView *alert;
-//    alert = [[UIAlertView alloc] initWithTitle:@"읽지 않은 알림을\n모두 읽음 처리 하시겠습니까?" message:nil delegate:self cancelButtonTitle:@"취소" otherButtonTitles:@"확인", nil];
+//    alert = [[UIAlertView alloc] initWithTitle:@"읽지 않은 알림을\n모두 읽음 처리 하시겠습니까?" message:nil delegate:self cancelButtonTitle:NSLocalizedString(@"cancel", @"cancel") otherButtonTitles:NSLocalizedString(@"ok", @"ok"), nil];
 //    [alert show];
 //    [alert release];
     [CustomUIKit popupAlertViewOK:nil msg:@"읽지 않은 알림을\n모두 읽음 처리 하시겠습니까?" delegate:self tag:0 sel:@selector(initNotice:) with:@"0" csel:nil with:nil];
@@ -1319,7 +1319,7 @@ else //if(section == 1)
         didRequest = NO;
         NSLog(@"FAIL : %@",operation.error);
         [HTTPExceptionHandler handlingByError:error];
-        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"댓글을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:@"확인" otherButtonTitles:nil, nil];
+        //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"댓글을 받아오는 데 실패했습니다. 잠시 후 다시 시도해 주세요!" delegate:nil cancelButtonTitle:NSLocalizedString(@"ok", @"ok") otherButtonTitles:nil, nil];
         //        [alert show];
         
     }];
