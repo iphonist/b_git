@@ -29,6 +29,10 @@
         self.title = @"좋아요 멤버";
 //        self.tableView.tag = t;
         self.tableView.rowHeight = 50;
+#ifdef BearTalk
+        
+        self.tableView.rowHeight = 10+42+10;
+#endif
 //        [SharedAppDelegate.root returnTitle:self.title viewcon:self noti:NO alarm:NO];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(refreshProfiles)
@@ -171,8 +175,8 @@
         
         
         nameLabel = [CustomUIKit labelWithText:nil fontSize:0 fontColor:[UIColor blackColor] frame:CGRectMake(55, 5, 320-60-70, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
-        nameLabel.font = [UIFont boldSystemFontOfSize:15];
         nameLabel.tag = 2;
+        nameLabel.font = [UIFont boldSystemFontOfSize:15];
         [cell.contentView addSubview:nameLabel];
 //        [nameLabel release];
         
@@ -198,17 +202,34 @@
 	profileView.image = nil;
 //    profileView.image = [SharedAppDelegate.root getImage:[[self.memberobjectatindex:indexPath.row]objectForKey:@"uid"] ifNil:@"n01_tl_list_profile.png"];
     
+#ifdef BearTalk
+    
+    [SharedAppDelegate.root getProfileImageWithURL:self.member[indexPath.row] ifNil:@"profile_photo.png" view:profileView scale:0];
+    
+#else
     [SharedAppDelegate.root getProfileImageWithURL:self.member[indexPath.row][@"uid"] ifNil:@"profile_photo.png" view:profileView scale:0];
+#endif
 //    NSDictionary *dic = [SharedAppDelegate.root searchContactDictionary:[self.memberobjectatindex:indexPath.row]];
     
     NSDictionary *dic = nil;
 //    if(self.view.tag == kActivity)
 //        dic = [SharedAppDelegate.root searchContactDictionary:self.member[indexPath.row][@"uid"]];
 //    else
+    
+#ifdef BearTalk
+    dic = [SharedAppDelegate.root searchContactDictionary:self.member[indexPath.row]];
+#else
     dic = [self.member[indexPath.row][@"writeinfo"]objectFromJSONString];
+#endif
     NSLog(@"dic %@",dic);
     
     nameLabel.text = dic[@"name"];
+
+    
+#ifdef BearTalk
+    
+    teamLabel.text = [NSString stringWithFormat:@"%@ | %@",dic[@"grade2"],dic[@"team"]];
+#else
     if([dic[@"position"]length]>0)
     {
         if([dic[@"deptname"]length]>0)
@@ -221,7 +242,21 @@
             teamLabel.text = [NSString stringWithFormat:@"%@",dic[@"deptname"]];
     }
     
+#endif
+    
+    
     teamLabel.frame = CGRectMake(nameLabel.frame.origin.x, nameLabel.frame.origin.y + nameLabel.frame.size.height, nameLabel.frame.size.width, nameLabel.frame.size.height);
+    
+    
+#ifdef BearTalk
+    
+    profileView.frame = CGRectMake(16, 10, 42, 42);
+    roundingView.frame = CGRectMake(0,0,profileView.frame.size.width,profileView.frame.size.height);
+    nameLabel.frame = CGRectMake(16+42+10, 10, 120, 19);
+    teamLabel.frame = CGRectMake(nameLabel.frame.origin.x, CGRectGetMaxY(nameLabel.frame), 120, 19);
+    nameLabel.font = [UIFont systemFontOfSize:14];
+    teamLabel.font = [UIFont systemFontOfSize:12];
+#endif
     
 //    positionLabel.text = dic[@"position"];
 //    teamLabel.text = dic[@"deptname"];
@@ -298,7 +333,12 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
 //    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+#ifdef BearTalk
+    
+    [SharedAppDelegate.root.home goToYourTimeline:self.member[indexPath.row]];
+#else
     [SharedAppDelegate.root.home goToYourTimeline:self.member[indexPath.row][@"uid"]];
+#endif
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

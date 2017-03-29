@@ -1110,6 +1110,20 @@
 
 
 
+- (void)setCategoryname:(NSString *)catename{
+    [super setCategoryname:catename];
+    
+    if(!IS_NULL(catename) && [catename length]>0){
+        for(NSDictionary *dic in SharedAppDelegate.root.home.groupDic[@"SNS_CATEGORY"]){
+            if([catename isEqualToString:dic[@"CATEGORY_KEY"]]){
+                self.categoryname = dic[@"CATEGORY_NAME"];
+            }
+        }
+    }
+    NSLog(@"self.catename %@",self.categoryname);
+    
+}
+
 - (void)setReadArray:(NSMutableArray *)array
 {
     [super setReadArray:array];
@@ -2382,7 +2396,62 @@
             con = @"";
         }
         
+#ifdef BearTalk
+        if([self.categoryname length]>0){
+            
+            if([con length]>0){
+                
+                NSString *msg = [NSString stringWithFormat:@"[%@]\n\n%@",self.categoryname,con];
+                NSLog(@"categoryname! %@ con %@",self.categoryname,con);
+                
+                NSArray *texts=[NSArray arrayWithObjects:[NSString stringWithFormat:@"[%@]\n\n",self.categoryname],[NSString stringWithFormat:@"%@",content],nil];
+                
+                NSMutableAttributedString *contentwithname = [[NSMutableAttributedString alloc]initWithString:msg];
+                
+                NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"];
+                
+                [contentwithname addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:[msg rangeOfString:texts[0]]];
+                [contentwithname addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:[msg rangeOfString:texts[1]]];
+                [contentwithname addAttribute:NSForegroundColorAttributeName
+                                        value:[NSKeyedUnarchiver unarchiveObjectWithData:colorData]
+                                        range:[msg rangeOfString:texts[0]]];
+                
+                [contentwithname addAttribute:NSForegroundColorAttributeName
+                                        value:RGB(54, 54, 55)
+                                        range:[msg rangeOfString:texts[1]]];
+                
+                [contentsLabel setAttributedText:contentwithname];
+            }
+            else{
+                
+                NSString *msg = [NSString stringWithFormat:@"[%@]",self.categoryname];
+                NSLog(@"categoryname! %@ con %@",self.categoryname,con);
+                
+                NSArray *texts=[NSArray arrayWithObjects:[NSString stringWithFormat:@"[%@]",self.categoryname],nil];
+                
+                NSMutableAttributedString *contentwithname = [[NSMutableAttributedString alloc]initWithString:msg];
+                
+                NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"];
+                
+                [contentwithname addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:[msg rangeOfString:texts[0]]];
+                
+                [contentwithname addAttribute:NSForegroundColorAttributeName
+                                        value:[NSKeyedUnarchiver unarchiveObjectWithData:colorData]
+                                        range:[msg rangeOfString:texts[0]]];
+                                
+                [contentsLabel setAttributedText:contentwithname];
+            }
+            
+            
+        }
+        else{
+            
+            contentsLabel.text = con;
+            
+        }
+#else
         contentsLabel.text = con;
+#endif
         
         
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];

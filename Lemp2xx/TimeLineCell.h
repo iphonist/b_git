@@ -124,6 +124,7 @@
     NSString *content;
     NSString *favorite;
     NSString *sub_category;
+    NSString *categoryname;
 }
 
 @property (retain) NSString *sub_category;
@@ -170,6 +171,7 @@
 @property (retain) NSArray *imageArray;
 @property (retain) NSArray *favoriteArray;
 @property (retain) NSString *favorite;
+@property (retain) NSString *categoryname;
 
 
 - (void)setSearchText:(NSString *)text;

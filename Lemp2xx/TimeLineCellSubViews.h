@@ -77,6 +77,7 @@
     UILabel *likeLabel;
     UILabel *replyLabel;
     UILabel *shareLabel;
+    
 }
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier viewController:(UIViewController*)viewController;
 //- (void)setReplyImage:(NSString *)image name:(NSString *)str time:(NSString *)newTime content:(NSString *)contents;

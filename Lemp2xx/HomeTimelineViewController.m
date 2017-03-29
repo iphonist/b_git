@@ -1403,9 +1403,9 @@ const char paramIndex;
                                                                                for(NSDictionary *dic in category_data)
                                         {
                                             if([dic[@"categoryname"]isEqualToString:category_data[i][@"categoryname"]]){
-                                                NSString *categoryname = dic[@"categoryname"];
-                                                if([categoryname isEqualToString:@"SPG"] || [categoryname isEqualToString:@"HPG"] || [categoryname isEqualToString:@"NBG"] || [categoryname isEqualToString:@"구분없음"]){
-                                                    [self getTimelineWithCodeName:categoryname time:@"0"];
+                                                NSString *acategoryname = dic[@"categoryname"];
+                                                if([acategoryname isEqualToString:@"SPG"] || [acategoryname isEqualToString:@"HPG"] || [acategoryname isEqualToString:@"NBG"] || [acategoryname isEqualToString:@"구분없음"]){
+                                                    [self getTimelineWithCodeName:acategoryname time:@"0"];
                                                 }
                                                 else{
                                                 [self getTimelineWithCode:dic[@"code"] time:@"0"];
@@ -1718,9 +1718,9 @@ const char paramIndex;
             for(NSDictionary *dic in category_data)
             {
                 if([dic[@"categoryname"]isEqualToString:[actionSheet buttonTitleAtIndex:buttonIndex]]){
-                    NSString *categoryname = dic[@"categoryname"];
-                    if([categoryname isEqualToString:@"SPG"] || [categoryname isEqualToString:@"HPG"] || [categoryname isEqualToString:@"NBG"] || [categoryname isEqualToString:@"구분없음"]){
-                        [self getTimelineWithCodeName:categoryname time:@"0"];
+                    NSString *acategoryname = dic[@"categoryname"];
+                    if([acategoryname isEqualToString:@"SPG"] || [acategoryname isEqualToString:@"HPG"] || [acategoryname isEqualToString:@"NBG"] || [acategoryname isEqualToString:@"구분없음"]){
+                        [self getTimelineWithCodeName:acategoryname time:@"0"];
                     }
                     else{
                         [self getTimelineWithCode:dic[@"code"] time:@"0"];
@@ -2936,6 +2936,13 @@ else{
 //        NSString *imageString = dataItem.contentDic[@"image"];
         NSString *content = dataItem.content;//contentDic[@"msg"];
         
+        if([dataItem.categoryname length]>0){
+            if([content length]>0)
+            content = [NSString stringWithFormat:@"[%@]\n\n%@",dataItem.categoryname,content];
+            else
+                content = [NSString stringWithFormat:@"[%@]",dataItem.categoryname];
+        }
+        
         if([dataItem.contentType intValue] != 12){
             if ([content length] > 500) {
                 content = [content substringToIndex:500];
@@ -3841,6 +3848,7 @@ return height;
             cell.currentTime = dataItem.currentTime;
             cell.time = dataItem.time;
             cell.writetime = dataItem.writetime;
+            cell.categoryname = dataItem.categoryname;
             cell.contentDic = dataItem.contentDic;
             cell.pollDic = dataItem.pollDic;
             cell.fileArray = dataItem.fileArray;
@@ -4040,6 +4048,7 @@ return height;
             
             cell.readArray = dataItem.readArray;
             cell.targetdic = dataItem.targetdic;
+            cell.categoryname = dataItem.categoryname;
             
             cell.contentDic = dataItem.contentDic;
             cell.content = dataItem.content;
@@ -4072,6 +4081,7 @@ return height;
             cell.currentTime = dataItem.currentTime;
             cell.time = dataItem.time;
             cell.writetime = dataItem.writetime;
+            cell.categoryname = dataItem.categoryname;
             cell.contentDic = dataItem.contentDic;
             cell.pollDic = dataItem.pollDic;
             cell.fileArray = dataItem.fileArray;
@@ -5234,6 +5244,7 @@ return height;
                     NSLog(@"cellData.idx %@",cellData.readArray);
                     cellData.notice = @"0";//dic[@"notice"];
                     cellData.targetdic = nil;//dic[@"target"];
+                    cellData.categoryname = dic[@"CATEGORY"];//]categoryname;
                     
 //                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
                     cellData.contentDic = nil;//contentDic;
@@ -6780,6 +6791,7 @@ return height;
         cellData.readArray = messagesDic[@"READ_MEMBER"];
         //                    cellData.notice = dic[@"notice"];
         cellData.targetdic = nil;//dic[@"target"];
+            cellData.categoryname = messagesDic[@"CATEGORY"];
         
         //                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
             cellData.contentDic = nil;//contentDic;

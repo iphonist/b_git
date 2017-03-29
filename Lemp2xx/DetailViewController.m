@@ -2132,6 +2132,22 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
     replyView.backgroundColor = RGB(249, 249, 249);
     replyView.layer.borderColor = RGB(224, 224, 224).CGColor;
     replyView.layer.borderWidth = 0.5f;
+    
+    
+    if(categoryname){
+        categoryname = nil;
+    }
+    categoryname = [[NSString alloc]init];
+    
+    if(!IS_NULL(contentsData.categoryname) && [contentsData.categoryname length]>0){
+        for(NSDictionary *dic in SharedAppDelegate.root.home.groupDic[@"SNS_CATEGORY"]){
+            if([contentsData.categoryname isEqualToString:dic[@"CATEGORY_KEY"]]){
+                categoryname = dic[@"CATEGORY_NAME"];
+            }
+        }
+    }
+    
+    NSLog(@"categoryname %@",categoryname);
 #else
     replyView.image = [[UIImage imageNamed:@"dv_btmtab_bg.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:30];//[UIImage imageNamed:@"n01_dt_writdtn_bg.png"];
     
@@ -3736,7 +3752,13 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                 
 #ifdef BearTalk
-                NSString *content = [categoryname length]>0?[NSString stringWithFormat:@"[%@]\n\n%@",categoryname,contentsData.content]:contentsData.content;
+                NSString *content = @"";
+                if([categoryname length]>0){
+                    content = ([contentsData.content length]>0)?[NSString stringWithFormat:@"[%@]\n\n%@",categoryname,contentsData.content]:[NSString stringWithFormat:@"[%@]",categoryname];
+                }
+                else{
+                    content = contentsData.content;
+                }
 #else
                 NSString *content = contentsData.contentDic[@"msg"];
 #endif
@@ -3779,8 +3801,14 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
 #ifdef BearTalk
                 
-                NSString *content = [categoryname length]>0?[NSString stringWithFormat:@"[%@]\n\n%@",categoryname,contentsData.content]:contentsData.content;
                 
+                NSString *content = @"";
+                if([categoryname length]>0){
+                    content = ([contentsData.content length]>0)?[NSString stringWithFormat:@"[%@]\n\n%@",categoryname,contentsData.content]:[NSString stringWithFormat:@"[%@]",categoryname];
+                }
+                else{
+                    content = contentsData.content;
+                }
           
                 
                 NSString *where = @"";
@@ -6149,7 +6177,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 CGSize cSize;;
                 if([categoryname length]>0){
                     
-                    
+                    if([contentsData.content length]>0){
                 NSString *msg = [NSString stringWithFormat:@"[%@]\n\n%@",categoryname,contentsData.content];
                     
                 NSArray *texts=[NSArray arrayWithObjects:[NSString stringWithFormat:@"[%@]\n\n",categoryname],[NSString stringWithFormat:@"%@",contentsData.content],nil];
@@ -6170,10 +6198,30 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                     [contentsTextView setAttributedText:content];
                     NSLog(@"content!!!! %@",content);
-//                    cSize = [SharedFunctions textViewSizeForString:content font:[UIFont systemFontOfSize:fontSize] width:self.view.frame.size.width - 32 realZeroInsets:NO];
-                    
                     
                     cSize = [SharedFunctions textViewSizeForAttributeString:content font:[UIFont systemFontOfSize:fontSize] width:self.view.frame.size.width - 32 realZeroInsets:NO];
+                    }
+                    else{
+                        
+                        
+                        NSString *msg = [NSString stringWithFormat:@"[%@]",categoryname,contentsData];
+                        
+                        NSArray *texts=[NSArray arrayWithObjects:[NSString stringWithFormat:@"[%@]",categoryname],nil];
+                        
+                        NSMutableAttributedString *content = [[NSMutableAttributedString alloc]initWithString:msg];
+                        
+                        NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"];
+                        
+                        [content addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:[msg rangeOfString:texts[0]]];
+                        [content addAttribute:NSForegroundColorAttributeName
+                                        value:[NSKeyedUnarchiver unarchiveObjectWithData:colorData]
+                                        range:[msg rangeOfString:texts[0]]];
+                        
+                        [contentsTextView setAttributedText:content];
+                        NSLog(@"content!!!! %@",content);
+                        
+                        cSize = [SharedFunctions textViewSizeForAttributeString:content font:[UIFont systemFontOfSize:fontSize] width:self.view.frame.size.width - 32 realZeroInsets:NO];
+                    }
 
                 }
                 else{
