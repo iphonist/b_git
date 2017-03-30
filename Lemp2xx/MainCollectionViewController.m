@@ -861,25 +861,14 @@ const char paramNumber;
     
     [myList removeAllObjects];
     
-    NSMutableArray *inviteArray = [NSMutableArray array];
-    NSMutableArray *elseArray = [NSMutableArray array];
+//    NSMutableArray *inviteArray = [NSMutableArray array];
+//    NSMutableArray *elseArray = [NSMutableArray array];
     NSMutableArray *contentsArray = [NSMutableArray array];
-    NSMutableArray *batongArray = [NSMutableArray array];
+//    NSMutableArray *batongArray = [NSMutableArray array];
     
     if(group != nil){
         for(NSDictionary *dic in group){
-    #ifdef Batong
             
-    #ifdef MQM
-    #else
-            if([dic[@"groupnumber"]isEqualToString:@"10301"]){
-                [batongArray addObject:dic];
-            }
-            else{
-    #endif
-                
-#endif
-                NSLog(@"setGroupList 4");
             NSString *attribute2 = dic[@"groupattribute2"];
             if([attribute2 length]<1)
                 attribute2 = @"00";
@@ -893,54 +882,71 @@ const char paramNumber;
             }
             
             if(![array2[0]isEqualToString:@"2"] && ![array2[0]isEqualToString:@"3"]){
-                
-                if([dic[@"category"]isEqualToString:@"1"]){
+    if([dic[@"accept"]isEqualToString:@"N"] && [dic[@"grouptype"]isEqualToString:@"1"]){
+                    NSLog(@"group_invite");
                     [myList addObject:dic];
-                    //                [SharedAppDelegate writeToPlist:@"comname" value:dic[@"groupname"]];
+                }
+            }
+        }
+        for(NSDictionary *dic in group){
+            
+                NSLog(@"group_invite_else");
+            
+            NSString *attribute2 = dic[@"groupattribute2"];
+            if([attribute2 length]<1)
+                attribute2 = @"00";
+            
+            NSMutableArray *array2 = [NSMutableArray array];
+            
+            NSLog(@"attribute2 %@",attribute2);
+            for (int i = 0; i < [attribute2 length]; i++) {
+                
+                [array2 addObject:[NSString stringWithFormat:@"%C", [attribute2 characterAtIndex:i]]];
+            }
+            
+            
+            if([dic[@"groupnumber"]isEqualToString:@"10301"]){ // best practice
+                NSLog(@"group_bestpractice");
+                [myList addObject:dic];
+            }
+            if(![array2[0]isEqualToString:@"2"] && ![array2[0]isEqualToString:@"3"]){
+                        
+                
+                if([dic[@"accept"]isEqualToString:@"N"] && [dic[@"grouptype"]isEqualToString:@"1"]){
+                  
                 }
                 else{
-                    if([dic[@"accept"]isEqualToString:@"N"] && [dic[@"grouptype"]isEqualToString:@"1"]){
-                        [inviteArray addObject:dic];
-                    }
-                    else
-                        [elseArray addObject:dic];
+                    NSLog(@"group_notInvite");
+                    [myList addObject:dic];
                 }
-                
             }
+                
             else{
                 
+                NSLog(@"group_contents");
                 NSLog(@"myList[i] %@",dic);
                 [contentsArray addObject:dic];
             }
-#ifdef Batong
-                
-#ifdef MQM
-#else
-            }
-#endif
-#endif
+            
         }
-
+        
+        
     }
+
+    
+
+    
     
     [SharedAppDelegate.root.ecmdmain setGroupList:contentsArray];
-    [myList addObjectsFromArray:inviteArray];
-#ifdef Batong
-    [myList addObjectsFromArray:batongArray];
-#endif
-    [myList addObjectsFromArray:elseArray];
+//    [myList addObjectsFromArray:inviteArray];
+//    [myList addObjectsFromArray:batongArray];
+//    [myList addObjectsFromArray:elseArray];
     
     NSLog(@"myLIst %@",myList);
     [myTable reloadData];
     
     
     
-    
-    for(int i = 0; i < [myList count]; i++){
-        if([myList[i][@"category"]isEqualToString:@"1"]){
-            [myList removeObjectAtIndex:i];
-        }
-    }
     
     NSLog(@"setGroupList 5");
     
