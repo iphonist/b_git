@@ -553,14 +553,16 @@
         }
     
     }
+    else{ // app install
+        
+        [SharedFunctions saveDeviceToken:deviceId status:NO];
+    }
     
     
 #else
     if ([def boolForKey:@"PushAlertLastStatus"] == NO
         && [[self readPlist:@"lastdate"]length] > 0
-        
         && ![[self readPlist:@"lastdate"]isEqualToString:@"0000-00-00 00:00:00"]
-        
         && root.login == nil) {
         // 마지막 푸시 상태가 OFF, 로그인 상태
         [self setProfileForDeviceToken:deviceId];
