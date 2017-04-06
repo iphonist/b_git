@@ -7465,7 +7465,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         likeLabel.textColor = [UIColor whiteColor];
                         likeLabel.backgroundColor = RGB(167, 204, 69);
                         
-#if defined(LempMobile) || defined(LempMobileNowon)
+#if defined(LempMobile) || defined(LempMobileNowon) || defined(SbTalk)
                         likeLabel.backgroundColor = RGB(39, 128, 248);
                         
 #endif

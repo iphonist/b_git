@@ -300,7 +300,7 @@ const char paramIndex;
         
         
         
-#elif LempMobileNowon
+#elif defined(LempMobileNowon) || defined(SbTalk)
         
         myTable.frame = CGRectMake(0, 0,self.view.frame.size.width, SharedAppDelegate.window.frame.size.height - VIEWY);
         
@@ -2551,7 +2551,7 @@ else{
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
     {
         NSLog(@"numberofsection");
-#ifdef LempMobileNowon
+#if defined(LempMobileNowon) || defined(SbTalk)
     return 1;
 #endif
 //    if([self.timeLineCells count]>0)
@@ -2571,7 +2571,7 @@ else{
     NSLog(@"numberOfRowsInSection");
     NSLog(@"timelinecells count %d",(int)[timeLineCells count]);
     
-#ifdef LempMobileNowon
+#if defined(LempMobileNowon) || defined(SbTalk)
     if([self.timeLineCells count]>0)
     {
         if([self.groupDic[@"category"]isEqualToString:@"2"] && [self.groupDic[@"grouptype"]isEqualToString:@"1"])
@@ -2635,7 +2635,7 @@ else{
 }
 
 
-#ifdef LempMobileNowon
+#if defined(LempMobileNowon) || defined(SbTalk)
     
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@"heightfor");
@@ -2935,13 +2935,14 @@ else{
         NSLog(@"dataItem.contentDic %@",dataItem.contentDic);
 //        NSString *imageString = dataItem.contentDic[@"image"];
         NSString *content = dataItem.content;//contentDic[@"msg"];
-        
+        NSLog(@"[content length] %d",[content length]);
         if([dataItem.categoryname length]>0){
             if([content length]>0)
             content = [NSString stringWithFormat:@"[%@]\n\n%@",dataItem.categoryname,content];
             else
                 content = [NSString stringWithFormat:@"[%@]",dataItem.categoryname];
         }
+        NSLog(@"[content length] %d",[content length]);
         
         if([dataItem.contentType intValue] != 12){
             if ([content length] > 500) {
@@ -2971,10 +2972,60 @@ else{
             }
             
             
+            UILabel *contentsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 32, 0)];
+            NSLog(@"contentsLabel %@",NSStringFromCGRect(contentsLabel.frame));
+            NSInteger fontSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"GlobalFontSize"];
+            [contentsLabel setFont:[UIFont systemFontOfSize:fontSize]];
+            contentsLabel.text = content;
+            
+            if(!IS_NULL(dataItem.imageArray) && [dataItem.imageArray count]>0){
+               if([dataItem.categoryname length]>0){
+                       if([content length]>0){
+                        [contentsLabel setNumberOfLines:7];
+                    }
+                    else{
+                        [contentsLabel setNumberOfLines:5];
+                        
+                    }
+                }
+                else{
+                    [contentsLabel setNumberOfLines:5];
+                    
+                }
+            }
+            else{
+                if([dataItem.categoryname length]>0){
+                    if([content length]>0){
+                        [contentsLabel setNumberOfLines:12];
+                    }
+                    else{
+                        [contentsLabel setNumberOfLines:10];
+                        
+                    }
+                }
+                else{
+                    [contentsLabel setNumberOfLines:10];
+                    
+                }
+            }
+            
+            CGRect realFrame = contentsLabel.frame;
+            
+            realFrame.size.width = [[UIScreen mainScreen] bounds].size.width - 32; //양쪽 패딩 합한 값이 64
+            
+            contentsLabel.frame = realFrame;
+            NSLog(@"contentsLabel %@",NSStringFromCGRect(contentsLabel.frame));
+            
+            [contentsLabel sizeToFit];
+            NSLog(@"contentsLabel %@",NSStringFromCGRect(contentsLabel.frame));
+            
             
             if(!IS_NULL(dataItem.imageArray) && [dataItem.imageArray count]>0)
            // if(imageString != nil && [imageString length]>0)
             {
+                
+                
+                
                 height += 5; // gap
                 if([dataItem.contentType intValue]==10)
                     height += 434-35;
@@ -2992,12 +3043,12 @@ else{
                   CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
            //   CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
                 CGFloat moreLabelHeight = 0.0;
-                if (realSize.height > contentSize.height) {
+                if (realSize.height > contentsLabel.frame.size.height) {
                     moreLabelHeight = 17.0;
                 }
                 
-                height += contentSize.height + moreLabelHeight;
-                NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+                height += contentsLabel.frame.size.height + moreLabelHeight;
+                NSLog(@"content %@ contentSize.height %f, %f",content,contentSize.height,contentsLabel.frame.size.height);
                 
             }
             else{
@@ -3037,11 +3088,11 @@ else{
                     CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                //     CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
                     
-                    if (realSize.height > contentSize.height) {
+                    if (realSize.height > contentsLabel.frame.size.height) {
                         moreLabelHeight = 17.0;
                     }
-                    height += contentSize.height + moreLabelHeight;
-                    NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+                    height += contentsLabel.frame.size.height + moreLabelHeight;
+                    NSLog(@"content %@ contentSize.height %f, %f",content,contentSize.height,contentsLabel.frame.size.height);
                 }
                 
             }
@@ -3623,7 +3674,7 @@ return height;
     static NSString *CellIdentifier = @"TimeLineCell";
     //    static NSString *PlaceholderCellIdentifier = @"PlaceholderCell";
 //        UIImageView *coverView;//, *bgView;
-#ifdef LempMobileNowon
+#if defined(LempMobileNowon) || defined(SbTalk)
     UIButton *schedule, *member;
 #else
 //    UILabel *label;
@@ -3653,7 +3704,7 @@ return height;
         cell.backgroundColor = [UIColor clearColor];
 #endif
         
-#ifdef LempMobileNowon
+#if defined(LempMobileNowon) || defined(SbTalk)
         
         schedule = [[UIButton alloc]initWithFrame:CGRectMake(0,0,160,48)];
         schedule.tag = 3000;
@@ -3750,7 +3801,7 @@ return height;
 //                coverView = (UIImageView *)[cell viewWithTag:1000];
         //        lineView = (UIImageView *)[cell viewWithTag:2000];
         //        gradationView = (UIImageView *)[cell viewWithTag:1000];
-#ifdef LempMobileNowon
+#if defined(LempMobileNowon) || defined(SbTalk)
                 schedule = (UIButton *)[cell viewWithTag:3000];
                 member = (UIButton *)[cell viewWithTag:4000];
 #else
@@ -3775,7 +3826,7 @@ return height;
     
     
     
-#ifdef LempMobileNowon
+#if defined(LempMobileNowon) || defined(SbTalk)
     if(indexPath.row == 0)
     {
         NSLog(@"test 0");
@@ -5841,7 +5892,7 @@ return height;
     NSLog(@"didSelectRowAtIndexPath %d %d",indexPath.section,indexPath.row);
 
 
-#ifdef LempMobileNowon
+#if defined(LempMobileNowon) || defined(SbTalk)
 
     if(indexPath.row == 0)
         return;
@@ -7204,7 +7255,7 @@ return height;
         writeButton.hidden = YES;
     }
     }
-#elif LempMobileNowon
+#elif defined(LempMobileNowon) || defined(SbTalk)
     
 #else
     
