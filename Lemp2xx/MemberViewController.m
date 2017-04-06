@@ -1725,6 +1725,12 @@ const char paramNumber;
             
             
             
+            UIImageView *roundingView = [[UIImageView alloc]init];
+            roundingView.frame = CGRectMake(0,0,profileView.frame.size.width,profileView.frame.size.height);
+            roundingView.image = [CustomUIKit customImageNamed:@"imageview_profile_rounding_1.png"];
+            [profileView addSubview:roundingView];
+            roundingView.tag = 21;
+            
             UILabel *name = [CustomUIKit labelWithText:nil fontSize:15 fontColor:RGB(51,61,71) frame:CGRectMake(55, 5, 320-60, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
             name.text = dic[@"name"];
             [cell.contentView addSubview:name];

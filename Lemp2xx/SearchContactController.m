@@ -745,13 +745,10 @@
         info = (UILabel *)[cell viewWithTag:6];
         roundingView = (UIImageView *)[cell viewWithTag:21];
     }
-#if defined(LempMobile) || defined(LempMobileNowon)
     
-    roundingView.hidden = YES;
-    
-#else
     roundingView.hidden = NO;
-#endif
+    
+    
     NSDictionary *dic = nil;
 
     if(searching)

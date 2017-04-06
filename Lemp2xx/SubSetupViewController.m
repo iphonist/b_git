@@ -438,7 +438,7 @@ const char paramDic;
         button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(goWeb) frame:CGRectMake(49, CGRectGetMaxY(label.frame)+10, 223, 32) imageNamedBullet:nil imageNamedNormal:@"prefere_jumpweb.png" imageNamedPressed:nil];
         [self.view addSubview:button];
 //        [button release];
-#if defined(LempMobileNowon) || defined(BearTalk) || defined(SbTalk) || defined(GreenTalk) || defined(GreenTalkCustomer)
+#if defined(LempMobileNowon) || defined(SbTalk) || defined(BearTalk) || defined(GreenTalk) || defined(GreenTalkCustomer)
         
         button.frame = CGRectMake(49, CGRectGetMaxY(label.frame)+10, 223, 0);
         

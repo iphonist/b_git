@@ -1542,7 +1542,7 @@
 
                 likeLabel.backgroundColor = RGB(252, 179, 66);
                 
-    #if defined(LempMobile) || defined(LempMobileNowon)
+    #if defined(LempMobile) || defined(LempMobileNowon) || defined(SbTalk)
                 likeLabel.backgroundColor = RGB(39, 128, 248);
     #endif
                 
@@ -2398,15 +2398,16 @@
         
 #ifdef BearTalk
         if([self.categoryname length]>0){
-            
+            NSMutableAttributedString *contentwithname;
+            NSLog(@"con %@",con);
             if([con length]>0){
                 
                 NSString *msg = [NSString stringWithFormat:@"[%@]\n\n%@",self.categoryname,con];
-                NSLog(@"categoryname! %@ con %@",self.categoryname,con);
+                NSLog(@"categoryname1 %@ con %@",self.categoryname,con);
                 
                 NSArray *texts=[NSArray arrayWithObjects:[NSString stringWithFormat:@"[%@]\n\n",self.categoryname],[NSString stringWithFormat:@"%@",content],nil];
                 
-                NSMutableAttributedString *contentwithname = [[NSMutableAttributedString alloc]initWithString:msg];
+                contentwithname = [[NSMutableAttributedString alloc]initWithString:msg];
                 
                 NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"];
                 
@@ -2425,11 +2426,11 @@
             else{
                 
                 NSString *msg = [NSString stringWithFormat:@"[%@]",self.categoryname];
-                NSLog(@"categoryname! %@ con %@",self.categoryname,con);
+                NSLog(@"categoryname2 %@ con %@",self.categoryname,con);
                 
                 NSArray *texts=[NSArray arrayWithObjects:[NSString stringWithFormat:@"[%@]",self.categoryname],nil];
                 
-                NSMutableAttributedString *contentwithname = [[NSMutableAttributedString alloc]initWithString:msg];
+                contentwithname = [[NSMutableAttributedString alloc]initWithString:msg];
                 
                 NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"themeColor"];
                 
@@ -2445,7 +2446,7 @@
             
         }
         else{
-            
+        
             contentsLabel.text = con;
             
         }
@@ -2459,12 +2460,25 @@
         NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
 #ifdef BearTalk
         if(!IS_NULL(self.imageArray) && [self.imageArray count]>0){
+            if([self.categoryname length]>0){
+                if([con length]>0){
+                    [contentsLabel setNumberOfLines:7];
+                }
+                else{
+                    [contentsLabel setNumberOfLines:5];
+                    
+                }
+            }
+            else{
+                [contentsLabel setNumberOfLines:5];
+                
+            }
 #else
-        if(!IS_NULL(imgString) && [imgString length]>5){
+            if(!IS_NULL(imgString) && [imgString length]>5){
+                [contentsLabel setNumberOfLines:5];
 #endif
-            [contentsLabel setNumberOfLines:5];
             
-            contentSize = [con boundingRectWithSize:CGSizeMake(self.contentView.frame.size.width - 32, fontSize*6) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+            contentSize = [con boundingRectWithSize:CGSizeMake(self.contentView.frame.size.width - 32, fontSize*(contentsLabel.numberOfLines+1)) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
             
 
             
@@ -2474,30 +2488,65 @@
         }
         else   {
             
-            [contentsLabel setNumberOfLines:10];
-            contentSize = [con boundingRectWithSize:CGSizeMake(self.contentView.frame.size.width - 32, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+            
+#ifdef BearTalk
+            
+                if([self.categoryname length]>0){
+                    if([con length]>0){
+                        [contentsLabel setNumberOfLines:12];
+                    }
+                    else{
+                        [contentsLabel setNumberOfLines:10];
+                        
+                    }
+                }
+                else{
+                    [contentsLabel setNumberOfLines:10];
+                    
+                }
+#else
+                
+                [contentsLabel setNumberOfLines:10];
+#endif
+                    
+            contentSize = [con boundingRectWithSize:CGSizeMake(self.contentView.frame.size.width - 32, fontSize*(contentsLabel.numberOfLines+1)) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
             
 
       //      contentSize = [con sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.contentView.frame.size.width - 32, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
             
             
         }
-        
-        contentsLabel.frame = CGRectMake(0, 0, self.contentView.frame.size.width - 30, contentSize.height);
+            CGRect realFrame = contentsLabel.frame;
+            
+            realFrame.size.width = [[UIScreen mainScreen] bounds].size.width - 32; //양쪽 패딩 합한 값이 64
+            
+            contentsLabel.frame = realFrame;
+            
+            [contentsLabel sizeToFit];
+            
+            
+            
+            NSLog(@"contentsLabel frame %f",contentSize.height);
+            NSLog(@"contentsLabel frame %f",contentsLabel.frame.size.height);
+            
 #ifdef BearTalk
-        contentsLabel.frame = CGRectMake(0, 0, self.contentView.frame.size.width - 32, contentSize.height);
+            contentsLabel.frame = CGRectMake(0, 0, self.contentView.frame.size.width - 32, contentsLabel.frame.size.height);
+            NSLog(@"contentsLabel frame1 %@",NSStringFromCGRect(contentsLabel.frame));
+#else
+            contentsLabel.frame = CGRectMake(0, 0, self.contentView.frame.size.width - 30, contentsLabel.frame.size.height);
+            NSLog(@"contentsLabel frame2 %@",NSStringFromCGRect(contentsLabel.frame));
+            
 #endif
-        
-        NSLog(@"contentsLabel frame %@",NSStringFromCGRect(contentsLabel.frame));
+            
+            NSLog(@"contentsLabel.text %@",contentsLabel.text);
         
         CGSize realSize = [con boundingRectWithSize:CGSizeMake(self.contentView.frame.size.width - 32, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
         
 
     //    CGSize realSize = [con sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.contentView.frame.size.width - 32, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
         
-        NSLog(@"contentSize.height %f realSize.height %f nsintegermax %ld",contentSize.height, realSize.height, NSIntegerMax);
         
-        if (realSize.height > contentSize.height) {
+        if (realSize.height > contentsLabel.frame.size.height) {
             UILabel *moreLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0,CGRectGetMaxY(contentsLabel.frame), 80.0, 17.0)];
             [moreLabel setTextColor:[UIColor colorWithRed:0.217 green:0.346 blue:0.806 alpha:1.000]];
             [moreLabel setBackgroundColor:[UIColor clearColor]];

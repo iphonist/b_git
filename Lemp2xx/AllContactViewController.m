@@ -79,7 +79,7 @@
     search.frame = CGRectMake(0,0,self.view.frame.size.width,9+30+9);
     
     
-#elif LempMobileNowon
+#elif defined(LempMobileNowon) || defined(SbTalk)
     NSLog(@"organize %@",SharedAppDelegate.root.organize);
     UIButton *button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(showSearchPopup) frame:CGRectMake(0, 0, 21, 21) imageNamedBullet:nil imageNamedNormal:@"button_searchview_search.png" imageNamedPressed:nil];
     UIBarButtonItem *btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
@@ -676,12 +676,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
         [profileView addSubview:roundingView];
 //        [roundingView release];
         
-#if defined(LempMobile) || defined(LempMobileNowon)
-        roundingView.hidden = YES;
+
         
-#else
         roundingView.hidden = NO;
-#endif
+
         
         UILabel *name = [CustomUIKit labelWithText:nil fontSize:15 fontColor:[UIColor darkGrayColor] frame:CGRectMake(55, 5, 320-60-105, 20) numberOfLines:1 alignText:NSTextAlignmentLeft];
 //        name.text = dic[@"name"];
@@ -887,13 +885,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath;
             roundingView.image = [CustomUIKit customImageNamed:@"imageview_profile_rounding_1.png"];
             [profileView addSubview:roundingView];
 //            [roundingView release];
-#if defined(LempMobile) || defined(LempMobileNowon)
 
-            roundingView.hidden = YES;
-            
-#else
             roundingView.hidden = NO;
-#endif
+
             
             
             

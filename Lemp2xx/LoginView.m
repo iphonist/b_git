@@ -1882,7 +1882,7 @@ const char paramNumber;
     
     NSString *urlString;
     
-    
+    NSLog(@"1");
 #ifdef BearTalk
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeClear];
     urlString = [NSString stringWithFormat:@"%@/api/check/email/",BearTalkBaseUrl];
@@ -1894,8 +1894,11 @@ const char paramNumber;
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
+    NSLog(@"2");
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    NSLog(@"3");
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
+    NSLog(@"4");
     
     NSDictionary *parameters;
     
@@ -1904,6 +1907,7 @@ const char paramNumber;
     parameters = [NSDictionary dictionaryWithObjectsAndKeys:[SharedAppDelegate readPlist:@"email"],@"email",nil];//@{ @"uniqueid" : @"c112256" };
 #else
     
+    NSLog(@"5");
     parameters = [NSDictionary dictionaryWithObjectsAndKeys:[SharedAppDelegate readPlist:@"email"],@"authid",nil];//@{ @"uniqueid" : @"c112256" };
 #endif
     

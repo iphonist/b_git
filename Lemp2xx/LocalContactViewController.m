@@ -1112,13 +1112,11 @@
         compareView = (UIImageView *)[cell viewWithTag:7];
         callButton = (UIButton *)[cell viewWithTag:4];
     }
-#if defined(LempMobile) || defined(LempMobileNowon)
+
     
-    roundingView.hidden = YES;
-    
-#else
     roundingView.hidden = NO;
-#endif
+
+    
 	profileView.image = nil;
     
 //    NSLog(@"mylist count %d",[myList count]);

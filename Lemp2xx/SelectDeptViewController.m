@@ -459,7 +459,7 @@
         if(i == [addArray count]-1)
         {
             
-#ifdef LempMobileNowon
+#if defined(LempMobileNowon) || defined(SbTalk)
         
             
             [addNameImage setBackgroundColor:RGB(39, 128, 248)];

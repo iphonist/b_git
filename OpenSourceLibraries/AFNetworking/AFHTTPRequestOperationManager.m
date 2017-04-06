@@ -57,20 +57,28 @@
     }
     NSLog(@"url %@",url);
     self.baseURL = url;
+    NSLog(@"1");
 
     self.requestSerializer = [AFHTTPRequestSerializer serializer];
+    NSLog(@"2");
     self.responseSerializer = [AFJSONResponseSerializer serializer];
+    NSLog(@"3");
 
     self.securityPolicy = [AFSecurityPolicy defaultPolicy];
+    NSLog(@"4");
 
     self.reachabilityManager = [AFNetworkReachabilityManager sharedManager];
+    NSLog(@"5");
 
     self.operationQueue = [[NSOperationQueue alloc] init];
+    NSLog(@"6");
 
     self.shouldUseCredentialStorage = YES;
+    NSLog(@"7");
 
     
     NSMutableArray *extractedLanguageDesignators = [NSMutableArray array];
+    NSLog(@"8");
     
     for(NSString *languageID in [NSLocale preferredLanguages])
     {

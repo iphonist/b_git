@@ -3453,7 +3453,7 @@
     [SharedAppDelegate.root getProfileImageWithURL:self.uniqueid ifNil:nil view:coverImageView scale:1];
     [SharedAppDelegate.root getProfileImageWithURL:self.uniqueid ifNil:@"imageview_profilepopup_defaultprofile.png" view:profile scale:0];
     
-#elif LempMobileNowon
+#elif defined(LempMobileNowon) || defined(SbTalk)
     UIImage *defaultImage = [CustomUIKit customImageNamed:@"imageview_defaultcover.png"];//withMask:[UIImage
     //    if(IS_HEIGHT568){
     //        defaultImage = [CustomUIKit customImageNamed:@"imageview_defaultcover.png"];// withMask:[UIImage

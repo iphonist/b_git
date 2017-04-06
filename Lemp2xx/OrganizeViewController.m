@@ -323,7 +323,7 @@
     NSLog(@"myList %d",[myList count]);
     
     
-#if defined(BearTalk) || defined(LempMobileNowon) || defined(IVTalk)
+#if defined(BearTalk) || defined(LempMobileNowon) || defined(SbTalk) || defined(IVTalk)
 	for(NSDictionary *forDic in tempArray)//int i = 0; i < [tempArray count]; i++)
 	{
 		if([forDic[@"mycode"] isEqualToString:code])
@@ -425,7 +425,7 @@
 //    
 //    [button release];
     
-#if defined(BearTalk) || defined(LempMobileNowon) || defined(IVTalk)
+#if defined(BearTalk) || defined(LempMobileNowon) || defined(SbTalk) || defined(IVTalk)
     
     UIButton *button = [CustomUIKit backButtonWithTitle:nil target:self selector:@selector(backTo)];
     UIBarButtonItem *btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];
@@ -448,7 +448,7 @@
     
     firstDept = first;
     
-#if defined(BearTalk) || defined(LempMobileNowon) || defined(IVTalk)
+#if defined(BearTalk) || defined(LempMobileNowon) || defined(SbTalk) || defined(IVTalk)
     self.title = first;
 #else
     self.title = NSLocalizedString(@"contacts", @"contacts");
@@ -848,7 +848,7 @@
     
 
     
-#elif LempMobileNowon
+#elif defined(LempMobileNowon) || defined(SbTalk)
     
     UIButton *button;
     UIBarButtonItem *btnNavi;
@@ -905,7 +905,7 @@
     
     groupNameView.frame = CGRectMake(0, CGRectGetMaxY(search.frame), self.view.frame.size.width, 11+26+11);
     groupNameView.backgroundColor = RGB(244, 248, 251);
-#elif LempMobileNowon
+#elif defined(LempMobileNowon) || defined(SbTalk)
     groupNameView.frame = CGRectMake(0, search.frame.size.height, 320, 40);
      groupNameView.image = [CustomUIKit customImageNamed:@"n09_gtalkmnbar.png"];
 #else
@@ -983,7 +983,7 @@
     
     
     
-#if defined(BearTalk) || defined(LempMobileNowon) || defined(IVTalk)
+#if defined(BearTalk) || defined(LempMobileNowon) || defined(SbTalk) || defined(IVTalk)
 #else
     self.navigationItem.hidesBackButton = YES;
 //    self.hidesBottomBarWhenPushed = NO;
@@ -2030,7 +2030,7 @@
         return;
     
     NSLog(@"myList %d",[myList count]);
-#if defined(BearTalk) || defined(LempMobileNowon) || defined(IVTalk)
+#if defined(BearTalk) || defined(LempMobileNowon) || defined(SbTalk) || defined(IVTalk)
     UIButton *button = [CustomUIKit backButtonWithTitle:nil target:self selector:@selector(upTo)];
     
     UIBarButtonItem *btnNavi = [[UIBarButtonItem alloc]initWithCustomView:button];

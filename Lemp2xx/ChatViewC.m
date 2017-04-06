@@ -3400,7 +3400,7 @@ try {
 #ifdef BearTalkDev
     url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://sns.lemp.co.kr:3000"]];
 #else
-    url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://dinside.lemp.co.kr:3000"]];
+    url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://D-inside.lemp.co.kr:3000"]];
 #endif
     self.socket = [[SocketIOClient alloc]initWithSocketURL:url config:@{@"log":@YES, @"forcePolling":@YES, @"forceWebsockets":@YES}];
     
@@ -3433,7 +3433,7 @@ try {
 #ifdef BearTalkDev
     url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://sns.lemp.co.kr:3000"]];
 #else
-    url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://dinside.lemp.co.kr:3000"]];
+    url = [[NSURL alloc]initWithString:[NSString stringWithFormat:@"%@",@"http://D-inside.lemp.co.kr:3000"]];
 #endif
     self.socket = [[SocketIOClient alloc]initWithSocketURL:url config:@{@"log":@YES, @"forcePolling":@YES, @"forceWebsockets":@YES}];
     

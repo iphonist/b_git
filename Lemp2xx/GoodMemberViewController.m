@@ -272,12 +272,9 @@
     }
     
     
-#if defined(LempMobileNowon) || defined(LempMobile)
-    roundingView.hidden = YES;
     
-#else
     roundingView.hidden = NO;
-#endif
+
     // Configure the cell...
     
     return cell;

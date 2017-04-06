@@ -7382,6 +7382,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
 #ifdef BearTalk
 #else
+    NSLog(@"1");
     if([[SharedAppDelegate readPlist:@"was"]length]<1)
         return;
 #endif
@@ -7394,12 +7395,14 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     urlString = [NSString stringWithFormat:@"%@/api/hr",BearTalkBaseUrl];
 #else
     
+    NSLog(@"2");
     urlString = [NSString stringWithFormat:@"https://%@/lemp/auth/startup.lemp",[SharedAppDelegate readPlist:@"was"]];
 #endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
+    NSLog(@"3");
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
     NSLog(@"initcontact %@",[SharedAppDelegate readPlist:@"initContact"]);

@@ -1079,13 +1079,11 @@ else
         checkView = (UIImageView *)[cell viewWithTag:5];
 //        invite = (UIButton *)[cell viewWithTag:4];
     }
-#if defined(BearTalk) || defined(LempMobile) || defined(LempMobileNowon)
+
     
-    roundingView.hidden = YES;
-    
-#else
     roundingView.hidden = NO;
-#endif
+
+    
 	profileView.image = nil;
     NSDictionary *dic = nil;
     if(searching)

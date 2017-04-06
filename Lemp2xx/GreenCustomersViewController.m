@@ -608,7 +608,7 @@
                     couponLabel.font = [UIFont systemFontOfSize:11];
                     couponLabel.textColor = RGB(240,72,14);
                     couponImageView.image = [UIImage imageNamed:@"imageview_coupon_g.png"];
-                    couponLabel.text = NSLocalizedString(@"coupon_register", @"coupon_register");
+                    couponLabel.text = NSLocalizedString(@"register", @"register");
                 }
                 else if([type isEqualToString:@"B"]){
                     couponLabel.font = [UIFont systemFontOfSize:11];

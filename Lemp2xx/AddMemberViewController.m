@@ -4270,11 +4270,8 @@
 #endif
     }
     
-#if defined(LempMobileNowon) || defined(LempMobile)
-    roundingView.hidden = YES;
-#else
     roundingView.hidden = NO;
-#endif
+
     if (self.multiSelect == NO) {
         checkView.hidden = YES;
 #ifdef BearTalk

@@ -184,7 +184,7 @@
         home = [[HomeTimelineViewController alloc]init];
         NSLog(@"0");
         
-#if defined(LempMobile) || defined(LempMobileNowon)
+#if defined(LempMobile) || defined(LempMobileNowon) || defined(SbTalk)
         main = [[MainViewController alloc]init];
 #else
         main = [[MainCollectionViewController alloc]init];

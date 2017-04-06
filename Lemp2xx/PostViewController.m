@@ -865,15 +865,14 @@ const char paramNumber;
     
 #if defined(MQM) || defined(Batong)
     
-    if(addFile)
-    {
-        [addFile removeFromSuperview];
-        addFile = nil;
-    }
-    addFile = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(resignKeyboard:) frame:CGRectMake(addPoll.frame.origin.x + addPoll.frame.size.width + 10, addPoll.frame.origin.y+4, 26, 24) imageNamedBullet:nil imageNamedNormal:@"file_dft.png" imageNamedPressed:nil];
-    addFile.tag = kFile;
-    [optionView addSubview:addFile];
-//    [addFile release];
+//    if(addFile)
+//    {
+//        [addFile removeFromSuperview];
+//        addFile = nil;
+//    }
+//    addFile = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(resignKeyboard:) frame:CGRectMake(addPoll.frame.origin.x + addPoll.frame.size.width + 10, addPoll.frame.origin.y+4, 26, 24) imageNamedBullet:nil imageNamedNormal:@"file_dft.png" imageNamedPressed:nil];
+//    addFile.tag = kFile;
+//    [optionView addSubview:addFile];
 #elif defined(GreenTalk) || defined(GreenTalkCustomer)
 #else
     
@@ -1350,12 +1349,18 @@ const char paramNumber;
   
     
 #elif Batong
+    if([sender tag] == kFile){
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+        picker.mediaTypes = @[(NSString *)kUTTypeMovie];
+        [self.navigationController presentViewController:picker animated:YES completion:nil];
+    }
+    else{
+        
+        [self cmdButton:sender];
+    }
     
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.delegate = self;
-    picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
-    picker.mediaTypes = @[(NSString *)kUTTypeMovie];
-    [self.navigationController presentViewController:picker animated:YES completion:nil];
 #else
     [self cmdButton:sender];
     

@@ -47,7 +47,7 @@
 //    [btnNavi release];
     
     
-#ifdef LempMobileNowon
+#if defined(LempMobileNowon) || defined(SbTalk)
     
     UIBarButtonItem *btnNavi;
     button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:SharedAppDelegate.root selector:@selector(showSearchPopup) frame:CGRectMake(0, 0, 21, 21) imageNamedBullet:nil imageNamedNormal:@"button_searchview_search.png" imageNamedPressed:nil];

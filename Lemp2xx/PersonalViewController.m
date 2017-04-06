@@ -1673,7 +1673,7 @@
     message.text = [SharedAppDelegate readPlist:@"employeinfo"];
     
 
-#ifdef LempMobileNowon
+#if defined(LempMobileNowon) || defined(SbTalk)
     
     NSString *filePath = [NSString stringWithFormat:@"%@/Library/Caches/%@_privatetimelinetemp.JPG",NSHomeDirectory(),dic[@"uid"]];
     NSLog(@"filePath %@",filePath);

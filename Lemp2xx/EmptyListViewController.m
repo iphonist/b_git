@@ -1285,9 +1285,9 @@ const char paramDic;
 
         
          if(section == 0)
-             headerTitle = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"coupon_register", @"coupon_register"),NSLocalizedString(@"member", @"member")];
+             headerTitle = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"register", @"register"),NSLocalizedString(@"member", @"member")];
         else if(section == 1)
-            headerTitle = [NSString stringWithFormat:@"%@ %@ %@",NSLocalizedString(@"coupon_register", @"coupon_register"),NSLocalizedString(@"hold", @"hold"),NSLocalizedString(@"member", @"member")];//@"가입 대기 멤버";
+            headerTitle = [NSString stringWithFormat:@"%@ %@ %@",NSLocalizedString(@"register", @"register"),NSLocalizedString(@"hold", @"hold"),NSLocalizedString(@"member", @"member")];//@"가입 대기 멤버";
     }
     else if(tableView.tag == kCompanyInfo){
         viewHeader.backgroundColor = RGB(242, 242, 242);
@@ -2474,13 +2474,11 @@ if(tag0 >= 0)
             lblStatus = (UILabel *)[cell viewWithTag:5];
         
         }
-#if defined(LempMobile) || defined(LempMobileNowon)
+
         
-        roundingView.hidden = YES;
-        
-#else
         roundingView.hidden = NO;
-#endif
+
+        
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -2674,13 +2672,10 @@ if(tag0 >= 0)
             outButton = (UIButton *)[cell viewWithTag:41];
 #endif
         }
-#if defined(LempMobile) || defined(LempMobileNowon)
         
-        roundingView.hidden = YES;
-        
-#else
         roundingView.hidden = NO;
-#endif
+
+        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         NSDictionary *dic = myList[indexPath.row];
@@ -2851,13 +2846,10 @@ if(tag0 >= 0)
             invite = (UIButton *)[cell viewWithTag:4];
             
         }
-#if defined(LempMobile) || defined(LempMobileNowon)
         
-        roundingView.hidden = YES;
-        
-#else
         roundingView.hidden = NO;
-#endif
+
+        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         NSDictionary *dic = myList[indexPath.row];
@@ -2979,13 +2971,9 @@ if(tag0 >= 0)
             lblStatus = (UILabel *)[cell viewWithTag:9];
             roundingView = (UIImageView *)[cell viewWithTag:21];
         }
-#if defined(LempMobile) || defined(LempMobileNowon)
         
-        roundingView.hidden = YES;
-        
-#else
         roundingView.hidden = NO;
-#endif
+
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         if([myList count]>0){
@@ -3130,13 +3118,9 @@ if(tag0 >= 0)
             [profileView addSubview:roundingView];
             roundingView.tag = 21;
 //            [roundingView release];
-#if defined(LempMobile) || defined(LempMobileNowon)
 
-            roundingView.hidden = YES;
-            
-#else
             roundingView.hidden = NO;
-#endif
+
             
             
         }
@@ -3695,13 +3679,9 @@ if(tag0 >= 0)
             roundingView = (UIImageView *)[cell viewWithTag:21];
             isMaster = (UIImageView *)[cell viewWithTag:6];
         }
-#if defined(LempMobile) || defined(LempMobileNowon)
                 
-                roundingView.hidden = YES;
-                
-#else
                 roundingView.hidden = NO;
-#endif
+
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         if([myList[indexPath.section]count]>0){
@@ -3994,13 +3974,9 @@ if(tag0 >= 0)
             roundingView = (UIImageView *)[cell viewWithTag:21];
             isMaster = (UIImageView *)[cell viewWithTag:6];
         }
-#if defined(LempMobile) || defined(LempMobileNowon)
         
-        roundingView.hidden = YES;
-        
-#else
         roundingView.hidden = NO;
-#endif
+
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         NSLog(@"mandate mylist %@",myList);
@@ -4203,14 +4179,9 @@ if(tag0 >= 0)
 #endif
             roundingView = (UIImageView *)[cell viewWithTag:21];
         }
-#if defined(LempMobile) || defined(LempMobileNowon)
         
-        roundingView.hidden = YES;
-        
-#else
         roundingView.hidden = NO;
-#endif
-        
+
         NSDictionary *dic = myList[indexPath.row];
         [SharedAppDelegate.root getProfileImageWithURL:dic[@"uniqueid"] ifNil:@"profile_photo.png" view:profileView scale:0];
         
@@ -4408,13 +4379,9 @@ if(tag0 >= 0)
             checkAddView = (UIImageView *)[cell viewWithTag:51];
 #endif
         }
-#if defined(LempMobile) || defined(LempMobileNowon)
         
-        roundingView.hidden = YES;
-        
-#else
         roundingView.hidden = NO;
-#endif
+
         NSDictionary *dic = myList[indexPath.row];
         NSLog(@"dic %@",dic);
         

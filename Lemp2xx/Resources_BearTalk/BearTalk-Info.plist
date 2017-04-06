@@ -66,17 +66,17 @@
 		<true/>
 	</dict>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>BearTalk needs access to Media Library.</string>
+	<string>D-inside needs access to Media Library.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>BearTalk needs access to Camera.</string>
+	<string>D-inside needs access to Camera.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>BearTalk needs access to Contacts.</string>
+	<string>D-inside needs access to Contacts.</string>
 	<key>NSLocationUsageDescription</key>
-	<string>BearTalk needs access to Location.</string>
+	<string>D-inside needs access to Location.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>BearTalk needs access to Microphone.</string>
+	<string>D-inside needs access to Microphone.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>BearTalk needs access to Photo Library.</string>
+	<string>D-inside needs access to Photo Library.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
