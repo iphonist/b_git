@@ -2678,18 +2678,18 @@
         if([dic[@"grade2"]length]>0)
         {
             if([dic[@"team"]length]>0){
-                team.text = [NSString stringWithFormat:@"%@ | %@",dic[@"grade2"],dic[@"team"]];
+                lblPosition.text = [NSString stringWithFormat:@"%@ | %@",dic[@"grade2"],dic[@"team"]];
 #ifdef Batong
-                team.text = [NSString stringWithFormat:@"%@ | %@",dic[@"team"],dic[@"grade2"]];
+                lblPosition.text = [NSString stringWithFormat:@"%@ | %@",dic[@"team"],dic[@"grade2"]];
 #endif
             }
             else
-                team.text = [NSString stringWithFormat:@"%@",dic[@"grade2"]];
+                lblPosition.text = [NSString stringWithFormat:@"%@",dic[@"grade2"]];
         }
         else if([dic[@"team"]length]>0)
-            team.text = [NSString stringWithFormat:@"%@",dic[@"team"]];
+            lblPosition.text = [NSString stringWithFormat:@"%@",dic[@"team"]];
         else{
-            team.text = @"";
+            lblPosition.text = @"";
         }
         
         

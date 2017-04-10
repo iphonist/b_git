@@ -76,6 +76,7 @@
       #define kTabIndexContact 1
       #define kTabIndexMessage 2
       #define kTabIndexMe 3
+      #define kTabIndexContentSocial 4
 
       #define kSubTabIndexHome 0
       #define kSubTabIndexRequest 1

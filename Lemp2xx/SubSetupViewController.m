@@ -3167,7 +3167,7 @@ const char paramDic;
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:myTableIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		[cell.textLabel setFont:[UIFont systemFontOfSize:17.0]];
+		[cell.textLabel setFont:[UIFont systemFontOfSize:20]];
     }
     
     cell.detailTextLabel.text = nil;

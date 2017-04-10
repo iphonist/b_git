@@ -8509,9 +8509,9 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     //                [bound release];
                     if([dic[@"uid"]isEqualToString:[ResourceLoader sharedInstance].myUID] && [dic[@"writeinfotype"]isEqualToString:@"1"]){
                         NSLog(@"dic %@",dic);
-                        UIButton *deleteButton = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width-33,(replyPhotoView.frame.size.height+replyPhotoView.frame.origin.y)/2-16,33,33)];
+                        UIButton *deleteButton = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-33,(replyPhotoView.frame.size.height+replyPhotoView.frame.origin.y)/2-16,33,33)];
                         if(emoticonView.frame.size.height>0){
-                            deleteButton = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width-33,(CGRectGetMaxY(emoticonView.frame))/2-16,33,33)];
+                            deleteButton = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width-33,(CGRectGetMaxY(emoticonView.frame))/2-16,33,33)];
                         }
 
                         [deleteButton setBackgroundImage:[UIImage imageNamed:@"replayedit_btn.png"] forState:UIControlStateNormal];

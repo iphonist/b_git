@@ -3802,6 +3802,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     [operation start];
     
 }
+    
+    
 - (void)modifyGroupWithBearTalk:(NSString *)member modify:(int)type name:(NSString *)name sub:(NSString *)sub number:(NSString *)number con:(UIViewController *)con{// public:(BOOL)publicGroup{
     
    /*

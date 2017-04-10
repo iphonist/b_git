@@ -353,13 +353,13 @@ const char paramNumber;
     myList = [[NSMutableArray alloc]init];
     CGRect tableFrame;
     
-    float viewY = 64;
+  
     
-#ifdef GreenTalkCustomer
-    viewY -= 64;
-#endif
     
 #ifdef BearTalk
+    
+    tableFrame = CGRectMake(0, CGRectGetMaxY(noticeView.frame), self.view.frame.size.width, self.view.frame.size.height - CGRectGetMaxY(noticeView.frame) - VIEWY); // 네비(44px) + 상태바(20px)
+#elif GreenTalkCustomer
     
     tableFrame = CGRectMake(0, CGRectGetMaxY(noticeView.frame), self.view.frame.size.width, self.view.frame.size.height - CGRectGetMaxY(noticeView.frame) - VIEWY); // 네비(44px) + 상태바(20px)
 #else
@@ -379,22 +379,23 @@ const char paramNumber;
     
     
 #if defined(Batong) || defined(BearTalk)
-#elif defined(GreenTalk) || defined(GreenTalkCustomer)
+#elif defined(GreenTalk)
     
     
     if([[SharedAppDelegate readPlist:@"myinfo"][@"userlevel"]intValue] == 50){
         
         
-        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadGreenSetup:) frame:CGRectMake(self.view.frame.size.width - 65, self.view.frame.size.height - viewY - 65 - 65, 52, 52) imageNamedBullet:nil imageNamedNormal:@"button_floating_green.png" imageNamedPressed:nil];
+        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadGreenSetup:) frame:CGRectMake(self.view.frame.size.width - 65, self.view.frame.size.height - VIEWY - 65 - 65 - 49, 52, 52) imageNamedBullet:nil imageNamedNormal:@"button_floating_green.png" imageNamedPressed:nil];
         [self.view addSubview:button];
-        
+        NSLog(@"buttonFrame1 %@",NSStringFromCGRect(button.frame));
         
         UILabel *label = [CustomUIKit labelWithText:NSLocalizedString(@"my_info_nospace", @"my_info_nospace") fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(2, 2, button.frame.size.width - 5, button.frame.size.height - 5) numberOfLines:1 alignText:NSTextAlignmentCenter];
         label.font = [UIFont boldSystemFontOfSize:14];
         [button addSubview:label];
         
-        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadCouponCustomer:) frame:CGRectMake(button.frame.origin.x, self.view.frame.size.height - viewY - 65, 52, 52) imageNamedBullet:nil imageNamedNormal:@"button_floating_blue.png" imageNamedPressed:nil];
+        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadCouponCustomer:) frame:CGRectMake(button.frame.origin.x, self.view.frame.size.height - VIEWY - 65 - 49, 52, 52) imageNamedBullet:nil imageNamedNormal:@"button_floating_blue.png" imageNamedPressed:nil];
         [self.view addSubview:button];
+        NSLog(@"buttonFrame2 %@",NSStringFromCGRect(button.frame));
         
         
         label = [CustomUIKit labelWithText: NSLocalizedString(@"customer_coupon_2line", @"customer_coupon_2line") fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(2, 2, button.frame.size.width - 5, button.frame.size.height - 5) numberOfLines:2 alignText:NSTextAlignmentCenter];
@@ -403,14 +404,26 @@ const char paramNumber;
     }
     
     else{
-        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadGreenSetup:) frame:CGRectMake(self.view.frame.size.width - 65, self.view.frame.size.height - viewY - 65, 52, 52) imageNamedBullet:nil imageNamedNormal:@"button_floating_green.png" imageNamedPressed:nil];
+        button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadGreenSetup:) frame:CGRectMake(self.view.frame.size.width - 65, self.view.frame.size.height - VIEWY - 65 - 49, 52, 52) imageNamedBullet:nil imageNamedNormal:@"button_floating_green.png" imageNamedPressed:nil];
         [self.view addSubview:button];
+        NSLog(@"buttonFrame3 %@",NSStringFromCGRect(button.frame));
         
         
         UILabel *label = [CustomUIKit labelWithText:NSLocalizedString(@"my_info_nospace", @"my_info_nospace") fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(2, 2, button.frame.size.width - 5, button.frame.size.height - 5) numberOfLines:1 alignText:NSTextAlignmentCenter];
         label.font = [UIFont boldSystemFontOfSize:14];
         [button addSubview:label];
     }
+    
+#elif defined(GreenTalkCustomer)
+    
+    
+    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadGreenSetup:) frame:CGRectMake(self.view.frame.size.width - 65, self.view.frame.size.height - 65 - VIEWY, 52, 52) imageNamedBullet:nil imageNamedNormal:@"button_floating_green.png" imageNamedPressed:nil];
+    [self.view addSubview:button];
+    
+    
+    UILabel *label = [CustomUIKit labelWithText:NSLocalizedString(@"my_info_nospace", @"my_info_nospace") fontSize:14 fontColor:[UIColor whiteColor] frame:CGRectMake(2, 2, button.frame.size.width - 5, button.frame.size.height - 5) numberOfLines:1 alignText:NSTextAlignmentCenter];
+    label.font = [UIFont boldSystemFontOfSize:14];
+    [button addSubview:label];
     
 #endif
     

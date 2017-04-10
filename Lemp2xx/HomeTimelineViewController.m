@@ -553,7 +553,7 @@ const char paramIndex;
         
         
 #elif GreenTalk
-        writeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(writePost) frame:CGRectMake(self.view.frame.size.width - 65, self.view.frame.size.height - viewY - self.tabBarController.tabBar.frame.size.height - 65 - 48, 52, 52) imageNamedBullet:nil imageNamedNormal:@"button_floating_green.png" imageNamedPressed:nil];
+        writeButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(writePost) frame:CGRectMake(self.view.frame.size.width - 65, self.view.frame.size.height - VIEWY - self.tabBarController.tabBar.frame.size.height - 65 - 48, 52, 52) imageNamedBullet:nil imageNamedNormal:@"button_floating_green.png" imageNamedPressed:nil];
         [self.view addSubview:writeButton];
         writeButton.hidden = YES;
         
@@ -734,10 +734,10 @@ const char paramIndex;
 
 - (void)setStackIconClosed:(BOOL)closed
 {
-    UIImageView *icon = [[contentView subviews] objectAtIndex:0];
+    UIImageView *aicon = [[contentView subviews] objectAtIndex:0];
     float angle = closed ? 0 : (M_PI * (135) / 180.0);
     [UIView animateWithDuration:0.3 animations:^{
-        [icon.layer setAffineTransform:CGAffineTransformRotate(CGAffineTransformIdentity, angle)];
+        [aicon.layer setAffineTransform:CGAffineTransformRotate(CGAffineTransformIdentity, angle)];
     }];
 }
 
@@ -2672,9 +2672,7 @@ else{
             NSString *content = dataItem.contentDic[@"msg"];
             
             if([dataItem.contentType intValue] != 12){
-                if ([content length] > 500) {
-                    content = [content substringToIndex:500];
-                }
+            
             }
             NSString *where = dataItem.contentDic[@"jlocation"];
             NSDictionary *dic = [where objectFromJSONString];
@@ -2699,6 +2697,35 @@ else{
                 }
                 
                 height += 10; // gap
+                
+                
+                UILabel *contentsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 32, 0)];
+                NSLog(@"contentsLabel %@",NSStringFromCGRect(contentsLabel.frame));
+                NSInteger fontSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"GlobalFontSize"];
+                [contentsLabel setFont:[UIFont systemFontOfSize:fontSize]];
+                contentsLabel.text = content;
+                
+                if(imageString != nil && [imageString length]>0){
+                    
+                    [contentsLabel setNumberOfLines:5];
+                    
+                }
+                else{
+                    [contentsLabel setNumberOfLines:10];
+                    
+                }
+                
+                
+                CGRect realFrame = contentsLabel.frame;
+                
+                realFrame.size.width = [[UIScreen mainScreen] bounds].size.width - 32; //양쪽 패딩 합한 값이 64
+                
+                contentsLabel.frame = realFrame;
+                NSLog(@"contentsLabel %@",NSStringFromCGRect(contentsLabel.frame));
+                
+                [contentsLabel sizeToFit];
+                
+
                 if(imageString != nil && [imageString length]>0)
                 {
                     height += 5; // gap
@@ -2739,16 +2766,15 @@ else{
                     else{
                         
                         
-                        contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*6) lineBreakMode:NSLineBreakByWordWrapping];
                         
-                        CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
                         
-                        if (realSize.height > contentSize.height) {
-                            moreLabelHeight = 17.0;
+                        CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                        
+                        if (contentsLabel.frame.size.height > 0 && realSize.height > contentsLabel.frame.size.height) {
+                            moreLabelHeight = 20;
                         }
+                        height += contentsLabel.frame.size.height + moreLabelHeight;
                         
-                        height += contentSize.height + moreLabelHeight;
-                        NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
                     }
                     
                     
@@ -2757,16 +2783,16 @@ else{
                     
                     if([dataItem.contentType intValue] != 10){
                         
-                        CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
+                        CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.view.frame.size.width - 32, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
                         
-                        CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+                        
+                        CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                         CGFloat moreLabelHeight = 0.0;
-                        if (realSize.height > contentSize.height) {
-                            moreLabelHeight = 17.0;
+                        if (contentsLabel.frame.size.height > 0 && realSize.height > contentsLabel.frame.size.height) {
+                            moreLabelHeight = 20;
                         }
+                        height += contentsLabel.frame.size.height + moreLabelHeight;
                         
-                        height += contentSize.height + moreLabelHeight;
-                        NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
                     }
                     
                 }
@@ -2936,7 +2962,8 @@ else{
 //        NSString *imageString = dataItem.contentDic[@"image"];
         NSString *content = dataItem.content;//contentDic[@"msg"];
         NSLog(@"[content length] %d",[content length]);
-        if([dataItem.categoryname length]>0){
+        NSLog(@"dataItem.categoryname %@",dataItem.categoryname);
+        if(!IS_NULL(dataItem.categoryname) && [dataItem.categoryname length]>0){
             if([content length]>0)
             content = [NSString stringWithFormat:@"[%@]\n\n%@",dataItem.categoryname,content];
             else
@@ -2945,9 +2972,7 @@ else{
         NSLog(@"[content length] %d",[content length]);
         
         if([dataItem.contentType intValue] != 12){
-            if ([content length] > 500) {
-                content = [content substringToIndex:500];
-            }
+          
         }
 //        NSString *where = dataItem.contentDic[@"jlocation"];
 //        NSDictionary *dic = [where objectFromJSONString];
@@ -2979,7 +3004,7 @@ else{
             contentsLabel.text = content;
             
             if(!IS_NULL(dataItem.imageArray) && [dataItem.imageArray count]>0){
-               if([dataItem.categoryname length]>0){
+               if(!IS_NULL(dataItem.categoryname) && [dataItem.categoryname length]>0){
                        if([content length]>0){
                         [contentsLabel setNumberOfLines:7];
                     }
@@ -2994,7 +3019,7 @@ else{
                 }
             }
             else{
-                if([dataItem.categoryname length]>0){
+                if(!IS_NULL(dataItem.categoryname) && [dataItem.categoryname length]>0){
                     if([content length]>0){
                         [contentsLabel setNumberOfLines:12];
                     }
@@ -3031,24 +3056,20 @@ else{
                     height += 434-35;
                 else
                     height += 137;
-                //                else
-                //                    height += (imgCount+1)/2*75;
                 
                 NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
                 paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
                 NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
-                CGSize contentSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, fontSize*6) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                 
-           //     CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.view.frame.size.width - 32 - 20, fontSize*6) lineBreakMode:NSLineBreakByWordWrapping];
-                  CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-           //   CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+                  CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                
                 CGFloat moreLabelHeight = 0.0;
-                if (realSize.height > contentsLabel.frame.size.height) {
-                    moreLabelHeight = 17.0;
+                if (contentsLabel.frame.size.height > 0 && realSize.height > contentsLabel.frame.size.height) {
+                    moreLabelHeight = 20;
                 }
                 
                 height += contentsLabel.frame.size.height + moreLabelHeight;
-                NSLog(@"content %@ contentSize.height %f, %f",content,contentSize.height,contentsLabel.frame.size.height);
+                
                 
             }
             else{
@@ -3080,19 +3101,14 @@ else{
                     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
                     paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
                     NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
-                    contentSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-                
                     
-           //         contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.view.frame.size.width - 32 - 20, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
+                    CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                     
-                    CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-               //     CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.view.frame.size.width - 32 - 20, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
-                    
-                    if (realSize.height > contentsLabel.frame.size.height) {
-                        moreLabelHeight = 17.0;
+                    if (contentsLabel.frame.size.height > 0 && realSize.height > contentsLabel.frame.size.height) {
+                        moreLabelHeight = 20;
                     }
                     height += contentsLabel.frame.size.height + moreLabelHeight;
-                    NSLog(@"content %@ contentSize.height %f, %f",content,contentSize.height,contentsLabel.frame.size.height);
+                    
                 }
                 
             }
@@ -3147,9 +3163,7 @@ else{
     NSString *content = dataItem.contentDic[@"msg"];
     
     if([dataItem.contentType intValue] != 12){
-        if ([content length] > 500) {
-            content = [content substringToIndex:500];
-        }
+       
     }
     NSString *where = dataItem.contentDic[@"jlocation"];
     NSDictionary *dic = [where objectFromJSONString];
@@ -3165,8 +3179,9 @@ else{
     }
     else
     {
+        NSLog(@"height4 %f",height);
         if([dataItem.writeinfoType intValue]==0){
-            height += 15;
+            height += 10;
         }
         else{
             height += 15+40; // gap + defaultview
@@ -3175,33 +3190,67 @@ else{
         
         
         height += 10; // gap
+        if([dataItem.type intValue] == 7){
+            // only image, good
+            height -= 10;
+        }
+        NSLog(@"height3 %f",height);
+        
+        UILabel *contentsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 32, 0)];
+        NSLog(@"test_contentsLabel %@",NSStringFromCGRect(contentsLabel.frame));
+        NSInteger fontSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"GlobalFontSize"];
+        [contentsLabel setFont:[UIFont systemFontOfSize:fontSize]];
+        contentsLabel.text = content;
+        
+        
+        if(imageString != nil && [imageString length]>0){
+            
+            [contentsLabel setNumberOfLines:5];
+            
+        }
+        else{
+            [contentsLabel setNumberOfLines:10];
+            
+        }
+        
+        
+        CGRect realFrame = contentsLabel.frame;
+        
+        realFrame.size.width = self.view.frame.size.width - 32; //양쪽 패딩 합한 값이 64
+        
+        contentsLabel.frame = realFrame;
+        NSLog(@"contentsLabel.text %@",contentsLabel.text);
+        
+        NSLog(@"test_contentsLabel %@",NSStringFromCGRect(contentsLabel.frame));
+        [contentsLabel sizeToFit];
+        NSLog(@"test_contentsLabel %@",NSStringFromCGRect(contentsLabel.frame));
+        
+
+        
         if(imageString != nil && [imageString length]>0)
         {
+            NSLog(@"height2 %f",height);
             height += 5; // gap
             if([dataItem.contentType intValue]==10)
-                height += 434-35;
+                height += 434;
             else
                 height += 137;
             //                else
             //                    height += (imgCount+1)/2*75;
             
+            NSLog(@"111height %f",height);
             NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
             paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
             NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
-            CGSize contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*6) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-            
-            CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-
-//            CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*6) lineBreakMode:NSLineBreakByWordWrapping];
-            
-  //          CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
+    
+            CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+            NSLog(@"realSize %@",NSStringFromCGSize(realSize));
             CGFloat moreLabelHeight = 0.0;
-            if (realSize.height > contentSize.height) {
-                moreLabelHeight = 17.0;
+            if (contentsLabel.frame.size.height > 0 && realSize.height > contentsLabel.frame.size.height) {
+                moreLabelHeight = 20;
             }
-            
-            height += contentSize.height + moreLabelHeight;
-            NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+            height += contentsLabel.frame.size.height + moreLabelHeight;
+            NSLog(@"1height %f",height);
             
         }
         else{
@@ -3233,36 +3282,41 @@ else{
                 NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
                 paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
                 NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
-                contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                contentSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                 
-                CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-
+                CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                
+                NSLog(@"realSize %@",NSStringFromCGSize(realSize));
                 
                 //contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
                 
                 //CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
                 
-                if (realSize.height > contentSize.height) {
-                    moreLabelHeight = 17.0;
+                if (contentsLabel.frame.size.height > 0 && realSize.height > contentsLabel.frame.size.height) {
+                    moreLabelHeight = 20;
                 }
-                height += contentSize.height + moreLabelHeight;
-                NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+                height += contentsLabel.frame.size.height + moreLabelHeight;
+                
             }
             
         }
         height += 10; // contentslabel gap
         
+        NSLog(@"height6 %f",height);
         if(pollDic != nil){
             height += 78;
         }
+        NSLog(@"height8 %f",height);
         if([fileArray count]>0){
             height += 78; // gap+
         }
+        NSLog(@"height0 %f",height);
         if(dic[@"text"] != nil && [dic[@"text"] length]>0)
         {
             height += 22; // location
         }
         
+        NSLog(@"height11 %f",height);
         
         
         
@@ -3274,6 +3328,7 @@ else{
             
             
         }
+        NSLog(@"height12 %f",height);
     }
     
     
@@ -3282,7 +3337,8 @@ else{
     if ([timeLineCells count] == 1 && height < 80) {
         height = 80;
     }
-    
+        
+        NSLog(@"height13 %f",height);
     height += 10; // gap
 
     
@@ -3306,9 +3362,7 @@ else{
         
                 
                             if([dataItem.contentType intValue] != 12){
-                                    if ([content length] > 500) {
-                                            content = [content substringToIndex:500];
-                                        }
+                                   
                                 }
                             NSString *where = dataItem.contentDic[@"jlocation"];
                             NSDictionary *dic = [where objectFromJSONString];
@@ -3318,6 +3372,33 @@ else{
                             NSArray *fileArray = dataItem.fileArray;
         
         
+        UILabel *contentsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width - 32, 0)];
+        NSLog(@"contentsLabel %@",NSStringFromCGRect(contentsLabel.frame));
+        NSInteger fontSize = [[NSUserDefaults standardUserDefaults] integerForKey:@"GlobalFontSize"];
+        [contentsLabel setFont:[UIFont systemFontOfSize:fontSize]];
+        contentsLabel.text = content;
+        
+        if(imageString != nil && [imageString length]>0){
+            
+            [contentsLabel setNumberOfLines:5];
+            
+        }
+        else{
+            [contentsLabel setNumberOfLines:10];
+            
+        }
+        
+        
+        CGRect realFrame = contentsLabel.frame;
+        
+        realFrame.size.width = [[UIScreen mainScreen] bounds].size.width - 32; //양쪽 패딩 합한 값이 64
+        
+        contentsLabel.frame = realFrame;
+        NSLog(@"contentsLabel %@",NSStringFromCGRect(contentsLabel.frame));
+        
+        [contentsLabel sizeToFit];
+        
+
                                 if([dataItem.contentType intValue]>17 || [dataItem.type intValue]>7 || ([dataItem.writeinfoType intValue]>4 && [dataItem.writeinfoType intValue]!=10)){
                                         height += 15+40; // gap + defaultview
                                         height += 10 + 25; // gap 업그레이드가 필요합니다.
@@ -3370,21 +3451,20 @@ else{
                                                             NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
                                                             paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
                                                             NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
-                                                            contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*6) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                                                            contentSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32, fontSize*6) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                                                             
-                                                            CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                                                            CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
 
                                                             
                                                            //     contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*6) lineBreakMode:NSLineBreakByWordWrapping];
                                         
                                   //      CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
                                         
-                                        if (realSize.height > contentSize.height) {
-                                            moreLabelHeight = 17.0;
+                                        if (contentsLabel.frame.size.height > 0 && realSize.height > contentsLabel.frame.size.height) {
+                                            moreLabelHeight = 20;
                                         }
-                                        
-                                        height += contentSize.height + moreLabelHeight;
-                                        NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
+                                        height += contentsLabel.frame.size.height + moreLabelHeight;
+                                                            
                                     }
                                     
                                     
@@ -3397,21 +3477,19 @@ else{
                                     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
                                     paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
                                     NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
-                                  CGSize  contentSize = [content boundingRectWithSize:CGSizeMake(270, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                                     
-                                    CGSize realSize = [content boundingRectWithSize:CGSizeMake(270, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                                    CGSize realSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
 
                                     
                                    // CGSize contentSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
                                     
                                  //   CGSize realSize = [content sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(270, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
                                     CGFloat moreLabelHeight = 0.0;
-                                    if (realSize.height > contentSize.height) {
-                                        moreLabelHeight = 17.0;
+                                    if (contentsLabel.frame.size.height > 0 && realSize.height > contentsLabel.frame.size.height) {
+                                        moreLabelHeight = 20;
                                     }
+                                    height += contentsLabel.frame.size.height + moreLabelHeight;
                                     
-                                    height += contentSize.height + moreLabelHeight;
-                                    NSLog(@"content %@ contentSize.height %f",content,contentSize.height);
                                 }
                                 
                             }
@@ -3495,7 +3573,7 @@ else{
                                                 NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
                                                 paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
                                                 NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
-                                               CGSize contentSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32 - 20, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+                                               CGSize contentSize = [content boundingRectWithSize:CGSizeMake(self.view.frame.size.width - 32, fontSize*11) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                                                 
                                                 CGSize replySize = [replyCon boundingRectWithSize:CGSizeMake(250, fontSize*2) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
                                                 
@@ -5146,7 +5224,7 @@ return height;
     }
     
         NSLog(@"categoryname %@",categoryname);
-        if(categoryname != nil && [categoryname length]>0 && ![categoryname isEqualToString:@"전체"]){
+        if(!IS_NULL(categoryname) && [categoryname length]>0 && ![categoryname isEqualToString:@"전체"]){
             for(NSDictionary *dic in category_data){
                 if([categoryname isEqualToString:dic[@"CATEGORY_NAME"]])
             [parameters setObject:dic[@"CATEGORY_KEY"] forKey:@"category"];
@@ -6842,7 +6920,7 @@ return height;
         cellData.readArray = messagesDic[@"READ_MEMBER"];
         //                    cellData.notice = dic[@"notice"];
         cellData.targetdic = nil;//dic[@"target"];
-            cellData.categoryname = messagesDic[@"CATEGORY"];
+            cellData.categoryname = IS_NULL(messagesDic[@"CATEGORY"])?@"":messagesDic[@"CATEGORY"];
         
         //                    NSDictionary *contentDic = [dic[@"content"][@"msg"]objectFromJSONString];
             cellData.contentDic = nil;//contentDic;

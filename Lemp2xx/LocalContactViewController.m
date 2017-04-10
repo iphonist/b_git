@@ -85,6 +85,15 @@
 //                }
                 [self.view addSubview:search];
                 
+                if(checkNumberArray){
+                    //            [checkNumberArray release];
+                    checkNumberArray = nil;
+                }
+                
+                checkNumberArray = [[NSMutableArray alloc]init];
+        
+                
+                
             }
             else if(self.view.tag == kSendContact){
                 self.title = @"연락처";
@@ -438,14 +447,8 @@
     }
     }
     else if(self.view.tag == kRequest){
-        
-        if(checkNumberArray){
-//            [checkNumberArray release];
-            checkNumberArray = nil;
-        }
-        
-        checkNumberArray = [[NSMutableArray alloc]init];
-        
+        NSLog(@"Request");
+     
         for(NSDictionary *dic in contactList){
             NSString *compareNumber = [SharedAppDelegate.root getPureNumbers:dic[@"cellphone"]];
             for(int i = 0; i < [phoneNumberList count]; i++){
@@ -781,7 +784,7 @@
     NSLog(@"check %@",check);
     
     BOOL exist = NO;
-    
+    NSLog(@"copyList %@",copyList);
     for(int j = 0; j<[copyList count];j++)
     {
         if([checkedNumber isEqualToString:copyList[j][@"number"]])
@@ -791,9 +794,10 @@
        
         }
     }
+    NSLog(@"exist1 %@",exist?@"YES":@"NO");
     
     
-    
+    NSLog(@"myList %@",myList);
     for(int j = 0; j<[myList count];j++)
     {
         if([checkedNumber isEqualToString:myList[j][@"number"]])
@@ -803,6 +807,7 @@
     
         }
     }
+    NSLog(@"exist2 %@",exist?@"YES":@"NO");
     
     if(exist){
     if([check isEqualToString:@"1"]){
@@ -1362,15 +1367,17 @@
     
     NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/auth/pulmuone_invite.lemp",[SharedAppDelegate readPlist:@"was"]];
     NSURL *baseUrl = [NSURL URLWithString:urlString];
-    
+    NSLog(@"baseUrl %@",baseUrl);
     
     AFHTTPRequestOperationManager *client = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:baseUrl];
     client.responseSerializer = [AFHTTPResponseSerializer serializer];
     
+    NSLog(@"client %@",client);
 
     
 //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:[NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]]]];
-    
+    NSLog(@"check %@",checkNumberArray);
+    NSLog(@"SharedAppDelegate.root.home.groupnum %@",SharedAppDelegate.root.home.groupnum);
     NSDictionary *param = @{    @"cellphone" : checkNumberArray,
                                  @"uid" : [ResourceLoader sharedInstance].myUID,
                                  @"sessionkey" : [ResourceLoader sharedInstance].mySessionkey,

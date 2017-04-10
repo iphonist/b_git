@@ -800,6 +800,7 @@
     
     favButton.frame = CGRectMake(self.contentView.frame.size.width - 32-36, 0, 36, 36);
     bottomRoundingView.frame = CGRectMake(5, 5, 310 ,CGRectGetMaxY(defaultView.frame));
+    NSLog(@"bottomRoundingView frame %@",NSStringFromCGRect(bottomRoundingView.frame));
     
 #endif
 }
@@ -1113,6 +1114,7 @@
 - (void)setCategoryname:(NSString *)catename{
     [super setCategoryname:catename];
     
+    NSLog(@"self.catename %@",catename);
     if(!IS_NULL(catename) && [catename length]>0){
         for(NSDictionary *dic in SharedAppDelegate.root.home.groupDic[@"SNS_CATEGORY"]){
             if([catename isEqualToString:dic[@"CATEGORY_KEY"]]){
@@ -1349,6 +1351,7 @@
 #endif
     
     NSLog(@"likebutton %@",NSStringFromCGRect(likeLabel.frame));
+    NSLog(@"bottomRoundingView frame %@",NSStringFromCGRect(bottomRoundingView.frame));
 }
 
 
@@ -1508,6 +1511,7 @@
 #endif
     
     NSLog(@"likelabel %@",NSStringFromCGRect(likeLabel.frame));
+    NSLog(@"bottomRoundingView frame %@",NSStringFromCGRect(bottomRoundingView.frame));
     
 }
 
@@ -2058,6 +2062,7 @@
     }
 #endif
     
+    NSLog(@"bottomRoundingView frame %@",NSStringFromCGRect(bottomRoundingView.frame));
     //    if([self.contentType isEqualToString:@"7"]){
     //
     //    }
@@ -2071,9 +2076,9 @@
 
 - (void)setType:(NSString *)ty{
     [super setType:ty];
-    //    NSLog(@"setType %@",ty);
+        NSLog(@"setType %@",ty);
     
-    if([ty intValue]>6 || [self.contentType intValue]>17 || ([self.writeinfoType intValue]>4 && [self.writeinfoType intValue]!=10)){
+    if([ty intValue]>7 || [self.contentType intValue]>17 || ([self.writeinfoType intValue]>4 && [self.writeinfoType intValue]!=10)){
         
 #ifdef BearTalk
         contentsLabel.frame = CGRectMake(0, 0, contentsView.frame.size.width, 25);
@@ -2089,6 +2094,7 @@
         contentsView.frame = CGRectMake(15, CGRectGetMaxY(defaultView.frame)+10, self.contentView.frame.size.width - 32, CGRectGetMaxY(contentsLabel.frame));
         
         bottomRoundingView.frame = CGRectMake(5, 5, 310 ,CGRectGetMaxY(contentsView.frame));
+        NSLog(@"bottomRoundingView frame %@",NSStringFromCGRect(bottomRoundingView.frame));
 #endif
         return;
     }
@@ -2357,7 +2363,7 @@
 #endif
     //		NSLog(@"CONTENT SIZE %i / ENCODE %i",[con length],[con lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
     
-    CGSize contentSize;
+//    CGSize contentSize;
     CGFloat moreLabelHeight = 0.0;
     
     
@@ -2387,17 +2393,14 @@
     }
     else{
         
-        if ([con length] > 500) {
-            con = [con substringToIndex:500];
-            //			NSLog(@"SUBSTR CONTENT SIZE %i / ENCODE %i",[con length],[con lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
-        }
+    
         
         if([ctype intValue] == 10){
             con = @"";
         }
         
 #ifdef BearTalk
-        if([self.categoryname length]>0){
+        if(!IS_NULL(self.categoryname) && [self.categoryname length]>0){
             NSMutableAttributedString *contentwithname;
             NSLog(@"con %@",con);
             if([con length]>0){
@@ -2460,7 +2463,7 @@
         NSDictionary *attributes = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize], NSParagraphStyleAttributeName:paragraphStyle};
 #ifdef BearTalk
         if(!IS_NULL(self.imageArray) && [self.imageArray count]>0){
-            if([self.categoryname length]>0){
+            if(!IS_NULL(self.categoryname) && [self.categoryname length]>0){
                 if([con length]>0){
                     [contentsLabel setNumberOfLines:7];
                 }
@@ -2478,20 +2481,14 @@
                 [contentsLabel setNumberOfLines:5];
 #endif
             
-            contentSize = [con boundingRectWithSize:CGSizeMake(self.contentView.frame.size.width - 32, fontSize*(contentsLabel.numberOfLines+1)) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-            
-
-            
-      //      contentSize = [con sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.contentView.frame.size.width - 32, fontSize*6) lineBreakMode:NSLineBreakByWordWrapping];
-            
-            
+                
         }
         else   {
             
             
 #ifdef BearTalk
             
-                if([self.categoryname length]>0){
+                if(!IS_NULL(self.categoryname) && [self.categoryname length]>0){
                     if([con length]>0){
                         [contentsLabel setNumberOfLines:12];
                     }
@@ -2508,54 +2505,52 @@
                 
                 [contentsLabel setNumberOfLines:10];
 #endif
-                    
-            contentSize = [con boundingRectWithSize:CGSizeMake(self.contentView.frame.size.width - 32, fontSize*(contentsLabel.numberOfLines+1)) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
+            
             
 
-      //      contentSize = [con sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.contentView.frame.size.width - 32, fontSize*11) lineBreakMode:NSLineBreakByWordWrapping];
             
             
         }
+            
+            NSLog(@"contentsLabel frame %@",NSStringFromCGRect(contentsLabel.frame));
             CGRect realFrame = contentsLabel.frame;
             
             realFrame.size.width = [[UIScreen mainScreen] bounds].size.width - 32; //양쪽 패딩 합한 값이 64
             
             contentsLabel.frame = realFrame;
+            NSLog(@"contentsLabel frame %@",NSStringFromCGRect(contentsLabel.frame));
             
             [contentsLabel sizeToFit];
             
             
             
-            NSLog(@"contentsLabel frame %f",contentSize.height);
-            NSLog(@"contentsLabel frame %f",contentsLabel.frame.size.height);
             
-#ifdef BearTalk
+            NSLog(@"contentsLabel frame %@",NSStringFromCGRect(contentsLabel.frame));
+            
+            
             contentsLabel.frame = CGRectMake(0, 0, self.contentView.frame.size.width - 32, contentsLabel.frame.size.height);
-            NSLog(@"contentsLabel frame1 %@",NSStringFromCGRect(contentsLabel.frame));
-#else
-            contentsLabel.frame = CGRectMake(0, 0, self.contentView.frame.size.width - 30, contentsLabel.frame.size.height);
-            NSLog(@"contentsLabel frame2 %@",NSStringFromCGRect(contentsLabel.frame));
+            NSLog(@"test_contentsLabel frame1 %@",NSStringFromCGRect(contentsLabel.frame));
+
             
-#endif
             
             NSLog(@"contentsLabel.text %@",contentsLabel.text);
         
         CGSize realSize = [con boundingRectWithSize:CGSizeMake(self.contentView.frame.size.width - 32, NSIntegerMax) options:NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin attributes:attributes context:nil].size;
-        
+            
+            NSLog(@"realSize.height %f",realSize.height);
 
     //    CGSize realSize = [con sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(self.contentView.frame.size.width - 32, NSIntegerMax) lineBreakMode:NSLineBreakByWordWrapping];
         
         
-        if (realSize.height > contentsLabel.frame.size.height) {
-            UILabel *moreLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0,CGRectGetMaxY(contentsLabel.frame), 80.0, 17.0)];
+        if (contentsLabel.frame.size.height > 0 && realSize.height > contentsLabel.frame.size.height) {
+            UILabel *moreLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0,CGRectGetMaxY(contentsLabel.frame), 80.0, 20)];
             [moreLabel setTextColor:[UIColor colorWithRed:0.217 green:0.346 blue:0.806 alpha:1.000]];
             [moreLabel setBackgroundColor:[UIColor clearColor]];
             [moreLabel setFont:[UIFont systemFontOfSize:15.0]];
-#ifdef BearTalk
-            moreLabel.frame = CGRectMake(0, CGRectGetMaxY(contentsLabel.frame), 80, 20);
+
             [moreLabel setTextColor:RGB(184, 184, 184)];
             [moreLabel setFont:[UIFont systemFontOfSize:13]];
-#endif
+
             [moreLabel setText:@"...더보기"];
             [contentsView addSubview:moreLabel];
             
@@ -2579,7 +2574,7 @@
         
     }
     else{
-        whImageView.frame = CGRectMake(0, CGRectGetMaxY(contentsLabel.frame) + moreLabelHeight+10, 12, 0);
+        whImageView.frame = CGRectMake(0, CGRectGetMaxY(contentsLabel.frame) + moreLabelHeight, 12, 0);
         whLabel.text = @"";
         whLabel.frame = CGRectMake(10+15, whImageView.frame.origin.y, 300-20, 0);
     }
@@ -2598,7 +2593,7 @@
 #endif
             NSLog(@"imgString %@",imgString);
             
-            contentImageView.frame = CGRectMake(0, CGRectGetMaxY(whImageView.frame)+5-35, 310, 434);
+            contentImageView.frame = CGRectMake(0, CGRectGetMaxY(whImageView.frame)-10, 310, 434);
             
             int imgCount;// = (int)[[[imgString objectFromJSONString]objectForKey:@"thumbnail"]count];
             
@@ -2682,7 +2677,7 @@
 #endif
             NSLog(@"imgString %@",imgString);
             
-            contentImageView.frame = CGRectMake(0, CGRectGetMaxY(whImageView.frame)+5, self.contentView.frame.size.width - 32, 137);
+            contentImageView.frame = CGRectMake(0, CGRectGetMaxY(whImageView.frame)+10, self.contentView.frame.size.width - 32, 137);
             
             
             
@@ -2923,7 +2918,7 @@
         pollView.frame = CGRectMake(0, CGRectGetMaxY(contentImageView.frame), self.contentView.frame.size.width - 32, 0);
         
     }
-    
+        NSLog(@"pollview %@",NSStringFromCGRect(pollView.frame));
     
     
     NSArray *fArray = self.fileArray;
@@ -3045,8 +3040,10 @@
         fileView.frame = CGRectMake(0, CGRectGetMaxY(pollView.frame), self.contentView.frame.size.width - 32, 0);
         
     }
-    
-    NSLog(@"contentsLabel %@",contentsLabel);
+        
+        NSLog(@"pollview %@",NSStringFromCGRect(fileView.frame));
+        
+    NSLog(@"defaultView %@",NSStringFromCGRect(defaultView.frame));
     //    NSLog(@"mywebview %@",myWebView);
     
 #ifdef BearTalk
@@ -3055,11 +3052,11 @@
     bgView.frame = CGRectMake(0,0,self.contentView.frame.size.width,CGRectGetMaxY(contentsView.frame));
 #else
     contentsView.frame = CGRectMake(15, CGRectGetMaxY(defaultView.frame)+10, self.contentView.frame.size.width - 32, CGRectGetMaxY(fileView.frame));
-    NSLog(@"contentsView frame %@",NSStringFromCGRect(contentsView.frame));
     
-    bottomRoundingView.frame = CGRectMake(5, 5, 310 ,CGRectGetMaxY(contentsView.frame));
+    bottomRoundingView.frame = CGRectMake(5, 5, 310 ,CGRectGetMaxY(contentsView.frame)+10);
     //    contentsView.backgroundColor = [UIColor grayColor];
 #endif
+        NSLog(@"bottomRoundingView frame %@",NSStringFromCGRect(bottomRoundingView.frame));
 }
 
 

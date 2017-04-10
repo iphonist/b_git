@@ -262,7 +262,7 @@
         switch (indexPath.row) {
 #ifdef Batong
             case 0:
-                cell.textLabel.text = @"공지사항";
+                cell.textLabel.text = NSLocalizedString(@"notice", @"notice");
                 break;
             case 1:
                 cell.textLabel.text = NSLocalizedString(@"my_info", @"my_info");

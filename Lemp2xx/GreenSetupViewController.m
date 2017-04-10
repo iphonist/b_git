@@ -83,12 +83,14 @@ return self;
 //    [btnNavi release];
     
     
-    float buttonHeight = 65.0;
+    float buttonHeight = 65;
+    float buttonWidth = self.view.frame.size.width/3;
     UIButton *myTopView = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0)];
     [self.view addSubview:myTopView];
     
 #ifdef BearTalk
     
+     buttonHeight = self.view.frame.size.width/3;
     setupButton = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadSetup:) frame:CGRectMake(0, 0, 25, 25)
                          imageNamedBullet:nil imageNamedNormal:@"actionbar_btn_setting.png" imageNamedPressed:nil];
     btnNavi = [[UIBarButtonItem alloc]initWithCustomView:setupButton];
@@ -96,7 +98,6 @@ return self;
     [self refreshSetupButton];
     
     
-    buttonHeight = self.view.frame.size.width/3;
  
     myTopView.frame = CGRectMake(0, 0, self.view.frame.size.width, 78);
      [myTopView addTarget:self action:@selector(loadMyInfoSetup:) forControlEvents:UIControlEventTouchUpInside];
@@ -162,13 +163,13 @@ return self;
     buttonView.userInteractionEnabled = YES;
     
 
-    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(goMemo) frame:CGRectMake(0, 0, buttonHeight, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(goMemo) frame:CGRectMake(0, 0, buttonWidth, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
     [buttonView addSubview:button];
     
     button.layer.borderColor = RGB(240,240,240).CGColor;
     button.layer.borderWidth = 0.5f;
     
-    imageview = [[UIImageView alloc]initWithFrame:CGRectMake(buttonHeight/2-40/2, buttonHeight/2-40/2-15, 40, 40)];
+    imageview = [[UIImageView alloc]initWithFrame:CGRectMake(buttonWidth/2-40/2, buttonHeight/2-40/2-15, 40, 40)];
     [button addSubview:imageview];
     imageview.image = [UIImage imageNamed:@"ic_ect_memo.png"];
     
@@ -204,10 +205,10 @@ return self;
     
     buttonView.userInteractionEnabled = YES;
     
-    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadMyInfoSetup:) frame:CGRectMake(0, 0, buttonHeight, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadMyInfoSetup:) frame:CGRectMake(0, 0, buttonWidth, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
     [buttonView addSubview:button];
     
-    imageview = [[UIImageView alloc]initWithFrame:CGRectMake(buttonHeight/2-18, buttonHeight/2-18-10, 36, 36)];
+    imageview = [[UIImageView alloc]initWithFrame:CGRectMake(buttonWidth/2-18, buttonHeight/2-18-10, 36, 36)];
     imageview.image = [UIImage imageNamed:@"button_myinfo_setup_myprofile.png"];
     [button addSubview:imageview];
 
@@ -220,10 +221,10 @@ return self;
 #endif
     
     
-    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:nil frame:CGRectMake(buttonHeight, 0, buttonHeight, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:nil frame:CGRectMake(buttonWidth, 0, buttonWidth, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
     [buttonView addSubview:button];
     
-    imageview = [[UIImageView alloc]initWithFrame:CGRectMake(buttonHeight/2-18, buttonHeight/2-18-10, 36, 36)];
+    imageview = [[UIImageView alloc]initWithFrame:CGRectMake(buttonWidth/2-18, buttonHeight/2-18-10, 36, 36)];
     imageview.image = [UIImage imageNamed:@"button_myinfo_setup_notice.png"];
     [button addSubview:imageview];
 //    [imageview release];
@@ -239,7 +240,7 @@ return self;
     button.layer.borderWidth = 0.5f;
     [button addTarget:self action:@selector(settingBookmark) forControlEvents:UIControlEventTouchUpInside];
     //    buttonView.frame = CGRectInset(buttonView.frame, -1.0f, -1.0f);
-    imageview.frame = CGRectMake(buttonHeight/2-40/2, buttonHeight/2-40/2-15, 40, 40);
+    imageview.frame = CGRectMake(buttonWidth/2-40/2, buttonHeight/2-40/2-15, 40, 40);
     imageview.image = [UIImage imageNamed:@"ic_ect_bookmark.png"];
     label.text = @"북마크";
     label.textColor = RGB(116,127,147);
@@ -249,15 +250,8 @@ return self;
     
 #endif
     
-//    imageview = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(button.frame), 0, 1, buttonView.frame.size.height)];
-//    imageview.image = [UIImage imageNamed:@"button_myinfo_setup_background_vertical.png"];
-//    [buttonView addSubview:imageview];
-////    [imageview release];
-//#ifdef BearTalk
-//    imageview.image = nil;
-//#endif
-
-    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:nil frame:CGRectMake(buttonHeight*2, 0, buttonHeight, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    
+    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:nil frame:CGRectMake(buttonWidth*2, 0, buttonWidth, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
     [buttonView addSubview:button];
     
     imageview = [[UIImageView alloc]initWithFrame:CGRectMake(107/2-18, buttonHeight/2-18-10, 36, 36)];
@@ -275,7 +269,7 @@ return self;
     button.layer.borderWidth = 0.5f;
     [button addTarget:self action:@selector(settingMine) forControlEvents:UIControlEventTouchUpInside];
     //    buttonView.frame = CGRectInset(buttonView.frame, -1.0f, -1.0f);
-    imageview.frame = CGRectMake(buttonHeight/2-40/2, buttonHeight/2-40/2-15, 40, 40);
+    imageview.frame = CGRectMake(buttonWidth/2-40/2, buttonHeight/2-40/2-15, 40, 40);
     
     imageview.image = [UIImage imageNamed:@"ic_ect_writing.png"];
     label.text = @"내가 쓴 글";
@@ -305,10 +299,10 @@ return self;
     [buttonView addSubview:imageview];
 //    [imageview release];
     
-    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadMyGPoint:) frame:CGRectMake(0, buttonHeight, buttonHeight, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadMyGPoint:) frame:CGRectMake(0, buttonHeight, buttonWidth, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
     [buttonView addSubview:button];
     
-    imageview = [[UIImageView alloc]initWithFrame:CGRectMake(buttonHeight/2-18, buttonHeight/2-18-10, 36, 36)];
+    imageview = [[UIImageView alloc]initWithFrame:CGRectMake(buttonWidth/2-18, buttonHeight/2-18-10, 36, 36)];
     imageview.image = [UIImage imageNamed:@"button_myinfo_setup_mygpoint.png"];
     [button addSubview:imageview];
 //    [imageview release];
@@ -320,10 +314,10 @@ return self;
     
     
     
-    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadMyCoupon:) frame:CGRectMake(buttonHeight+1, buttonHeight, buttonHeight, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
+    button = [CustomUIKit buttonWithTitle:nil fontSize:0 fontColor:nil target:self selector:@selector(loadMyCoupon:) frame:CGRectMake(buttonWidth+1, buttonHeight, buttonWidth, buttonHeight) imageNamedBullet:nil imageNamedNormal:nil imageNamedPressed:nil];
     [buttonView addSubview:button];
     
-    imageview = [[UIImageView alloc]initWithFrame:CGRectMake(buttonHeight/2-18, buttonHeight/2-18-10, 36, 36)];
+    imageview = [[UIImageView alloc]initWithFrame:CGRectMake(buttonWidth/2-18, buttonHeight/2-18-10, 36, 36)];
     imageview.image = [UIImage imageNamed:@"button_myinfo_setup_mycoupon.png"];
     [button addSubview:imageview];
 //    [imageview release];
@@ -781,7 +775,7 @@ return self;
     int page = 2;
     scrollView = [[UIScrollView alloc]init];
     scrollView.backgroundColor = [UIColor whiteColor];
-    scrollView.frame = CGRectMake(0, self.view.frame.size.height - sizeHeight, self.view.frame.size.width, sizeHeight);
+    scrollView.frame = CGRectMake(0, self.view.frame.size.height - sizeHeight - VIEWY, self.view.frame.size.width, sizeHeight);
     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width*page, scrollView.frame.size.height);
     scrollView.pagingEnabled = YES;
     scrollView.delegate = self;
