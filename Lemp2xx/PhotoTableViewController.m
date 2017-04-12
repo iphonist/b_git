@@ -948,7 +948,7 @@
     cachefilePath = [documentsPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@",aDic[@"filename"][0]]];
 #endif
         
-    
+    NSLog(@"cachefilePath %@",cachefilePath);
     
 
     downloadProgress = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
@@ -979,9 +979,14 @@
         //        NSLog(@"fileexist %@",cachefilePath);
         //
         //        [self.navigationItem.rightBarButtonItem setEnabled:YES];
-        UIImage *img = [UIImage imageWithContentsOfFile:cachefilePath];
-        [view displayImage:img];
         NSData *data = [[NSFileManager defaultManager] contentsAtPath:cachefilePath];
+#ifdef BearTalk
+        
+        UIImage *img = [UIImage sd_animatedGIFWithData:data];
+#else
+        UIImage *img = [UIImage imageWithContentsOfFile:cachefilePath];
+#endif
+        [view displayImage:img];
         willSaveImage = data;
         //        NSLog(@"image %@",img);
         return;

@@ -1066,8 +1066,7 @@
     
     NSLog(@"login %@",root.login);
     NSLog(@"login tag %d",(int)root.login.view.tag);
-    if([self readPlist:@"ipaddress"] == nil || [[self readPlist:@"ipaddress"]length]==0 ||
-	   [[[NSUserDefaults standardUserDefaults] objectForKey:@"ViewType"] isEqualToString:@"Driver"]) // 앱 맨 처음에 일로 들어와서
+    if([self readPlist:@"ipaddress"] == nil || [[self readPlist:@"ipaddress"]length]==0) // 앱 맨 처음에 일로 들어와서
         return;
     
     
@@ -1132,7 +1131,7 @@
 #endif
 	   && root.login == nil)
     {
-        
+        NSLog(@"here_start_origin!!");
             
         dispatch_async(dispatch_get_main_queue(), ^{
             // 로그인 되어있는가?
@@ -1157,6 +1156,7 @@
                     [root.home refreshTimeline];//getTimeline:@"" target:root.home.targetuid type:root.home.category groupnum:root.home.groupnum];
             }
 #else
+            NSLog(@"here_start!!!!!!");
             [root startup];
             [root getPushCount];//:nil];
             [root reloadPersonal];

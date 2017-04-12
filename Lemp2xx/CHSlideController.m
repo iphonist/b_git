@@ -1918,7 +1918,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         }
     }
     //    [tempArray release];
-   NSLog(@"uid %@ searchContactDictionary %@",uid,dic);
+//   NSLog(@"uid %@ searchContactDictionary %@",uid,dic);
     return dic;
     
     

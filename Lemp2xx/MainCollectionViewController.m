@@ -645,6 +645,7 @@ const char paramNumber;
     
     
     NSLog(@"refreshTimeline");
+    
 #ifdef BearTalk
     [self refreshTimelineWithBearTalk];
     return;
@@ -935,10 +936,11 @@ const char paramNumber;
             }
                 
             else{
-                
+                  if(![dic[@"groupnumber"]isEqualToString:@"10301"]){
                 NSLog(@"group_contents");
                 NSLog(@"myList[i] %@",dic);
                 [contentsArray addObject:dic];
+                  }
             }
             
         }
@@ -1042,7 +1044,13 @@ const char paramNumber;
             
             if([dic[@"SNS_TYPE"]isEqualToString:@"C"] || [dic[@"SNS_TYPE"]isEqualToString:@"P"]){
               
+                if([dic[@"SNS_TYPE"]isEqualToString:@"C"]){
+                    
+                    [contentsArray insertObject:newdic atIndex:0];
+                }
+                else{
                 [contentsArray addObject:newdic];
+                }
                 //                [SharedAppDelegate writeToPlist:@"comname" value:dic[@"groupname"]];
             }
             else{

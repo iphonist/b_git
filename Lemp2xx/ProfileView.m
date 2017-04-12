@@ -3431,11 +3431,11 @@
     
     if([leave_type length]>0){
         NSLog(@"leave_type %@",leave_type);
-        if([leave_type isEqualToString:@"출산"])
+        if([leave_type hasPrefix:@"출산"])
             holidayView.image = [CustomUIKit customImageNamed:@"imageview_profile_popup_baby.png"];
-        else if([leave_type isEqualToString:@"육아"])
+        else if([leave_type hasPrefix:@"육아"])
             holidayView.image = [CustomUIKit customImageNamed:@"imageview_profile_popup_feed.png"];
-        else if([leave_type isEqualToString:@"개인질병"])
+        else if([leave_type hasPrefix:@"질병"])
             holidayView.image = [CustomUIKit customImageNamed:@"imageview_profile_popup_disease.png"];
         else
             holidayView.image = [CustomUIKit customImageNamed:@"imageview_profile_popup_etc.png"];

@@ -4635,7 +4635,7 @@ return height;
     if([self.groupnum isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"] || [self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
         
         if([self.groupnum  isEqualToString:@"64f04dc6-db7f-42fc-864d-65505503162b"]){
-            [dailyItem setAnothertitle:@"의뢰"];
+            [dailyItem setAnothertitle:@"의뢰현황"];
             [items addObject:dailyItem];
         }
         else if([self.groupnum  isEqualToString:@"b6c7211e-c62e-46ae-a2db-68d43ac53eb8"]){
