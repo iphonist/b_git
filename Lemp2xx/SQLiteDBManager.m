@@ -623,7 +623,7 @@
                     NSString *Team = (!IS_NULL(forDic[@"DEPT_NAME"]))?forDic[@"DEPT_NAME"]:@"";//[[ResourceLoader sharedInstance] searchCode:Department];
                     NSString *Uniqueid = (!IS_NULL(forDic[@"UID"]))?forDic[@"UID"]:@"";
                     NSString *ProfileImage = (!IS_NULL(forDic[@"MY_AVATAR"]))?forDic[@"MY_AVATAR"]:@"";
-                    NSString *Available = @"1";//forDic[@"available"];
+                    NSString *Available = (!IS_NULL(forDic[@"INSTALL_YN"])&&[forDic[@"INSTALL_YN"]isEqualToString:@"Y"])?@"1":@"0";//forDic[@"available"];
 //                    if([Available length] < 1 || Available == nil)
 //                        Available = @"0";
                     
@@ -800,7 +800,8 @@
             NSString *Team = (!IS_NULL(dic[@"DEPT_NAME"]))?dic[@"DEPT_NAME"]:@"";//[[ResourceLoader sharedInstance] searchCode:Department];
             NSString *Uniqueid = (!IS_NULL(dic[@"UID"]))?dic[@"UID"]:@"";
             NSString *ProfileImage = (!IS_NULL(dic[@"MY_AVATAR"]))?dic[@"MY_AVATAR"]:@"";
-            NSString *Available = @"1";//dic[@"available"];
+            
+            NSString *Available = (!IS_NULL(dic[@"INSTALL_YN"])&&[dic[@"INSTALL_YN"]isEqualToString:@"Y"])?@"1":@"0";//forDic[@"available"];
             //                    if([Available length] < 1 || Available == nil)
             //                        Available = @"0";
             
@@ -1232,9 +1233,8 @@
         NSString *Team = (!IS_NULL(dic[@"DEPT_NAME"]))?dic[@"DEPT_NAME"]:@"";//[[ResourceLoader sharedInstance] searchCode:Department];
         NSString *Uniqueid = (!IS_NULL(dic[@"UID"]))?dic[@"UID"]:@"";
         NSString *ProfileImage = (!IS_NULL(dic[@"MY_AVATAR"]))?dic[@"MY_AVATAR"]:@"";
-        NSString *Available = @"1";//dic[@"available"];
-        //                    if([Available length] < 1 || Available == nil)
-        //                        Available = @"0";
+        
+        NSString *Available = (!IS_NULL(dic[@"INSTALL_YN"])&&[dic[@"INSTALL_YN"]isEqualToString:@"Y"])?@"1":@"0";//forDic[@"available"];
         
         NSString *Favorite = @"0";
         NSString *Grade2 = (!IS_NULL(dic[@"POS_NAME"]))?dic[@"POS_NAME"]:@"";
@@ -1376,9 +1376,8 @@
                 NSString *Position = (!IS_NULL(dic[@"DUTY_NAME"]))?dic[@"DUTY_NAME"]:@"";
                 NSString *ProfileImage = (!IS_NULL(dic[@"MY_AVATAR"]))?dic[@"MY_AVATAR"]:@"";
                 
-                NSString *Available = @"1";//dic[@"available"];
-                //                    if([Available length] < 1 || Available == nil)
-                //                        Available = @"0";
+                
+                NSString *Available = (!IS_NULL(dic[@"INSTALL_YN"])&&[dic[@"INSTALL_YN"]isEqualToString:@"Y"])?@"1":@"0";//forDic[@"available"];
                 
                 NSString *Grade2 = (!IS_NULL(dic[@"POS_NAME"]))?dic[@"POS_NAME"]:@"";
                 Grade2 = [Grade2 stringByAppendingFormat:@"/%@",Position];

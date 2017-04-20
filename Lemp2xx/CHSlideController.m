@@ -2687,10 +2687,10 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         NSString *number = [dic[@"cellphone"]length]>0?dic[@"cellphone"]:@"";
         
 #else
-        NSString *number = [[sender titleLabel]text];
+        NSString *number = [sender titleForState:UIControlStateHighlighted];;
 #endif
         
-        
+        NSLog(@"invite_number %@",number);
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"설치요청"
                                                                        message:@"멤버의 휴대폰으로 설치요청 SMS를\n발송하시겠습니까?"
                                                                 preferredStyle:UIAlertControllerStyleAlert];
@@ -9259,7 +9259,13 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     //    NSString *urlString = [NSString stringWithFormat:@"https://%@",[SharedAppDelegate readPlist:@"was"]];
     //    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:urlString]];
     
-    NSString *urlString = [NSString stringWithFormat:@"https://%@/lemp/external/common/sendsms.lemp",[SharedAppDelegate readPlist:@"was"]];
+    
+    NSString *urlString;
+#ifdef BearTalk
+    urlString = [NSString stringWithFormat:@"%@/api/sendsms",BearTalkBaseUrl];
+#else
+    urlString = [NSString stringWithFormat:@"https://%@/lemp/external/common/sendsms.lemp",[SharedAppDelegate readPlist:@"was"]];
+#endif
     NSURL *baseUrl = [NSURL URLWithString:urlString];
     
     
@@ -9268,11 +9274,23 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     
     
+    NSDictionary *parameters;
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                                member,@"member",
-                                [ResourceLoader sharedInstance].myUID,@"uid",
-                                [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",nil];
+#ifdef BearTalk
+    NSString *amember = member;
+    if([amember hasSuffix:@","])
+        amember = [amember substringToIndex:[amember length]-1];
+    
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                amember,@"smsuid",
+                                [ResourceLoader sharedInstance].myUID,@"uid",nil];
+#else
+    
+    parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                  member,@"member",
+                  [ResourceLoader sharedInstance].myUID,@"uid",
+                  [ResourceLoader sharedInstance].mySessionkey,@"sessionkey",nil];
+#endif
     NSLog(@"parameters %@",parameters);
     
     //    NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/lemp/external/common/sendsms.lemp" parameters:parameters];
@@ -9286,6 +9304,24 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         //        NSLog(@"2");
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+#ifdef BearTalk
+        
+        NSDictionary *resultDic = [operation.responseString objectFromJSONString];
+        NSLog(@"resultDic %@",resultDic);
+        NSString *resultcode = [NSString stringWithFormat:@"%@",resultDic[@"result_code"]];
+        if([resultcode isEqualToString:@"200"]){
+            [SVProgressHUD showSuccessWithStatus:@"요청 문자를 보냈습니다."];
+            
+        }
+        else{
+            
+            NSString *msg = [NSString stringWithFormat:@"%@",resultDic[@"result_message"]];
+            
+            [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
+            
+        }
+#else
         //        NSLog(@"[operation.responseString objectFromJSONString] %@",[operation.responseString objectFromJSONString]);
         //        NSLog(@"3");
         NSDictionary *resultDic = [operation.responseString objectFromJSONString][0];
@@ -9303,7 +9339,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
             [CustomUIKit popupSimpleAlertViewOK:nil msg:msg con:self];
         }
         
-        
+#endif
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [SVProgressHUD showErrorWithStatus:@"실패하였습니다.\n나중에 다시 시도해주세요."];
         NSLog(@"FAIL : %@",operation.error);

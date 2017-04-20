@@ -817,7 +817,7 @@
         
         // invite
         inviteButton = [CustomUIKit buttonWithTitle:@"설치요청" fontSize:16 fontColor:RGB(255,255,255) target:self selector:@selector(invite:)
-                                        frame:CGRectMake(37, 0, inviteView.frame.size.width - 37*2, 40)
+                                        frame:CGRectMake(70, 0, inviteView.frame.size.width - 70*2, 40)
                              imageNamedBullet:nil imageNamedNormal:@"" imageNamedPressed:nil];
         [inviteView addSubview:inviteButton];
         inviteButton.tag = kInvite;
@@ -2964,6 +2964,8 @@
         //        inviteButton.tag = kInvite;
         //            [inviteButton setBackgroundImage:[UIImage imageNamed:@"button_profilepopup_invite.png"] forState:UIControlStateNormal];
         
+        [inviteButton setTitle:dic[@"uniqueid"] forState:UIControlStateHighlighted];
+        [inviteButton setTitleColor:[UIColor clearColor] forState:UIControlStateHighlighted];
         myButtonView.hidden = YES;
         buttonView.hidden = YES;
         inviteView.hidden = NO;
