@@ -17,7 +17,7 @@
 		<key>BearTalkDev.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>14</integer>
+			<integer>12</integer>
 		</dict>
 		<key>ETalk.xcscheme</key>
 		<dict>
@@ -33,6 +33,11 @@
 		<dict>
 			<key>orderHint</key>
 			<integer>7</integer>
+		</dict>
+		<key>GreenTalkDev.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>27</integer>
 		</dict>
 		<key>Hicare.xcscheme</key>
 		<dict>
@@ -72,6 +77,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>461304501EB16E7500124C0F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>46778A411DB889D900D9A14F</key>
 		<dict>
 			<key>primary</key>

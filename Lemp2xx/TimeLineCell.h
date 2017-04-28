@@ -125,6 +125,7 @@
     NSString *favorite;
     NSString *sub_category;
     NSString *categoryname;
+    NSDictionary *scrapeDic;
 }
 
 @property (retain) NSString *sub_category;
@@ -172,6 +173,7 @@
 @property (retain) NSArray *favoriteArray;
 @property (retain) NSString *favorite;
 @property (retain) NSString *categoryname;
+@property (retain) NSDictionary *scrapeDic;
 
 
 - (void)setSearchText:(NSString *)text;

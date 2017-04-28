@@ -1109,6 +1109,15 @@
     
 }
 
+- (void)setScrapeDic:(NSDictionary *)scrapedic
+{
+    [super setScrapeDic:scrapedic];
+    
+    NSLog(@"self.scrapedic %@",self.scrapeDic);
+    
+}
+
+
 
 
 - (void)setCategoryname:(NSString *)catename{

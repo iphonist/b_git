@@ -355,6 +355,7 @@
                     NSLog(@"decoded %@",decoded);
                     cellData.content = decoded;
                     cellData.imageArray = dic[@"IMAGES"];
+                    cellData.scrapeDic = dic[@"SCRAPE"];
                     NSLog(@"imageArray %@",cellData.imageArray);
                     cellData.pollDic = dic[@"POLL"];//[@"poll_data"] objectFromJSONString];
                     NSLog(@"pollDic %@",cellData.pollDic);

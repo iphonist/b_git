@@ -150,7 +150,7 @@
 #elif BearTalkDev
 #define NSLog(s, ...) NSLog(@"<%@(%d):%s> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__])
 #else // #####
-#define NSLog(s, ...) NSLog(@"<%@(%d):%s> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__])
+#define NSLog(s, ...)// NSLog(@"<%@(%d):%s> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, __FUNCTION__, [NSString stringWithFormat:(s), ##__VA_ARGS__])
 #endif
 
 ////////////// Build Target별 설정 //////////////
@@ -207,6 +207,9 @@
 #elif Batong
 #define applicationName @"ecmd"
 #define updateLink @"https://batong.ecmd.co.kr/ota/"
+#elif GreenTalkDev
+#define applicationName @"greentalkdev"
+#define updateLink @""
 #elif GreenTalk
 #define applicationName @"greentalk"
 #define updateLink @"itms-apps://itunes.apple.com/kr/app/id1024351135"

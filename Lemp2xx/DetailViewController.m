@@ -3840,6 +3840,12 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 
                 NSArray *imageArray;
 #ifdef BearTalk
+                
+                if(!IS_NULL(contentsData.scrapeDic)){
+                    
+                    height += 100 + 44;
+                }
+                
                 imageArray = contentsData.imageArray;
                 NSLog(@"imageArray %@",imageArray);
                 if(!IS_NULL(imageArray) && [imageArray count]>0)
@@ -5203,6 +5209,8 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 //        [contentImageView release];
         
         
+        UIImageView *scrapeView = [[UIImageView alloc]init];
+        [contentsView addSubview:scrapeView];
         
         UIImageView *pollView = [[UIImageView alloc]initWithFrame:CGRectMake(3, contentImageView.frame.origin.y + contentImageView.frame.size.height + 5, 302, 0)];
         pollView.image = [UIImage imageNamed:@"vote_deepviewbg.png"];
@@ -6277,8 +6285,81 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                 }
                 modifyImageArray = [[NSMutableArray alloc]init];
                 NSArray *imageArray;
-                
+                scrapeView.frame = whImageView.frame;
 #ifdef BearTalk
+                if(!IS_NULL(contentsData.scrapeDic)){
+                    
+                    NSLog(@"contentsData.scrapeDic %@",contentsData.scrapeDic);
+                    scrapeView.frame = CGRectMake(16, scrapeView.frame.origin.y+10, contentsView.frame.size.width-32, 100+44);
+                    NSLog(@"scrpaeView %@",NSStringFromCGRect(scrapeView.frame));
+                    scrapeView.image = nil;
+                    scrapeView.clipsToBounds = YES;
+                    scrapeView.layer.borderWidth = 1.0;
+                    scrapeView.layer.cornerRadius = 3.0;
+                    scrapeView.layer.borderColor = [RGB(234, 234, 234) CGColor];
+                    scrapeView.backgroundColor = [UIColor whiteColor];
+                    
+                    UIImageView *inscrapeView = [[UIImageView alloc]init];
+                    inscrapeView.frame = CGRectMake(0,0,scrapeView.frame.size.width, 100);
+                    inscrapeView.contentMode = UIViewContentModeScaleAspectFill;
+                                                    [inscrapeView setClipsToBounds:YES];
+                    [scrapeView addSubview:inscrapeView];
+                    NSURL *scrapeUrl = nil;
+                    
+                    if(!IS_NULL(contentsData.scrapeDic[@"ogImage"]) && !IS_NULL(contentsData.scrapeDic[@"ogImage"][@"url"])){
+                        scrapeUrl = [NSURL URLWithString:contentsData.scrapeDic[@"ogImage"][@"url"]];
+                        NSLog(@"scrapeUrl %@",scrapeUrl);
+                    if (scrapeUrl) {
+                        [inscrapeView sd_setImageWithPreviousCachedImageWithURL:scrapeUrl
+                                                                andPlaceholderImage:nil
+                                                                            options:SDWebImageRetryFailed|SDWebImageLowPriority|SDWebImageCacheMemoryOnly
+                                                                           progress:^(NSInteger a, NSInteger b)  {
+                                                                           } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *aUrl) {
+                                                                               NSLog(@"fail %@",[error localizedDescription]);
+                                                                               if (image != nil) {
+                                                                                       [inscrapeView setImage:image];
+                                                                                  
+                                                                               }
+                                                                               
+                                                                               [HTTPExceptionHandler handlingByError:error];
+                                                                               
+                                                                           }];
+                    }
+//                        dispatch_async(dispatch_get_global_queue(0,0), ^{
+//                            NSData * data = [[NSData alloc] initWithContentsOfURL:scrapeUrl];
+//                            if ( data == nil )
+//                                return;
+//                            dispatch_async(dispatch_get_main_queue(), ^{
+//                                [inscrapeView setImage:[UIImage imageWithData: data]];
+//                                inscrapeView.contentMode = UIViewContentModeScaleAspectFill;
+//                                [inscrapeView setClipsToBounds:YES];
+//                            });
+//                        });
+                    }
+                    
+                    
+                    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 100, scrapeView.frame.size.width, 1)];
+                    lineView.backgroundColor = RGB(234, 234, 234);
+                    [scrapeView addSubview:lineView];
+                    
+                    UILabel *scrapeTitleLabel = [[UILabel alloc]init];
+                    scrapeTitleLabel.frame = CGRectMake(10,100,scrapeView.frame.size.width-20, 44);
+                    scrapeTitleLabel.text = IS_NULL(contentsData.scrapeDic[@"ogTitle"])?@"":contentsData.scrapeDic[@"ogTitle"];
+                    [scrapeTitleLabel setFont:[UIFont systemFontOfSize:12]];
+                    scrapeTitleLabel.textColor = RGB(54, 54, 55);
+                    [scrapeView addSubview:scrapeTitleLabel];
+                    
+                    scrapeView.userInteractionEnabled = YES;
+                    
+                    UIButton *viewScrapebutton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,scrapeView.frame.size.width,scrapeView.frame.size.height)];
+                    [viewScrapebutton addTarget:self action:@selector(viewScrape:) forControlEvents:UIControlEventTouchUpInside];
+                    viewScrapebutton.titleLabel.text = IS_NULL(contentsData.scrapeDic[@"ogUrl"])?@"":contentsData.scrapeDic[@"ogUrl"];
+//                    viewScrapebutton.backgroundColor = [UIColor cl];
+                    [viewScrapebutton setTitleColor:[UIColor clearColor] forState:UIControlStateDisabled];
+                    [viewScrapebutton setTitleColor:[UIColor clearColor] forState:UIControlStateSelected];
+                    [scrapeView addSubview:viewScrapebutton];
+                }
+                
                 imageArray = contentsData.imageArray;
                 if(!IS_NULL(imageArray) && [imageArray count]>0)
                 {
@@ -6364,12 +6445,12 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                         
                     }
                     
-                    contentImageView.frame = CGRectMake(16, CGRectGetMaxY(whImageView.frame)+5, self.view.frame.size.width - 32, imageHeight);
+                    contentImageView.frame = CGRectMake(16, CGRectGetMaxY(scrapeView.frame)+10, self.view.frame.size.width - 32, imageHeight);
                     
                     
                 }
                 else{
-                    contentImageView.frame = CGRectMake(16, CGRectGetMaxY(whImageView.frame), self.view.frame.size.width - 32, 0);
+                    contentImageView.frame = CGRectMake(16, CGRectGetMaxY(scrapeView.frame), self.view.frame.size.width - 32, 0);
                 }
                 
                 pollView.userInteractionEnabled = YES;
@@ -6411,6 +6492,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     pollView.layer.borderWidth = 1.0;
                     pollView.layer.cornerRadius = 3.0;
                     pollView.layer.borderColor = [RGB(245, 245, 245) CGColor];
+                    pollView.backgroundColor = [UIColor whiteColor];
                     
                     
                     UIImageView *clipIcon;
@@ -6418,7 +6500,6 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
                     
                     
                     
-                    pollView.backgroundColor = [UIColor whiteColor];
                     
                     
                     UIImageView *titleBgview;
@@ -10394,7 +10475,13 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
 //
 //
 //}
-
+        
+        - (void)viewScrape:(id)sender
+        {
+            NSLog(@"viewScrape %@",[[sender titleLabel]text]);
+            [[UIApplication sharedApplication]openURL:[NSURL URLWithString:[[sender titleLabel]text]]];
+            
+        }
 - (void)viewImage:(id)sender{
     
     UIViewController *photoCon;
@@ -10636,6 +10723,7 @@ if (self.presentingViewController && [self.navigationController.viewControllers 
         contentsData.content = decoded;//decoded;
         
         contentsData.imageArray = messagesDic[@"IMAGES"];
+        contentsData.scrapeDic = messagesDic[@"SCRAPE"];
         contentsData.pollDic = messagesDic[@"POLL"];//[@"poll_data"] objectFromJSONString];
         contentsData.pollResultName = messagesDic[@"POLL_RESULT_NAME"];//[@"poll_data"] objectFromJSONString];
         contentsData.pollResultCnt = messagesDic[@"POLL_RESULT_CNT"];//[@"poll_data"] objectFromJSONString];

@@ -1185,19 +1185,19 @@
 			};
 			name = Distribution;
 		};
-		05C8D432B6EB85C1FE6594D1C1CB1408 /* Release */ = {
+		04ADC32726DF90D6E1AAD536CC61B6EA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6A02DF81579FC41D091235142F0185D /* Pods-SbTalk.release.xcconfig */;
+			baseConfigurationReference = CDD5940B7BC258895CAAABF43D3EEC0B /* Pods-LempMobile-nowon.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1206,7 +1206,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Release;
+			name = Debug;
 		};
 		06D811F3FACBB29C52475E8AB45F69B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1234,29 +1234,6 @@
 		0819A8A7037ADCC76C8892705CB8D581 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7D38DD875767AB689EBF96AF194742C1 /* Pods-Hicare.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		10C77366251ED317E95240A444388C59 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 645AEBA673756EB5F6C1B23E43A4A922 /* Pods-SbTalk.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1322,6 +1299,29 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Distribution;
+		};
+		1D44D97DD73587C084818DD3B7A5EA19 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8BDF8F416A1057AA527860D62E8706D3 /* Pods-LempMobile-nowon.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
 		};
 		1FD255EA8B6F81A69CA63E9EA09402F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1437,29 +1437,6 @@
 			};
 			name = Distribution;
 		};
-		3A7664E2747B6E6F7CC2069CBC242D82 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = CDD5940B7BC258895CAAABF43D3EEC0B /* Pods-LempMobile-nowon.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
 		43BE28AFCB9B65AA21F474DACAA056AE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A0637415BC319C3D8FF30D9B799B93AD /* Pods-GreenTalkCustomer.debug.xcconfig */;
@@ -1518,6 +1495,29 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
+		};
+		58248852D54405120CCCBD9C774B4112 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EAB0E3C49C6B1333339DD64D4161ACAF /* Pods-SbTalk.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
 		};
 		59F42BA76EC11FEECE3AE6B5ED57FA58 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1610,6 +1610,29 @@
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
+		};
+		7329B6CCA3B99045B7F845FD5A8C6874 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B6A02DF81579FC41D091235142F0185D /* Pods-SbTalk.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
 		};
 		769DB0E33B8893E1D1235BF322279DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1929,29 +1952,6 @@
 			};
 			name = Debug;
 		};
-		8E48A6E7159E39D0317583DC8CBA3BBF /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EAB0E3C49C6B1333339DD64D4161ACAF /* Pods-SbTalk.distribution.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Distribution;
-		};
 		90BBB33E74E893D2DCC0C39676DD3C16 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0D28EEFF20C4ACF97D3BCD4F006B9501 /* Pods-GreenTalk.distribution.xcconfig */;
@@ -2103,29 +2103,6 @@
 			};
 			name = Release;
 		};
-		B0A75CCC9F77D8E0F326BF12B88468EC /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8BDF8F416A1057AA527860D62E8706D3 /* Pods-LempMobile-nowon.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 		B986F2320F008B06E359C9A6DF7B2B51 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4FF41C4891293580A3DBC3323C0177A9 /* Pods-IVTalk.release.xcconfig */;
@@ -2175,29 +2152,6 @@
 		C05F5C4763B5A61B8D3C0BF12EB872E0 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5A751CCF327E67A00A7E6EE55BBE085C /* Pods-GreenTalkCustomer.distribution.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Distribution;
-		};
-		C18DF78B71A6C7F43DB97C9DAEDCAF33 /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 61C7B3D84C85159F6E8369C67B1807B7 /* Pods-LempMobile-nowon.distribution.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2282,6 +2236,29 @@
 				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		DB244E0BAEB369A8F48C92560BD0DAE5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 645AEBA673756EB5F6C1B23E43A4A922 /* Pods-SbTalk.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -2389,6 +2366,29 @@
 			};
 			name = Distribution;
 		};
+		FFBD887E3850EB4D594BD8A63E2F417D /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 61C7B3D84C85159F6E8369C67B1807B7 /* Pods-LempMobile-nowon.distribution.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Distribution;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2425,9 +2425,9 @@
 		27A2044AA45C2862A5167A92CAB9ED43 /* Build configuration list for PBXNativeTarget "Pods-LempMobile-nowon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				3A7664E2747B6E6F7CC2069CBC242D82 /* Debug */,
-				C18DF78B71A6C7F43DB97C9DAEDCAF33 /* Distribution */,
-				B0A75CCC9F77D8E0F326BF12B88468EC /* Release */,
+				04ADC32726DF90D6E1AAD536CC61B6EA /* Debug */,
+				FFBD887E3850EB4D594BD8A63E2F417D /* Distribution */,
+				1D44D97DD73587C084818DD3B7A5EA19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2475,9 +2475,9 @@
 		B9CC13AC497B6145CCFAE06D54D1B9EE /* Build configuration list for PBXNativeTarget "Pods-SbTalk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				10C77366251ED317E95240A444388C59 /* Debug */,
-				8E48A6E7159E39D0317583DC8CBA3BBF /* Distribution */,
-				05C8D432B6EB85C1FE6594D1C1CB1408 /* Release */,
+				DB244E0BAEB369A8F48C92560BD0DAE5 /* Debug */,
+				58248852D54405120CCCBD9C774B4112 /* Distribution */,
+				7329B6CCA3B99045B7F845FD5A8C6874 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
