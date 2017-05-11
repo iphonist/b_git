@@ -375,9 +375,11 @@
 
 #pragma mark -
 #pragma mark UIWebViewDelegate
-//- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-//	return YES;
-//}
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+      NSURL *url = [request URL];
+    NSLog(@"redirect_url %@",url);
+	return YES;
+}
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
